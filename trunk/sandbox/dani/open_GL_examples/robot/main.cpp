@@ -19,11 +19,8 @@ int window;
 /* storage for one texture  */
 GLuint texture[1];
 
-/* current teapot position (initialized in main) */ 
-double x, y, z;           
-
 /* robot declaration */
-Robot rob(0.f, 0.f, 0.f);
+Robot rob(0.f, 0.f, 90.f);
 
 /* Image type - contains height, width, and data */
 struct Image {
@@ -49,7 +46,8 @@ int ImageLoad(char *filename, Image *image) {
       printf("File Not Found : %s\n",filename);
       return 0;
     }
-    
+  
+  
   // seek through the bmp header, up to the width/height:
   fseek(file, 18, SEEK_CUR);
 
@@ -93,6 +91,7 @@ int ImageLoad(char *filename, Image *image) {
   // seek past the rest of the bitmap header.
   fseek(file, 24, SEEK_CUR);
 
+
   // read the data. 
   image->data = (char *) malloc(size);
   if (image->data == NULL) {
@@ -128,7 +127,7 @@ void LoadGLTextures() {
     exit(0);
   }
 
-  if (!ImageLoad("NeHe.bmp", image1)) {
+  if (!ImageLoad("screenshot.bmp", image1)) {
     exit(1);
   }        
 
@@ -144,9 +143,13 @@ void LoadGLTextures() {
   // scale linearly when image smalled than texture
   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
 
-  // 2d texture, level of detail 0 (normal), 3 components (red, green, blue), x size from image, y size from image, 
-  // border 0 (normal), rgb color data, unsigned byte data, and finally the data itself.
-  glTexImage2D(GL_TEXTURE_2D, 0, 3, image1->sizeX, image1->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, image1->data);
+  /* 2d texture, level of detail 0 (normal), 3 components (red, green, blue), x size from image, y size from image, 
+     border 0 (normal), rgb color data, unsigned byte data, and finally the data itself.
+  */
+  //glTexImage2D(GL_TEXTURE_2D, 0, 3, image1->sizeX, image1->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, image1->data);
+
+  gluBuild2DMipmaps(GL_TEXTURE_2D, 3, image1->sizeX, image1->sizeY, GL_RGB, GL_UNSIGNED_BYTE, image1->data);
+
 
   // free data from memory
   if (image1) {
@@ -189,26 +192,24 @@ void display () {
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
-  /* rotate sceen */
-  glTranslatef(x,y,z);
-
 
   // BEGIN TEXTURE CODE
   glPushMatrix();
 
-  glTranslatef(0.0f, 0.0f, -5.5f);              // move 2.5 units into the screen.
+  glTranslatef(0.0f, 0.0f, -15.5f);              // move 2.5 units into the screen.
     
   glBindTexture(GL_TEXTURE_2D, texture[0]);   // choose the texture to use.
 
-//   glBegin(GL_QUADS);		                // begin drawing a cube
+  
+  glBegin(GL_QUADS);		                // begin drawing a cube
     
-//   // Front Face (note that the texture's corners have to match the quad's corners)
-//   glTexCoord2f(0.0f, 0.0f); glVertex3f(-5.0f, -5.0f,  0.0f);	// Bottom Left Of The Texture and Quad
-//   glTexCoord2f(1.0f, 0.0f); glVertex3f( 5.0f, -5.0f,  0.0f);	// Bottom Right Of The Texture and Quad
-//   glTexCoord2f(1.0f, 1.0f); glVertex3f( 5.0f,  5.0f,  0.0f);	// Top Right Of The Texture and Quad
-//   glTexCoord2f(0.0f, 1.0f); glVertex3f(-5.0f,  5.0f,  0.0f);	// Top Left Of The Texture and Quad
+  // Front Face (note that the texture's corners have to match the quad's corners)
+  glTexCoord2f(0.0f, 0.0f); glVertex3f(-5.0f, -5.0f,  0.0f);	// Bottom Left Of The Texture and Quad
+  glTexCoord2f(1.0f, 0.0f); glVertex3f( 5.0f, -5.0f,  0.0f);	// Bottom Right Of The Texture and Quad
+  glTexCoord2f(1.0f, 1.0f); glVertex3f( 5.0f,  5.0f,  0.0f);	// Top Right Of The Texture and Quad
+  glTexCoord2f(0.0f, 1.0f); glVertex3f(-5.0f,  5.0f,  0.0f);	// Top Left Of The Texture and Quad
 
-//   glEnd();
+  glEnd();
 
   //glTranslatef(0.0f, 0.0f, 2.5f);              // move 2.5 units into the screen.
   //glPopMatrix();
@@ -325,9 +326,6 @@ void keyPressed(unsigned char key, int x, int y)
 void animate () {
 
   /* update state variables */
-  //x += .00004;
-  //y += .00004;
-  //z -= .00004;
 
   /* refresh screen */
   glutPostRedisplay();
@@ -399,11 +397,7 @@ int main ( int argc, char * argv[] ) {
   /* define the viewing transformation */
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  gluLookAt(0.0,5.0,10.0,0.0,0.0,0.0,0.0,1.0,0.0);
-
-  x = 0;
-  y = 0;
-  z = 0;
+  gluLookAt(0.0,0.0,10.0,0.0,0.0,0.0,0.0,1.0,0.0);
 
   /* tell GLUT to wait for events */
   glutMainLoop();
