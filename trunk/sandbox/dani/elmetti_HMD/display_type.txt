@@ -1,0 +1,41 @@
+(from previous generations to last)
+
+- LCD
+
+A liquid crystal display (LCD) is a thin, flat electronic visual display that uses the light modulating properties of liquid crystals (LCs). LCs do not emit light directly. LCDs therefore need a light source and are classified as "passive" displays. Some types can use ambient light such as sunlight or room lighting. There are many types of LCDs that are designed for both special and general uses. They can be optimized for static text, detailed still images, or dynamic, fast-changing, video content.
+
+- LCOS
+
+One of the newer rear-projection display technologies, LCOS (or LCoS) is similar to LCD and consists of a liquid crystal layer which sits on top of a pixelated, highly reflective substrate. Below the substrate exists another layer containing the electronics to activate the pixels. This assembly is combined into a panel and packaged for use in a projection subsystem. Currently LCOS light valves are manufactured in 1280 x 768 (720p) and 1920 x 1080 (1080p) chip configurations (among others), with 4K (3480 x 2048) systems also being readied for professional markets (Sony already has two SXRD units on the market with 4096 x 2160 resolution).
+
+LCOS is a reflective LCD display panel with high open area ratio. Basically, by placing the wiring area and switching elements under the reflection layer, there is no black matrix area - so it is possible to view a near-seamless image. LCOS systems can be created as 1 chip and 3 chip systems.
+
+At the moment (meaning the next 15 minutes), LCOS technology is fairly competitive in terms of price and performance advantages compared to LCD and DLP systems. Pixels on LCOS panels can be made smaller than is possible with most other microdisplay technologies, without compromising picture quality or manufacturability. LCOS displays can be scaled to 1080i/p resolution (1920x1080 pixels) and beyond, without increasing the size and cost of the panel and other optical components in the light engine.
+
+Advantages
+
+    * Excellent color reproduction
+    * Excellent contrast ratios
+    * High resolutions
+    * No "screen door" effect
+    * No screen burn-in issues
+
+Disadvantages
+
+    * Fairly expensive
+    * Limited manufacturers (costs don't get driven down as quickly)
+    * No sign of wide market penetration, indicating higher prices for the long haul (see above)
+
+- FLCOS
+
+These devices are made using ferroelectric liquid crystals (so the technology is named FLCoS), which are inherently faster than other types of liquid crystals. Displaytech was acquired by Micron Technology in May 2009, who is continuing to develop the FLCoS technology.
+
+- OLED
+
+An Organic Light Emitting Diode (OLED), is a light-emitting diode (LED) whose emissive electroluminescent layer is composed of a film of organic compounds. This layer of organic semiconductor material is formed between two electrodes, where at least one of the electrodes is transparent.
+
+Such devices can be used in television screens, computer monitors, small, portable system screens such as mobile phones and PDAs, watches, advertising, information and indication. OLEDs can also be used in light sources for general space illumination, and large-area light-emitting elements. Due to the younger stage of development, OLEDs typically emit less light per unit area than inorganic solid-state based LEDs which are usually designed for use as point-light sources.
+
+In the context of displays, OLEDs have certain advantages over traditional liquid crystal displays (LCDs). OLED displays do not require a backlight to function. Thus, they can display deep black levels and can be thinner and lighter than LCD panels. OLED displays also naturally achieve higher contrast ratios than either LCD screens using cold cathode fluorescent lamps (CCFLs) or the more recently developed LED backlights in conditions of low ambient light such as dark rooms.
+
+There are at least two types of OLEDs: those that are based on small molecules and those that employ polymers. Adding mobile ions to an OLED creates a Light-emitting Electrochemical Cell or LEC, which operates slightly differently than an OLED.

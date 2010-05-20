@@ -1,0 +1,18 @@
+Metadata-Version: 1.0
+Name: SoyaTutorial
+Version: 0.10.1
+Summary: A practical high-level object-oriented 3D engine for Python.
+Home-page: http://gna.org/projects/soya/
+Author: Jiba (LAMY Jean-Baptiste), Blam (LAMY Bertrand), LunacyMaze (GHISLAIN Mary)
+Author-email: jiba@tuxfamily.org
+License: GPL
+Description: A practical high-level object-oriented 3D engine for Python.
+        Soya is designed with game in mind. It includes heightmaps, particles systems, animation support,...
+Keywords: 3D engine openGL python
+Platform: UNKNOWN
+Classifier: Topic :: Multimedia :: Graphics :: 3D Rendering
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python
+Classifier: Intended Audience :: Developers
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: GNU General Public License (GPL)

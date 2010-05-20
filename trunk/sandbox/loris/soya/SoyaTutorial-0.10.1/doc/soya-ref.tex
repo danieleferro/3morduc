@@ -1,0 +1,1343 @@
+\section{Module: \module{soya}}
+\declaremodule{standard}{soya}
+\subsection{Functions}
+\begin{funcdesc}{clear_events}{...}
+go through all the events in the key and remove them.
+mask currently on supports ALL\_EVENTS
+\end{funcdesc}
+
+\begin{funcdesc}{coalesce_motion_event}{events}
+coalesce\_motion\_event(events) -> sequence
+
+Prunes from EVENTS all mouse motion events except the last one.
+This is usefull since only the last one is usually releavant (Though
+be carrefull if you use the relative mouse coordinate !).
+
+EVENTS should be a list of events, as returned by soya.process\_event().
+The returned list has the same structure.
+\end{funcdesc}
+
+\begin{funcdesc}{cursor_set_visible}{...}
+\end{funcdesc}
+
+\begin{funcdesc}{do_cmd}{cmd}
+\end{funcdesc}
+
+\begin{funcdesc}{get_grab_input}{...}
+queries mouse grabbing
+returns 1 or 0
+\end{funcdesc}
+
+\begin{funcdesc}{get_max_texture_size}{...}
+\end{funcdesc}
+
+\begin{funcdesc}{get_mod}{...}
+\end{funcdesc}
+
+\begin{funcdesc}{get_mouse_rel_pos}{...}
+return the relative mouse position since the last call to this function
+\end{funcdesc}
+
+\begin{funcdesc}{get_screen_height}{...}
+\end{funcdesc}
+
+\begin{funcdesc}{get_screen_width}{...}
+\end{funcdesc}
+
+\begin{funcdesc}{image_from_pil}{pil_image}
+Creates and returns a Soya image from PIL image PIL\_IMAGE.
+\end{funcdesc}
+
+\begin{funcdesc}{init}{title = "Soya 3D", width = 640, height = 480, fullscreen = 0, resizeable = 1, create_surface = 1}
+Inits Soya 3D and display the 3D view.
+
+TITLE is the title of the window.
+WIDTH and HEIGHT the dimensions of the 3D view.
+FULLSCREEN is true for fullscreen and false for windowed mode.
+RESIZEABLE is true for a resizeable window.
+\end{funcdesc}
+
+\begin{funcdesc}{load_raw_image}{...}
+Loads a ".raw" image file, which are used by Cal3D example (see cal3d\_data).
+Returns a Soya image object, suitable for model.material.image.
+\end{funcdesc}
+
+\begin{funcdesc}{open_image}{filename}
+Creates and returns a Soya image from file FILENAME.
+The image is loaded with PIL; the supported image formats are the same than PIL.
+\end{funcdesc}
+
+\begin{funcdesc}{parse_cal3d_cfg_file}{...}
+Reads a the Cal3D .cfg file, and creates and returns a Cal3D shape from it.
+\end{funcdesc}
+
+\begin{funcdesc}{process_event}{...}
+\end{funcdesc}
+
+\begin{funcdesc}{quit}{...}
+\end{funcdesc}
+
+\begin{funcdesc}{render}{}
+Renders the 3D scene. Use set\_root\_widget() to choose which camera is used.
+\end{funcdesc}
+
+\begin{funcdesc}{screenshot}{filename = None, x = 0, y = 0, width = soya.get_screen_width(}
+Take a screenshot of the soya rendering screen, and return it as a PIL image object.
+If given, the image is saved under FILENAME.
+You must have rendered something before (e.g. by calling soya.render, or by running
+an Idler).
+\end{funcdesc}
+
+\begin{funcdesc}{set_gamma}{...}
+Defines gamma correction.
+Usage : soya.set\_gamma(red\_gamma,green\_gamma,blue\_gamma)
+if XXX\_gamma=1.0 : no change
+>1.0 : dark
+<1.0 : bright
+\end{funcdesc}
+
+\begin{funcdesc}{set_grab_input}{...}
+grabs the mouse and keyboard input to our window
+set\_grab\_state(0|1) to set state
+\end{funcdesc}
+
+\begin{funcdesc}{set_mouse_pos}{...}
+move the mouse cursor to x,y
+\end{funcdesc}
+
+\begin{funcdesc}{set_quality}{...}
+\end{funcdesc}
+
+\begin{funcdesc}{set_root_widget}{widget}
+set\_root\_widget(WIDGET)
+
+Sets the root widget to WIDGET. The root widget is the widget that is rendered first.
+It defaults to the first Camera you create.
+\end{funcdesc}
+
+\begin{funcdesc}{set_use_unicode}{...}
+when set process\_event will return a 4 part tuple for a keydown event.
+the fourth part contains the unicode symbol for the key.
+usefull for getting CAPITALS and !£\$\% etc in text boxes for example
+\end{funcdesc}
+
+\begin{funcdesc}{set_video}{...}
+\end{funcdesc}
+
+\begin{funcdesc}{toggle_wireframe}{...}
+\end{funcdesc}
+
+\subsection{Classes}
+\begin{classdesc*}{Atmosphere}
+Inherits:
+\class{_Atmosphere}
+\class{_CObj}
+
+Atmosphere
+
+An Atmosphere is an object that defines all the atmospheric attributes of a World, such
+as fog, background or ambient lighting.
+
+To apply an Atmosphere to a World, as well as everything inside the World, do :
+
+    world.atmosphere = my\_atmosphere
+
+You can safely put several Worlds one inside the other, with different Atmospheres.
+
+Attributes are :
+
+ - fog: true to activate fog, false to disable fog (default value).
+
+ - fog\_color: the fog color (an (R, G, B, A) tuple of four floats). Defaults to black.
+
+ - fog\_type: the type of fog. fog\_type can take 3 different values :
+   - 0, linear fog: the fog range from fog\_start to fog\_end (default value).
+   - 1, exponentiel fog: the fog the fog increase exponentially to fog\_density and the distance.
+   - 2, exponentiel squared fog: the fog the fog increase exponentially to the square of fog\_density and the distance.
+
+ - fog\_start: the distance at which the fog begins, if fog\_type == 0. Defaults to 10.0.
+
+ - fog\_end: the distance at which the fog ends, if fog\_type == 0. Defaults to 100.0.
+
+ - fog\_density: the fog density, if fog\_type > 0. Defaults to 1.0.
+
+ - ambient: the ambient lighting color (an (R, G, B, A) tuple of four floats). Defaults to (0.5, 0.5, 0.5, 1.0).
+
+ - bg\_color: the background color of the scene (an (R, G, B, A) tuple of four floats). Defaults to black.
+
+\end{classdesc*}
+
+\begin{classdesc*}{Bonus}
+Inherits:
+\class{_Bonus}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+No documentation for this class.
+
+\end{classdesc*}
+
+\begin{classdesc*}{Cal3dShape}
+Inherits:
+\class{Shape}
+\class{SavedInAPath}
+\class{_Shape}
+\class{_CObj}
+\class{_Cal3dShape}
+\class{_Shape}
+\class{_CObj}
+
+No documentation for this class.
+
+\begin{datadesc}{DIRNAME}
+\end{datadesc}
+\end{classdesc*}
+
+\begin{classdesc*}{Cal3dVolume}
+Inherits:
+\class{_Cal3dVolume}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+No documentation for this class.
+
+\end{classdesc*}
+
+\begin{classdesc*}{Camera}
+Inherits:
+\class{_Camera}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+Camera
+
+The Camera specifies from where the scene is viewed.
+
+Attributes are (see also CoordSyst and Widget for inherited attributes):
+
+ - front, back : objects whose distance from the camera is not between front and back
+   are clipped. Front defaults to 0.1 and back to 100.0.
+   If the back / front ratio is too big, you loose precision in the depth buffer.
+
+ - fov : the field of vision (or FOV), in degrees. Default is 60.0.
+
+ - to\_render : the world that is rendered by the camera. Default is None, which means
+   the root scene (as returned by get\_root()).
+
+ - left, top, width, height : the viewport rectangle, in pixel. Use it if you want to
+   render only on a part of the screen. It defaults to the whole screen.
+
+ - ortho : True for orthogonal rendering, instead of perspective. Default is false.
+
+ - partial : XXX ???. probably DEPRECATED by NoBackgroundAtmosphere.
+
+\end{classdesc*}
+
+\begin{classdesc*}{CellShadingShape}
+Inherits:
+\class{Shape}
+\class{SavedInAPath}
+\class{_Shape}
+\class{_CObj}
+\class{_CellShadingShape}
+\class{_SimpleShape}
+\class{_Shape}
+\class{_CObj}
+
+CellShadingShape
+
+A Shape that use cell-shading for rendering.
+
+\begin{datadesc}{DIRNAME}
+\end{datadesc}
+\end{classdesc*}
+
+\begin{classdesc*}{CellShadingShapifier}
+Inherits:
+\class{SimpleShapifier}
+\class{Shapifier}
+\class{_CObj}
+
+CellShadingShapifier
+
+Shapifier for cell-shaded Shape.
+
+Attributes are :
+
+ - shadow (default 0) : enable shadows
+
+ - shader : the material used for cell-shading lighting
+
+ - outline\_color (default black) : the color of the outline
+
+ - outline\_width (default 4.0) : the maximum line width when the cell-shaded shape
+   is very near the camera (set to 0.0 to disable outlines)
+
+ - outline\_attenuation (default : 0.3) : specify how much the distance affect the
+   outline\_width
+
+\end{classdesc*}
+
+\begin{classdesc*}{Context}
+Inherits:
+
+No documentation for this class.
+
+\end{classdesc*}
+
+\begin{classdesc*}{CoordSyst}
+Inherits:
+\class{Position}
+\class{_CObj}
+
+No documentation for this class.
+
+\begin{methoddesc}{add_mul_vector}{k, vector}
+Translates a Position IN PLACE, by K * VECTOR.
+Coordinates system conversion is performed if needed (=if the Position and
+VECTOR are not defined in the same coordinates system).
+
+For Vector, add\_mul\_vector means vectorial addition (translating a vector does
+nothing !).
+\end{methoddesc}
+
+\begin{methoddesc}{add_vector}{vector}
+Translates a Position IN PLACE.
+Coordinates system conversion is performed if needed (=if the Position and
+VECTOR are not defined in the same coordinates system).
+
+For Vector, add\_vector means vectorial addition (translating a vector does
+nothing !).
+\end{methoddesc}
+
+\begin{methoddesc}{add_xyz}{x, y, z}
+Translates a Position by X, Y and Z.
+\end{methoddesc}
+
+\begin{methoddesc}{added_into}{new_parent}
+Called when the CoordSyst is added into NEW\_PARENT, or removed from its previous parent
+(in this case, NEW\_PARENT is None).
+\end{methoddesc}
+
+\begin{methoddesc}{advance_time}{proportion}
+Called (by the Idler) when a piece of a round is achieved; default implementation does nothing.
+PROPORTION is the proportion of the current round's time that has passed (1.0 for an entire round).
+\end{methoddesc}
+
+\begin{methoddesc}{begin_round}{}
+Called (by the Idler) when a new round begins; default implementation does nothing.
+\end{methoddesc}
+
+\begin{methoddesc}{distance_to}{other}
+Gets the distance between a Position and anOTHER.
+\end{methoddesc}
+
+\begin{methoddesc}{end_round}{}
+Called (by the Idler) when a round is finished; default implementation does nothing.
+\end{methoddesc}
+
+\begin{methoddesc}{get_box}{}
+Returns a box wrapping the given CoordSyst. The box is defined by 2 Point corresponding
+to 2 opposite corners of the box, the box being aligned on the X, Y and Z axis.
+\end{methoddesc}
+
+\begin{methoddesc}{get_dimension}{}
+Returns the dimension of a CoordSyst: a (width, height, depth) tuple.
+For a World, this includes also all items inside the World.
+\end{methoddesc}
+
+\begin{methoddesc}{get_root}{}
+Returns the "root parent" of a coordsyst, i.e. the scene (= the parent world that has no parent).
+\end{methoddesc}
+
+\begin{methoddesc}{get_sphere}{}
+Returns a sphere wrapping the given CoordSyst. The sphere is defined by the center
+and the radius (a Point and a float value).
+\end{methoddesc}
+
+\begin{methoddesc}{is_inside}{COORDSYST}
+Returns true if self is inside COORDSYST, i.e. if COORDSYST is self, or self.parent, or
+self.parent.parent or...
+\end{methoddesc}
+
+\begin{methoddesc}{look_at}{target}
+Rotate so that this CoordSyst's *negative*-Z points at target.
+\end{methoddesc}
+
+\begin{methoddesc}{look_at_x}{target}
+Rotate so that this object's positive-X points at target.
+\end{methoddesc}
+
+\begin{methoddesc}{look_at_y}{target}
+Rotate so that this object's positive-Y points at target.
+\end{methoddesc}
+
+\begin{methoddesc}{move}{position}
+Moves a Position to POSITION.
+Coordinates system conversion is performed if needed (=if the Position and
+POSITION are not defined in the same coordinates system).
+\end{methoddesc}
+
+\begin{methoddesc}{position}{}
+Returns the position (a Point) at the same position than the Position.
+\end{methoddesc}
+
+\begin{methoddesc}{rotate}{ANGLE, A, B}
+Rotate a CoordSyst about an axis, of ANGLE degrees.
+The axis is defined by a Position A, and another Position or a Vector B.
+\end{methoddesc}
+
+\begin{methoddesc}{rotate_axe}{ANGLE, AXE}
+Rotate a CoordSyst about an axis, of ANGLE degrees.
+The axis is defined by a Vector AXE, and pass through the origin (0, 0, 0).
+\end{methoddesc}
+
+\begin{methoddesc}{rotate_axe_xyz}{ANGLE, X, Y, Z}
+Rotate a CoordSyst about an (X, Y, Z) axis, of ANGLE degrees.
+\end{methoddesc}
+
+\begin{methoddesc}{rotate_x}{angle}
+Rotate about the *parent's* Y axis, in degrees.
+e.g., If you are facing positive-Y with head to positive-Z, it
+spins like a car's steering wheel.
+\end{methoddesc}
+
+\begin{methoddesc}{rotate_xyz}{ANGLE, X1, Y1, Z1, X2, Y2, Z2}
+Rotate a CoordSyst about an axis, of ANGLE degrees.
+The axis is defined by a two point (X1, Y1, Z1) and (X2, Y2, Z2).
+\end{methoddesc}
+
+\begin{methoddesc}{rotate_y}{angle}
+Rotate about the *parent's* X axis, in degrees.
+e.g., If you are facing positive-Y with head to positive-Z, it
+spins like a car's tire.
+\end{methoddesc}
+
+\begin{methoddesc}{rotate_z}{angle}
+Rotate about the *parent's* Z axis, in degrees.
+e.g., If you are facing positive-Y with head to positive-Z, it
+spins like a spinning top.
+\end{methoddesc}
+
+\begin{methoddesc}{scale}{x, y, z}
+Scales a CoordSyst by X, Y and Z (Changes its dimensions).
+Negative values are accepted.
+\end{methoddesc}
+
+\begin{methoddesc}{set_dimension}{width, height, depth}
+Sets the dimension of a CoordSyst ; in other worlds, scale the coordsyst so as it has
+the given dimensions.
+\end{methoddesc}
+
+\begin{methoddesc}{set_identity}{}
+Resets a CoordSyst (moves it to 0,0,0 and removes any rotation or scaling).
+\end{methoddesc}
+
+\begin{methoddesc}{set_scale_factors}{SCALE_X, SCALE_Y, SCALE_Z}
+Sets the scale factors in the X, Y and Z dimension.
+\end{methoddesc}
+
+\begin{methoddesc}{set_xyz}{x, y, z}
+Moves a CoordSyst to X, Y and Z.
+\end{methoddesc}
+
+\begin{methoddesc}{shift}{x, y, z}
+Translates a CoordSyst by X, Y and Z, given in CoordSyst space.
+\end{methoddesc}
+
+\begin{methoddesc}{transform}{...}
+DEPRECATED
+\end{methoddesc}
+
+\begin{methoddesc}{transform_point}{...}
+DEPRECATED
+\end{methoddesc}
+
+\begin{methoddesc}{transform_vector}{...}
+DEPRECATED
+\end{methoddesc}
+
+\begin{methoddesc}{turn_x}{angle}
+Rotate about the *local* Y axis, in degrees.
+\end{methoddesc}
+
+\begin{methoddesc}{turn_y}{angle}
+Rotate about the *local* X axis, in degrees.
+\end{methoddesc}
+
+\begin{methoddesc}{turn_z}{angle}
+Rotate about the *local* Z axis, in degrees.
+\end{methoddesc}
+
+\begin{methoddesc}{vector_to}{other}
+Gets the vector that starts at a Position and ends at OTHER.
+\end{methoddesc}
+
+\end{classdesc*}
+
+\begin{classdesc*}{CylinderSprite}
+Inherits:
+\class{_CylinderSprite}
+\class{_Sprite}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+\class{Sprite}
+\class{_Sprite}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+CylinderSprite
+
+A special kind of Sprite, that points toward the camera only in X and Z dimension, but
+not Y. This is usefull e.g. for lightening spell effects, for which using a normal Sprite
+would give a poor rendering if seen from top.
+
+\end{classdesc*}
+
+\begin{classdesc*}{Face}
+Inherits:
+\class{_Face}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+Face
+
+A Face displays a polygon composed of several Vertices (see the Vertex class).
+Notice that Face are SLOW ; Faces are normally used for building model but not for
+rendering them. To get a fast rendering, you should put several Faces in a World, and
+then compile the World into a Shape (see the modeling-X.py tutorial series).
+
+According to the number of Vertices, the result differs:
+ - 1 Vertex => Plot
+ - 2        => Line
+ - 3        => Triangle
+ - 4        => Quad
+
+All the vertices are expected to be coplannar.
+
+Interesting properties are:
+
+ - vertices: the list of Vertices
+
+ - material: the material used to draw the face's surface
+
+ - double\_sided: true if you want to see both sides of the Face. Default is false.
+
+ - solid: true to enable the use of this Face for raypicking. Default is true.
+
+ - lit: true to enable lighting on the Face. Default is true.
+
+The following options are used when compiling the Face into a Shape,
+but does not affect the rendering of the Face itself:
+
+ - static\_lit: true to enable static lighting (faster). If true, when compiling the Face
+   into a Shape, all Lights available will be applied as static lighting. Default is true.
+
+ - smooth\_lit: true to compute per-vertex normal vectors, instead of per-face normal vector.
+   This makes the Shape looking smooth (see tutorial modeling-smoothlit-1.py).
+   Notice that Soya automatically disable smooth\_lit between 2 faces that makes a sharp
+   angle (see Shapifier.max\_face\_angle attribute).
+   Default is false.
+
+\end{classdesc*}
+
+\begin{classdesc*}{FixTraveling}
+Inherits:
+\class{_FixTraveling}
+\class{Traveling}
+\class{_CObj}
+
+No documentation for this class.
+
+\end{classdesc*}
+
+\begin{classdesc*}{FlagFirework}
+Inherits:
+\class{_Particles}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+No documentation for this class.
+
+\begin{methoddesc}{generate}{...}
+\end{methoddesc}
+
+\begin{methoddesc}{mygenerate}{...}
+\end{methoddesc}
+
+\begin{methoddesc}{regenerate}{...}
+\end{methoddesc}
+
+\begin{methoddesc}{remove}{...}
+\end{methoddesc}
+
+\begin{methoddesc}{subgenerate}{...}
+\end{methoddesc}
+
+\end{classdesc*}
+
+\begin{classdesc*}{FlagSubFire}
+Inherits:
+\class{_Particles}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+No documentation for this class.
+
+\begin{methoddesc}{generate}{...}
+\end{methoddesc}
+
+\end{classdesc*}
+
+\begin{classdesc*}{Font}
+Inherits:
+
+No documentation for this class.
+
+\begin{methoddesc}{create_glyphs}{...}
+\end{methoddesc}
+
+\begin{methoddesc}{draw}{...}
+\end{methoddesc}
+
+\begin{methoddesc}{draw_area}{...}
+\end{methoddesc}
+
+\begin{methoddesc}{get_glyph}{...}
+\end{methoddesc}
+
+\begin{methoddesc}{get_print_size}{...}
+\end{methoddesc}
+
+\begin{methoddesc}{wordwrap}{...}
+return a tuple like:
+( max\_line\_width, total\_height, wrapped text )
+\end{methoddesc}
+
+\begin{methoddesc}{wordwrap_line}{...}
+return a tuple like :
+( max\_line\_width, total\_height, [ ('line1', line1width), ('line2', linewidth2) ... ] )
+\end{methoddesc}
+
+\end{classdesc*}
+
+\begin{classdesc*}{Fountain}
+Inherits:
+\class{_Particles}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+No documentation for this class.
+
+\begin{methoddesc}{generate}{...}
+\end{methoddesc}
+
+\end{classdesc*}
+
+\begin{excdesc}{GLError}
+Inherits:
+\class{StandardError}
+\class{Exception}
+
+No documentation for this class.
+
+\end{excdesc}
+
+\begin{classdesc*}{Glyph}
+Inherits:
+
+No documentation for this class.
+
+\end{classdesc*}
+
+\begin{classdesc*}{Idler}
+Inherits:
+
+Idler
+
+A main loop, with FPS regulation.
+
+Interesting attributes:
+
+ - fps (read only): the frame rate (number of frame per second, a usefull speed indicator).
+
+ - running (read only): true if the Idler is idling (=running).
+
+ - next\_round\_tasks: a list of callable (taking no arg) that will be called once, just
+   after the beginning of the next round.
+
+ - scenes: the scenes associated to this idler.
+
+ - round\_duration: The duration of a round. Round is the idler's time unit. The idler calls
+   successively begin\_round(), advance\_time() (possibly several times) and end\_round(); it
+   is granted that ALL rounds correspond to a period of duration ROUND\_DURATION (though
+   the different period may not be regularly spread over time).
+   Default is 0.030.
+
+ - min\_frame\_duration: minimum duration for a frame. This attribute can be used to limit
+   the maximum FPS to save CPU time; e.g. FPS higher than 30-40 is usually useless.
+   Default is 0.020, which limits FPS to 40 in theory and to about 33 in practice
+   (I don't know why there is a difference between theory and practice !).
+
+\begin{methoddesc}{advance_time}{proportion}
+Called by Idler.idle when a piece of a round has occured; default implementation delegates to Idler.scene.advance\_time.
+PROPORTION is the proportion of the current round's time that has passed (1.0 for an entire round).
+\end{methoddesc}
+
+\begin{methoddesc}{begin_round}{}
+Called by Idler.idle when a new round begins; default implementation delegates to Idler.scene.begin\_round.
+\end{methoddesc}
+
+\begin{methoddesc}{end_round}{}
+Called by Idler.idle when a round is finished; default implementation delegates to Idler.scene.end\_round.
+\end{methoddesc}
+
+\begin{methoddesc}{idle}{}
+Starts idling with the current thread. This method never finishes, until you call Idler.stop().
+\end{methoddesc}
+
+\begin{methoddesc}{render}{}
+Called by Idler.idle when rendering is needed; default implementation calls soya.render.
+\end{methoddesc}
+
+\begin{methoddesc}{reset}{...}
+\end{methoddesc}
+
+\begin{methoddesc}{start}{}
+Starts idling with a new thread (see Idler.idle() if you don't want to create a new thread).
+\end{methoddesc}
+
+\begin{methoddesc}{stop}{VALUE = None}
+Stops idling. The stopping may not occur immediately, but at the end of the next iteration.
+Idler.stop() causes Idler.idle() to returns ; VALUE is the (optionnal) value that Idler.idle() will return.
+\end{methoddesc}
+
+\end{classdesc*}
+
+\begin{classdesc*}{Image}
+Inherits:
+\class{SavedInAPath}
+\class{_Image}
+\class{_CObj}
+
+A Soya image, suitable for e.g. texturing.
+
+Attributes are:
+
+ - pixels : the raw image data (e.g. in a form suitable for PIL).
+
+ - width.
+
+ - height.
+
+ - nb\_color: the number of color channels (1 => monochrome, 3 => RGB, 4 => RGBA).
+
+\begin{datadesc}{DIRNAME}
+\end{datadesc}
+\begin{methoddesc}{save}{klass, filename=None}
+\end{methoddesc}
+
+\end{classdesc*}
+
+\begin{classdesc*}{Land}
+Inherits:
+\class{_Land}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+No documentation for this class.
+
+\end{classdesc*}
+
+\begin{classdesc*}{Light}
+Inherits:
+\class{_Light}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+Light
+
+A Light is a 3D object that enlights the other objects.
+
+Attributes are (see also CoordSyst for inherited attributes):
+
+ - directional : True for a directional light (e.g. like the sun), instead of a
+   positional light. The position of a directional light doesn't matter, and only
+   the constant component of the attenuation is used. Default is false.
+ - constant, linear and quadratic : the 3 components of the light attenuation. Constant
+   reduces the light independently of the distance, linear increase with the distance,
+   and quadratic increase the squared distance. Default is 1.0, 0.0 and 0.0.
+ - cast\_shadow : True if the light cast shadows on Shapes that have shadows enabled.
+   Default is true.
+ - shadow\_color : the color of the shadow . Default is a semi-transparent black
+   (0.0, 0.0, 0.0, 0.5).
+ - top\_level : XXX ???
+ - static : True if the light can be used for static lighting when compiling a World into
+   a Shape. Default is true.
+ - ambient : the light's ambient color, which is not affected by the light's orientation
+   or attenuation. Default is black (no ambient).
+ - diffuse : the light's color. Default is white.
+ - specular : the light's specular color. Default is white.
+
+\end{classdesc*}
+
+\begin{classdesc*}{Material}
+Inherits:
+\class{SavedInAPath}
+\class{_Material}
+\class{_CObj}
+
+Material
+
+A material regroups all the surface attributes, like colors, shininess and
+texture. You should NEVER use None as a material, use soya.\_DEFAULT\_MATERIAL instead.
+
+Attributes are:
+
+- diffuse: the diffuse color.
+
+- specular: the specular color; used for shiny part of the surface.
+
+- emissive: the emissive color; this color is applied even in the dark.
+
+- separate\_specular: set it to true to enable separate specular; this usually
+  results in a more shiny specular effect.
+
+- shininess: the shininess ranges from 0.0 to 128.0; 0.0 is the most metallic / shiny
+  and 128.0 is the most plastic.
+
+- texture: the texture (a soya.Image object, or None if no texture).
+
+- clamp: set it to true if you don't want to repeat the texture when the texture
+  coordinates are out of the range 0 - 1.0.
+
+- additive\_blending: set it to true for additive blending. For semi-transparent surfaces
+  (=alpha blended) only. Usefull for special effect (Ray, Sprite,...).
+
+\begin{datadesc}{DIRNAME}
+\end{datadesc}
+\end{classdesc*}
+
+\begin{classdesc*}{NoBackgroundAtmosphere}
+Inherits:
+\class{_NoBackgroundAtmosphere}
+\class{_Atmosphere}
+\class{_CObj}
+\class{Atmosphere}
+\class{_Atmosphere}
+\class{_CObj}
+
+NoBackgroundAtmosphere
+
+An Atmosphere with no background. It is usefull is you want to render a 3D scene over
+another 3D scene.
+
+\end{classdesc*}
+
+\begin{classdesc*}{Particles}
+Inherits:
+\class{_Particles}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+No documentation for this class.
+
+\end{classdesc*}
+
+\begin{classdesc*}{Point}
+Inherits:
+\class{_Point}
+\class{Position}
+\class{_CObj}
+
+A Point is just a 3D position. It is used for math computation, but it DOESN'T display
+anything.
+
+\end{classdesc*}
+
+\begin{classdesc*}{Portal}
+Inherits:
+\class{_Portal}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+No documentation for this class.
+
+\begin{methoddesc}{pass_through}{self, coordsyst}
+Portal.pass\_though(self, coordsyst)
+
+Makes COORDSYST pass through the portal. If needed (=if coordsyst.parent is self.parent),
+it removes COORDSYST from its current parent and add it in the new one,
+at the right location.
+If coordsyst is a camera, it change the 'to\_render' attribute too.
+
+The passing through does NOT occur immediately, but after the beginning of the round
+(this is usually what you need, in order to avoid that moving COORDSYST from a parent
+to another makes it plays twice).
+\end{methoddesc}
+
+\end{classdesc*}
+
+\begin{classdesc*}{Position}
+Inherits:
+\class{_CObj}
+
+A 3D position.
+
+In Soya 3D, a position is defined by 3 coordinates (x, y, z) AND the
+coordinates system in which the coordinates are defined (sometime
+called the "parent").
+
+Points and Vectors are used for math computation; my own experiences in 3D
+have convinced me that ANY complicated 3D computation can be heavily
+simplified by the use of coordinates system conversions. As Soya 3D
+associates the coordinates system along with the coordinates values, it
+performs coordinates system conversion automagically !
+
+\begin{methoddesc}{position}{}
+Returns the position of this Position (a Point or a Vector, whatever Position is).
+\end{methoddesc}
+
+\end{classdesc*}
+
+\begin{classdesc*}{PythonCoordSyst}
+Inherits:
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+A CoordSyst whose rendering part is implemented in Python.
+This class is destinated to be inherited.
+You should override the batch and render methods.
+
+\begin{methoddesc}{batch}{}
+Should return a tuple (TYPE, COORDSYST, MATERIAL), where type can be :
+  0 if invisible / not drawn
+  1 if drawn without alpha
+  2 if drawn with alpha
+COORDSYST is the coordinate system to use for rendering the object (usually self).
+\end{methoddesc}
+
+\begin{methoddesc}{render}{}
+Should perform the rendering (e.g. by calling OpenGL operation).
+\end{methoddesc}
+
+\begin{methoddesc}{shadow}{...}
+\end{methoddesc}
+
+\end{classdesc*}
+
+\begin{classdesc*}{RaypickContext}
+Inherits:
+
+No documentation for this class.
+
+\begin{methoddesc}{raypick}{origin, direction, distance = -1.0, half_line = 1, cull_face = 1, p = None, v = None}
+See World.raypick
+\end{methoddesc}
+
+\begin{methoddesc}{raypick_b}{origin, direction, distance = -1.0, half_line = 1, cull_face = 1, p = None, v = None}
+See World.raypick\_b
+\end{methoddesc}
+
+\end{classdesc*}
+
+\begin{classdesc*}{RaypickData}
+Inherits:
+
+No documentation for this class.
+
+\end{classdesc*}
+
+\begin{classdesc*}{Renderer}
+Inherits:
+
+No documentation for this class.
+
+\end{classdesc*}
+
+\begin{classdesc*}{SavedInAPath}
+Inherits:
+
+SavedInAPath
+
+Base class for all objects that can be saved in a path, such as Material,
+World,...
+
+\begin{datadesc}{DIRNAME}
+\end{datadesc}
+\begin{methoddesc}{get_filename}{self}
+\end{methoddesc}
+
+\begin{methoddesc}{loaded}{self}
+\end{methoddesc}
+
+\begin{methoddesc}{save}{self, filename=None}
+SavedInAPath.save(filename = None)
+
+Saves this object. If no FILENAME is given, the object is saved in the path,
+using its filename attribute. If FILENAME is given, it is saved at this
+location.
+\end{methoddesc}
+
+\begin{methoddesc}{set_filename}{self, filename}
+\end{methoddesc}
+
+\end{classdesc*}
+
+\begin{classdesc*}{Shape}
+Inherits:
+\class{SavedInAPath}
+\class{_Shape}
+\class{_CObj}
+
+Shape
+
+A Shape is an optimized model. Shapes cannot be modified, but they are rendered very
+quickly, and they can be used several time, e.g. if you want to 2 same cubes in a scene.
+Shapes are used in conjunction with Volume.
+
+\begin{datadesc}{DIRNAME}
+\end{datadesc}
+\end{classdesc*}
+
+\begin{classdesc*}{Shapifier}
+Inherits:
+\class{_CObj}
+
+No documentation for this class.
+
+\end{classdesc*}
+
+\begin{classdesc*}{SimpleShape}
+Inherits:
+\class{Shape}
+\class{SavedInAPath}
+\class{_Shape}
+\class{_CObj}
+\class{_SimpleShape}
+\class{_Shape}
+\class{_CObj}
+
+SimpleShape
+
+The most basic class of Shape.
+
+\begin{datadesc}{DIRNAME}
+\end{datadesc}
+\end{classdesc*}
+
+\begin{classdesc*}{SimpleShapifier}
+Inherits:
+\class{Shapifier}
+\class{_CObj}
+
+SimpleShapifier
+
+Shapifier for simple / normal / regular Shape. The SimpleShapifier attributes allows to
+customize the World -> Shape computation.
+
+Attributes are :
+
+ - shadow (default 0) : enable shadows
+
+ - max\_face\_angle (default 80.0) : if the angle (in degree) between 2 faces is less than
+   this value, vertices of the two faces can be merged if they are enough close. Set it
+   to 180.0 or more to disable this feature.
+
+\end{classdesc*}
+
+\begin{classdesc*}{SkyAtmosphere}
+Inherits:
+\class{_SkyAtmosphere}
+\class{_Atmosphere}
+\class{_CObj}
+\class{Atmosphere}
+\class{_Atmosphere}
+\class{_CObj}
+
+SkyAtmosphere
+
+An Atmosphere with a skybox and/or a sky/cloud effect.
+
+In addition to those of Atmosphere, attributes are :
+
+ - sky\_box: the sky box, a tuple of 5 or 6 materials that are displayed on the 6 faces of
+   the sky box (which is a cube). Use an empty tuple () to disable the sky box (default value).
+
+ - sky\_color: the color of the sky (an (R, G, B, A) tuple of four floats).
+   Use a sky\_color with an alpha component of 0.0 to disable cloud / sky effet.
+
+ - cloud: the cloud material, which is used to add a cloud-like effect to the sky.
+   Coulds move according to the camera.
+
+\end{classdesc*}
+
+\begin{classdesc*}{Smoke}
+Inherits:
+\class{_Particles}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+No documentation for this class.
+
+\begin{methoddesc}{generate}{...}
+\end{methoddesc}
+
+\end{classdesc*}
+
+\begin{classdesc*}{Sprite}
+Inherits:
+\class{_Sprite}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+Sprite
+
+A 2D sprite, displayed as a 3D (e.g. think to very old 3D games).
+Today, sprite are usefull for special effect like explosion, or halo.
+The Sprite 2D texture always points toward the camera.
+
+Attributes are :
+
+ - material: the material of the Sprite, including the texture.
+
+ - color: the color of the Sprite (defaults to white).
+
+ - width and height: the size of the Sprite, in 3D coordinates values (not pixel values).
+   Both defaults to 0.5.
+
+ - lit: if true (default), lighting affects the sprite, and if false, it doesn't.
+
+\end{classdesc*}
+
+\begin{classdesc*}{ThirdPersonTraveling}
+Inherits:
+\class{_ThirdPersonTraveling}
+\class{Traveling}
+\class{_CObj}
+
+No documentation for this class.
+
+\end{classdesc*}
+
+\begin{classdesc*}{Traveling}
+Inherits:
+\class{_CObj}
+
+No documentation for this class.
+
+\begin{methoddesc}{best_direction}{...}
+\end{methoddesc}
+
+\begin{methoddesc}{best_position}{...}
+\end{methoddesc}
+
+\end{classdesc*}
+
+\begin{classdesc*}{TravelingCamera}
+Inherits:
+\class{_TravelingCamera}
+\class{_Camera}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+No documentation for this class.
+
+\end{classdesc*}
+
+\begin{classdesc*}{TreeShape}
+Inherits:
+\class{Shape}
+\class{SavedInAPath}
+\class{_Shape}
+\class{_CObj}
+\class{_TreeShape}
+\class{_SimpleShape}
+\class{_Shape}
+\class{_CObj}
+
+TreeShape
+
+A Shape that use a BSP-like tree to optimize rendering and raypicking.
+
+\begin{datadesc}{DIRNAME}
+\end{datadesc}
+\end{classdesc*}
+
+\begin{classdesc*}{TreeShapifier}
+Inherits:
+\class{SimpleShapifier}
+\class{Shapifier}
+\class{_CObj}
+
+TreeShapifier
+
+Shapifier for tree-based Shape. Yields a TreeShape instead of a SimpleShape.
+TreeShape are optimized for big shape with lots of faces, espescially if all the faces
+are not visible at the same time (e.g. a game level). Both rendering and raypicking
+are optimized.
+Internally, the shape is broken down into several hierarchinal nodes, each node grouping
+close faces.
+
+Attributes are :
+
+ - shadow (default 0) : NOT IMPLEMENTED YET for tree
+
+ - collapsing\_distance (default 0.9) : this parameter tunes how many nodes are created.
+   If a child node's radius > parent node's radius X collapsing\_distance, the child
+   and parent nodes are merged.
+
+ - quality (default 0) : set to 1 to compute a slower but slightly more performant tree.
+
+ - max\_child\_radius (default 0.5) : the maximum children node's radius, expressed in ratio
+   of the parent node's radius. Meaningfull only when quality == 0
+
+\end{classdesc*}
+
+\begin{classdesc*}{Vector}
+Inherits:
+\class{_Vector}
+\class{_Point}
+\class{Position}
+\class{_CObj}
+
+A Vector is a 3D vector (and not a kind of list or sequence ;-). Vectors are
+useful for 3D math computation. 
+
+Most of the math operators, such as +, -, *, /, abs,... work on Vectors and do
+what they are intended to do ;-)
+
+\end{classdesc*}
+
+\begin{classdesc*}{Vertex}
+Inherits:
+\class{_Vertex}
+\class{_Point}
+\class{Position}
+\class{_CObj}
+
+Vertex
+
+A Vertex is a subclass of Point, which is used for building Faces.
+A Vertex doesn't display anything ; you MUST put it inside a Face.
+
+Attributes are (see also Point for inherited attributes):
+
+ - diffuse: the vertex diffuse color (also aliased to 'color' for compatibility)
+ - emissive: the vertex emissive color (lighting-independant color)
+ - tex\_x, tex\_y: the text
+ure coordinates (sometime called U and V).
+
+\end{classdesc*}
+
+\begin{classdesc*}{Volume}
+Inherits:
+\class{_Volume}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+Volume
+
+A Volume is a Soya 3D object that display a Shape. The Volume contains data about the
+position, the orientation and the scaling, and the Shape contains the geometric data.
+
+This separation allows to use several time the same Shape at different position, without
+dupplicating the geometric data.
+
+Attributes are (see also CoordSyst for inherited attributes):
+
+ - shape : the Shape (a Shape object, defaults to None).
+
+\end{classdesc*}
+
+\begin{classdesc*}{WaterCube}
+Inherits:
+\class{_WaterCube}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+No documentation for this class.
+
+\end{classdesc*}
+
+\begin{classdesc*}{World}
+Inherits:
+\class{SavedInAPath}
+\class{_World}
+\class{_Volume}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+\class{Volume}
+\class{_Volume}
+\class{CoordSyst}
+\class{Position}
+\class{_CObj}
+
+World
+
+A World is a Soya 3D object that can contain other Soya 3D objects, including other Worlds.
+Worlds are used to group 3D objects ; when a World is moved, all the objects it contains
+are moved too, since they are part of the World.
+Mostly for historical reasons, World is a subclass of Volume, and thus can display a Shape.
+
+Worlds can be saved in the "worlds" directory ; see SavedInAPath.
+
+Attributes are (see also Volume, CoordSyst and SavedInAPath for inherited attributes):
+
+ - children : the list of 3D object contained in the World (default to an empty list).
+   use World.add(coordsyst) and World.remove(coordsyst) for additions and removals.
+
+ - atmosphere : the atmosphere specifies atmospheric properties of the World (see
+   Atmosphere). Default is None.
+
+ - shapifier : the shapifier specifies how the World is compiled into Shape.
+   Default is None, which result in the use of the default Shapifier, which is
+   SimpleShapifier().
+
+\begin{datadesc}{DIRNAME}
+\end{datadesc}
+\end{classdesc*}
+
+\subsection{Constants}
+\begin{datadesc}{ALL_EVENTS}
+\end{datadesc}
+\begin{datadesc}{BLACK}
+\end{datadesc}
+\begin{datadesc}{DATADIR}
+\end{datadesc}
+\begin{datadesc}{DEFAULT_MATERIAL}
+\end{datadesc}
+\begin{datadesc}{IDLER}
+\end{datadesc}
+\begin{datadesc}{PARTICLE_DEFAULT_MATERIAL}
+\end{datadesc}
+\begin{datadesc}{SDL_ALLEVENTS}
+\end{datadesc}
+\begin{datadesc}{SHADER_DEFAULT_MATERIAL}
+\end{datadesc}
+\begin{datadesc}{TRANSPARENT}
+\end{datadesc}
+\begin{datadesc}{VERSION}
+\end{datadesc}
+\begin{datadesc}{WHITE}
+\end{datadesc}

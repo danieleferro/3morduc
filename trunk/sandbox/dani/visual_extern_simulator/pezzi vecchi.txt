@@ -1,0 +1,326 @@
+	
+		GLfloat matrixlookat[16];
+		XYZ f,s,u;
+		f.x=r.x + camera.vd.x;
+		f.y=r.y + camera.vd.y;
+		f.z=r.z + camera.vd.z;
+		Normalise(&f);
+		CROSSPROD(f,camera.vu,s); //vu normalizzata
+		CROSSPROD(s,f,u);
+		matrixlookat[0]= s.x;
+		matrixlookat[1]= -f.x;
+        matrixlookat[2]= u.x;
+		matrixlookat[3]= 0;
+		matrixlookat[4]= s.y;
+		matrixlookat[5]= -f.y;
+		matrixlookat[6]= u.y;
+		matrixlookat[7]= 0;
+		matrixlookat[8]= s.z;
+		matrixlookat[9]= -f.z;
+		matrixlookat[10]=u.z;
+		matrixlookat[11]=0;
+		matrixlookat[12]=0;
+		matrixlookat[13]=0;
+		matrixlookat[14]=0;
+		matrixlookat[15]=1;
+matrixlookat[0]= s.x; 
+matrixlookat[1]= s.y;
+matrixlookat[2]= s.z;
+matrixlookat[3]= 0;
+matrixlookat[4]= u.x;
+matrixlookat[5]= u.y;
+matrixlookat[6]= u.z;
+matrixlookat[7]= 0;
+matrixlookat[8]=-f.x;
+matrixlookat[9]=-f.y;
+matrixlookat[10]=-f.z;
+matrixlookat[11]=0;
+matrixlookat[12]=0;
+matrixlookat[13]=0;
+matrixlookat[14]=0;
+matrixlookat[15]=1;
+
+
+
+
+
+vecchia gestione tasti.
+
+
+
+/*
+				if(keyDown[VK_DOWN])								// Is Page Up Being Pressed?
+					m_appMain.camera.phi-=0.02f;								// Increase xspeed
+
+				if(keyDown[VK_UP])									// Is Page Up Being Pressed?
+					m_appMain.camera.phi+=0.02f;								// Decrease xspeed
+
+				if(keyDown[VK_RIGHT])								// Is Page Up Being Pressed?
+					m_appMain.camera.tetaofs+=0.01f;								// Increase yspeed
+
+				if(keyDown[VK_LEFT])								// Is Page Up Being Pressed?
+					m_appMain.camera.tetaofs-=0.01f;								// Decrease yspeed
+
+				if (keyDown['Q'])									// Is Q Key Being Pressed?
+				m_appMain. cz+=0.3f;										// Move Object Away From Viewer
+
+				if (keyDown['Z'])									// Is Z Key Being Pressed?
+				 m_appMain.cz-=0.3f;										// Move Object Towards Viewer
+
+				if (keyDown['W'])									// Is W Key Being Pressed?
+				 m_appMain.cy-=0.3f;										// Move Object Up
+
+				if (keyDown['S'])									// Is S Key Being Pressed?
+				 m_appMain.cy+=0.3f;										// Move Object Down
+
+				if (keyDown['D'])									// Is D Key Being Pressed?
+				 m_appMain.cx-=0.3f;										// Move Object Right
+
+				if (keyDown['A'])									// Is A Key Being Pressed?
+				m_appMain.cx+=0.3f;										// Move Object Left
+
+				if (keyDown['C'])									// Is D Key Being Pressed?
+				 m_appMain.robot1.radius+=0.3f;										// Move Object Right
+
+				if (keyDown['X'])									// Is A Key Being Pressed?
+				 m_appMain.robot1.radius-=0.3f;										// Move Object Left
+
+				if (keyDown[VK_F7])	
+				{
+					m_appMain.camera.focallength-=0.2;;							
+					
+					glMatrixMode(GL_PROJECTION);						// Select The Projection Matrix
+					glLoadIdentity();									// Reset The Projection Matrix
+					// Calculate The Aspect Ratio Of The Window
+					gluPerspective(m_appMain.camera.focallength,(GLfloat)m_appMain.camera.screenwidth/(GLfloat)m_appMain.camera.screenheight,0.1f,100.0f);
+					//glOrtho(0.0f,2,2,1.0f,-10.0f,10.0f);					// Create Ortho 640x480 View (0,0 At Top Left)
+					glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
+
+				}
+				if (keyDown[VK_F8])					
+				 {
+					m_appMain.camera.focallength+=0.2;							
+					glMatrixMode(GL_PROJECTION);						// Select The Projection Matrix
+					glLoadIdentity();									// Reset The Projection Matrix
+					// Calculate The Aspect Ratio Of The Window
+					gluPerspective(m_appMain.camera.focallength,(GLfloat)m_appMain.camera.screenwidth/(GLfloat)m_appMain.camera.screenheight,0.1f,100.0f);
+					//glOrtho(0.0f,2,2,1.0f,-10.0f,10.0f);					// Create Ortho 640x480 View (0,0 At Top Left)
+					glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
+
+				}
+				if (keyDown['1'])
+				{
+					m_appMain.camera.phi=0;
+					m_appMain.camera.tetaofs=0;
+					m_appMain.cx=m_appMain.cy=m_appMain.cz=0;
+				}
+				 if (keyDown['2'])
+				{
+					m_appMain.robot1.v=0;
+					m_appMain.robot1.w=0;
+					
+				}
+
+				if (keyDown['0'])
+				{
+				m_appMain.StereoEnable=true;
+				}
+				if (keyDown['9'])
+				{
+				
+				m_appMain.StereoEnable=false;
+				}
+				if (keyDown['5'])
+				{
+					m_appMain.ManSwapEnable=true;
+					m_appMain.camera.eyesep=1.2;
+				}
+				if (keyDown['6'])
+				{
+					m_appMain.ManSwapEnable=false;
+					m_appMain.camera.eyesep=0;
+				}
+				if (keyDown['7'])
+				{
+				m_appMain.SwapControl=true;
+				}
+				if (keyDown['8'])
+				{
+				m_appMain.SwapControl=false;
+				}
+			
+
+				if (keyDown['T'])	//// ROBOT  FORWARD								// Is A Key Being Pressed?
+				{
+					m_appMain.robot1.SetV(0.02f); 
+				//v+=0.01f;
+				 //w-=0.9*w;
+				}
+				if (keyDown['G'])									// Is A Key Being Pressed?
+				{
+					m_appMain.robot1.SetV(-0.02f);
+				//	v-=0.01f;										// Move Object Left
+				//	w-=0.9*w;
+				}
+				if (keyDown['H'])	//// ROBOT LEFT								// Is A Key Being Pressed?
+				{
+				m_appMain.robot1.SetW(+0.5f*DTOR);
+				//	w+=0.01f;										// Move Object Left
+				//	v-=0.9*v;
+				}
+				if (keyDown['F'])									// Is A Key Being Pressed?
+				{
+				m_appMain.robot1.SetW(-0.5f*DTOR);
+				//   w-=0.01f;										// Move Object Left
+				//	 v-=0.9*v;
+				}
+
+				if (keyDown[VK_F9])		
+				{
+					m_appMain.camera.aperture-=0.2;
+				}
+				if (keyDown[VK_F10])		
+				{
+					m_appMain.camera.aperture+=0.2;
+				}
+							
+
+
+
+				if (keyDown[VK_F5])		
+				{
+					m_appMain.camera.eyesep-=0.1;
+				}
+				if (keyDown[VK_F6])		
+				{
+					m_appMain.camera.eyesep+=0.1;
+				}
+							
+				
+				if (keyDown[VK_F11])								
+				{
+				
+					if (m_appMain.StartRecord==false)
+					{
+						
+						nid=SetTimer(theApp.m_wndMain.m_hWnd,theApp.m_appMain.timer0,1000,TimerOK);
+						LARGE_INTEGER li;
+						QueryPerformanceCounter(&li);
+						
+
+						sprintf(name,"path_simulation/path_%3d.txt",CountFromFile("countersim.txt"));
+						theApp.m_appMain.robot1.fp=fopen(name,"w");
+						
+					
+
+						//		=fopen("bingo.txt","a");
+						theApp.m_appMain.robot1.Time=0;	
+						//fprintf(theApp.m_appMain.robot1.fp,"inizio simulazione\n");
+						m_appMain.StartRecord=true;
+						}
+				}
+
+				if (keyDown[VK_F12])								
+				{
+					if (m_appMain.StartRecord=true)
+						{
+							KillTimer(theApp.m_wndMain.m_hWnd,nid);
+							fclose(theApp.m_appMain.robot1.fp);
+							m_appMain.StartRecord=false;
+						}
+				}
+
+*/				
+
+
+
+UPdate di Cmain
+void CMain::Update(DWORD milliseconds)
+{	
+	if (KeyPressed(VK_ESCAPE) == TRUE)						// Is ESC Being Pressed?
+	{
+		theApp.TerminateApplication ();						// Terminate The Program
+	}
+
+	if (KeyPressed(VK_F1) == TRUE)							// Is F1 Being Pressed?
+	{		
+		theApp.ToggleFullScreen ();							// Toggle Fullscreen Mode
+	}
+
+	angle += (float)(milliseconds) / 5.0f;					// Update angle Based On The Clock
+}
+
+
+
+
+
+// Function name	: CMain::KeyPressed
+// Description	    : Checks for a key press
+//                    if( KeyPressed(VK_ESCAPE) ) { ... Escape was pressed ... }
+// Return type		: BOOL 
+// Argument         : int nCode
+BOOL CMain::KeyPressed(int nCode)
+{
+	
+	if( nCode >= 0 && nCode <= 255 )
+	{
+		return theApp.keyDown[ nCode ];
+	}
+	return FALSE;
+}
+
+
+/*void ROBOT::PaintRobot()
+{
+	GLUquadricObj *quadrica=gluNewQuadric();
+	
+	
+		glTranslatef(xr,0,yr);
+		glRotatef(-tetar/DTOR,0,1,0);							/// angolo rotazione	
+
+
+		glColor3f(0.2f,0.2f,0.2f);  /// grigio fumo
+	
+		glTranslatef(0,0.08,0);  /// alzo da terra
+		
+		glRotatef(-90,1,0,0); // così z diventa y e y -z . l'altezza è z
+		
+
+			//  Disegnamo
+		gluCylinder(quadrica,1,1,0.1,32,32);
+		gluDisk(quadrica,0,1,32,32);
+		glTranslatef(0,0,0.1f); // fin qui
+		gluDisk(quadrica,0,1,32,32);
+
+		glTranslatef(0,0,0.6f);
+		gluCylinder(quadrica,1,1,0.1,32,32);
+		gluDisk(quadrica,0,1,32,32);
+		glTranslatef(0,0,0.1f);
+		gluDisk(quadrica,0,1,32,32);
+		
+		glTranslatef(.8,0,0);        ///////SICK
+		glColor3f(0.5,0.5,.5);
+		gluCylinder(quadrica,.2,.2,.3,32,32);
+		glTranslatef(-.8,0,0);
+		
+		glColor3f(0.1,0.1,.1);
+		glTranslatef(0,0,0.6f);
+		gluCylinder(quadrica,1,1,0.1,32,32);
+		gluDisk(quadrica,0,1,32,32);
+		glTranslatef(0,0,0.1f);
+		gluDisk(quadrica,0,1,32,32);
+
+		glTranslatef(0,0,-1.5f);   ////// PALI
+		
+		glTranslatef(0,0.8,0);
+		gluCylinder(quadrica,.1,.1,1.5,32,32);
+		glTranslatef(0,-1.60,0);
+		gluCylinder(quadrica,.1,.1,1.5,32,32);
+		glTranslatef(-0.8,0.8,0);
+		
+		gluCylinder(quadrica,.1,.1,1.5,32,32);
+		glTranslatef(0.8,0,0);
+		//free(quadrica);
+
+}
+*/
