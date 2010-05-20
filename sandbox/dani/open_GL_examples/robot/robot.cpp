@@ -143,6 +143,8 @@ void Robot::DrawRobot()
   GLfloat reflectance_white[] = { 0.2f, 0.2f, 0.2f, 1.0f};
   GLfloat cosine, sine;
 
+  glPushMatrix();
+
   // set robot reflectance (it is black)
   glMaterialfv(GL_FRONT, GL_AMBIENT, reflectance_black);
 
@@ -222,6 +224,8 @@ void Robot::DrawRobot()
   glTranslatef(0.8f, 0.0f, 0.0f);
 
   //glScalef(1/radius,1/radius,1/radius);
+
+  glPopMatrix();
 }
 
 /*
