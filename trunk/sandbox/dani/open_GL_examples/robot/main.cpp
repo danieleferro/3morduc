@@ -16,7 +16,7 @@ int window;
 GLuint texture[1];
 
 /* robot declaration */
-Robot rob(0.f, 0.f, 90.f);
+Robot rob(0.f, 0.f, 1.f);
 
 /* Image type - contains height, width, and data */
 struct Image {
@@ -186,8 +186,8 @@ void display () {
 
   /* future matrix manipulations should affect the modelview matrix */
   glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-  glPushMatrix();
+  //glLoadIdentity();
+  //glPushMatrix();
 
   // BEGIN TEXTURE CODE
   //  glTranslatef(0.0f, 0.0f, 0.f);              // move 2.5 units into the screen.
@@ -211,7 +211,9 @@ void display () {
 
   rob.DrawRobot();
 
-  glPopMatrix();
+  //glPopMatrix();
+
+  //  glTranslatef(0.0f, 0.0f, -5.5f);
   
 //   /* define the projection transformation */
 //   glMatrixMode(GL_PROJECTION);
@@ -313,24 +315,41 @@ int main ( int argc, char * argv[] ) {
   GLfloat ambcolor[] = { 0.2, 0.2, 0.2 };
 
   glEnable(GL_LIGHTING);
-  glLightModelfv(GL_LIGHT_MODEL_AMBIENT,ambcolor);
+  //glLightModelfv(GL_LIGHT_MODEL_AMBIENT,ambcolor);
 
   glEnable(GL_LIGHT0);
-  glLightfv(GL_LIGHT0,GL_POSITION,lightpos);
-  glLightfv(GL_LIGHT0,GL_AMBIENT,lightcolor);
-  glLightfv(GL_LIGHT0,GL_DIFFUSE,lightcolor);
-  glLightfv(GL_LIGHT0,GL_SPECULAR,lightcolor);
+//   glLightfv(GL_LIGHT0,GL_POSITION,lightpos);
+//   glLightfv(GL_LIGHT0,GL_AMBIENT,lightcolor);
+//   glLightfv(GL_LIGHT0,GL_DIFFUSE,lightcolor);
+//   glLightfv(GL_LIGHT0,GL_SPECULAR,lightcolor);
+
+  /* define the projection transformation 
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluPerspective(40, 1, 0, 250);
+ 
+  
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  gluLookAt(0.0f, 0.0f, -5.0f,
+ 	    0.0f, 0.0f, 0.0f,
+ 	    0.0f, 0.0f, 1.0f);
+
+  */
 
   /* define the projection transformation */
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(40, 640 / 480, 0, 250);
+  gluPerspective(60,1,0.001,100000);
   
+  /* define the viewing transformation */
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  gluLookAt(0.0f, 0.0f, 10.0f,
- 	    0.0f, 0.0f, 5.0f,
- 	    0.0f, 0.0f, 1.0f);
+  gluLookAt(0.0, 1.0, 2.0,
+	    0.0, 0.0, 0.0,
+	    0.0, 1.0, 0.0);
+
+  
 
   /* tell GLUT to wait for events */
   glutMainLoop();
