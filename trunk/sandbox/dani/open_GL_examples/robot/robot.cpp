@@ -141,7 +141,7 @@ void Robot::PaintRobot2()
    glTranslatef(0.0f,0.08f,0.0f);
 
   //   glScalef(radius,radius,radius);
-  printf("Radius: %4.4f", radius);
+  //printf("Radius: %4.4f", radius);
 
   // drawing
 
