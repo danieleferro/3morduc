@@ -1,0 +1,45 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage[pdftex]{graphicx}
+\usepackage[latin1]{inputenc}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{amsfonts}
+\usepackage{color}
+\usepackage{epsfig}
+\usepackage{fancyvrb}
+\date{}
+
+\lstset{
+  %backgroundcolor=\color{gray},
+  frameround=fttt,
+  stringstyle=\ttfamily,
+  language=python,
+  basicstyle=\small
+}
+
+\newcommand{\bigtilde}{$\sim$}
+%% \def\framework{\textsc{Report}}
+
+%\advance\textwidth by -1truecm
+%\advance\oddsidemargin by 1truecm
+%\advance\baselineskip by \baselineskip
+
+\begin{document}
+
+\include{front}  % Frontpage
+\include{hmd_display_state_art}
+%%     \include{eurobot} % Eurobot Competition
+%%     \include{bdi} % BDI
+%%     \include{agentspeak} % AgentSpeak
+%%     \include{masahiro} % Framework
+%%     \include{casestudy} % Case Study
+	
+
+% Bibliography with BibTeX
+
+\addcontentsline{toc}{section}{Bibliography}
+\bibliography{biblio}
+\bibliographystyle{style/IEEEtran}
+
+\end{document}

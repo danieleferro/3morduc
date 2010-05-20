@@ -1,0 +1,10 @@
+32 diffmono
+33 text mono
+34 text stereo
+35 diff stere
+36 amb stereo
+37 niente
+38 amnb mono
+39 text stereo
+40		corridoio
+41		corridoio

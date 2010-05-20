@@ -1,0 +1,49 @@
+\section{User Interfaces}
+
+Soya does have a built in widget system that may be perfectly useable 
+for your application. It is however not easy to extend from within
+Python. An alternative to \refmodule{soya.widget} is \module{pudding}.
+
+\begin{seealso}
+\seelink{http://cvs.gna.org/viewcvs/soya/soya-contrib/pudding/}{Pudding}{A replacement widget system for Soya}
+\end{seealso}
+
+\subsection{\module{soya.widget}}
+
+If you have the Tutorial Package, \file{widget-1.py} contains a much 
+larger example of using \module{soya.widget}.
+
+This example shows how to create a simple FPS display, it does not display
+anything else:
+\begin{verbatim}
+import soya
+import soya.sdlconst as sdl
+import soya.widget as widget
+
+soya.init()
+
+scene = soya.World()
+
+# insert more objects into the scene here
+
+camera = soya.Camera(scene)
+
+soya.set_root_widget(widget.Group())
+soya.root_widget.add(camera)
+soya.root_widget.add(widget.FPSLabel())
+
+soya.Idler(scene).idle()
+\end{verbatim}
+
+
+\subsection{\module{pudding}}
+
+The best way at the moment to get pudding is to download it from CVS:
+\begin{verbatim}
+cvs -d:pserver:anonymous@cvs.gna.org:/cvs/soya co soya-contrib/pudding
+\end{verbatim}
+
+In \module{pudding} there are a large number of examples in the 
+\file{test} directory. Also a PDF is included in the \file{doc} 
+directory with a short guide and reference. 
+

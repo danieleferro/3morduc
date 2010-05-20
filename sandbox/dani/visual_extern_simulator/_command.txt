@@ -1,0 +1,21 @@
+G increase X speed
+T decrease X speed
+
+H increase Y speed
+F decrease Y speed
+
+Q move object away from viewer
+Z move object towards viewer
+
+W move object up
+S move object down
+
+D move object right
+A move object left
+
+C move object right
+X move object left
+
+0 stereo mode
+
+P print data and image in "trace folder"
