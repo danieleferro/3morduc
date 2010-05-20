@@ -3,6 +3,7 @@
 #include <sys/types.h>  /// se non si mette prima dei prototipi prende quelli come definizione!
 #include "robot.h"
 #include <stdio.h>
+#include <iostream>
 
 void paintCylinder(GLfloat radius,GLfloat height);
 void paintDisk(GLfloat radius);
@@ -66,41 +67,65 @@ void DrawPar3(GLfloat x0,GLfloat y0,GLfloat z0,GLfloat l,GLfloat h,GLfloat d )
 
 
 
-Robot::Robot()
+// Robot::Robot()
+// {
+//   // meter / step ratio
+//   msr = 3.1412*d/n/res;
+//   xr = 4;
+//   yr = 4;
+//   thetar = 0;
+//   // gear ratio
+//   n = 1;
+
+//   // risoluzione encoder
+//   res = 2000;
+//   // diametro della ruota
+//   d = 0.063f*2.0f;
+//   // distanza tra ruote
+//   l = 0.28f;
+//   vlim = 7;
+//   wlim = 2;
+//   // ck.Reset();
+
+//   radius = 4.f;
+//   std::cout << "HO MESSO RADIUS A 4.F EH!" << std::endl;
+//   std::cout << "RADIUS ADESSO VALE " << radius << std::endl;
+//   dxr = 0;
+//   dyr = 0;
+//   dthetar = 0;
+//   collisions = 0;
+//   // Time == 0;
+// }
+
+Robot::Robot(float x1 = 0.f, float y2 = 0.f, float ang3 = 0.f)
 {
   // meter / step ratio
   msr = 3.1412*d/n/res;
-  xr = 4;
-  yr = 4;
-  thetar = 0;
+
   // gear ratio
   n = 1;
 
   // risoluzione encoder
   res = 2000;
+
   // diametro della ruota
   d = 0.063f*2.0f;
+
   // distanza tra ruote
   l = 0.28f;
   vlim = 7;
   wlim = 2;
-  // ck.Reset();
 
-  radius = 4;
+  radius = 4.f;
+
   dxr = 0;
   dyr = 0;
   dthetar = 0;
   collisions = 0;
-  // Time == 0;
-}
 
-Robot::Robot(float x1, float y2, float ang3)
-{
-  Robot();
   xr = x1;
   yr = y2;
   thetar = ang3;
-
 }
 
 void Robot::move(GLfloat xr, GLfloat yr, GLfloat thetar)
@@ -112,95 +137,91 @@ void Robot::move(GLfloat xr, GLfloat yr, GLfloat thetar)
 
 }
 
-void Robot::PaintRobot2()
+void Robot::DrawRobot()
 {
+  GLfloat reflectance_black[] = { 0.0f, 0.0f, 0.0f, 1.0f};
+  GLfloat reflectance_white[] = { 0.2f, 0.2f, 0.2f, 1.0f};
+  GLfloat cosine, sine;
 
-  // set robot reflectance (black)
-  GLfloat col_null[] = { 0.0f, 0.0f, 0.0f, 1.0f};
-  glMaterialfv(GL_FRONT, GL_AMBIENT,col_null);
+  // set robot reflectance (it is black)
+  glMaterialfv(GL_FRONT, GL_AMBIENT, reflectance_black);
 
-  /// set position
-  glTranslatef(xr,0.0f,yr);
-  glRotatef(-thetar*180/M_PI, 0.0f,1.0f,0.0f);
+  // set robot position
+  glTranslatef(xr, 0.0f, yr);
+  glRotatef(-thetar * 180 / M_PI, 0.0f, 1.0f, 0.0f);
 
-  GLfloat c,s;
-  c = cos(thetar);
-  s = sin(thetar);
+  // compute theta's cosine and sine value
+  cosine = cos(thetar);
+  sine = sin(thetar);
 
   // set lights
-  GLfloat light_position[] = { 0.0f, 1.3f, 0.0f, 1.0f};
-  GLfloat light_direction[] = { 1.0f, 0.0f, 0.0f,1.0f};
+  GLfloat light_position[] = {0.0f, 1.3f, 0.0f, 1.0f};
+  GLfloat light_direction[] = {1.0f, 0.0f, 0.0f,1.0f};
+  GLfloat light_color[] = { 1, 1, 1 };
+
+  glEnable(GL_LIGHT1);
+  glLightfv(GL_LIGHT1, GL_AMBIENT, light_color);
+  glLightfv(GL_LIGHT1, GL_DIFFUSE, light_color);
+  glLightfv(GL_LIGHT1, GL_SPECULAR, light_color);
   glLightfv(GL_LIGHT1, GL_POSITION, light_position);
-  glLightf(GL_LIGHT1,GL_SPOT_CUTOFF,45.0f);
-  glLightfv(GL_LIGHT1,GL_SPOT_DIRECTION,light_direction);
+  glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, light_direction);
+  glLightf(GL_LIGHT1,  GL_SPOT_CUTOFF, 45.0f);
 
-  // smoke gray
-  glColor3f(0.2f,0.2f,0.2f);
-
+  // set the drawing color to white
+  glColor3f(1.f,1.f,1.f);
+  
   // translate on z axis
-   glTranslatef(0.0f,0.08f,0.0f);
-
-  //   glScalef(radius,radius,radius);
-  //printf("Radius: %4.4f", radius);
-
-  // drawing
-
-  // lowest disc
-  paintCylinder(1.0f,0.1);
+  glTranslatef(0.0f,0.08f,0.0f);
+  
+  //  radius = 0.3f;
+  //  glScalef(radius, radius, radius);
+  //  printf("Radius: %4.4f", radius);
+  //  std::cout << "Radius is " << this->radius << std::endl;
+  
+  // draw robot
+  paintCylinder(1.0f, 0.1);
   paintDisk(-1.0f);
-  glTranslatef(0.0f,0.1f,0.0f);
+  glTranslatef(0.0f, 0.1f, 0.0f);
+  paintDisk(1.0f);
+  
+  glTranslatef(0.0f, 0.6f, 0.0f);
+
+  paintCylinder(1.0f, 0.1f);
+  paintDisk(-1.0f);
+  glTranslatef(0.0f, 0.1f, 0.0f);
   paintDisk(1.0f);
 
-  glTranslatef(0.0f,0.6f,0.0f);
-
-  // middle disc
-  paintCylinder(1.0f,0.1f);
-  paintDisk(-1.0f);
-  glTranslatef(0.0f,0.1f,0.0f);
-  paintDisk(1.0f);
-
-  // highest disc
-  glTranslatef(.8,0,0);
-  glColor3f(0.5,0.5,.5);
-  paintCylinder(.2,.3);
-  glTranslatef(0,0.3,0);
-  paintDisk(.2);
+  glTranslatef(0.8f, 0.0f, 0.0f);
+  glColor3f(0.5f, 0.5f, 0.5f);
+  paintCylinder(0.2f, 0.3f);
+  glTranslatef(0.0f, 0.3f, 0.0f);
+  paintDisk(0.2f);
 
   glTranslatef(0,0.401,0);
-
-  // set robot reflectance (white)
-  GLfloat col_bianco[] = { 0.2f, 0.2f, 0.2f, 1.0f};
-  glMaterialfv(GL_FRONT, GL_AMBIENT,col_bianco);
-
+  glMaterialfv(GL_FRONT, GL_AMBIENT, reflectance_white);
   paintDisk(0.1f);
   glTranslatef(0,-0.701,0);
-  glMaterialfv(GL_FRONT, GL_AMBIENT,col_null);
+  glMaterialfv(GL_FRONT, GL_AMBIENT, reflectance_black);
 
-  glTranslatef(-.8,0,0);
-
-
-  glColor3f(0.1,0.1,.1);
-  glTranslatef(0,0.6f,0);
-  paintCylinder(1,0.1);
+  glTranslatef(-0.8f, 0.0f, 0.0f);
+  glColor3f(0.1f, 0.1f, 0.1f);
+  glTranslatef(0.0f ,0.6f, 0.0f);
+  paintCylinder(1.0f, 0.1f);
   paintDisk(-1.0f);
-  glTranslatef(0,0.1f,0); 
+  glTranslatef(0.0f, 0.1f, 0.0f); 
   paintDisk(1.0f);
 
-  glTranslatef(0,-1.5f,0);
+  glTranslatef(0.0f, -1.5f, 0.0f);
+  glTranslatef(0.0f, 0.0f, 0.8f);
+  paintCylinder(0.1f, 1.5f);
+  glTranslatef(0.0f, 0.0f, -1.60f);
+  paintCylinder(0.1f, 1.5f);
+  glTranslatef(-0.8f, 0.0f, 0.8f);
 
-  glTranslatef(0,0,0.8);
-  paintCylinder(0.1,1.5);
-  glTranslatef(0,0,-1.60);
-  paintCylinder(0.1,1.5);
-  glTranslatef(-0.8,0,0.8);
+  paintCylinder(0.1f, 1.5f);
+  glTranslatef(0.8f, 0.0f, 0.0f);
 
-  paintCylinder(0.1,1.5);
-  glTranslatef(0.8f,0.0f,0.0f);
-
-
-  //  glScalef(1/radius,1/radius,1/radius);
-
-
+  //glScalef(1/radius,1/radius,1/radius);
 }
 
 /*

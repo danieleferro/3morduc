@@ -71,10 +71,8 @@ class Robot
   Robot(float x1, float x2, float ang3);
   
   void move(GLfloat xr, GLfloat yr, GLfloat thetar);
-  
-  //void PaintRobot();
-  
-  void PaintRobot2();
+    
+  void DrawRobot();
   
   void SetW(float set);
   

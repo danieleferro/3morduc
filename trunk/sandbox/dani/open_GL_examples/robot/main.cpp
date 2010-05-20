@@ -6,10 +6,6 @@
 #include <unistd.h>     // needed to sleep.
 #include "robot.h"
 
-
-void paintDisk(GLfloat radius);
-void paintCylinder(GLfloat radius, GLfloat height);
-
 /* ascii code for the escape key */
 #define ESCAPE 27
 
@@ -127,7 +123,7 @@ void LoadGLTextures() {
     exit(0);
   }
 
-  if (!ImageLoad("screenshot.bmp", image1)) {
+  if (!ImageLoad("NeHe.bmp", image1)) {
     exit(1);
   }        
 
@@ -191,110 +187,46 @@ void display () {
   /* future matrix manipulations should affect the modelview matrix */
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-
-
-  // BEGIN TEXTURE CODE
   glPushMatrix();
 
-  glTranslatef(0.0f, 0.0f, -15.5f);              // move 2.5 units into the screen.
-    
-  glBindTexture(GL_TEXTURE_2D, texture[0]);   // choose the texture to use.
+  // BEGIN TEXTURE CODE
+  //  glTranslatef(0.0f, 0.0f, 0.f);              // move 2.5 units into the screen.
+  //   glBindTexture(GL_TEXTURE_2D, texture[0]);   // choose the texture to use.
 
   
-  glBegin(GL_QUADS);		                // begin drawing a cube
+  //   glBegin(GL_QUADS);		                // begin drawing a cube
     
-  // Front Face (note that the texture's corners have to match the quad's corners)
-  glTexCoord2f(0.0f, 0.0f); glVertex3f(-5.0f, -5.0f,  0.0f);	// Bottom Left Of The Texture and Quad
-  glTexCoord2f(1.0f, 0.0f); glVertex3f( 5.0f, -5.0f,  0.0f);	// Bottom Right Of The Texture and Quad
-  glTexCoord2f(1.0f, 1.0f); glVertex3f( 5.0f,  5.0f,  0.0f);	// Top Right Of The Texture and Quad
-  glTexCoord2f(0.0f, 1.0f); glVertex3f(-5.0f,  5.0f,  0.0f);	// Top Left Of The Texture and Quad
+  //   // Front Face (note that the texture's corners have to match the quad's corners)
+  //   glTexCoord2f(0.0f, 0.0f); glVertex3f(-5.0f, -5.0f,  -5.0f);	// Bottom Left Of The Texture and Quad
+  //   glTexCoord2f(1.0f, 0.0f); glVertex3f( 5.0f, -5.0f,  -5.0f);	// Bottom Right Of The Texture and Quad
+  //   glTexCoord2f(1.0f, 1.0f); glVertex3f( 5.0f,  5.0f,  -5.0f);	// Top Right Of The Texture and Quad
+  //   glTexCoord2f(0.0f, 1.0f); glVertex3f(-5.0f,  5.0f,  -5.0f);	// Top Left Of The Texture and Quad
 
-  glEnd();
+  //   glEnd();
 
-  //glTranslatef(0.0f, 0.0f, 2.5f);              // move 2.5 units into the screen.
-  //glPopMatrix();
+  //   //glTranslatef(0.0f, 0.0f, 2.5f);              // move 2.5 units into the screen.
+  //   //glPopMatrix();
 
-  // END TEXTURE CODE
+  //   // END TEXTURE CODE
 
-  rob.PaintRobot2();
+  rob.DrawRobot();
 
-
-  /* draw scene
-     glPushMatrix();
-
-     // house
-     glPushMatrix();
-     setMaterial(0.0,0.5,1.0, 0.0,0.5,1.0, 1.0,1.0,1.0, 1, 0.8);
-     //glutSolidCube(2);                 // building
-
-
-     glPushMatrix();
-
-     glRotatef(-90,1,0,0);
-     glTranslatef(0,0,-1);
-
-     setMaterial(0.0,0.5,1.0, 0.0,0.5,1.0, 1.0,1.0,1.0, 1, 0.8);
-
-     GLUquadricObj *p = gluNewQuadric();
-     gluQuadricDrawStyle(p, GLU_LINE);
-     gluCylinder(p,1.2f,1.2f,2.f,32,32);
-
-     glPopMatrix();
-
-
-
-
-     glTranslatef(0,1,0);
-     glPushMatrix();                   // roof
-     glRotatef(-90,1,0,0);
-     setMaterial(0.0,0.5,1.0, 0.0,0.5,1.0, 1.0,1.0,1.0, 50, 0.8);
-     glutWireCone(1.5,1,16,8);
-     glPopMatrix();
-
-     glTranslatef(.75,.5,-.75);         
-     glPushMatrix();                   // chimney
-     glScalef(1,3,1);
-     setMaterial( 1.0,0.0,0.0, 1.0,0.0,0.0, 0.0,0.0,0.0, 1, 0.8);
-     glutWireCube(.25);
-     glPopMatrix();
-     glPopMatrix();
-
-     glTranslatef(0,-.65,2);
-
-     // car
-     setMaterial(1.0,0.0,0.0, 1.0,0.0,0.0, 1.0,0.0,0.0, 50, 0.8);
-     glPushMatrix();
-     glPushMatrix();                   // body
-     glScalef(2,.5,1);
-     glutWireCube(.5);
-     glPopMatrix();
-     glTranslatef(0,0,.25);
-     glPushMatrix();
-     glTranslatef(-.4,-.2,0);
-
-
-     setMaterial(0.2,1.0,0.2, 0.2,1.0,0.2, 0.2,1.0,0.2, 2, 0.8);
-
-     glutWireTorus(.05,.1,8,8);       // wheel
-     glTranslatef(.8,0,0);
-     glutWireTorus(.05,.1,8,8);       // wheel
-     glPopMatrix();
-     glTranslatef(0,0,-.5);
-     glPushMatrix();
-     glTranslatef(-.4,-.2,0);
-     glutWireTorus(.05,.1,8,8);       // wheel
-     glTranslatef(.8,0,0);
-     glutWireTorus(.05,.1,8,8);       // wheel
-     glPopMatrix();
-     glPopMatrix();
-
-     glPopMatrix();
-
-  */
-
+  glPopMatrix();
+  
+//   /* define the projection transformation */
+//   glMatrixMode(GL_PROJECTION);
+//   glLoadIdentity();
+//   gluPerspective(40, 640 / 480, 0, 250);
+  
+//   glMatrixMode(GL_MODELVIEW);
+//   glLoadIdentity();
+//   //  gluLookAt(0.0,0.0,10.0,0.0,0.0,0.0,0.0,1.0,0.0);
+//   gluLookAt(0.0f, 0.0f, 10.0f,
+//  	    0.0f, 0.0f, 5.0f,
+//  	    0.0f, 0.0f, 1.0f);
+  
   // last set material is for the textures
   setMaterial(1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0, 20, 1);
-
 
   /* flush drawing routines to the window */
   glFlush();
@@ -392,12 +324,13 @@ int main ( int argc, char * argv[] ) {
   /* define the projection transformation */
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(40,1,4,20);
-
-  /* define the viewing transformation */
+  gluPerspective(40, 640 / 480, 0, 250);
+  
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  gluLookAt(0.0,0.0,10.0,0.0,0.0,0.0,0.0,1.0,0.0);
+  gluLookAt(0.0f, 0.0f, 10.0f,
+ 	    0.0f, 0.0f, 5.0f,
+ 	    0.0f, 0.0f, 1.0f);
 
   /* tell GLUT to wait for events */
   glutMainLoop();
