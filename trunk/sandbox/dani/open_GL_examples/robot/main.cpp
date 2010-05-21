@@ -204,14 +204,15 @@ GLdouble * translCoordinates(int x, int y) {
   out_values[1] = posY;
   out_values[2] = posZ;
 
+  /*
   printf("--> output for (%d, %d)\n", x, y);
   for (int i=0; i<3; i++) {
 
     printf("%4.4f ", out_values[i]); 
   }
   printf("\n\n");
-
-
+  */
+  
   return out_values;
 
   //printf(">> Win -> ( %4.4f, %4.4f, %4.4f ) \n>> GL  -> ( %4.4f, %4.4f, %4.4f ) \n\n",
@@ -221,15 +222,15 @@ GLdouble * translCoordinates(int x, int y) {
 
 void display () {
 
+  /*
   
-
   GLdouble * top_left     = translCoordinates(0,   0);
   GLdouble * top_right    = translCoordinates(624, 0);
   GLdouble * bottom_left  = translCoordinates(0, 442);
   GLdouble * bottom_right = translCoordinates(624, 442);
 
 
-  /*
+  
   printf("top_left: \t");
 
   for (int i=0; i<3; i++) {
@@ -267,11 +268,36 @@ void display () {
   /* future matrix manipulations should affect the modelview matrix */
   glMatrixMode(GL_MODELVIEW);
 
-
   // BEGIN TEXTURE CODE
-
+  glMatrixMode(GL_MODELVIEW);
   glPushMatrix();
   glLoadIdentity();
+
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  
+  glBegin(GL_QUADS);
+
+  glTexCoord2f(0.0f, 0.0f); glVertex2f( -1,  -1); // Bottom Left Of The Texture and Quad
+  glTexCoord2f(1.0f, 0.0f); glVertex2f(  1,  -1);	// Bottom Right Of The Texture and Quad
+  glTexCoord2f(1.0f, 1.0f); glVertex2f(  1,   1);	// Top Right Of The Texture and Quad
+  glTexCoord2f(0.0f, 1.0f); glVertex2f( -1,   1);	// Top Left Of The Texture and Quad
+
+  glEnd();
+    
+    
+  glPopMatrix();
+  glPopMatrix();
+
+  glMatrixMode(GL_MODELVIEW);
+
+
+  /*
+  glPushMatrix();
+  glLoadIdentity();
+
+  
 
   glBindTexture(GL_TEXTURE_2D, texture[0]);   // choose the texture to use.
   
@@ -279,22 +305,26 @@ void display () {
   glBegin(GL_QUADS);		                // begin drawing a cube
   
   // Front Face (note that the texture's corners have to match the quad's corners)
-  glTexCoord2f(0.0f, 0.0f); glVertex3f( bottom_left[0],  bottom_left[1],  -15.0f); // Bottom Left Of The Texture and Quad
-  glTexCoord2f(1.0f, 0.0f); glVertex3f(bottom_right[0], bottom_right[1],  -15.0f);	// Bottom Right Of The Texture and Quad
-  glTexCoord2f(1.0f, 1.0f); glVertex3f(   top_right[0],    top_right[1],  -15.0f);	// Top Right Of The Texture and Quad
-  glTexCoord2f(0.0f, 1.0f); glVertex3f(    top_left[0],     top_left[1],  -15.0f);	// Top Left Of The Texture and Quad
+  glTexCoord2f(0.0f, 0.0f); glVertex3f( -10,  -10,  -15.0f); // Bottom Left Of The Texture and Quad
+  glTexCoord2f(1.0f, 0.0f); glVertex3f(  10,  -10,  -15.0f);	// Bottom Right Of The Texture and Quad
+  glTexCoord2f(1.0f, 1.0f); glVertex3f(  10, 10,    -15.0f);	// Top Right Of The Texture and Quad
+  glTexCoord2f(0.0f, 1.0f); glVertex3f( -10,  10,   -15.0f);	// Top Left Of The Texture and Quad
   
   glEnd();
   
+  
   glPopMatrix();
   
-  // END TEXTURE CODE
-
-  //rob.DrawRobot();
+  // END TEXTURE CODE 
   
+  */
+  
+  //rob.DrawRobot();
   
   // last set material is for the textures
   setMaterial(1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0, 20, 1);
+
+
 
   /* flush drawing routines to the window */
   glFlush();
@@ -315,6 +345,8 @@ void keyPressed(unsigned char key, int x, int y)
   /* If escape is pressed, kill everything. */
   if (key == ESCAPE) 
     { 
+
+
       /* shut down our window */
       glutDestroyWindow(window); 
       
@@ -338,6 +370,7 @@ void animate () {
 
 
 void getGLPos(int x, int y) {
+
 
   // printf(">> X: %d\t Y: %d\n", x, y);
   GLint viewport[4];
@@ -381,7 +414,7 @@ int main ( int argc, char * argv[] ) {
   glutReshapeFunc(reshape);
 
   /* set mouse passive motion callback */
-  //glutPassiveMotionFunc(getGLPos);
+  glutPassiveMotionFunc(getGLPos);
 
 
   /* set up depth-buffering */
@@ -428,7 +461,7 @@ int main ( int argc, char * argv[] ) {
   /* define the projection transformation */
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(60,1,0.001,100000);
+  gluPerspective(60, 624/442, 0.001, 100000);
   
   /* define the viewing transformation */
   glMatrixMode(GL_MODELVIEW);
