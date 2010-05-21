@@ -6,7 +6,7 @@
 #include <unistd.h>     // needed to sleep.
 #include "robot.h"
 
-/* ascii code for the escape key */
+/* ascii code for the keys */
 #define ESCAPE 27
 
 /* The number of our GLUT window */
@@ -123,7 +123,7 @@ void LoadGLTextures() {
     exit(0);
   }
 
-  if (!ImageLoad("NeHe.bmp", image1)) {
+  if (!ImageLoad("screenshot.bmp", image1)) {
     exit(1);
   }        
 
@@ -179,53 +179,119 @@ void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB,
   glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,shininess);
 }
 
+GLdouble * translCoordinates(int x, int y) {
+
+  // printf(">> X: %d\t Y: %d\n", x, y);
+  GLint viewport[4];
+  GLdouble modelview[16];
+  GLdouble projection[16];
+  GLfloat winX, winY, winZ;
+  GLdouble posX, posY, posZ;
+  
+  glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
+  glGetDoublev( GL_PROJECTION_MATRIX, projection );
+  glGetIntegerv( GL_VIEWPORT, viewport );
+  
+  winX = (float)x;
+  winY = (float)viewport[3] - (float)y;
+  glReadPixels( x, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
+  
+  gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
+
+  GLdouble * out_values = new GLdouble[3];
+
+  out_values[0] = posX;
+  out_values[1] = posY;
+  out_values[2] = posZ;
+
+  printf("--> output for (%d, %d)\n", x, y);
+  for (int i=0; i<3; i++) {
+
+    printf("%4.4f ", out_values[i]); 
+  }
+  printf("\n\n");
+
+
+  return out_values;
+
+  //printf(">> Win -> ( %4.4f, %4.4f, %4.4f ) \n>> GL  -> ( %4.4f, %4.4f, %4.4f ) \n\n",
+  //	 winX, winY, winZ, posX, posY, posZ);
+}
+
+
 void display () {
+
+  
+
+  GLdouble * top_left     = translCoordinates(0,   0);
+  GLdouble * top_right    = translCoordinates(624, 0);
+  GLdouble * bottom_left  = translCoordinates(0, 442);
+  GLdouble * bottom_right = translCoordinates(624, 442);
+
+
+  /*
+  printf("top_left: \t");
+
+  for (int i=0; i<3; i++) {
+
+    printf("%4.4f ", top_left[i]); 
+  }
+
+  printf("\ntop_right: \t");
+
+  for (int i=0; i<3; i++) {
+
+    printf("%4.4f ", top_right[i]); 
+  }
+
+  printf("\nbottom_left: \t");
+
+  for (int i=0; i<3; i++) {
+
+    printf("%4.4f ", bottom_left[i]); 
+  }
+  printf("\nbottom_right: \t");
+
+  for (int i=0; i<3; i++) {
+
+    printf("%4.4f ", bottom_right[i]); 
+  }
+
+  */
+
+
 
   /* clear window */
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   /* future matrix manipulations should affect the modelview matrix */
   glMatrixMode(GL_MODELVIEW);
-  //glLoadIdentity();
-  //glPushMatrix();
+
 
   // BEGIN TEXTURE CODE
-  //  glTranslatef(0.0f, 0.0f, 0.f);              // move 2.5 units into the screen.
-  //   glBindTexture(GL_TEXTURE_2D, texture[0]);   // choose the texture to use.
 
+  glPushMatrix();
+  glLoadIdentity();
+
+  glBindTexture(GL_TEXTURE_2D, texture[0]);   // choose the texture to use.
   
-  //   glBegin(GL_QUADS);		                // begin drawing a cube
-    
-  //   // Front Face (note that the texture's corners have to match the quad's corners)
-  //   glTexCoord2f(0.0f, 0.0f); glVertex3f(-5.0f, -5.0f,  -5.0f);	// Bottom Left Of The Texture and Quad
-  //   glTexCoord2f(1.0f, 0.0f); glVertex3f( 5.0f, -5.0f,  -5.0f);	// Bottom Right Of The Texture and Quad
-  //   glTexCoord2f(1.0f, 1.0f); glVertex3f( 5.0f,  5.0f,  -5.0f);	// Top Right Of The Texture and Quad
-  //   glTexCoord2f(0.0f, 1.0f); glVertex3f(-5.0f,  5.0f,  -5.0f);	// Top Left Of The Texture and Quad
-
-  //   glEnd();
-
-  //   //glTranslatef(0.0f, 0.0f, 2.5f);              // move 2.5 units into the screen.
-  //   //glPopMatrix();
-
-  //   // END TEXTURE CODE
-
-  rob.DrawRobot();
-
-  //glPopMatrix();
-
-  //  glTranslatef(0.0f, 0.0f, -5.5f);
   
-//   /* define the projection transformation */
-//   glMatrixMode(GL_PROJECTION);
-//   glLoadIdentity();
-//   gluPerspective(40, 640 / 480, 0, 250);
+  glBegin(GL_QUADS);		                // begin drawing a cube
   
-//   glMatrixMode(GL_MODELVIEW);
-//   glLoadIdentity();
-//   //  gluLookAt(0.0,0.0,10.0,0.0,0.0,0.0,0.0,1.0,0.0);
-//   gluLookAt(0.0f, 0.0f, 10.0f,
-//  	    0.0f, 0.0f, 5.0f,
-//  	    0.0f, 0.0f, 1.0f);
+  // Front Face (note that the texture's corners have to match the quad's corners)
+  glTexCoord2f(0.0f, 0.0f); glVertex3f( bottom_left[0],  bottom_left[1],  -15.0f); // Bottom Left Of The Texture and Quad
+  glTexCoord2f(1.0f, 0.0f); glVertex3f(bottom_right[0], bottom_right[1],  -15.0f);	// Bottom Right Of The Texture and Quad
+  glTexCoord2f(1.0f, 1.0f); glVertex3f(   top_right[0],    top_right[1],  -15.0f);	// Top Right Of The Texture and Quad
+  glTexCoord2f(0.0f, 1.0f); glVertex3f(    top_left[0],     top_left[1],  -15.0f);	// Top Left Of The Texture and Quad
+  
+  glEnd();
+  
+  glPopMatrix();
+  
+  // END TEXTURE CODE
+
+  //rob.DrawRobot();
+  
   
   // last set material is for the textures
   setMaterial(1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0, 20, 1);
@@ -255,6 +321,9 @@ void keyPressed(unsigned char key, int x, int y)
       /* exit the program...normal termination. */
       exit(0);                   
     }
+  
+
+
 }
 
 void animate () {
@@ -266,6 +335,34 @@ void animate () {
 }
 
 
+
+
+void getGLPos(int x, int y) {
+
+  // printf(">> X: %d\t Y: %d\n", x, y);
+  GLint viewport[4];
+  GLdouble modelview[16];
+  GLdouble projection[16];
+  GLfloat winX, winY, winZ;
+  GLdouble posX, posY, posZ;
+  
+  glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
+  glGetDoublev( GL_PROJECTION_MATRIX, projection );
+  glGetIntegerv( GL_VIEWPORT, viewport );
+  
+  winX = (float)x;
+  winY = (float)viewport[3] - (float)y;
+  glReadPixels( x, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
+  
+  gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
+
+  printf(">> Win -> ( %4.4f, %4.4f, %4.4f ) \n>> GL  -> ( %4.4f, %4.4f, %4.4f ) \n\n",
+	 winX, (float)viewport[3] - winY, winZ, posX, posY, posZ);
+}
+
+
+
+
 int main ( int argc, char * argv[] ) {
 
   /* initialize GLUT, using any commandline parameters passed to the 
@@ -273,15 +370,19 @@ int main ( int argc, char * argv[] ) {
   glutInit(&argc,argv);
 
   /* setup the size, position, and display mode for new windows */
-  glutInitWindowSize(500,500);
+  glutInitWindowSize(624, 442);
   glutInitWindowPosition(0,0);
   glutInitDisplayMode( GLUT_RGBA | GLUT_DEPTH);
   // glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH);  
 
   /* create and set up a window */
-  window = glutCreateWindow("house3");
+  window = glutCreateWindow("robot");
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);
+
+  /* set mouse passive motion callback */
+  //glutPassiveMotionFunc(getGLPos);
+
 
   /* set up depth-buffering */
   glEnable(GL_DEPTH_TEST);
@@ -323,19 +424,6 @@ int main ( int argc, char * argv[] ) {
 //   glLightfv(GL_LIGHT0,GL_DIFFUSE,lightcolor);
 //   glLightfv(GL_LIGHT0,GL_SPECULAR,lightcolor);
 
-  /* define the projection transformation 
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluPerspective(40, 1, 0, 250);
- 
-  
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-  gluLookAt(0.0f, 0.0f, -5.0f,
- 	    0.0f, 0.0f, 0.0f,
- 	    0.0f, 0.0f, 1.0f);
-
-  */
 
   /* define the projection transformation */
   glMatrixMode(GL_PROJECTION);
@@ -345,11 +433,10 @@ int main ( int argc, char * argv[] ) {
   /* define the viewing transformation */
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  gluLookAt(0.0, 1.0, 2.0,
+  gluLookAt(0.0, 1.0, 10.0,
 	    0.0, 0.0, 0.0,
 	    0.0, 1.0, 0.0);
-
-  
+ 
 
   /* tell GLUT to wait for events */
   glutMainLoop();
