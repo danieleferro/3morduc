@@ -175,6 +175,8 @@ void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB,
   GLfloat emission [] = { (GLfloat) 1.0f, (GLfloat) 1.0f, (GLfloat) 1.0f, blend };  
   GLfloat shininess_di_tua_sorella [] = { (GLfloat) 1.0f, (GLfloat) 1.0f, (GLfloat) 1.0f, blend };
 
+  
+  printf("Blend is %4.4f \n", blend);
   glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emission);
   //  glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess_di_tua_sorella);
   
@@ -201,7 +203,16 @@ void display () {
   glPushMatrix();
   glLoadIdentity();
  
+  // last set material is for the textures
+//   setMaterial(1.0, 1.0, 1.0, 
+// 	      1.0, 1.0, 1.0, 
+// 	      1.0, 1.0, 1.0, 
+// 	      20, -1);
+
+  GLfloat emission [] = { (GLfloat) 1.0f, (GLfloat) 1.0f, (GLfloat) 1.0f, (GLfloat) 1.0f };  
+
   glBegin(GL_QUADS);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emission);
 
   glTexCoord2f(0.0f, 0.0f); glVertex2f( -1,  -1); // Bottom Left Of The Texture and Quad
   glTexCoord2f(1.0f, 0.0f); glVertex2f(  1,  -1);	// Bottom Right Of The Texture and Quad
@@ -216,10 +227,8 @@ void display () {
   // END TEXTURE CODE
   
   /* draw the robot */
-  rob.DrawRobot();
+  //  rob.DrawRobot();
   
-  // last set material is for the textures
-  setMaterial(1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0, 20, -1);
 
   /* flush drawing routines to the window */
   glFlush();
