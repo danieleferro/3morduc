@@ -172,11 +172,18 @@ void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB,
   GLfloat ambient[] = { ambientR, ambientG, ambientB,     blend };
   GLfloat diffuse[] = { diffuseR, diffuseG, diffuseB,     blend };
   GLfloat specular[] = { specularR, specularG, specularB, blend };
+  GLfloat emission [] = { (GLfloat) 1.0f, (GLfloat) 1.0f, (GLfloat) 1.0f, blend };  
+  GLfloat shininess_di_tua_sorella [] = { (GLfloat) 1.0f, (GLfloat) 1.0f, (GLfloat) 1.0f, blend };
+
+  glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emission);
+  //  glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess_di_tua_sorella);
   
-  glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,ambient);
-  glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,diffuse);
-  glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,specular);
-  glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,shininess);
+
+  
+//   glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,ambient);
+//   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,diffuse);
+//   glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,specular);
+//   glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,shininess);
 }
 
 void display () {
@@ -212,7 +219,7 @@ void display () {
   rob.DrawRobot();
   
   // last set material is for the textures
-  setMaterial(1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0, 20, 1);
+  setMaterial(1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0, 20, -1);
 
   /* flush drawing routines to the window */
   glFlush();
