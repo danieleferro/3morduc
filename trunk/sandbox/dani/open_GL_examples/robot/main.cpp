@@ -179,104 +179,21 @@ void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB,
   glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,shininess);
 }
 
-GLdouble * translCoordinates(int x, int y) {
-
-  // printf(">> X: %d\t Y: %d\n", x, y);
-  GLint viewport[4];
-  GLdouble modelview[16];
-  GLdouble projection[16];
-  GLfloat winX, winY, winZ;
-  GLdouble posX, posY, posZ;
-  
-  glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
-  glGetDoublev( GL_PROJECTION_MATRIX, projection );
-  glGetIntegerv( GL_VIEWPORT, viewport );
-  
-  winX = (float)x;
-  winY = (float)viewport[3] - (float)y;
-  glReadPixels( x, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
-  
-  gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
-
-  GLdouble * out_values = new GLdouble[3];
-
-  out_values[0] = posX;
-  out_values[1] = posY;
-  out_values[2] = posZ;
-
-  /*
-  printf("--> output for (%d, %d)\n", x, y);
-  for (int i=0; i<3; i++) {
-
-    printf("%4.4f ", out_values[i]); 
-  }
-  printf("\n\n");
-  */
-  
-  return out_values;
-
-  //printf(">> Win -> ( %4.4f, %4.4f, %4.4f ) \n>> GL  -> ( %4.4f, %4.4f, %4.4f ) \n\n",
-  //	 winX, winY, winZ, posX, posY, posZ);
-}
-
-
 void display () {
-
-  /*
-  
-  GLdouble * top_left     = translCoordinates(0,   0);
-  GLdouble * top_right    = translCoordinates(624, 0);
-  GLdouble * bottom_left  = translCoordinates(0, 442);
-  GLdouble * bottom_right = translCoordinates(624, 442);
-
-
-  
-  printf("top_left: \t");
-
-  for (int i=0; i<3; i++) {
-
-    printf("%4.4f ", top_left[i]); 
-  }
-
-  printf("\ntop_right: \t");
-
-  for (int i=0; i<3; i++) {
-
-    printf("%4.4f ", top_right[i]); 
-  }
-
-  printf("\nbottom_left: \t");
-
-  for (int i=0; i<3; i++) {
-
-    printf("%4.4f ", bottom_left[i]); 
-  }
-  printf("\nbottom_right: \t");
-
-  for (int i=0; i<3; i++) {
-
-    printf("%4.4f ", bottom_right[i]); 
-  }
-
-  */
-
-
 
   /* clear window */
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   /* future matrix manipulations should affect the modelview matrix */
   glMatrixMode(GL_MODELVIEW);
-
-  // BEGIN TEXTURE CODE
-  glMatrixMode(GL_MODELVIEW);
-  glPushMatrix();
+  //  glPushMatrix();
   glLoadIdentity();
 
+  // BEGIN TEXTURE CODE
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   glLoadIdentity();
-  
+ 
   glBegin(GL_QUADS);
 
   glTexCoord2f(0.0f, 0.0f); glVertex2f( -1,  -1); // Bottom Left Of The Texture and Quad
@@ -285,46 +202,17 @@ void display () {
   glTexCoord2f(0.0f, 1.0f); glVertex2f( -1,   1);	// Top Left Of The Texture and Quad
 
   glEnd();
-    
-    
-  glPopMatrix();
+      
   glPopMatrix();
 
   glMatrixMode(GL_MODELVIEW);
-
-
-  /*
-  glPushMatrix();
-  glLoadIdentity();
-
+  // END TEXTURE CODE
   
-
-  glBindTexture(GL_TEXTURE_2D, texture[0]);   // choose the texture to use.
-  
-  
-  glBegin(GL_QUADS);		                // begin drawing a cube
-  
-  // Front Face (note that the texture's corners have to match the quad's corners)
-  glTexCoord2f(0.0f, 0.0f); glVertex3f( -10,  -10,  -15.0f); // Bottom Left Of The Texture and Quad
-  glTexCoord2f(1.0f, 0.0f); glVertex3f(  10,  -10,  -15.0f);	// Bottom Right Of The Texture and Quad
-  glTexCoord2f(1.0f, 1.0f); glVertex3f(  10, 10,    -15.0f);	// Top Right Of The Texture and Quad
-  glTexCoord2f(0.0f, 1.0f); glVertex3f( -10,  10,   -15.0f);	// Top Left Of The Texture and Quad
-  
-  glEnd();
-  
-  
-  glPopMatrix();
-  
-  // END TEXTURE CODE 
-  
-  */
-  
-  //rob.DrawRobot();
+  /* draw the robot */
+  rob.DrawRobot();
   
   // last set material is for the textures
   setMaterial(1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0, 20, 1);
-
-
 
   /* flush drawing routines to the window */
   glFlush();
@@ -333,7 +221,7 @@ void display () {
 void reshape ( int width, int height ) {
 
   /* define the viewport transformation */
-  glViewport(0,0,width,height);
+  glViewport(0, 0, width, height);
 }
 
 /* The function called whenever a key is pressed. */
@@ -367,8 +255,11 @@ void animate () {
 }
 
 
-
-
+/*
+ * getGLPos is intended to be passed as a callback function to the
+ * glutPassiveMotionFunc((void)(int, int))
+ * it is triggered every time GLUT perceives that the mouse is moving
+ */
 void getGLPos(int x, int y) {
 
 
@@ -393,9 +284,6 @@ void getGLPos(int x, int y) {
 	 winX, (float)viewport[3] - winY, winZ, posX, posY, posZ);
 }
 
-
-
-
 int main ( int argc, char * argv[] ) {
 
   /* initialize GLUT, using any commandline parameters passed to the 
@@ -414,7 +302,7 @@ int main ( int argc, char * argv[] ) {
   glutReshapeFunc(reshape);
 
   /* set mouse passive motion callback */
-  glutPassiveMotionFunc(getGLPos);
+  // glutPassiveMotionFunc(getGLPos);
 
 
   /* set up depth-buffering */
