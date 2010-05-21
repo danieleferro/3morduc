@@ -139,8 +139,8 @@ void Robot::move(GLfloat xr, GLfloat yr, GLfloat thetar)
 
 void Robot::DrawRobot()
 {
-  GLfloat reflectance_black[] = { 0.0f, 0.0f, 0.0f, 1.0f};
-  GLfloat reflectance_white[] = { 0.2f, 0.2f, 0.2f, 1.0f};
+  GLfloat reflectance_black[] = { 1.0f, 0.0f, 0.0f, 1.0f};
+  GLfloat reflectance_white[] = { 1.0f, 0.0f, 0.0f, 1.0f};
   GLfloat cosine, sine;
 
   glPushMatrix();
@@ -159,7 +159,7 @@ void Robot::DrawRobot()
   // set lights
   GLfloat light_position[] = {0.0f, 1.3f, 0.0f, 1.0f};
   GLfloat light_direction[] = {1.0f, 0.0f, 0.0f,1.0f};
-  GLfloat light_color[] = { 1, 1, 1 };
+  GLfloat light_color[] = { 1.f, 1.f, 1.f };
 
   glEnable(GL_LIGHT1);
   glLightfv(GL_LIGHT1, GL_AMBIENT, light_color);
@@ -200,10 +200,10 @@ void Robot::DrawRobot()
   paintDisk(0.2f);
 
   glTranslatef(0,0.401,0);
-  glMaterialfv(GL_FRONT, GL_AMBIENT, reflectance_white);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, reflectance_white);
   paintDisk(0.1f);
   glTranslatef(0,-0.701,0);
-  glMaterialfv(GL_FRONT, GL_AMBIENT, reflectance_black);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, reflectance_black);
 
   glTranslatef(-0.8f, 0.0f, 0.0f);
   glColor3f(0.1f, 0.1f, 0.1f);

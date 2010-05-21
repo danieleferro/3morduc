@@ -172,20 +172,11 @@ void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB,
   GLfloat ambient[] = { ambientR, ambientG, ambientB,     blend };
   GLfloat diffuse[] = { diffuseR, diffuseG, diffuseB,     blend };
   GLfloat specular[] = { specularR, specularG, specularB, blend };
-  GLfloat emission [] = { (GLfloat) 1.0f, (GLfloat) 1.0f, (GLfloat) 1.0f, blend };  
-  GLfloat shininess_di_tua_sorella [] = { (GLfloat) 1.0f, (GLfloat) 1.0f, (GLfloat) 1.0f, blend };
-
   
-  printf("Blend is %4.4f \n", blend);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emission);
-  //  glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess_di_tua_sorella);
-  
-
-  
-//   glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,ambient);
-//   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,diffuse);
-//   glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,specular);
-//   glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,shininess);
+  glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,ambient);
+  glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,diffuse);
+  glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,specular);
+  glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,shininess);
 }
 
 void display () {
@@ -195,40 +186,53 @@ void display () {
 
   /* future matrix manipulations should affect the modelview matrix */
   glMatrixMode(GL_MODELVIEW);
-  //  glPushMatrix();
-  glLoadIdentity();
+  glPushMatrix();
+  //glLoadIdentity();
 
   // BEGIN TEXTURE CODE
+
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
+  //glOrtho(0, 1, 0, 1, 0, 1);
   glLoadIdentity();
- 
-  // last set material is for the textures
-//   setMaterial(1.0, 1.0, 1.0, 
-// 	      1.0, 1.0, 1.0, 
-// 	      1.0, 1.0, 1.0, 
-// 	      20, -1);
-
-  GLfloat emission [] = { (GLfloat) 1.0f, (GLfloat) 1.0f, (GLfloat) 1.0f, (GLfloat) 1.0f };  
-
-  glBegin(GL_QUADS);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emission);
-
-  glTexCoord2f(0.0f, 0.0f); glVertex2f( -1,  -1); // Bottom Left Of The Texture and Quad
-  glTexCoord2f(1.0f, 0.0f); glVertex2f(  1,  -1);	// Bottom Right Of The Texture and Quad
-  glTexCoord2f(1.0f, 1.0f); glVertex2f(  1,   1);	// Top Right Of The Texture and Quad
-  glTexCoord2f(0.0f, 1.0f); glVertex2f( -1,   1);	// Top Left Of The Texture and Quad
-
-  glEnd();
-      
-  glPopMatrix();
-
+  
   glMatrixMode(GL_MODELVIEW);
-  // END TEXTURE CODE
+  glPushMatrix();
+  glLoadIdentity();
+	
+  // No depth buffer writes for background.
+  glDepthMask( false );
+
+  glBegin( GL_QUADS );
+  {
+    glTexCoord2f( 0.f, 0.f );
+    glVertex2f( -1, -1 );
+
+    glTexCoord2f( 0.f, 1.f );
+    glVertex2f( -1, 1.f );
+
+    glTexCoord2f( 1.f, 1.f );
+    glVertex2f( 1.f, 1.f );
+
+    glTexCoord2f( 1.f, 0.f );
+    glVertex2f( 1.f, -1 );
+
+  } glEnd();
+
+  glDepthMask( true );
+
+  glPopMatrix();
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW);
+
   
   /* draw the robot */
-  //  rob.DrawRobot();
   
+  rob.DrawRobot();
+  
+  // last set material is for the textures
+  setMaterial(.5, 0.5, 0.5, 1.0,1.0,1.0, 1.0,1.0,1.0, 20, 1);
 
   /* flush drawing routines to the window */
   glFlush();
@@ -327,7 +331,8 @@ int main ( int argc, char * argv[] ) {
   /* blending */
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE);
-
+  glDisable(GL_COLOR_MATERIAL);
+  
 
   /* Register the function called when the keyboard is pressed. */
   glutKeyboardFunc(keyPressed);
@@ -353,14 +358,7 @@ int main ( int argc, char * argv[] ) {
   GLfloat ambcolor[] = { 0.2, 0.2, 0.2 };
 
   glEnable(GL_LIGHTING);
-  //glLightModelfv(GL_LIGHT_MODEL_AMBIENT,ambcolor);
-
   glEnable(GL_LIGHT0);
-//   glLightfv(GL_LIGHT0,GL_POSITION,lightpos);
-//   glLightfv(GL_LIGHT0,GL_AMBIENT,lightcolor);
-//   glLightfv(GL_LIGHT0,GL_DIFFUSE,lightcolor);
-//   glLightfv(GL_LIGHT0,GL_SPECULAR,lightcolor);
-
 
   /* define the projection transformation */
   glMatrixMode(GL_PROJECTION);
