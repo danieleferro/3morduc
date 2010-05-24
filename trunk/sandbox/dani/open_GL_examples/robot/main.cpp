@@ -188,6 +188,9 @@ void display () {
 
   // BEGIN TEXTURE CODE
 
+  glEnable(GL_TEXTURE_2D);
+
+
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   glLoadIdentity();
@@ -224,6 +227,8 @@ void display () {
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();
   glMatrixMode(GL_MODELVIEW);
+
+  glDisable(GL_TEXTURE_2D);
 
   // END TEXTURE CODE
   
@@ -331,11 +336,6 @@ int main ( int argc, char * argv[] ) {
   /* set up depth-buffering */
   glEnable(GL_DEPTH_TEST);
     
-  /* blending
-     glEnable(GL_BLEND);
-     glBlendFunc(GL_SRC_ALPHA,GL_ONE);
-  */
-  
   
   /* Register the function called when the keyboard is pressed. */
   glutKeyboardFunc(keyPressed);
@@ -345,12 +345,10 @@ int main ( int argc, char * argv[] ) {
 
   // InitGL
   LoadGLTextures();				// Load The Texture(s) 
-  glEnable(GL_TEXTURE_2D);			// Enable Texture Mapping
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);	        // set the color for the glClear()
   glClearDepth(1.0);				// Enables Clearing Of The Depth Buffer
   glDepthFunc(GL_LESS);			        // The Type Of Depth Test To Do
-  glShadeModel(GL_SMOOTH);			// Enables Smooth Color Shading
-
+  glShadeModel(GL_SMOOTH);			// Enables Smooth Color Shadingx
 
   /* set up lights */
   glMatrixMode(GL_MODELVIEW);
