@@ -167,11 +167,11 @@ void LoadGLTextures() {
 void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB, 
 		   GLfloat diffuseR, GLfloat diffuseG, GLfloat diffuseB, 
 		   GLfloat specularR, GLfloat specularG, GLfloat specularB,
-		   GLfloat shininess, GLfloat blend ) {
+		   GLfloat shininess) {
   
-  GLfloat ambient[] = { ambientR, ambientG, ambientB,     blend };
-  GLfloat diffuse[] = { diffuseR, diffuseG, diffuseB,     blend };
-  GLfloat specular[] = { specularR, specularG, specularB, blend };
+  GLfloat ambient[] = { ambientR, ambientG, ambientB,    };
+  GLfloat diffuse[] = { diffuseR, diffuseG, diffuseB,    };
+  GLfloat specular[] = { specularR, specularG, specularB };
   
   glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,ambient);
   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,diffuse);
@@ -185,9 +185,6 @@ void display () {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   /* future matrix manipulations should affect the modelview matrix */
-  //glMatrixMode(GL_MODELVIEW);
-  //glPushMatrix();
-  //glLoadIdentity();
 
   // BEGIN TEXTURE CODE
 
@@ -203,6 +200,7 @@ void display () {
   glDepthMask(false);
 
   glBegin( GL_QUADS );
+
   {
     glTexCoord2f( 0.f, 0.f );
     glVertex2f( -1, -1 );
@@ -216,7 +214,9 @@ void display () {
     glTexCoord2f( 1.f, 0.f );
     glVertex2f( 1.f, -1 );
 
-  } glEnd();
+  }
+
+  glEnd();
 
   glDepthMask(true);
 
@@ -228,14 +228,14 @@ void display () {
   // END TEXTURE CODE
   
   /* draw the robot */
-  
+
   rob.DrawRobot();
   
   // last set material is for the textures
   setMaterial(1.0, 1.0, 1.0,
 	      1.0, 1.0, 1.0,
 	      1.0, 1.0, 1.0,
-	      20, 1.0);
+	      20);
 
   /* flush drawing routines to the window */
   glFlush();
@@ -315,7 +315,7 @@ int main ( int argc, char * argv[] ) {
 
   /* setup the size, position, and display mode for new windows */
   glutInitWindowSize(624, 442);
-  glutInitWindowPosition(0,0);
+  glutInitWindowPosition(0, 0);
   glutInitDisplayMode( GLUT_RGBA | GLUT_DEPTH);
   // glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH);  
 
@@ -331,12 +331,12 @@ int main ( int argc, char * argv[] ) {
   /* set up depth-buffering */
   glEnable(GL_DEPTH_TEST);
     
-  /* blending */
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA,GL_ONE);
-  glDisable(GL_COLOR_MATERIAL);
+  /* blending
+     glEnable(GL_BLEND);
+     glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+  */
   
-
+  
   /* Register the function called when the keyboard is pressed. */
   glutKeyboardFunc(keyPressed);
 
@@ -346,19 +346,29 @@ int main ( int argc, char * argv[] ) {
   // InitGL
   LoadGLTextures();				// Load The Texture(s) 
   glEnable(GL_TEXTURE_2D);			// Enable Texture Mapping
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);	// set the color for the glClear()
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);	        // set the color for the glClear()
   glClearDepth(1.0);				// Enables Clearing Of The Depth Buffer
-  glDepthFunc(GL_LESS);			// The Type Of Depth Test To Do
+  glDepthFunc(GL_LESS);			        // The Type Of Depth Test To Do
   glShadeModel(GL_SMOOTH);			// Enables Smooth Color Shading
 
 
   /* set up lights */
-  glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  
+  GLfloat lightpos[] = { 0.0, 0.0, 15.0 };
+  GLfloat lightcolor[] = { 1.0, 1.0, 1.0 };
+  GLfloat ambcolor[] = { 1.0, 1.0, 1.0 };
+  
+  glEnable(GL_LIGHTING);                               // enable lighting
+  glLightModelfv(GL_LIGHT_MODEL_AMBIENT,ambcolor);     // ambient light
+  
+  glEnable(GL_LIGHT0);                                 // enable light source
+  glLightfv(GL_LIGHT0,GL_POSITION,lightpos);           // config light source
+  glLightfv(GL_LIGHT0,GL_AMBIENT,lightcolor);
+  glLightfv(GL_LIGHT0,GL_DIFFUSE,lightcolor);
+  glLightfv(GL_LIGHT0,GL_SPECULAR,lightcolor);
 
-
-  /* define the projection transformation */
-  glMatrixMode(GL_PROJECTION);
 
   /* define the projection transformation */
   glMatrixMode(GL_PROJECTION);
