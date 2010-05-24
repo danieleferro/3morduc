@@ -140,8 +140,8 @@ void Robot::move(GLfloat xr, GLfloat yr, GLfloat thetar)
 void Robot::DrawRobot()
 {
 
-  GLfloat reflectance_black[] = { 1.0f, 1.0f, 0.0f };
-  GLfloat reflectance_white[] = { 1.0f, 1.0f, 0.0f };
+  GLfloat reflectance_black[] = { 0.0f, 0.0f, 1.0f, 1.0f };
+  GLfloat reflectance_white[] = { 0.0f, 0.0f, 1.0f, 1.0f };
   
   GLfloat cosine, sine;
 
@@ -161,7 +161,7 @@ void Robot::DrawRobot()
 
 
   // set the drawing color to white
-  glColor3f(0.0f, 1.f, 0.f);
+  glColor3f(0.0f, 0.f, 1.f);
   
   // translate on z axis
   glTranslatef(0.0f,0.08f,0.0f);
