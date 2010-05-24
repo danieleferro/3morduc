@@ -350,14 +350,14 @@ int main ( int argc, char * argv[] ) {
   glDepthFunc(GL_LESS);			        // The Type Of Depth Test To Do
   glShadeModel(GL_SMOOTH);			// Enables Smooth Color Shadingx
 
-  /* set up lights */
+  // set up lights
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   
-  GLfloat lightpos[] = { 0.0, 0.0, 15.0 };
+  GLfloat lightpos[] = { 0.0, 1.0, 0.0 };
   GLfloat lightcolor[] = { 1.0, 1.0, 1.0 };
   GLfloat ambcolor[] = { 1.0, 1.0, 1.0 };
-  
+ 
   glEnable(GL_LIGHTING);                               // enable lighting
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT,ambcolor);     // ambient light
   
@@ -366,7 +366,8 @@ int main ( int argc, char * argv[] ) {
   glLightfv(GL_LIGHT0,GL_AMBIENT,lightcolor);
   glLightfv(GL_LIGHT0,GL_DIFFUSE,lightcolor);
   glLightfv(GL_LIGHT0,GL_SPECULAR,lightcolor);
-
+  glLightf(GL_LIGHT0,  GL_SPOT_CUTOFF, 45.0f);
+ 
 
   /* define the projection transformation */
   glMatrixMode(GL_PROJECTION);
