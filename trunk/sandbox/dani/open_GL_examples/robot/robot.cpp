@@ -161,7 +161,7 @@ void Robot::DrawRobot()
 
 
   // set the drawing color to white
-  glColor3f(0.0f, 0.f, 1.f);
+  glColor3f(0.0f, 0.f, 0.f);
   
   // translate on z axis
   glTranslatef(0.0f,0.08f,0.0f);
