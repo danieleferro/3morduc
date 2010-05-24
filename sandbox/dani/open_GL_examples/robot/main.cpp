@@ -185,15 +185,14 @@ void display () {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   /* future matrix manipulations should affect the modelview matrix */
-  glMatrixMode(GL_MODELVIEW);
-  glPushMatrix();
+  //glMatrixMode(GL_MODELVIEW);
+  //glPushMatrix();
   //glLoadIdentity();
 
   // BEGIN TEXTURE CODE
 
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
-  //glOrtho(0, 1, 0, 1, 0, 1);
   glLoadIdentity();
   
   glMatrixMode(GL_MODELVIEW);
@@ -201,7 +200,7 @@ void display () {
   glLoadIdentity();
 	
   // No depth buffer writes for background.
-  glDepthMask( false );
+  glDepthMask(false);
 
   glBegin( GL_QUADS );
   {
@@ -219,20 +218,24 @@ void display () {
 
   } glEnd();
 
-  glDepthMask( true );
+  glDepthMask(true);
 
   glPopMatrix();
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();
   glMatrixMode(GL_MODELVIEW);
 
+  // END TEXTURE CODE
   
   /* draw the robot */
   
   rob.DrawRobot();
   
   // last set material is for the textures
-  setMaterial(.5, 0.5, 0.5, 1.0,1.0,1.0, 1.0,1.0,1.0, 20, 1);
+  setMaterial(1.0, 1.0, 1.0,
+	      1.0, 1.0, 1.0,
+	      1.0, 1.0, 1.0,
+	      20, 1.0);
 
   /* flush drawing routines to the window */
   glFlush();
@@ -350,15 +353,12 @@ int main ( int argc, char * argv[] ) {
 
 
   /* set up lights */
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-
-  GLfloat lightpos[] = { 0.0, 15.0, 15.0 };
-  GLfloat lightcolor[] = { 0.5, 0.5, 0.5 };
-  GLfloat ambcolor[] = { 0.2, 0.2, 0.2 };
-
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
+
+
+  /* define the projection transformation */
+  glMatrixMode(GL_PROJECTION);
 
   /* define the projection transformation */
   glMatrixMode(GL_PROJECTION);

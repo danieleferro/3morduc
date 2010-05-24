@@ -143,6 +143,9 @@ void Robot::DrawRobot()
   GLfloat reflectance_white[] = { 1.0f, 0.0f, 0.0f, 1.0f};
   GLfloat cosine, sine;
 
+  glMatrixMode(GL_MODELVIEW);
+
+
   glPushMatrix();
 
   // set robot reflectance (it is black)
