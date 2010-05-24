@@ -139,17 +139,17 @@ void Robot::move(GLfloat xr, GLfloat yr, GLfloat thetar)
 
 void Robot::DrawRobot()
 {
-  GLfloat reflectance_black[] = { 1.0f, 0.0f, 0.0f, 1.0f};
-  GLfloat reflectance_white[] = { 1.0f, 0.0f, 0.0f, 1.0f};
+
+  GLfloat reflectance_black[] = { 0.0f, 1.0f, 0.0f };
+  GLfloat reflectance_white[] = { 0.0f, 1.0f, 0.0f };
+  
   GLfloat cosine, sine;
 
   glMatrixMode(GL_MODELVIEW);
-
-
   glPushMatrix();
 
   // set robot reflectance (it is black)
-  glMaterialfv(GL_FRONT, GL_AMBIENT, reflectance_black);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, reflectance_black);
 
   // set robot position
   glTranslatef(xr, 0.0f, yr);
@@ -159,21 +159,9 @@ void Robot::DrawRobot()
   cosine = cos(thetar);
   sine = sin(thetar);
 
-  // set lights
-  GLfloat light_position[] = {0.0f, 1.3f, 0.0f, 1.0f};
-  GLfloat light_direction[] = {1.0f, 0.0f, 0.0f,1.0f};
-  GLfloat light_color[] = { 1.f, 1.f, 1.f };
-
-  glEnable(GL_LIGHT1);
-  glLightfv(GL_LIGHT1, GL_AMBIENT, light_color);
-  glLightfv(GL_LIGHT1, GL_DIFFUSE, light_color);
-  glLightfv(GL_LIGHT1, GL_SPECULAR, light_color);
-  glLightfv(GL_LIGHT1, GL_POSITION, light_position);
-  glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, light_direction);
-  glLightf(GL_LIGHT1,  GL_SPOT_CUTOFF, 45.0f);
 
   // set the drawing color to white
-  glColor3f(1.f,1.f,1.f);
+  glColor3f(0.0f, 1.f, 0.f);
   
   // translate on z axis
   glTranslatef(0.0f,0.08f,0.0f);
@@ -197,7 +185,7 @@ void Robot::DrawRobot()
   paintDisk(1.0f);
 
   glTranslatef(0.8f, 0.0f, 0.0f);
-  glColor3f(0.5f, 0.5f, 0.5f);
+  //glColor3f(0.5f, 0.5f, 0.5f);
   paintCylinder(0.2f, 0.3f);
   glTranslatef(0.0f, 0.3f, 0.0f);
   paintDisk(0.2f);
@@ -209,7 +197,7 @@ void Robot::DrawRobot()
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, reflectance_black);
 
   glTranslatef(-0.8f, 0.0f, 0.0f);
-  glColor3f(0.1f, 0.1f, 0.1f);
+  //glColor3f(0.1f, 0.1f, 0.1f);
   glTranslatef(0.0f ,0.6f, 0.0f);
   paintCylinder(1.0f, 0.1f);
   paintDisk(-1.0f);
@@ -316,145 +304,3 @@ void paintCylinder(GLfloat radius, GLfloat height)
   glEnd();
 
 }
-
-/*
-int Robot::RobColl(OBJECT *coll, bool activecontrol)
-{
-  GLfloat tx, ty, value, mdist;	
-  GLfloat col_ambtouc[]={0.4,0.2,0.2,1};
-  GLfloat col_ambnorm[]={0.60,0.55,0.55,1};
-  int j=0;	
-  int CI=0; // collision interrupt if collision exists it will be higher than 0
-  float dt=0;
-  float psiob=0;
-  float rex=0;
-  float rey=0;
-
-  this->vrx=0;
-  this->vry=0;
-  for(int i=0;i<coll->verts;i++)	// Loop Through All The Verts of coll (All Objects Have
-    {												
-      tx=coll->points[i].x;						
-      ty=coll->points[i].y;						
-      value=coll->points[i].value;
-      mdist=sqrt(powf((tx - this->xr),2)+powf((ty - this->yr),2))-this->radius-value;
-      if (mdist<0.0)
-	{
-	  psiob=atan2((ty-yr),(tx-xr));
-	  rex+=((mdist*cos(psiob)));
-	  rey+=((mdist*sin(psiob))); // calcoliamo la reazione vincolare
-	  // coloro con draw copiato RIFARE
-	  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE,col_ambtouc);
-	  value=value * 1.05;
-	  if (activecontrol==true)
-	    DrawPar3(tx,10*value,ty,1.01f*value,1.01f*value,20*value);  // SQUARE BASE
-	  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE,col_ambnorm);
-	  if (coll->points[i].touched==0)
-	    {
-	      j++;
-	      coll->points[i].touched=1;
-	    }
-	  CI++;
-	}
-      else  
-	{
-	  coll->points[i].touched=0;
-	}
-    }	
-
-  if (CI>0)
-    {
-      this->vrx=rex; // i use local variable.
-      this->vry=rey;
-
-      if (activecontrol==true)
-	{
-	  this->collisions+=j;
-	  this->xr+=this->vrx;  // Non è una velocità.
-	  this->yr+=this->vry;  // si toglie la possibilità di passare il muro.
-	}
-    }
-
-  return CI;
-}
-
-int Robot::RobColl2(OBJECT *coll, bool activecontrol)
-{
-  GLfloat tx,ty,value,mdist;			
-  GLfloat col_ambtouc[]={0.4,0.2,0.2,1};
-  GLfloat col_ambnorm[]={0.60,0.55,0.55,1};
-  int j=0;	
-  int CI=0; // collision interrupt if collision exists it will be higher than 0
-  float dt=0;
-  float psiob=0;
-  float rex=0;
-  float rey=0;
-
-  this->vrx=0;
-  this->vry=0;
-  for(int i=0;i<coll->verts;i++)	// Loop Through All The Verts of coll (All Objects Have
-    {												
-      tx=coll->points[i].x;						
-      ty=coll->points[i].y;						
-      value=coll->points[i].value;
-      mdist=sqrt(powf((tx - this->xr),2)+powf((ty - this->yr),2))-this->radius-value;
-      if (mdist<0.0)
-	{
-	  psiob=atan2((ty-yr),(tx-xr));
-	  rex+=((mdist*cos(psiob)));
-	  rey+=((mdist*sin(psiob))); // calcoliamo la reazione vincolare
-	  // coloro con draw copiato RIFARE
-	  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE,col_ambtouc);
-	  value=value * 1.05;
-	  if (activecontrol==true)
-	    DrawPar3(tx,10*value,ty,1.01f*value,1.01f*value,20*value);  // SQUARE BASE
-	  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE,col_ambnorm);
-	  if (coll->points[i].touched==0)
-	    {
-	      j++;
-	      coll->points[i].touched=1;
-	    }
-	  CI++;
-	}
-      //else  
-      //{
-      //	coll->points[i].touched=0;
-      //}
-    }	
-
-  if (CI>0)
-    {
-      this->vrx=rex; // i use local variable.
-      this->vry=rey;
-      this->collisions+=j;
-      if (activecontrol==true)
-	{
-	  this->xr+=this->vrx;  // Non è una velocità.
-	  this->yr+=this->vry;  // si toglie la possibilità di passare il muro.
-	}
-    }
-
-  return CI;
-}
-
-
-bool Robot::LoadSPFromFile(char *string,int kk) // Load start position from file
-{
-  FILE *fcou;
-  float x,y,t;
-  fcou=fopen(string,"r");
-
-  for (int i=0;i<kk;i++)
-    {
-      fscanf(fcou,"%f %f %f\n",&x,&y,&t);
-
-      this->xr=x;
-      this->yr=y;
-      this->thetar=t;
-    }
-  fclose(fcou);
-  fflush(fcou);
-  return true;
-}
-
-*/
