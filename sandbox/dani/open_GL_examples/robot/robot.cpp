@@ -162,7 +162,8 @@ void Robot::DrawRobot()
 
 
   // set the drawing color
-  //  glColor3f(0.1f, 0.1f, 0.1f);
+  //glClear(GL_COLOR_BUFFER_BIT);
+  //glColor3f(0.1f, 0.1f, 0.1f);
   
   // translate on z axis
   glTranslatef(0.0f,0.08f,0.0f);
@@ -189,7 +190,10 @@ void Robot::DrawRobot()
   paintDisk(1.0f);
 
   glTranslatef(0.8f, 0.0f, 0.0f);
+
+  //glClear(GL_COLOR_BUFFER_BIT);
   glColor3f(0.5f, 0.5f, 0.5f);
+
   paintCylinder(0.2f, 0.3f);
   glTranslatef(0.0f, 0.3f, 0.0f);
   paintDisk(0.2f);
@@ -201,7 +205,10 @@ void Robot::DrawRobot()
   glMaterialfv(GL_FRONT, GL_AMBIENT, reflectance_black);
 
   glTranslatef(-0.8f, 0.0f, 0.0f);
+
+  //glClear(GL_COLOR_BUFFER_BIT);
   glColor3f(0.1f, 0.1f, 0.1f);
+
   glTranslatef(0.0f ,0.6f, 0.0f);
   paintCylinder(1.0f, 0.1f);
   paintDisk(-1.0f);
