@@ -37,6 +37,7 @@ void DrawPar3(GLfloat x0,GLfloat y0,GLfloat z0,GLfloat l,GLfloat h,GLfloat d )
 
   glNormal3f(direction,0,0);
   glTexCoord2f(0.0f, 10.0f);glVertex3f(x0+l/2,y0+d/2,z0+h/2); //2
+
   glTexCoord2f(1.0f, 10.0f);glVertex3f(x0+l/2,y0-d/2,z0+h/2);
   glTexCoord2f(1.0f, 0.0f);glVertex3f(x0+l/2,y0-d/2,z0-h/2);
   glTexCoord2f(0.0f, 0.0f);glVertex3f(x0+l/2,y0+d/2,z0-h/2);
@@ -65,37 +66,6 @@ void DrawPar3(GLfloat x0,GLfloat y0,GLfloat z0,GLfloat l,GLfloat h,GLfloat d )
 }
 
 
-
-
-// Robot::Robot()
-// {
-//   // meter / step ratio
-//   msr = 3.1412*d/n/res;
-//   xr = 4;
-//   yr = 4;
-//   thetar = 0;
-//   // gear ratio
-//   n = 1;
-
-//   // risoluzione encoder
-//   res = 2000;
-//   // diametro della ruota
-//   d = 0.063f*2.0f;
-//   // distanza tra ruote
-//   l = 0.28f;
-//   vlim = 7;
-//   wlim = 2;
-//   // ck.Reset();
-
-//   radius = 4.f;
-//   std::cout << "HO MESSO RADIUS A 4.F EH!" << std::endl;
-//   std::cout << "RADIUS ADESSO VALE " << radius << std::endl;
-//   dxr = 0;
-//   dyr = 0;
-//   dthetar = 0;
-//   collisions = 0;
-//   // Time == 0;
-// }
 
 Robot::Robot(float x1 = 0.f, float y2 = 0.f, float ang3 = 0.f)
 {
@@ -149,8 +119,7 @@ void Robot::DrawRobot()
   glPushMatrix();
 
   // set robot reflectance (it is black)
-  glMaterialfv(GL_FRONT, GL_AMBIENT, reflectance_black);
-  // glFlush();
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, reflectance_black);
 
   // set robot position
   glTranslatef(xr, 0.0f, yr);
@@ -159,21 +128,11 @@ void Robot::DrawRobot()
   // compute theta's cosine and sine value
   cosine = cos(thetar);
   sine = sin(thetar);
-
-
-  // set the drawing color
-  //  glColor3f(0.1f, 0.1f, 0.1f);
   
   // translate on z axis
   glTranslatef(0.0f,0.08f,0.0f);
 
-  //glScalef(radius, radius, radius);
-
-  
-  //  radius = 0.3f;
-  //  glScalef(radius, radius, radius);
-  //  printf("Radius: %4.4f", radius);
-  //  std::cout << "Radius is " << this->radius << std::endl;
+  glScalef(radius, radius, radius);
   
   // draw robot
   paintCylinder(1.0f, 0.1);
@@ -195,10 +154,10 @@ void Robot::DrawRobot()
   paintDisk(0.2f);
 
   glTranslatef(0,0.401,0);
-  glMaterialfv(GL_FRONT, GL_AMBIENT, reflectance_white);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, reflectance_white);
   paintDisk(0.1f);
   glTranslatef(0,-0.701,0);
-  glMaterialfv(GL_FRONT, GL_AMBIENT, reflectance_black);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, reflectance_black);
 
   glTranslatef(-0.8f, 0.0f, 0.0f);
   glColor3f(0.1f, 0.1f, 0.1f);
@@ -218,7 +177,7 @@ void Robot::DrawRobot()
   paintCylinder(0.1f, 1.5f);
   glTranslatef(0.8f, 0.0f, 0.0f);
 
-  //glScalef(1/radius,1/radius,1/radius);
+  glScalef(1/radius, 1/radius, 1/radius);
 
   glPopMatrix();
 }
@@ -271,3 +230,20 @@ void paintCylinder(GLfloat radius, GLfloat height)
   glEnd();
 
 }
+
+GLfloat Robot::getX()
+{
+
+  return xr;
+}
+
+GLfloat Robot::getY() {
+
+  return yr;
+}
+
+GLfloat  Robot::getTheta() {
+
+  return thetar;
+}
+
