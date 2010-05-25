@@ -8,6 +8,17 @@
 
 /* ascii code for the keys */
 #define ESCAPE 27
+#define Q 113
+#define W 119
+
+/* step for forward direction */
+#define STEP 0.1f
+
+/* step for rotation */
+#define ANGLE 0.1f
+
+
+
 
 /* The number of our GLUT window */
 int window; 
@@ -198,7 +209,7 @@ void display () {
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix();
   glLoadIdentity();
-	
+
   // No depth buffer writes for background.
   glDepthMask(false);
 
@@ -258,20 +269,82 @@ void keyPressed(unsigned char key, int x, int y)
   /* avoid thrashing this procedure */
   usleep(100);
 
-  /* If escape is pressed, kill everything. */
-  if (key == ESCAPE) 
-    { 
+  GLfloat _oldX = rob.getX();
+  GLfloat _oldY = rob.getY();
+  GLfloat _oldTheta = rob.getTheta();
 
-
-      /* shut down our window */
-      glutDestroyWindow(window); 
-      
-      /* exit the program...normal termination. */
-      exit(0);                   
-    }
+  GLfloat temp;
   
+  switch (key) {
+
+  case ESCAPE :
+   
+    /* If escape is pressed, kill everything. */
+    
+    /* shut down our window */
+    glutDestroyWindow(window); 
+    
+    /* exit the program...normal termination. */
+    exit(0);
+    
+  case Q:
+    temp = _oldTheta + ANGLE;
+    rob.move(_oldX, _oldY, temp);
+    break;
+
+  case W:
+    temp = _oldTheta - ANGLE;
+    rob.move(_oldX, _oldY, temp);
+    break;
+
+  }
+
+  glutPostRedisplay();
 
 
+}
+
+void specialKeyPressed(int key, int x, int y) 
+{
+  /* avoid thrashing this procedure */
+  usleep(100);
+
+  GLfloat _oldX = rob.getX();
+  GLfloat _oldY = rob.getY();
+  GLfloat _oldTheta = rob.getTheta();
+
+  GLfloat temp;
+
+
+  switch (key) {
+
+  case GLUT_KEY_UP :
+
+    temp = _oldY - STEP;
+    rob.move(_oldX, temp, _oldTheta);
+    break;
+
+  case GLUT_KEY_DOWN :
+
+    temp = _oldY + STEP;
+    rob.move(_oldX, temp, _oldTheta);
+    break;
+
+  case GLUT_KEY_RIGHT :
+
+    temp = _oldX + STEP;
+    rob.move(temp, _oldY, _oldTheta);
+    break;    
+
+  case GLUT_KEY_LEFT :
+
+    temp = _oldX - STEP;
+    rob.move(temp, _oldY, _oldTheta);
+    break;
+
+  }
+
+  glutPostRedisplay();
 }
 
 void animate () {
@@ -322,7 +395,7 @@ int main ( int argc, char * argv[] ) {
   glutInitWindowSize(624, 442);
   glutInitWindowPosition(0, 0);
   glutInitDisplayMode( GLUT_RGB | GLUT_DEPTH);
-  // glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH);  
+  // glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH);
 
   /* create and set up a window */
   window = glutCreateWindow("robot");
@@ -339,6 +412,7 @@ int main ( int argc, char * argv[] ) {
   
   /* Register the function called when the keyboard is pressed. */
   glutKeyboardFunc(keyPressed);
+  glutSpecialFunc(specialKeyPressed);
 
   /* animate function */
   //glutIdleFunc(animate);
@@ -350,24 +424,26 @@ int main ( int argc, char * argv[] ) {
   glDepthFunc(GL_LESS);			        // The Type Of Depth Test To Do
   glShadeModel(GL_SMOOTH);			// Enables Smooth Color Shadingx
 
+ 
+
   // set up lights
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   
-  GLfloat lightpos[] = { 0.0, 1.0, 0.0 };
-  GLfloat lightcolor[] = { 1.0, 1.0, 1.0 };
-  GLfloat ambcolor[] = { 1.0, 1.0, 1.0 };
+  GLfloat lightpos[] = { 0.0f, 0.0f, 1.0f, 0.0f };
+  GLfloat lightcolor[] = { 1.0f, 1.0f, 1.0f };
+  GLfloat ambcolor[] = { 1.0f, 1.0f, 1.0f };
  
   glEnable(GL_LIGHTING);                               // enable lighting
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT,ambcolor);     // ambient light
   
   glEnable(GL_LIGHT0);                                 // enable light source
+
   glLightfv(GL_LIGHT0,GL_POSITION,lightpos);           // config light source
   glLightfv(GL_LIGHT0,GL_AMBIENT,lightcolor);
   glLightfv(GL_LIGHT0,GL_DIFFUSE,lightcolor);
   glLightfv(GL_LIGHT0,GL_SPECULAR,lightcolor);
   glLightf(GL_LIGHT0,  GL_SPOT_CUTOFF, 45.0f);
- 
 
   /* define the projection transformation */
   glMatrixMode(GL_PROJECTION);
