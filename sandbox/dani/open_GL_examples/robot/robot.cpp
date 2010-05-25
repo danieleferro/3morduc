@@ -140,8 +140,8 @@ void Robot::move(GLfloat xr, GLfloat yr, GLfloat thetar)
 void Robot::DrawRobot()
 {
 
-  GLfloat reflectance_black[] = { 0.0f, 0.0f, 1.0f, 1.0f };
-  GLfloat reflectance_white[] = { 0.0f, 0.0f, 1.0f, 1.0f };
+  GLfloat reflectance_black[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+  GLfloat reflectance_white[] = { 0.8f, 0.8f, 0.8f, 1.0f };
   
   GLfloat cosine, sine;
 
@@ -149,7 +149,7 @@ void Robot::DrawRobot()
   glPushMatrix();
 
   // set robot reflectance (it is black)
-  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, reflectance_black);
+  glMaterialfv(GL_FRONT, GL_AMBIENT, reflectance_black);
 
   // set robot position
   glTranslatef(xr, 0.0f, yr);
@@ -160,11 +160,14 @@ void Robot::DrawRobot()
   sine = sin(thetar);
 
 
-  // set the drawing color to white
-  glColor3f(0.0f, 0.f, 0.f);
+  // set the drawing color
+  glColor3f(0.8f, 0.8f, 0.8f);
   
   // translate on z axis
   glTranslatef(0.0f,0.08f,0.0f);
+
+  //glScalef(radius, radius, radius);
+
   
   //  radius = 0.3f;
   //  glScalef(radius, radius, radius);
@@ -185,19 +188,19 @@ void Robot::DrawRobot()
   paintDisk(1.0f);
 
   glTranslatef(0.8f, 0.0f, 0.0f);
-  //glColor3f(0.5f, 0.5f, 0.5f);
+  glColor3f(0.5f, 0.5f, 0.5f);
   paintCylinder(0.2f, 0.3f);
   glTranslatef(0.0f, 0.3f, 0.0f);
   paintDisk(0.2f);
 
   glTranslatef(0,0.401,0);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, reflectance_white);
+  glMaterialfv(GL_FRONT, GL_AMBIENT, reflectance_white);
   paintDisk(0.1f);
   glTranslatef(0,-0.701,0);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, reflectance_black);
+  glMaterialfv(GL_FRONT, GL_AMBIENT, reflectance_black);
 
   glTranslatef(-0.8f, 0.0f, 0.0f);
-  //glColor3f(0.1f, 0.1f, 0.1f);
+  glColor3f(0.1f, 0.1f, 0.1f);
   glTranslatef(0.0f ,0.6f, 0.0f);
   paintCylinder(1.0f, 0.1f);
   paintDisk(-1.0f);
@@ -218,43 +221,6 @@ void Robot::DrawRobot()
 
   glPopMatrix();
 }
-
-/*
-void Robot::SetW(float set)
-{
-  if(set>0)
-    {
-      if (w+set<=wlim)
-	w+=set;
-    }	
-  else
-    if (w+set>=-wlim)
-      w+=set;
-
-
-}
-
-void Robot::SetV(float set)
-{
-
-  if(set>0)
-    {
-      if (v+set<=vlim)
-	v+=set;
-    }	
-  else
-    if (v+set>=-vlim)
-      v+=set;
-
-}
-
-void Robot::movetank(float ul, float ur)
-{
-  this->SetV(msr*(ul+ur)/2);
-  this->SetW(msr*(ul-ur)/l);
-
-}
-*/
 
 
 void paintDisk(GLfloat radius)

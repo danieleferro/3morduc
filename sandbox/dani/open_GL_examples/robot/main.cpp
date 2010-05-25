@@ -16,7 +16,7 @@ int window;
 GLuint texture[1];
 
 /* robot declaration */
-Robot rob(0.f, 0.f, 1.f);
+Robot rob(0.f, 5.f, 1.f);
 
 /* Image type - contains height, width, and data */
 struct Image {
