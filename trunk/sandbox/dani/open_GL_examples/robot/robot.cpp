@@ -118,6 +118,9 @@ void Robot::DrawRobot()
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix();
 
+  // set robot height
+  glTranslatef(0.0f, -12.0f, 0.0f);
+
   // set robot reflectance (it is black)
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, reflectance_black);
 
