@@ -44,8 +44,9 @@ void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB,
   glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,shininess);
 }
 
-
-
+// --------------------------------------------------------------------
+//                          GLUT CALLBACKS
+// --------------------------------------------------------------------
 void display () {
 
   /* clear window */
@@ -197,48 +198,32 @@ void getGLPos(int x, int y) {
 	 winX, (float)viewport[3] - winY, winZ, posX, posY, posZ);
 }
 
-int main ( int argc, char * argv[] ) {
+void init()
+{
 
-  /* initialize GLUT, using any commandline parameters passed to the 
-     program */
-  glutInit(&argc,argv);
-
-  /* setup the size, position, and display mode for new windows */
-  glutInitWindowSize(624, 442);
-  glutInitWindowPosition(0, 0);
-  glutInitDisplayMode( GLUT_RGB | GLUT_DEPTH);
-  // glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH);
-
-  /* create and set up a window */
-  window = glutCreateWindow("robot");
+  /* callback registering */
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);
-
-  /* set mouse passive motion callback */
   // glutPassiveMotionFunc(getGLPos);
-
+  glutKeyboardFunc(keyPressed);
+  glutSpecialFunc(specialKeyPressed);
+  //glutIdleFunc(animate);
 
   /* set up depth-buffering */
   glEnable(GL_DEPTH_TEST);
     
-  
-  /* Register the function called when the keyboard is pressed. */
-  glutKeyboardFunc(keyPressed);
-  glutSpecialFunc(specialKeyPressed);
+  /* load image for texturing  */
+  LoadGLTextures(texture);
 
-  /* animate function */
-  //glutIdleFunc(animate);
+  /* set the color for glClear() */
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-  // InitGL
-  LoadGLTextures(texture);				// Load The Texture(s) 
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);	        // set the color for the glClear()
-  glClearDepth(1.0);				// Enables Clearing Of The Depth Buffer
-  glDepthFunc(GL_LESS);			        // The Type Of Depth Test To Do
-  glShadeModel(GL_SMOOTH);			// Enables Smooth Color Shadingx
+  /* a few other things */
+  glClearDepth(1.0);		    // Enables Clearing Of The Depth Buffer
+  glDepthFunc(GL_LESS);		    // The Type Of Depth Test To Do
+  glShadeModel(GL_SMOOTH);	    // Enables Smooth Color Shadingx
 
- 
-
-  // set up lights
+  /* set up lighting */
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   
@@ -246,16 +231,34 @@ int main ( int argc, char * argv[] ) {
   GLfloat lightcolor[] = { 1.0f, 1.0f, 1.0f };
   GLfloat ambcolor[] = { 1.0f, 1.0f, 1.0f };
  
-  glEnable(GL_LIGHTING);                               // enable lighting
-  glLightModelfv(GL_LIGHT_MODEL_AMBIENT,ambcolor);     // ambient light
+  glEnable(GL_LIGHTING);
+  glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambcolor);
   
-  glEnable(GL_LIGHT0);                                 // enable light source
-
-  glLightfv(GL_LIGHT0,GL_POSITION,lightpos);           // config light source
-  glLightfv(GL_LIGHT0,GL_AMBIENT,lightcolor);
-  glLightfv(GL_LIGHT0,GL_DIFFUSE,lightcolor);
-  glLightfv(GL_LIGHT0,GL_SPECULAR,lightcolor);
+  glEnable(GL_LIGHT0);                          // set up LIGHT0
+  glLightfv(GL_LIGHT0, GL_POSITION, lightpos);  // configure LIGHT0
+  glLightfv(GL_LIGHT0, GL_AMBIENT, lightcolor);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, lightcolor);
+  glLightfv(GL_LIGHT0, GL_SPECULAR, lightcolor);
   glLightf(GL_LIGHT0,  GL_SPOT_CUTOFF, 45.0f);
+
+}
+
+int main ( int argc, char * argv[] ) {
+
+  /* initialize GLUT, using any commandline parameters 
+     passed to the program */
+  glutInit(&argc,argv);
+
+  /* setup the size, position, and display mode for 
+     new windows */
+  glutInitWindowSize(624, 442);
+  glutInitWindowPosition(0, 0);
+  glutInitDisplayMode( GLUT_RGB | GLUT_DEPTH);
+
+  /* create and set up a window */
+  window = glutCreateWindow("robot");
+  
+  init();
 
   /* define the projection transformation */
   glMatrixMode(GL_PROJECTION);
