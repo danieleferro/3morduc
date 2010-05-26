@@ -12,7 +12,7 @@
 #include <unistd.h>     // needed to sleep.
 #include "robot.h"
 #include "key_mapping.h"
-#include "image_loader.h"
+#include "texture_handler.h"
 
 /* step for forward direction */
 #define STEP 0.1f
@@ -29,7 +29,6 @@ GLuint texture[1];
 /* robot declaration */
 Robot rob(0.f, 5.f, 1.f);
 
-
 void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB, 
 		   GLfloat diffuseR, GLfloat diffuseG, GLfloat diffuseB, 
 		   GLfloat specularR, GLfloat specularG, GLfloat specularB,
@@ -45,6 +44,8 @@ void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB,
   glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,shininess);
 }
 
+
+
 void display () {
 
   /* clear window */
@@ -52,51 +53,8 @@ void display () {
 
   /* future matrix manipulations should affect the modelview matrix */
 
-  // BEGIN TEXTURE CODE
-
-  glEnable(GL_TEXTURE_2D);
-
-
-  glMatrixMode(GL_PROJECTION);
-  glPushMatrix();
-  glLoadIdentity();
-  
-  glMatrixMode(GL_MODELVIEW);
-  glPushMatrix();
-  glLoadIdentity();
-
-  // No depth buffer writes for background.
-  glDepthMask(false);
-
-  glBegin( GL_QUADS );
-
-  {
-    glTexCoord2f( 0.f, 0.f );
-    glVertex2f( -1, -1 );
-
-    glTexCoord2f( 0.f, 1.f );
-    glVertex2f( -1, 1.f );
-
-    glTexCoord2f( 1.f, 1.f );
-    glVertex2f( 1.f, 1.f );
-
-    glTexCoord2f( 1.f, 0.f );
-    glVertex2f( 1.f, -1 );
-
-  }
-
-  glEnd();
-
-  glDepthMask(true);
-
-  glPopMatrix();
-  glMatrixMode(GL_PROJECTION);
-  glPopMatrix();
-  glMatrixMode(GL_MODELVIEW);
-
-  glDisable(GL_TEXTURE_2D);
-
-  // END TEXTURE CODE
+  /* draw the texture */
+  DrawTexture();
   
   /* draw the robot */
   rob.DrawRobot();

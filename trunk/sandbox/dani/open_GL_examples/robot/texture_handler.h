@@ -9,8 +9,8 @@
 
 #endif
 
-#ifndef __IMAGE_LOADER
-#define __IMAGE_LOADER
+#ifndef __TEXTURE_HANDLER
+#define __TEXTURE_HANDLER
 
 /* Image type - contains height, width, and data */
 struct Image {
@@ -23,5 +23,6 @@ typedef struct Image Image;
 
 int ImageLoad(char * filename, Image * image);
 void LoadGLTextures(GLuint * texture);
+void DrawTexture();
 
 #endif
