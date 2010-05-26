@@ -4,15 +4,23 @@
 #include <GL/glut.h>    // Header File For The GLUT Library 
 #include <GL/gl.h>	// Header File For The OpenGL32 Library
 #include <GL/glu.h>	// Header File For The GLu32 Library
+
+#endif
+
+#ifndef __STD_LIB_INCLUDE
+#define __STD_LIB_INCLUDE
+
 #include <stdio.h>      // Header file for standard file i/o.
 #include <stdlib.h>     // Header file for malloc/free.
 
 #endif
 
 #include <unistd.h>     // needed to sleep.
+#include <iostream>
 #include "robot.h"
 #include "key_mapping.h"
 #include "texture_handler.h"
+#include "data_interface.h"
 
 /* step for forward direction */
 #define STEP 0.1f
@@ -271,8 +279,16 @@ int main ( int argc, char * argv[] ) {
   gluLookAt(0.0, 1.0, 10.0,
 	    0.0, 0.0, 0.0,
 	    0.0, 1.0, 0.0);
- 
 
+
+  GLfloat position_data[4];
+  GetNewPosition(18, position_data);
+
+  std::cout << position_data[0] << std::endl;
+  std::cout << position_data[1] << std::endl;
+  std::cout << position_data[2] << std::endl;
+  std::cout << position_data[3] << std::endl;
+ 
   /* tell GLUT to wait for events */
   glutMainLoop();
 }
