@@ -102,10 +102,10 @@ void LoadGLTextures(GLuint * texture) {
   }        
 
   // Create Texture	
-  glGenTextures(1, &texture[0]);
+  glGenTextures(1, texture);
 
   // Bind 2d texture (x and y size)
-  glBindTexture(GL_TEXTURE_2D, texture[0]);   
+  glBindTexture(GL_TEXTURE_2D, *texture);   
 
   // scale linearly when image bigger than texture
   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);

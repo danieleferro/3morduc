@@ -24,8 +24,12 @@ class Robot
   GLfloat radius; 
 
  public:
-  Robot(float x, float y, float theta);
-  void Move(GLfloat x, GLfloat y, GLfloat theta);
+  /* default value for
+     y is equal to the robot radius in order to put the robot
+     outside of the camera sight at beginning of the program
+  */
+  Robot(float x = 0.f, float y = 4.f, float theta = - M_PI / 2);
+  void Place(GLfloat x, GLfloat y, GLfloat theta);
   void DrawRobot();  
 
   GLfloat GetX();

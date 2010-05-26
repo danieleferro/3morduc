@@ -3,7 +3,8 @@
 
 /* ascii code for the keys */
 #define ESCAPE 27
-#define Q 113
-#define W 119
+#define q 113
+#define w 119
+#define s 115
 
 #endif

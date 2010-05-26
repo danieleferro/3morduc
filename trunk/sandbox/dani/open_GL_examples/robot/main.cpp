@@ -20,7 +20,7 @@
 #include "robot.h"
 #include "key_mapping.h"
 #include "texture_handler.h"
-#include "data_interface.h"
+#include "DataManager.h"
 
 /* step for forward direction */
 #define STEP 0.1f
@@ -35,7 +35,11 @@ int window;
 GLuint texture[1];
 
 /* robot declaration */
-Robot rob(0.f, 5.f, 1.f);
+Robot rob;
+
+/* Data Manager declaration */
+DataManager manager(&rob);
+
 
 void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB, 
 		   GLfloat diffuseR, GLfloat diffuseG, GLfloat diffuseB, 
@@ -108,15 +112,21 @@ void keyPressed(unsigned char key, int x, int y)
     /* exit the program...normal termination. */
     exit(0);
     
-  case Q:
+  case q:
     temp = _oldTheta + ANGLE;
-    rob.Move(_oldX, _oldY, temp);
+    rob.Place(_oldX, _oldY, temp);
     break;
 
-  case W:
+  case w:
     temp = _oldTheta - ANGLE;
-    rob.Move(_oldX, _oldY, temp);
+    rob.Place(_oldX, _oldY, temp);
     break;
+
+  case s:
+    
+    manager.NextStep();
+    break;
+
 
   }
 
@@ -142,25 +152,25 @@ void specialKeyPressed(int key, int x, int y)
   case GLUT_KEY_UP :
 
     temp = _oldY - STEP;
-    rob.Move(_oldX, temp, _oldTheta);
+    rob.Place(_oldX, temp, _oldTheta);
     break;
 
   case GLUT_KEY_DOWN :
 
     temp = _oldY + STEP;
-    rob.Move(_oldX, temp, _oldTheta);
+    rob.Place(_oldX, temp, _oldTheta);
     break;
 
   case GLUT_KEY_RIGHT :
 
     temp = _oldX + STEP;
-    rob.Move(temp, _oldY, _oldTheta);
+    rob.Place(temp, _oldY, _oldTheta);
     break;    
 
   case GLUT_KEY_LEFT :
 
     temp = _oldX - STEP;
-    rob.Move(temp, _oldY, _oldTheta);
+    rob.Place(temp, _oldY, _oldTheta);
     break;
 
   }
@@ -276,18 +286,10 @@ int main ( int argc, char * argv[] ) {
   /* define the viewing transformation */
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  gluLookAt(0.0, 1.0, 10.0,
+  gluLookAt(0.0, 0.0, 10.0,
 	    0.0, 0.0, 0.0,
 	    0.0, 1.0, 0.0);
 
-
-  GLfloat position_data[4];
-  GetNewPosition(18, position_data);
-
-  std::cout << position_data[0] << std::endl;
-  std::cout << position_data[1] << std::endl;
-  std::cout << position_data[2] << std::endl;
-  std::cout << position_data[3] << std::endl;
  
   /* tell GLUT to wait for events */
   glutMainLoop();
