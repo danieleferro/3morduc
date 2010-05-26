@@ -1,4 +1,4 @@
-#include "image_loader.h"
+#include "texture_handler.h"
 
 // quick and dirty bitmap loader...for 24 bit bitmaps with 1 plane only.  
 // See http://www.dcs.ed.ac.uk/~mxr/gfx/2d/BMP.txt for more info.
@@ -134,5 +134,49 @@ void LoadGLTextures(GLuint * texture) {
     free(image1);						
   }
 
+}
 
-};
+void DrawTexture()
+{
+
+  glEnable(GL_TEXTURE_2D);
+
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  glLoadIdentity();
+
+  // No depth buffer writes for background.
+  glDepthMask(false);
+
+  glBegin( GL_QUADS );
+
+  {
+    glTexCoord2f( 0.f, 0.f );
+    glVertex2f( -1, -1 );
+
+    glTexCoord2f( 0.f, 1.f );
+    glVertex2f( -1, 1.f );
+
+    glTexCoord2f( 1.f, 1.f );
+    glVertex2f( 1.f, 1.f );
+
+    glTexCoord2f( 1.f, 0.f );
+    glVertex2f( 1.f, -1 );
+
+  }
+
+  glEnd();
+
+  glDepthMask(true);
+
+  glPopMatrix();
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW);
+
+  glDisable(GL_TEXTURE_2D);
+}
