@@ -244,7 +244,6 @@ void display () {
   // END TEXTURE CODE
   
   /* draw the robot */
-
   rob.DrawRobot();
   
   // last set material is for the textures
