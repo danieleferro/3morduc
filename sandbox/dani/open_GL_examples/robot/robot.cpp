@@ -3,16 +3,16 @@
 void PaintCylinder(GLfloat radius,GLfloat height);
 void PaintDisk(GLfloat radius);
 
-Robot::Robot(float x = 0.f, float y = 0.f, float theta = 0.f)
+Robot::Robot(float x, float y, float theta)
 {
-  radius = 4.f;
+  radius = y;
   this->x = x;
   this->y = y;
   this->theta = theta;
 }
 
-void Robot::Move(GLfloat new_x, GLfloat new_y, 
-		 GLfloat new_theta)
+void Robot::Place(GLfloat new_x, GLfloat new_y, 
+		  GLfloat new_theta)
 {
   this->x = new_x;
   this->y = new_y;
@@ -38,6 +38,7 @@ void Robot::DrawRobot()
 
   // set robot position
   glTranslatef(this->x, 0.0f, this->y);
+
   glRotatef(-(this->theta) * 180 / M_PI, 0.0f, 1.0f, 0.0f);
 
   // compute theta's cosine and sine value
