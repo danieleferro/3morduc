@@ -11,6 +11,7 @@
 #define __STD_LIB_INCLUDE
 
 #include <stdio.h>
+#include <cstdlib> 
 
 #endif
 
@@ -21,7 +22,35 @@
 #include <sstream>
 #include <vector>
 #include <iostream>
+#include "robot.h"
 
-void GetNewPosition(int, GLfloat *);
+struct actual_robot_status {
+
+  float x;
+  float y;
+  float theta;
+  float time;
+
+};
+
+//typedef struct actual_robot_status actual_robot_status;
+
+
+class DataManager
+{
+ private:
+  actual_robot_status mem;
+  Robot * rob;
+  int index;
+
+  actual_robot_status GetNewPosition(int index);
+
+
+ public:
+  DataManager(Robot * robot); 
+  void NextStep();
+  
+  
+};
 
 #endif
