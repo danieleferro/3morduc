@@ -1,68 +1,36 @@
+#ifndef __OPENGL
+#define __OPENGL
+
+#include <GL/glut.h>    // Header File For The GLUT Library 
+#include <GL/gl.h>	// Header File For The OpenGL32 Library
+#include <GL/glu.h>	// Header File For The GLu32 Library
+
+#endif
+
 #ifndef __ROBOT__
 #define __ROBOT__
 
-//#include "stdafx.h"
-//#include <stdio.h>
-//#include "CCronometer.h"
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
 #include <math.h>
-
-
 
 class Robot
 {
-
-  // posizione
-  GLfloat xr;
-  GLfloat yr;					
-  GLfloat thetar;
-
-  // v max
-  GLfloat vlim;
-
-  // w max
-  GLfloat wlim;
-
-  // ear ratio
-  int n ;                         
+ private:
+  /* position */
+  GLfloat x ;
+  GLfloat y ;					
+  GLfloat theta ;
   
-  // isoluzione encoder
-  int res ;
-
-  //diametro della ruota
-  GLfloat d ;
-  // meter / step ratio
-  GLfloat msr ;
-
-  GLfloat dxr, dyr, dthetar;
-  float vrx,vry;
-
-  // distanza tra ruote
-  GLfloat l;
-  
-  GLfloat v;
-  GLfloat w;
-
-  // max dimension
+  /* scale factor (for drawing) */
   GLfloat radius; 
-  int collisions;
 
  public:
-
-  // constructor
-  Robot(float x1, float x2, float ang3);
-  
-  void move(GLfloat xr, GLfloat yr, GLfloat thetar);
-
-
-  GLfloat getX();
-  GLfloat getY();
-  GLfloat getTheta();
-    
+  Robot(float x, float y, float theta);
+  void Move(GLfloat x, GLfloat y, GLfloat theta);
   void DrawRobot();  
-  
+
+  GLfloat GetX();
+  GLfloat GetY();
+  GLfloat GetTheta();    
 };
 
 #endif

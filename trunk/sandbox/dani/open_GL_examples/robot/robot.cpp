@@ -1,110 +1,22 @@
-//#include "stdafx.h"
-//#include "util.h"
-#include <sys/types.h>  /// se non si mette prima dei prototipi prende quelli come definizione!
 #include "robot.h"
-#include <stdio.h>
-#include <iostream>
 
-void paintCylinder(GLfloat radius,GLfloat height);
-void paintDisk(GLfloat radius);
-void DrawPar3(GLfloat x0,GLfloat y0,GLfloat z0,GLfloat l,GLfloat h,GLfloat d );
+void PaintCylinder(GLfloat radius,GLfloat height);
+void PaintDisk(GLfloat radius);
 
-extern int wi;
-extern int he;
-extern char *dest;
-
-void DrawPar3(GLfloat x0,GLfloat y0,GLfloat z0,GLfloat l,GLfloat h,GLfloat d )
-/// xyz0 uk centro e il resto le dimensioni
+Robot::Robot(float x = 0.f, float y = 0.f, float theta = 0.f)
 {
-  // glTranslatef(x0,y0,z0);
-  // glBindTexture(GL_TEXTURE_2D, texture[0]);
-  
-  glBegin(GL_QUADS);
-  
-  GLfloat direction=1.0f;
-
-  glNormal3f(0.0f,0.0f,direction);
-  glTexCoord2f(0.0f, 10.0f);glVertex3f(x0+l/2,y0+d/2,z0+h/2); //6
-  glTexCoord2f(0.0f, 0.0f);glVertex3f(x0-l/2,y0+d/2,z0+h/2);
-  glTexCoord2f(1.0f, 0.0f);glVertex3f(x0-l/2,y0-d/2,z0+h/2);
-  glTexCoord2f(1.0f, 10.0f);glVertex3f(x0+l/2,y0-d/2,z0+h/2);
-
-  glNormal3f(0,0,-direction);
-  glTexCoord2f(0.0f, 10.0f);glVertex3f(x0+l/2,y0+d/2,z0-h/2);  //1
-  glTexCoord2f(0.0f, 0.0f);glVertex3f(x0+l/2,y0-d/2,z0-h/2);
-  glTexCoord2f(1.0f, 0.0f);glVertex3f(x0-l/2,y0-d/2,z0-h/2);
-  glTexCoord2f(1.0f, 10.0f);glVertex3f(x0-l/2,y0+d/2,z0-h/2);
-
-  glNormal3f(direction,0,0);
-  glTexCoord2f(0.0f, 10.0f);glVertex3f(x0+l/2,y0+d/2,z0+h/2); //2
-
-  glTexCoord2f(1.0f, 10.0f);glVertex3f(x0+l/2,y0-d/2,z0+h/2);
-  glTexCoord2f(1.0f, 0.0f);glVertex3f(x0+l/2,y0-d/2,z0-h/2);
-  glTexCoord2f(0.0f, 0.0f);glVertex3f(x0+l/2,y0+d/2,z0-h/2);
-
-  glNormal3f(-direction,0,0);
-  glTexCoord2f(0.0f, 10.0f);glVertex3f(x0-l/2,y0+d/2,z0+h/2); //5
-  glTexCoord2f(1.0f, 10.0f);glVertex3f(x0-l/2,y0+d/2,z0-h/2);
-  glTexCoord2f(1.0f, 0.0f);glVertex3f(x0-l/2,y0-d/2,z0-h/2);
-  glTexCoord2f(0.0f, 0.0f);glVertex3f(x0-l/2,y0-d/2,z0+h/2);
-
-  glNormal3f(0,-direction,0);
-  glVertex3f(x0+l/2,y0+d/2,z0+h/2); //3
-  glVertex3f(x0+l/2,y0+d/2,z0-h/2);
-  glVertex3f(x0-l/2,y0+d/2,z0-h/2);
-  glVertex3f(x0-l/2,y0+d/2,z0+h/2);
-
-  /*
-    glNormal3f(0,-direction,0);
-    glVertex3f(x0+l/2,y0-d/2,z0+h/2); //4
-    glVertex3f(x0+l/2,y0-d/2,z0-h/2);
-    glVertex3f(x0-l/2,y0-d/2,z0-h/2);
-    glVertex3f(x0-l/2,y0-d/2,z0+h/2);
-  */
-
-  glEnd();
-}
-
-
-
-Robot::Robot(float x1 = 0.f, float y2 = 0.f, float ang3 = 0.f)
-{
-  // meter / step ratio
-  msr = 3.1412*d/n/res;
-
-  // gear ratio
-  n = 1;
-
-  // risoluzione encoder
-  res = 2000;
-
-  // diametro della ruota
-  d = 0.063f*2.0f;
-
-  // distanza tra ruote
-  l = 0.28f;
-  vlim = 7;
-  wlim = 2;
-
   radius = 4.f;
-
-  dxr = 0;
-  dyr = 0;
-  dthetar = 0;
-  collisions = 0;
-
-  xr = x1;
-  yr = y2;
-  thetar = ang3;
+  this->x = x;
+  this->y = y;
+  this->theta = theta;
 }
 
-void Robot::move(GLfloat xr, GLfloat yr, GLfloat thetar)
+void Robot::Move(GLfloat new_x, GLfloat new_y, 
+		 GLfloat new_theta)
 {
-
-  this->xr = xr;
-  this->yr = yr;
-  this->thetar = thetar;
-
+  this->x = new_x;
+  this->y = new_y;
+  this->theta = new_theta;
 }
 
 void Robot::DrawRobot()
@@ -125,12 +37,12 @@ void Robot::DrawRobot()
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, reflectance_black);
 
   // set robot position
-  glTranslatef(xr, 0.0f, yr);
-  glRotatef(-thetar * 180 / M_PI, 0.0f, 1.0f, 0.0f);
+  glTranslatef(this->x, 0.0f, this->y);
+  glRotatef(-(this->theta) * 180 / M_PI, 0.0f, 1.0f, 0.0f);
 
   // compute theta's cosine and sine value
-  cosine = cos(thetar);
-  sine = sin(thetar);
+  cosine = cos(this->theta);
+  sine = sin(this->theta);
   
   // translate on z axis
   glTranslatef(0.0f,0.08f,0.0f);
@@ -138,46 +50,46 @@ void Robot::DrawRobot()
   glScalef(radius, radius, radius);
   
   // draw robot
-  paintCylinder(1.0f, 0.1);
-  paintDisk(-1.0f);
+  PaintCylinder(1.0f, 0.1);
+  PaintDisk(-1.0f);
   glTranslatef(0.0f, 0.1f, 0.0f);
-  paintDisk(1.0f);
+  PaintDisk(1.0f);
   
   glTranslatef(0.0f, 0.6f, 0.0f);
 
-  paintCylinder(1.0f, 0.1f);
-  paintDisk(-1.0f);
+  PaintCylinder(1.0f, 0.1f);
+  PaintDisk(-1.0f);
   glTranslatef(0.0f, 0.1f, 0.0f);
-  paintDisk(1.0f);
+  PaintDisk(1.0f);
 
   glTranslatef(0.8f, 0.0f, 0.0f);
   glColor3f(0.5f, 0.5f, 0.5f);
-  paintCylinder(0.2f, 0.3f);
+  PaintCylinder(0.2f, 0.3f);
   glTranslatef(0.0f, 0.3f, 0.0f);
-  paintDisk(0.2f);
+  PaintDisk(0.2f);
 
   glTranslatef(0,0.401,0);
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, reflectance_white);
-  paintDisk(0.1f);
+  PaintDisk(0.1f);
   glTranslatef(0,-0.701,0);
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, reflectance_black);
 
   glTranslatef(-0.8f, 0.0f, 0.0f);
   glColor3f(0.1f, 0.1f, 0.1f);
   glTranslatef(0.0f ,0.6f, 0.0f);
-  paintCylinder(1.0f, 0.1f);
-  paintDisk(-1.0f);
+  PaintCylinder(1.0f, 0.1f);
+  PaintDisk(-1.0f);
   glTranslatef(0.0f, 0.1f, 0.0f); 
-  paintDisk(1.0f);
+  PaintDisk(1.0f);
 
   glTranslatef(0.0f, -1.5f, 0.0f);
   glTranslatef(0.0f, 0.0f, 0.8f);
-  paintCylinder(0.1f, 1.5f);
+  PaintCylinder(0.1f, 1.5f);
   glTranslatef(0.0f, 0.0f, -1.60f);
-  paintCylinder(0.1f, 1.5f);
+  PaintCylinder(0.1f, 1.5f);
   glTranslatef(-0.8f, 0.0f, 0.8f);
 
-  paintCylinder(0.1f, 1.5f);
+  PaintCylinder(0.1f, 1.5f);
   glTranslatef(0.8f, 0.0f, 0.0f);
 
   glScalef(1/radius, 1/radius, 1/radius);
@@ -186,7 +98,7 @@ void Robot::DrawRobot()
 }
 
 
-void paintDisk(GLfloat radius)
+void PaintDisk(GLfloat radius)
 {
 
   glBegin(GL_POLYGON);
@@ -205,7 +117,7 @@ void paintDisk(GLfloat radius)
 
 }
 
-void paintCylinder(GLfloat radius, GLfloat height)
+void PaintCylinder(GLfloat radius, GLfloat height)
 {
 
   GLfloat c[361], s[361];
@@ -234,19 +146,18 @@ void paintCylinder(GLfloat radius, GLfloat height)
 
 }
 
-GLfloat Robot::getX()
+GLfloat Robot::GetX()
 {
-
-  return xr;
+  return this->x;
 }
 
-GLfloat Robot::getY() {
+GLfloat Robot::GetY() {
 
-  return yr;
+  return this->y;
 }
 
-GLfloat  Robot::getTheta() {
+GLfloat  Robot::GetTheta() {
 
-  return thetar;
+  return this->theta;
 }
 

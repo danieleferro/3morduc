@@ -82,9 +82,9 @@ void keyPressed(unsigned char key, int x, int y)
   /* avoid thrashing this procedure */
   usleep(100);
 
-  GLfloat _oldX = rob.getX();
-  GLfloat _oldY = rob.getY();
-  GLfloat _oldTheta = rob.getTheta();
+  GLfloat _oldX = rob.GetX();
+  GLfloat _oldY = rob.GetY();
+  GLfloat _oldTheta = rob.GetTheta();
 
   GLfloat temp;
   
@@ -102,12 +102,12 @@ void keyPressed(unsigned char key, int x, int y)
     
   case Q:
     temp = _oldTheta + ANGLE;
-    rob.move(_oldX, _oldY, temp);
+    rob.Move(_oldX, _oldY, temp);
     break;
 
   case W:
     temp = _oldTheta - ANGLE;
-    rob.move(_oldX, _oldY, temp);
+    rob.Move(_oldX, _oldY, temp);
     break;
 
   }
@@ -122,9 +122,9 @@ void specialKeyPressed(int key, int x, int y)
   /* avoid thrashing this procedure */
   usleep(100);
 
-  GLfloat _oldX = rob.getX();
-  GLfloat _oldY = rob.getY();
-  GLfloat _oldTheta = rob.getTheta();
+  GLfloat _oldX = rob.GetX();
+  GLfloat _oldY = rob.GetY();
+  GLfloat _oldTheta = rob.GetTheta();
 
   GLfloat temp;
 
@@ -134,25 +134,25 @@ void specialKeyPressed(int key, int x, int y)
   case GLUT_KEY_UP :
 
     temp = _oldY - STEP;
-    rob.move(_oldX, temp, _oldTheta);
+    rob.Move(_oldX, temp, _oldTheta);
     break;
 
   case GLUT_KEY_DOWN :
 
     temp = _oldY + STEP;
-    rob.move(_oldX, temp, _oldTheta);
+    rob.Move(_oldX, temp, _oldTheta);
     break;
 
   case GLUT_KEY_RIGHT :
 
     temp = _oldX + STEP;
-    rob.move(temp, _oldY, _oldTheta);
+    rob.Move(temp, _oldY, _oldTheta);
     break;    
 
   case GLUT_KEY_LEFT :
 
     temp = _oldX - STEP;
-    rob.move(temp, _oldY, _oldTheta);
+    rob.Move(temp, _oldY, _oldTheta);
     break;
 
   }
@@ -174,7 +174,7 @@ void animate () {
  * glutPassiveMotionFunc((void)(int, int))
  * it is triggered every time GLUT perceives that the mouse is moving
  */
-void getGLPos(int x, int y) {
+void GetGLPos(int x, int y) {
 
 
   // printf(">> X: %d\t Y: %d\n", x, y);
