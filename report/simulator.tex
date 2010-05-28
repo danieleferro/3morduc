@@ -1,19 +1,60 @@
 \section{Setting up a 3morduc simulator}
 \label{sec:simulator}
 
-\newline In order to implement the exocentric vision \ref{sec:exo} we need a wide set of data provided by the robot.
-These information consist of the camera images (the egocentric point of view) and of a simple textual file filled with 
-the robot status. The latter let us know the robot position and its odometric data, because it would be impossible to know 
-where exactly draw the robot without this awareness.
-\newline The first examples of the exocentric vision need a large static space where the robot can move in, but the real robot 
-(named 3morduc) can not be easily teleguided in wide environment because of its size and the lack of a large room in Catania. For 
-these reasons the simulator seemed to be necessary.
-
-
-
-
-
-
-
-
-%\cite{sugimoto}
+In order to implement the exocentric vision \ref{sec:exo} we need a wide set of data provided by the robot.
+This information consists of the camera images (the egocentric point of view) and of a simple textual file filled with 
+the robot status. The latter let us know the robot position and its odometric data, because it would be impossible to draw 
+the robot with Augmented Reality (AR) without this knowledge.
+\newline The exocentric vision operates better with a large static space where the robot can move in. Since the real robot 
+(named 3morduc) can not be easily teleguided in wide environment because of its size and the lack of a large room in Catania, 
+where the robot is situated, a simulator has been used to reproduce the best set of data. The simulator can be thought of as 
+a server, which receives requests and returns responses: the first are the commands sent by the user to move the robot, the
+latter the egocentric images and the robot position data.
+\newline Furthermore, with a simulator is extremely easy to change the environment where the robot is teleguided, so we can test
+the exocentric vision with an infinite number of environments without physically moving the robot in different places. In this way
+software development of exocentric vision can be faster, because it is simple and immediate to establish several test cases.
+\newline The first simulator adopted was named 'Rosen'. Written in Erlang language, Rosen has been developed at the University
+of Catania in order to simulate the behavior of robot with features completely different from 3morduc. The chief one was that
+the robot had its own algorithm to set its movement, it was indeed not guided by a human operator.
+\newline Rosen was used a couple of years ago for robot taking part in Euro-robot competition, but for our purpose was not fit
+since it does not even provide a egocentric vision. The difficulties faced to edit Rosen made us to look for a more suitable
+simulator.
+\newline In 2006, at the Aalborg University, the Italian student Filippo Privitera wrote a simulator to teleguide the
+3morduc robot \cite{privitera}. The simulator reproduces the robot (drawing its physical features) situated in a room with a
+variable numbers of walls. Walls' position is specified by the user, by giving the simulator a black and white bitmap image
+with the room plane to build the whole environment from.
+\newline Besides, Privitera's simulator allows to enable the stereoscopic vision, with anaglyph or polarized method (both 
+types are applied on the egocentric camera). These features make not too tricky to implement the exocentric vision control with 3d
+effect, in order to improve the user's ability in moving the robot. Other information like the number of collisions or the robot
+distance from the nearest obstacle are provided by simulator.
+\newline This simulator was written in MFC (Microsoft Foundation Class) framework and has been used for testing user ability in
+driving the robot, in comparison with the real robot server to quantify the differences between the two facilities. For more
+information see \cite{privitera}.
+\newline With a simulator specifically built for the 3morduc robot, it was not difficult to edit the source code to obtain what we 
+needed. First of all, we needed to record data about egocentric vision and robot status, because they are the input value 
+of the exocentric vision simulator. In order to achieve this, we edited the source code to allows the user to store data: by
+pressing the 'P' key keyboard the actual information (e.g. the actual camera image and robot status) are recorded in
+log files.
+\newline Every session in Privitera's simulator has its own identifier (a integer number). When the 'P' key is pressed the
+simulator write a new line in the text file named 'data< number of session >', creating the file if it does not exist. Each
+line contains four float number values, with the following meaning:
+\newline
+\newline 1. x coordinate
+\newline 2. y coordinate
+\newline 3. theta value (in radiant s)
+\newline 4. timestamp
+\newline 
+\newline The timestamp refers to the beginning of the simulation.
+\newline Beside the text file there are several bitmap files, each for every line written in 'data <number of session>'. These 
+files are named 'screenshot<number of session> <timestamp>', where the number of session indicates for every screenshot (e.g.
+the egocentric vision) the proper text file, and the timestamp the line with the associated status of the robot.
+\newline The software which implement the exocentric vision control will look for text and image files related to a specific 
+session, in order to read the necessary input and draw the robot correctly. It must be able to choose the right image to use as 
+background, among those previously read; to draw the robot over the background in the right position and orientation, depending 
+on its route; to prevent or signal collisions to the user, and so on.
+\newline Future development can reach a more interactive collaboration between simulator and exocentric vision control program. For
+example, it would be better if the control program could interact (by a socket or another data stream) with the simulator, sending
+the movement command and retrieving information about robot status. In this case log files would be substituted by a local or 
+global connection, and the exocentric program would not read information from file (as it actually does) but from the network.
+Furthermore, with log files the robot route is statically decided when they are created. With a network connection user
+could teleguide the robot in real time, without caring if on the server side is present the simulator or the real robot 3morduc.
