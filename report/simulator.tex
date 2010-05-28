@@ -36,8 +36,8 @@ of the exocentric vision simulator. In order to achieve this, we edited the sour
 pressing the 'P' key keyboard the actual information (e.g. the actual camera image and robot status) are recorded in
 log files.
 \newline Every session in Privitera's simulator has its own identifier (a integer number). When the 'P' key is pressed the
-simulator write a new line in the text file named 'data< number of session >', creating the file if it does not exist. Each
-line contains four float number values, with the following meaning:
+simulator write a new line in the text file named 'data\_$\langle$number of session$\rangle$', creating the file if it does
+not exist. Each line contains four float number values, with the following meaning:
 \newline
 \newline 1. x coordinate
 \newline 2. y coordinate
@@ -46,7 +46,7 @@ line contains four float number values, with the following meaning:
 \newline 
 \newline The timestamp refers to the beginning of the simulation.
 \newline Beside the text file there are several bitmap files, each for every line written in 'data <number of session>'. These 
-files are named 'screenshot<number of session> <timestamp>', where the number of session indicates for every screenshot (e.g.
+files are named 'screenshot\_$\langle$number of session$\rangle$\_$\langle$timestamp$\rangle$', where the number of session indicates for every screenshot (e.g.
 the egocentric vision) the proper text file, and the timestamp the line with the associated status of the robot.
 \newline The software which implement the exocentric vision control will look for text and image files related to a specific 
 session, in order to read the necessary input and draw the robot correctly. It must be able to choose the right image to use as 
