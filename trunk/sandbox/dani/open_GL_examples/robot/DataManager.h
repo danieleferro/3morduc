@@ -23,6 +23,9 @@
 #include <vector>
 #include <iostream>
 #include "robot.h"
+#include "texture_handler.h"
+
+#define STACK_SIZE 5
 
 struct actual_robot_status {
 
@@ -51,9 +54,16 @@ class DataManager
   Robot * rob;
   int index;
   int session;
+  GLuint texture[1];
 
+  std::vector<robot_data> queue;
+
+
+  /* fetch data position and camera image
+     from robot */
   robot_data GetNewData(int index);
 
+  
 
  public:
   DataManager(Robot * robot, int session); 
