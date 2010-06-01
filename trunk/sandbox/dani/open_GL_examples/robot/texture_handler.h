@@ -18,6 +18,9 @@
 #ifndef __TEXTURE_HANDLER
 #define __TEXTURE_HANDLER
 
+#include <string>
+
+
 /* Image type - contains height, width, and data */
 struct Image {
   unsigned long sizeX;
@@ -27,7 +30,7 @@ struct Image {
 
 typedef struct Image Image;
 
-int ImageLoad(char * filename, Image * image);
+int ImageLoad(std::string filename, Image * image);
 void LoadGLTextures(GLuint * texture);
 void DrawTexture();
 
