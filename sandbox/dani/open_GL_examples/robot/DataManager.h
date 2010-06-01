@@ -33,7 +33,6 @@ struct actual_robot_status {
 
 };
 
-//typedef struct actual_robot_status actual_robot_status;
 
 
 class DataManager

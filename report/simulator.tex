@@ -9,7 +9,7 @@ let us know the robot position and its odometric
 data, because it would be impossible to know where 
 exactly to draw the robot without this awareness.
 %
-In order to implement the exocentric vision \ref{sec:exo} we need a wide set of data provided by the robot.
+In order to implement the exocentric vision \cite{sec:exo} we need a wide set of data provided by the robot.
 This information consists of the camera images (the egocentric point of view) and of a simple textual file filled with 
 the robot status. The latter let us know the robot position and its odometric data, because it would be impossible to draw 
 the robot with Augmented Reality (AR) without this knowledge.
@@ -24,7 +24,7 @@ software development of exocentric vision can be faster, because it is simple an
 \newline The first simulator adopted was named 'Rosen'. Written in Erlang language, Rosen has been developed at the University
 of Catania in order to simulate the behavior of robot with features completely different from 3morduc. The chief one was that
 the robot had its own algorithm to set its movement, it was indeed not guided by a human operator.
-\newline Rosen was used a couple of years ago for robot taking part in Euro-robot competition, but for our purpose was not fit
+\newline Rosen was used a couple of years ago for robot taking part in Eurobot competition, but for our purpose was not fit
 since it does not even provide a egocentric vision. The difficulties faced to edit Rosen made us to look for a more suitable
 simulator.
 \newline In 2006, at the Aalborg University, the Italian student Filippo Privitera wrote a simulator to teleguide the
@@ -53,9 +53,10 @@ not exist. Each line contains four float number values, with the following meani
 \newline 4. timestamp
 \newline 
 \newline The timestamp refers to the beginning of the simulation.
-\newline Beside the text file there are several bitmap files, each for every line written in 'data <number of session>'. These 
-files are named 'screenshot\_$\langle$number of session$\rangle$\_$\langle$timestamp$\rangle$', where the number of session indicates for every screenshot (e.g.
-the egocentric vision) the proper text file, and the timestamp the line with the associated status of the robot.
+\newline Beside the text file there are several bitmap files, each for every line written in 'data\_$\langle$number of
+session$\rangle$'. These files are named 'screenshot\_$\langle$number of session$\rangle$\_$\langle$timestamp$\rangle$', where the
+number of session indicates for every screenshot (e.g.the egocentric vision) the proper text file, and the timestamp
+the line with the associated status of the robot.
 \newline The software which implement the exocentric vision control will look for text and image files related to a specific 
 session, in order to read the necessary input and draw the robot correctly. It must be able to choose the right image to use as 
 background, among those previously read; to draw the robot over the background in the right position and orientation, depending 

@@ -1,6 +1,8 @@
 \section{Rear: Rear Exocentric Augmented Reality}
 \label{sec:rear}
 
+\lstset{language=C}
+
 \subsection{A short introduction to OpenGL}
 
 OpenGL is designed as a software interface to the graphics hardware on your computer. It defines a platform-independent API;
@@ -36,8 +38,24 @@ our case the chosen values are 0.001 and 100000 (its ratio is equal to 10exp8).
 in order to set our point of view, we must change matrix again, this time to work with the GL MODELVIEW matrix. The function named
 'gluLookAt' allows to set the point of view, with its coordinates, the coordinates of the point to look at and its orientation.
 See \cite{opengl:gluLookAt} for further details.
-\newline To better understand these methods we recommend reading OpenGL manual.
 
+\begin{lstlisting}
+
+  /* define the projection transformation */
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluPerspective(60, 624/442, 0.001, 100000);
+  
+  /* define the viewing transformation */
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  gluLookAt(0.0, 0.0, 10.0,
+            0.0, 0.0, 0.0,
+            0.0, 1.0, 0.0);
+
+\end{lstlisting}
+
+To better understand these methods we recommend reading OpenGL manual.
 
 \subsection{The Robot class}
 
@@ -45,10 +63,10 @@ The robot class, present in Filippo Privitera's simulator \cite{privitera}, has 
 exocentric vision control code. In this chapter we will exam the main differences.
 \newline Both classes represent the 3morduc robot in openGL world. This means that the robot class offers, among others, a
 method with the purpose of drawing itself, called by the OpenGL framework when it is necessary. The operation of drawing is
-completed thank to other two methods, able to draw the elementary part of the robot (e.g. cylinders and disks).
+completed thanks to other two methods, able to draw the elementary part of the robot (e.g. cylinders and disks).
 \newline There are not considerable different between the tho drawing method implantation. The main one is that in the new method,
-before starting drawing, the model-view matrix is copied in order to restore it at the end of the process (see blah for further
-information). In these way we do not affect the model-view matrix status by drawing the robot.
+before starting drawing, the model-view matrix is copied in order to restore it at the end of the process. In these way we
+do not affect the model-view matrix status by drawing the robot.
 \newline The robot class, after the refactoring process, loses many of its public attributes and methods, so in the
 exocentric vision control it is much more simple than the original one. First of all, the new class does not contain either
 attributes to store the actual speed vector component, or a chronometer object to count the time, or information about wheels
@@ -56,8 +74,20 @@ encoder. This information was stored in the simulator robot class to calculate t
 but since we retrieve the position directly from the simulator these fields are now useless. 
 \newline The unique attribute (changed from public to private, in the new version) which survives the refactory - along with the
 triple values indicating coordinate on x axis, coordinate on y axis and rotation - is named 'radius'. 'radius' is a float
-attribute, which stores the value of the radius for the tree cylinders which make up the robot. See figure blah for a better
-understanding. The default 'radius' value is 4, but it can be customized by the user: by increasing it the robot will be 
+attribute, which stores the value of the radius for the tree cylinders which make up the robot. See figure
+\ref{fig:3morduc_opengl} for a better understanding.
+
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=200pt]{img/3morduc_opengl}  %robot pic
+    \caption{The 3morduc robotic platform drawn in OpenGL}
+    \label{fig:3morduc_opengl}
+  \end{center}
+\end{figure}
+
+
+The default 'radius' value is 4, but it can be customized by the user: by increasing it the robot will be 
 displayed larger and larger on the screen, and viceversa.
 \newline All the attributes are private in the new robot class, so a method to get each one value is declared.
 \newline Most of the previous public methods have been removed too. The constructor method, for instance, is present with one
