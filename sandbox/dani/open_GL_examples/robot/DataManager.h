@@ -33,20 +33,30 @@ struct actual_robot_status {
 
 };
 
+struct robot_data {
+
+  actual_robot_status position;
+  std::string image_path;
+
+};
+
 
 
 class DataManager
 {
  private:
   actual_robot_status mem;
+  std::string actual_image;
+
   Robot * rob;
   int index;
+  int session;
 
-  actual_robot_status GetNewPosition(int index);
+  robot_data GetNewData(int index);
 
 
  public:
-  DataManager(Robot * robot); 
+  DataManager(Robot * robot, int session); 
   void NextStep();
   
   

@@ -38,7 +38,7 @@ GLuint texture[1];
 Robot rob;
 
 /* Data Manager declaration */
-DataManager manager(&rob);
+DataManager manager(&rob, 8);
 
 
 void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB, 
