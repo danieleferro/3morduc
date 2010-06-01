@@ -32,13 +32,13 @@
 int window; 
 
 /* storage for one texture  */
-GLuint texture[1];
+//GLuint texture[1];
 
 /* robot declaration */
-Robot rob;
+Robot * rob = NULL;
 
 /* Data Manager declaration */
-DataManager manager(&rob, 8);
+DataManager * manager = NULL;
 
 
 void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB, 
@@ -65,12 +65,12 @@ void display () {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   /* future matrix manipulations should affect the modelview matrix */
-
+  
   /* draw the texture */
   DrawTexture();
   
   /* draw the robot */
-  rob.DrawRobot();
+  rob->DrawRobot();
   
   // last set material is for the textures
   setMaterial(1.0, 1.0, 1.0,
@@ -94,9 +94,9 @@ void keyPressed(unsigned char key, int x, int y)
   /* avoid thrashing this procedure */
   usleep(100);
 
-  GLfloat _oldX = rob.GetX();
-  GLfloat _oldY = rob.GetY();
-  GLfloat _oldTheta = rob.GetTheta();
+  GLfloat _oldX = rob->GetX();
+  GLfloat _oldY = rob->GetY();
+  GLfloat _oldTheta = rob->GetTheta();
 
   GLfloat temp;
   
@@ -114,17 +114,17 @@ void keyPressed(unsigned char key, int x, int y)
     
   case q:
     temp = _oldTheta + ANGLE;
-    rob.Place(_oldX, _oldY, temp);
+    rob->Place(_oldX, _oldY, temp);
     break;
 
   case w:
     temp = _oldTheta - ANGLE;
-    rob.Place(_oldX, _oldY, temp);
+    rob->Place(_oldX, _oldY, temp);
     break;
 
   case s:
     
-    manager.NextStep();
+    manager->NextStep();
     break;
 
 
@@ -140,9 +140,9 @@ void specialKeyPressed(int key, int x, int y)
   /* avoid thrashing this procedure */
   usleep(100);
 
-  GLfloat _oldX = rob.GetX();
-  GLfloat _oldY = rob.GetY();
-  GLfloat _oldTheta = rob.GetTheta();
+  GLfloat _oldX = rob->GetX();
+  GLfloat _oldY = rob->GetY();
+  GLfloat _oldTheta = rob->GetTheta();
 
   GLfloat temp;
 
@@ -152,25 +152,25 @@ void specialKeyPressed(int key, int x, int y)
   case GLUT_KEY_UP :
 
     temp = _oldY - STEP;
-    rob.Place(_oldX, temp, _oldTheta);
+    rob->Place(_oldX, temp, _oldTheta);
     break;
 
   case GLUT_KEY_DOWN :
 
     temp = _oldY + STEP;
-    rob.Place(_oldX, temp, _oldTheta);
+    rob->Place(_oldX, temp, _oldTheta);
     break;
 
   case GLUT_KEY_RIGHT :
 
     temp = _oldX + STEP;
-    rob.Place(temp, _oldY, _oldTheta);
+    rob->Place(temp, _oldY, _oldTheta);
     break;    
 
   case GLUT_KEY_LEFT :
 
     temp = _oldX - STEP;
-    rob.Place(temp, _oldY, _oldTheta);
+    rob->Place(temp, _oldY, _oldTheta);
     break;
 
   }
@@ -231,7 +231,7 @@ void init()
   glEnable(GL_DEPTH_TEST);
     
   /* load image for texturing  */
-  LoadGLTextures(texture);
+  //LoadGLTextures(texture, "screenshot.bmp");
 
   /* set the color for glClear() */
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -275,6 +275,9 @@ int main ( int argc, char * argv[] ) {
 
   /* create and set up a window */
   window = glutCreateWindow("robot");
+
+  rob = new Robot();
+  manager = new DataManager(rob, 8);
   
   init();
 

@@ -15,6 +15,8 @@ DataManager::DataManager(Robot * robot, int session)
   index = 2;
   this->rob = robot;
 
+  LoadGLTextures(texture, "screenshot.bmp");
+
 }
 
 
@@ -58,6 +60,46 @@ void DataManager::NextStep() {
 
   mem = new_status.position;
   actual_image = new_status.image_path;
+
+
+
+
+
+  /* managing queue */
+  robot_data out_element;
+
+  
+  if (queue.size() < STACK_SIZE) {
+
+    /* fill the queue */
+    queue.push_back(new_status);
+
+  }
+  else {
+
+    /* remove oldest element (first position) */
+    out_element = queue[0];
+    queue.erase(queue.begin());
+
+    /* insert in tail */
+    queue.push_back(new_status);
+
+    /* use data in out_element to change
+       camera position and texture */
+
+  }
+
+  for (std::vector<robot_data>::iterator it = queue.begin();
+       it != queue.end();
+       ++it) {
+
+    std::cout << (*it).position.x << " %\t ";
+    std::cout << (*it).position.y << " %\t ";
+    std::cout << (*it).position.theta << " %\t ";
+    std::cout << (*it).position.time << " %\t ";
+
+    std::cout << (*it).image_path << std::endl;
+  }  
 
   
 }

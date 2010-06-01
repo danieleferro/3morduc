@@ -82,12 +82,13 @@ int ImageLoad(std::string filename, Image *image) {
     image->data[i+2] = temp;
   }
     
+
   // we're done.
   return 1;
 }
     
 // Load Bitmaps And Convert To Textures
-void LoadGLTextures(GLuint * texture) {	
+void LoadGLTextures(GLuint * texture, std::string filename) {	
   // Load Texture
   Image *image1;
     
@@ -99,7 +100,7 @@ void LoadGLTextures(GLuint * texture) {
     exit(0);
   }
 
-  if (!ImageLoad("screenshot.bmp", image1)) {
+  if (!ImageLoad(filename, image1)) {
     exit(1);
   }        
 

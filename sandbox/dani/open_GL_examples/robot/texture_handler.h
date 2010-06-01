@@ -30,8 +30,11 @@ struct Image {
 
 typedef struct Image Image;
 
-int ImageLoad(std::string filename, Image * image);
-void LoadGLTextures(GLuint * texture);
 void DrawTexture();
+
+/* textures manager functions */
+int ImageLoad(std::string filename, Image * image);
+void LoadGLTextures(GLuint * texture, std::string filename);
+
 
 #endif
