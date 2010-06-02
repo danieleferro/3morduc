@@ -15,13 +15,14 @@ main: $(OBJECTS)
 	touch $@
 	touch main.cpp
 clean:
-	rm *.o; rm $(EXENAME)
+	-rm *.o; rm $(EXENAME)
+	-rm *.h.gch
 
 tar:
 	tar -c *.h *.cpp readme.txt -f $(EXENAME).tar
 
+run:	main
+	./${EXENAME}
+
 force:
 	g++ $(SOURCES) -o $(EXENAME)
-
-run: main
-	./$(EXENAME)
