@@ -276,7 +276,13 @@ int main ( int argc, char * argv[] ) {
   /* create and set up a window */
   window = glutCreateWindow("robot");
 
+  /* robot instantiation
+     do not instantiate the robot before 
+     having initialized OpenGL since calls
+     OpenGL functions */
   rob = new Robot();
+
+  /* data manager instatiation */
   manager = new DataManager(rob, 8);
   
   init();

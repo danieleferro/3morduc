@@ -63,9 +63,17 @@ class DataManager
      from robot */
   robot_data GetNewData(int index);
 
-  
+  /* load image to set as background */
+  int ImageLoad(std::string filename, Image * image);
+
+  /* bind the specified image to a texture */
+  void LoadGLTextures(GLuint * texture, std::string filename);
 
  public:
+  /* data manager conversion constructor */
+  /* first parameter is a robot instance */
+  /* second parameter is the simulation session number 
+     it is only needed for offline testing */
   DataManager(Robot * robot, int session); 
   void NextStep();
   

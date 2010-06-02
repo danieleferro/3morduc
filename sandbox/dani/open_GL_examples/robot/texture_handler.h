@@ -25,16 +25,11 @@
 struct Image {
   unsigned long sizeX;
   unsigned long sizeY;
-  char *data;
+  char * data;
 };
 
 typedef struct Image Image;
 
 void DrawTexture();
-
-/* textures manager functions */
-int ImageLoad(std::string filename, Image * image);
-void LoadGLTextures(GLuint * texture, std::string filename);
-
 
 #endif
