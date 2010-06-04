@@ -118,7 +118,7 @@ robot_data DataManager::GetNewData(int line_number)
   int time;
   robot_data out_value;
   
-  o << "../../../../rear/log/data_" << session << ".txt";
+  o << "../log/data_" << session << ".txt";
   position_data_name = o.str();
 
 
