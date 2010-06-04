@@ -130,6 +130,16 @@ void keyPressed(unsigned char key, int x, int y)
     manager->NextStep();
     break;
 
+    
+    // moving camera
+  case o:
+    glTranslatef(0.f, 0.f, STEP *5 );
+    break;
+
+    // moving camera
+  case p:
+    glTranslatef(0.f, 0.f, - STEP * 5);
+    break;
 
   }
 
