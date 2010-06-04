@@ -15,7 +15,7 @@ DataManager::DataManager(Robot * robot, int session)
   index = 2;
   this->rob = robot;
 
-  LoadGLTextures(texture, "screenshot.png");
+  LoadGLTextures(texture, actual_image);
 
 }
 
@@ -24,6 +24,11 @@ void DataManager::NextStep() {
 
   robot_data new_status;
   actual_robot_status delta;
+
+  /* true if robot changes its position
+     false otherwise
+  */
+  int flag;
   
   new_status = GetNewData(index);
   index++;
@@ -46,48 +51,101 @@ void DataManager::NextStep() {
   /* check if robot changed its position */
   if (fabs(delta.x) <= 0.001f &&
       fabs(delta.y) <= 0.001f &&
-      fabs(delta.theta) <= 0.001f)
-    {
-      
-      std::cout << "Robot did not change its position." << std::endl;
-      return;
-    }
-
-
-  rob->Place(delta.x + rob->GetX(),
-	    delta.y + rob->GetY(),
-	    delta.theta + rob->GetTheta() );
-
-  mem = new_status.position;
-  actual_image = new_status.image_path;
-
-
-
-
-
-  /* managing queue */
-  robot_data out_element;
-
-  
-  if (queue.size() < STACK_SIZE) {
-
-    /* fill the queue */
-    queue.push_back(new_status);
+      fabs(delta.theta) <= 0.001f) {
+    
+    // Robot did not change its position.
+    std::cout << "Robot did not change its position." << std::endl;
+    flag = 0;
 
   }
   else {
+    
+    // Robot changed its position.
+    flag = 1;
+  }
+  
 
-    /* remove oldest element (first position) */
-    out_element = queue[0];
-    queue.erase(queue.begin());
+  if (flag) {
 
-    /* insert in tail */
-    queue.push_back(new_status);
 
-    /* use data in out_element to change
-       camera position and texture */
+    rob->Place(delta.x + rob->GetX(),
+	       delta.y + rob->GetY(),
+	       delta.theta + rob->GetTheta() );
+
+    mem = new_status.position;
 
   }
+
+
+
+
+
+  /* managing queue,
+     with "delta" struct saved
+     (delta stores diffrences from actual robot position
+     to previous one)
+  */
+  robot_data out_element;
+  robot_data delta_queued;
+  
+  delta_queued.position   = delta;
+  delta_queued.image_path = new_status.image_path;
+
+  
+  // if queue is not full and robot changed its position
+  if (queue.size() < STACK_SIZE && flag == 1) {
+
+    /* fill the queue */
+    queue.push_back(delta_queued);
+
+  }
+
+  else {
+  
+    // if queue is full and robot changed its position
+    if (queue.size() == STACK_SIZE && flag == 1) {
+  
+      /* remove oldest element (first position) */
+      out_element = queue[0];
+      queue.erase(queue.begin());
+
+      /* insert in tail */
+      queue.push_back(delta_queued);
+      
+      /* use data in out_element to change
+	 texture */
+      LoadGLTextures(texture, out_element.image_path);
+      actual_image = out_element.image_path;
+      
+      /* use data in out_element to change
+	 camera position
+      */
+      MoveCamera(out_element);
+
+    }
+
+
+    // if queue is not empty and robot did not change its position
+    if (queue.size() > 0 && flag == 0) {
+
+      /* remove oldest element (first position) */
+      out_element = queue[0];
+      queue.erase(queue.begin());
+      
+      /* use data in out_element to change
+	 texture */
+      LoadGLTextures(texture, out_element.image_path);
+      actual_image = out_element.image_path;
+      
+      /* use data in out_element to change
+	 camera position
+      */
+      MoveCamera(out_element);
+
+    }
+
+  }
+
 
   for (std::vector<robot_data>::iterator it = queue.begin();
        it != queue.end();
@@ -152,7 +210,7 @@ robot_data DataManager::GetNewData(int line_number)
      add a new value to it */
   o.str("");
   o.clear();
-  o << "screenshot_" << session << "_" << time << ".png";
+  o << "../log/screenshot_" << session << "_" << time << ".png";
   out_value.image_path = o.str();
 
   std::cout << out_value.image_path << std::endl;
@@ -162,7 +220,6 @@ robot_data DataManager::GetNewData(int line_number)
 }
 
     
-// Load Bitmaps And Convert To Textures
 void DataManager::LoadGLTextures(GLuint * texture, std::string filename) {	
 
   /* load image from png file */
@@ -174,5 +231,21 @@ void DataManager::LoadGLTextures(GLuint * texture, std::string filename) {
    
   // Bind 2d texture (x and y size)
   glBindTexture(GL_TEXTURE_2D, *texture);   
+
+}
+
+
+void DataManager::MoveCamera(robot_data delta) {
+
+  /* use data in out_element to change
+     camera position
+     (only one function make a change)
+  */
+  glTranslatef(- delta.position.x,
+	       0.f,
+	       - delta.position.y);
+
+  glRotatef(delta.position.theta,
+	    0.f, 1.f, 0.f);
 
 }

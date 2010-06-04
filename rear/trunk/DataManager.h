@@ -66,6 +66,9 @@ class DataManager
   /* bind the specified image to a texture */
   void LoadGLTextures(GLuint * texture, std::string filename);
 
+  /* move camera */
+  void MoveCamera(robot_data delta);
+
  public:
   /* data manager conversion constructor */
   /* first parameter is a robot instance */
