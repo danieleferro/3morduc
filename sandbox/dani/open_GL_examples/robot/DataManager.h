@@ -23,7 +23,7 @@
 #include <vector>
 #include <iostream>
 #include "robot.h"
-#include "texture_handler.h"
+#include "texture_png.h"
 
 #define STACK_SIZE 5
 
@@ -62,9 +62,6 @@ class DataManager
   /* fetch data position and camera image
      from robot */
   robot_data GetNewData(int index);
-
-  /* load image to set as background */
-  int ImageLoad(std::string filename, Image * image);
 
   /* bind the specified image to a texture */
   void LoadGLTextures(GLuint * texture, std::string filename);
