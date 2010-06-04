@@ -18,9 +18,12 @@
 #include <unistd.h>     // needed to sleep.
 #include <iostream>
 #include "robot.h"
-#include "key_mapping.h"
-#include "texture_handler.h"
+
+// why does include compile ?! 
 #include "DataManager.h"
+
+#include "key_mapping.h"
+#include "texture_png.h"
 
 /* step for forward direction */
 #define STEP 0.1f
