@@ -176,7 +176,7 @@ robot_data DataManager::GetNewData(int line_number)
   int time;
   robot_data out_value;
   
-  o << "../log/data_" << session << ".txt";
+  o << "../log/log_" << session << "/data_" << session << ".txt";
   position_data_name = o.str();
 
 
@@ -210,7 +210,7 @@ robot_data DataManager::GetNewData(int line_number)
      add a new value to it */
   o.str("");
   o.clear();
-  o << "../log/screenshot_" << session << "_" << time << ".png";
+  o << "../log/log_" << session << "/screenshot_" << session << "_" << time << ".png";
   out_value.image_path = o.str();
 
   std::cout << out_value.image_path << std::endl;
