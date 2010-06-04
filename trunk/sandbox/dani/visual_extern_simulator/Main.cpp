@@ -1736,7 +1736,7 @@ UINT TakeScreenshot(LPVOID param)
 												  data->image_data);
 
 	corona::FlipImage(myImage, corona::CA_X); //Flip the image
-	sprintf(image_path, "trace/screenshot_%d_%d.bmp", data->record, data->time);
+	sprintf(image_path, "trace/screenshot_%d_%d.png", data->record, data->time);
 	corona::SaveImage(image_path, corona::FF_PNG, myImage); //Save the image
 
 	delete myImage;
