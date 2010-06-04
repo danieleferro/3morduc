@@ -1,12 +1,19 @@
 EXENAME = main
-SOURCES = $(shell ls *.cpp)
+SOURCES = \
+	robot.cpp \
+	texture_png.cpp \
+	DataManager.cpp \
+	main.cpp
+
 OBJECTS = $(SOURCES:.cpp=.o)
+OPTIONS = -lglut -lpng
+LIBRARY = -L/usr/X11R6/lib
 
 main: $(OBJECTS)
-	g++ -L/usr/X11R6/lib -lglut -o $(EXENAME) $(OBJECTS)
+	g++ $(LIBRARY) $(OPTIONS) -o $(EXENAME) $(OBJECTS) 
 
 .cpp.o:
-	g++ -L/usr/X11R6/lib -lglut -c $<
+	g++ $(LIBRARY) $(OPTIONS) -c $<
 
 # if header file changes:
 # touch cpp file
