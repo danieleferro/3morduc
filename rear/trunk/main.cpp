@@ -141,6 +141,23 @@ void keyPressed(unsigned char key, int x, int y)
     glTranslatef(0.f, 0.f, - STEP * 5);
     break;
 
+    // moving camera
+  case k:
+    glRotatef(STEP * 5,
+	      0.0,
+	      1.f,
+	      0.0);
+    break;
+
+    // moving camera
+  case l:
+    glRotatef(- STEP * 5,
+	      0.0f,
+	      1.f,
+	      0.0f);
+    break;
+
+
   }
 
   glutPostRedisplay();
@@ -296,7 +313,7 @@ int main ( int argc, char * argv[] ) {
   rob = new Robot();
 
   /* data manager instatiation */
-  manager = new DataManager(rob, 8);
+  manager = new DataManager(rob, 20 );
   
   init();
 

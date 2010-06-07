@@ -28,7 +28,7 @@ void DataManager::NextStep() {
   /* true if robot changes its position
      false otherwise
   */
-  int flag;
+  bool flag;
   
   new_status = GetNewData(index);
   index++;
@@ -36,7 +36,9 @@ void DataManager::NextStep() {
   delta.x     = new_status.position.x - mem.x;
   delta.y     = new_status.position.y - mem.y;
   delta.theta = new_status.position.theta - mem.theta;
-  delta.time  = new_status.position.time - mem.time;
+  //delta.time  = new_status.position.time - mem.time;
+  // It is better saving the absolute time
+  delta.time  = new_status.position.time;
 
   /*
     std::cout << delta.x << std::endl;
@@ -49,19 +51,19 @@ void DataManager::NextStep() {
   */
 
   /* check if robot changed its position */
-  if (fabs(delta.x) <= 0.001f &&
-      fabs(delta.y) <= 0.001f &&
-      fabs(delta.theta) <= 0.001f) {
+  if (fabs(delta.x) <= TRIGGER &&
+      fabs(delta.y) <= TRIGGER &&
+      fabs(delta.theta) <= TRIGGER) {
     
     // Robot did not change its position.
     std::cout << "Robot did not change its position." << std::endl;
-    flag = 0;
+    flag = false;
 
   }
   else {
     
     // Robot changed its position.
-    flag = 1;
+    flag = true;
   }
   
 
@@ -93,7 +95,7 @@ void DataManager::NextStep() {
 
   
   // if queue is not full and robot changed its position
-  if (queue.size() < STACK_SIZE && flag == 1) {
+  if ( queue.size() < STACK_SIZE && flag == true) {
 
     /* fill the queue */
     queue.push_back(delta_queued);
@@ -103,7 +105,7 @@ void DataManager::NextStep() {
   else {
   
     // if queue is full and robot changed its position
-    if (queue.size() == STACK_SIZE && flag == 1) {
+    if ( queue.size() == STACK_SIZE && flag == true) {
   
       /* remove oldest element (first position) */
       out_element = queue[0];
@@ -122,11 +124,12 @@ void DataManager::NextStep() {
       */
       MoveCamera(out_element);
 
+
     }
 
 
     // if queue is not empty and robot did not change its position
-    if (queue.size() > 0 && flag == 0) {
+    if (queue.size() > 0 && flag == false) {
 
       /* remove oldest element (first position) */
       out_element = queue[0];
@@ -151,13 +154,22 @@ void DataManager::NextStep() {
        it != queue.end();
        ++it) {
 
+    // floating point output format
+    std::cout.setf(std::ios::fixed, std::ios::floatfield);
+    std::cout.setf(std::ios::showpoint);
+
+
     std::cout << (*it).position.x << " %\t ";
     std::cout << (*it).position.y << " %\t ";
     std::cout << (*it).position.theta << " %\t ";
     std::cout << (*it).position.time << " %\t ";
 
-    std::cout << (*it).image_path << std::endl;
+    // std::cout << (*it).image_path;
+
+    std::cout << std::endl;
   }  
+
+  std::cout << std::endl;
 
   
 }
@@ -247,5 +259,41 @@ void DataManager::MoveCamera(robot_data delta) {
 
   glRotatef(delta.position.theta,
 	    0.f, 1.f, 0.f);
+
+}
+
+uint DataManager::CountTranslation(std::vector<robot_data> queue) {
+
+  uint count = 0;
+  
+  for (std::vector<robot_data>::iterator it = queue.begin();
+       it != queue.end();
+       ++it) {
+
+    // it not rotation, it is a translation
+    if ( (*it).position.theta < TRIGGER &&
+	 ( (*it).position.x > TRIGGER || (*it).position.y > TRIGGER )
+	 )
+
+      count++;
+
+  }  
+
+  return count;
+
+}
+
+bool DataManager::IsTranslation(robot_data data) {
+
+  // it not rotation, it is a translation
+  if ( (*it).position.theta < TRIGGER &&
+       ( (*it).position.x > TRIGGER || (*it).position.y > TRIGGER )
+       )
+    
+    return true;
+  
+  else
+    
+    return false;
 
 }
