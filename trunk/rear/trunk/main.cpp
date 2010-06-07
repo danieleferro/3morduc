@@ -313,7 +313,7 @@ int main ( int argc, char * argv[] ) {
   rob = new Robot();
 
   /* data manager instatiation */
-  manager = new DataManager(rob, 20 );
+  manager = new DataManager(rob, 22 );
   
   init();
 

@@ -286,8 +286,8 @@ uint DataManager::CountTranslation(std::vector<robot_data> queue) {
 bool DataManager::IsTranslation(robot_data data) {
 
   // it not rotation, it is a translation
-  if ( (*it).position.theta < TRIGGER &&
-       ( (*it).position.x > TRIGGER || (*it).position.y > TRIGGER )
+  if ( data.position.theta < TRIGGER &&
+       ( data.position.x > TRIGGER || data.position.y > TRIGGER )
        )
     
     return true;
