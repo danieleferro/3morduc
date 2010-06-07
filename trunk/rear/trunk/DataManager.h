@@ -26,6 +26,7 @@
 #include "texture_png.h"
 
 #define STACK_SIZE 5
+#define TRIGGER    0.001f
 
 struct actual_robot_status {
 
@@ -57,6 +58,10 @@ class DataManager
   GLuint texture[1];
 
   std::vector<robot_data> queue;
+
+  uint CountTranslation(std::vector<robot_data> queue);
+  bool IsTranslation(robot_data data);
+
 
 
   /* fetch data position and camera image
