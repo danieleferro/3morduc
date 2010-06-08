@@ -12,61 +12,30 @@
 
 #include <stdio.h>
 #include <cstdlib> 
+#include <sstream>
+#include <vector>
+#include <iostream>
 
 #endif
 
 #ifndef __DATA_INTERFACE
 #define __DATA_INTERFACE
 
-#include <string>
-#include <sstream>
-#include <vector>
-#include <iostream>
 #include "robot.h"
 #include "texture_png.h"
-
-#define STACK_SIZE 5
-#define TRIGGER    0.001f
-
-struct actual_robot_status {
-
-  float x;
-  float y;
-  float theta;
-  float time;
-
-};
-
-struct robot_data {
-
-  actual_robot_status position;
-  std::string image_path;
-
-};
-
+#include "DataLogic.h"
 
 
 class DataManager
 {
  private:
-  actual_robot_status mem;
-  std::string actual_image;
 
-  Robot * rob;
-  int index;
-  int session;
-  GLuint texture[1];
+  GLuint _texture[1];
+  Robot * _rob;
+  DataLogic * _logic;
 
-  std::vector<robot_data> queue;
-
-  uint CountTranslation(std::vector<robot_data> queue);
-  bool IsTranslation(robot_data data);
-
-
-
-  /* fetch data position and camera image
-     from robot */
-  robot_data GetNewData(int index);
+  robot_data * _robot_status;
+  image_data * _bg_image_data;
 
   /* bind the specified image to a texture */
   void LoadGLTextures(GLuint * texture, std::string filename);
@@ -79,10 +48,9 @@ class DataManager
   /* first parameter is a robot instance */
   /* second parameter is the simulation session number 
      it is only needed for offline testing */
-  DataManager(Robot * robot, int session); 
+  DataManager(Robot *, DataLogic *); 
+  ~DataManager();
   void NextStep();
-  
-  
 };
 
 #endif

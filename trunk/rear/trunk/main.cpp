@@ -40,6 +40,9 @@ int window;
 /* robot declaration */
 Robot * rob = NULL;
 
+/* Data Logic declaration */
+DataLogic * logic = NULL;
+
 /* Data Manager declaration */
 DataManager * manager = NULL;
 
@@ -311,9 +314,10 @@ int main ( int argc, char * argv[] ) {
      having initialized OpenGL since calls
      OpenGL functions */
   rob = new Robot();
+  logic = new DataLogic(22);
 
   /* data manager instatiation */
-  manager = new DataManager(rob, 22 );
+  manager = new DataManager(rob, logic);
   
   init();
 
