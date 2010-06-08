@@ -235,7 +235,7 @@ robot_data DataManager::GetNewData(int line_number)
 void DataManager::LoadGLTextures(GLuint * texture, std::string filename) {	
 
   /* load image from png file */
-  *texture = loadImage(filename.c_str());
+  * texture = loadImage(filename.c_str());
   if (!*texture) {
     std::cout << "Texture value: " << *texture << std::endl;
     exit(1);

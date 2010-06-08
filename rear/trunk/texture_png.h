@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <png.h>
 #include <GL/gl.h>
+#include <GL/glu.h>
 
 void DrawTexture();
 int GetTextureInfo(int ColourType);
