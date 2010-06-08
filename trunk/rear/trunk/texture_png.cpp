@@ -125,7 +125,11 @@ GLuint loadImage(const char *filename)
   (components==2) ? (glcolours = GL_LUMINANCE_ALPHA): (0);
   (components==1) ? (glcolours = GL_LUMINANCE): (0);
 
-  glTexImage2D(GL_TEXTURE_2D, 0, components, width, height, 0, glcolours, GL_UNSIGNED_BYTE, pixels);
+//   glTexImage2D(GL_TEXTURE_2D, 0, components, width, height, 0, glcolours, GL_UNSIGNED_BYTE, pixels);
+  gluBuild2DMipmaps(GL_TEXTURE_2D, 
+		    components, width, height, 
+		    glcolours, GL_UNSIGNED_BYTE, 
+		    pixels);
 
   png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 
