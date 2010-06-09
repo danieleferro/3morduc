@@ -6,7 +6,6 @@ DataManager::DataManager(Robot * robot, DataLogic * logic)
   _logic = logic;
   _robot_status = (robot_data *) malloc(sizeof(robot_data));
   _bg_image_data = (image_data *) malloc(sizeof(image_data));
-  _bg_image_data->path = new std::string();
 
   if (_robot_status == NULL)
     std::cout << "Error 1" << std::endl;
@@ -32,7 +31,7 @@ void DataManager::NextStep() {
   _logic->SelectImage(_robot_status, _bg_image_data);
  
   /* use image_path to load the image */
-  LoadGLTextures(_texture, *(_bg_image_data->path));
+  LoadGLTextures(_texture, _bg_image_data->path);
       
   /* use data in out_element to change
      camera position
@@ -42,10 +41,10 @@ void DataManager::NextStep() {
 }
 
     
-void DataManager::LoadGLTextures(GLuint * texture, std::string filename) {	
+void DataManager::LoadGLTextures(GLuint * texture, const char* filename) {	
 
   /* load image from png file */
-  * texture = loadImage(filename.c_str());
+  * texture = loadImage(filename);
   if (!*texture) {
     std::cout << "Texture value: " << *texture << std::endl;
     exit(1);

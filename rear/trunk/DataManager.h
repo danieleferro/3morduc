@@ -38,7 +38,7 @@ class DataManager
   image_data * _bg_image_data;
 
   /* bind the specified image to a texture */
-  void LoadGLTextures(GLuint * texture, std::string filename);
+  void LoadGLTextures(GLuint * texture, const char* filename);
 
   /* move camera */
   void MoveCamera(robot_data delta);
