@@ -6,13 +6,16 @@
 #include <stdlib.h>
 #include <sstream>
 #include <math.h>
+#include <iostream>
+#include <cstdio>
+#include <cstring>
 
 struct image_data {
   float x;
   float y;
   float theta;
   float time;
-  std::string * path;
+  char path[100];
 };
 
 struct robot_data {

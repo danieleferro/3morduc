@@ -1,5 +1,4 @@
 #include "DataLogic.h"
-#include <iostream>
 
 DataLogic::DataLogic(int session)
 {
@@ -14,7 +13,6 @@ DataLogic::~DataLogic()
 
 void DataLogic::RetrieveData(robot_data * data)
 {
-  std::cout << "Hello!!" << std::endl;
   // pointer to text file containing data
   FILE * position_data;
   char line[50];
@@ -71,17 +69,13 @@ void DataLogic::RetrieveData(robot_data * data)
   grabbed_frame_data.theta = data->theta;
   grabbed_frame_data.time = data->time;
 
-  std::cout << "Bah" << std::endl;
-  std::cout << grabbed_frame_data.path << std::endl;
-  *(grabbed_frame_data.path) = o.str();
-  std::cout << "Bah 2" << std::endl;
+  strcpy(grabbed_frame_data.path, o.str().c_str());
 
   // store the collected metadata
   _images_collection.push_back(grabbed_frame_data);
   
   // increase index to point the next line of the file
   _index++;
-  std::cout << "Done!!" << std::endl;
   return;
 
 }
@@ -119,20 +113,21 @@ void DataLogic::SelectImage(robot_data * robot_status, image_data * bg_image_dat
 	}
     }
 
-  std::cout << "Done 3!!" << std::endl;
-  std::cout << _images_collection.size() << std:: endl;
-  std::cout << _images_collection[0].x << std:: endl;
-  std::cout << _images_collection[0].y << std:: endl;
-  std::cout << _images_collection[0].theta << std:: endl;
-  std::cout << _images_collection[0].time << std:: endl;
-  std::cout << _images_collection[0].path << std:: endl;
+  /*
+    std::cout << _images_collection.size() << std:: endl;
+    std::cout << _images_collection[0].x << std:: endl;
+    std::cout << _images_collection[0].y << std:: endl;
+    std::cout << _images_collection[0].theta << std:: endl;
+    std::cout << _images_collection[0].time << std:: endl;
+    std::cout << _images_collection[0].path << std:: endl;
+  */
 
   // return the selected image data
   bg_image_data->x = _images_collection[i].x;
   bg_image_data->y = _images_collection[i].y;
   bg_image_data->theta = _images_collection[i].theta;
   bg_image_data->time = _images_collection[i].time;
-  *(bg_image_data->path) = *(_images_collection[i].path);
-  
-  std::cout << "Done 2!!" << std::endl;
+
+  strcpy(bg_image_data->path, _images_collection[i].path);
+
 }
