@@ -25,6 +25,9 @@
 #include "texture_png.h"
 #include "DataLogic.h"
 
+/* x, y, theta (PROVA) in main.cpp */
+extern float x, y, theta;
+
 
 class DataManager
 {
@@ -41,7 +44,7 @@ class DataManager
   void LoadGLTextures(GLuint * texture, const char* filename);
 
   /* move camera */
-  void MoveCamera(robot_data delta);
+  void MoveCamera(float x, float y, float theta);
 
  public:
   /* data manager conversion constructor */

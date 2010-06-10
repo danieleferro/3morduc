@@ -11,6 +11,7 @@
 #define __ROBOT__
 
 #include <math.h>
+#include <iostream>
 
 class Robot
 {
@@ -19,6 +20,12 @@ class Robot
   GLfloat x ;
   GLfloat y ;					
   GLfloat theta ;
+  
+  /* start point */
+  GLfloat x_zero;
+  GLfloat y_zero;					
+  GLfloat theta_zero;
+  
   
   /* scale factor (for drawing) */
   GLfloat radius; 
@@ -30,7 +37,9 @@ class Robot
   */
   Robot(float x = 0.f, float y = 4.f, float theta = - M_PI / 2);
   void Place(GLfloat x, GLfloat y, GLfloat theta);
-  void DrawRobot();  
+  void DrawRobot();
+  void SetInit(float x, float y, float theta);
+
 
   GLfloat GetX();
   GLfloat GetY();

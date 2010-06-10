@@ -46,6 +46,9 @@ DataLogic * logic = NULL;
 /* Data Manager declaration */
 DataManager * manager = NULL;
 
+/* x, y, theta (PROVA) */
+float x, y, theta;
+
 
 void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB, 
 		   GLfloat diffuseR, GLfloat diffuseG, GLfloat diffuseB, 
@@ -70,6 +73,21 @@ void display () {
   /* clear window */
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+  // Set the camera orientation
+  glMatrixMode(GL_MODELVIEW);
+    
+  glLoadIdentity();
+  gluLookAt(0, 0, 10.0,
+	    0 , 0 , 0,
+	    0 , 1 , 0);
+
+  printf("X Y THETA nel main: %4.4f %4.4f %4.4f\n", x, y, theta);
+
+  // Rotate and traslate the camera 
+  glTranslatef( x*10000 , 0.f , y*10000);
+  glRotatef( theta , 0.f , 1.f , 0.f );
+
+
   /* future matrix manipulations should affect the modelview matrix */
   
   /* draw the texture */
@@ -86,6 +104,7 @@ void display () {
 
   /* flush drawing routines to the window */
   glFlush();
+  
 }
 
 void reshape ( int width, int height ) {
@@ -296,6 +315,14 @@ void init()
 
 int main ( int argc, char * argv[] ) {
 
+  if (argc != 2)
+    {
+      
+      printf("Usage: main <session_number>\n");
+      exit(0);
+
+    }
+
   /* initialize GLUT, using any commandline parameters 
      passed to the program */
   glutInit(&argc,argv);
@@ -304,7 +331,7 @@ int main ( int argc, char * argv[] ) {
      new windows */
   glutInitWindowSize(624, 442);
   glutInitWindowPosition(0, 0);
-  glutInitDisplayMode( GLUT_RGB | GLUT_DEPTH);
+  glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH);
 
   /* create and set up a window */
   window = glutCreateWindow("robot");
@@ -314,7 +341,7 @@ int main ( int argc, char * argv[] ) {
      having initialized OpenGL since calls
      OpenGL functions */
   rob = new Robot();
-  logic = new DataLogic(22);
+  logic = new DataLogic(atoi(argv[1]));
 
   /* data manager instatiation */
   manager = new DataManager(rob, logic);
@@ -326,13 +353,14 @@ int main ( int argc, char * argv[] ) {
   glLoadIdentity();
   gluPerspective(60, 624/442, 0.001, 100000);
   
-  /* define the viewing transformation */
+  /* define the viewing transformation
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  gluLookAt(0.0, 0.0, 10.0,
-	    0.0, 0.0, 0.0,
-	    0.0, 1.0, 0.0);
+  gluLookAt(0.0f, 0.0f, 10.0f,
+	    0.0f, 0.0f, 0.0f,
+	    0.0f, 1.0f, 0.0f);
 
+  */
  
   /* tell GLUT to wait for events */
   glutMainLoop();
