@@ -7,14 +7,16 @@ DataManager::DataManager(Robot * robot, DataLogic * logic)
   _robot_status = (robot_data *) malloc(sizeof(robot_data));
   _bg_image_data = (image_data *) malloc(sizeof(image_data));
 
+
   if (_robot_status == NULL)
     std::cout << "Error 1" << std::endl;
 
   if(_bg_image_data == NULL)
     std::cout << "Error 2" << std::endl;
-  
-  /* do the first step */
+
   NextStep();
+  
+
 }
 
 DataManager::~DataManager()
@@ -25,9 +27,18 @@ DataManager::~DataManager()
 
 void DataManager::NextStep() {
   
-  std::string image_path;
-
   _logic->RetrieveData(_robot_status);
+
+  /* move robot with _robot_status data
+  _rob->Place(_robot_status->x,
+	      _robot_status->y,
+	      _robot_status->theta);
+	      
+  */
+
+  _rob->Place(0.f, -70.f, 0.f);
+
+
   _logic->SelectImage(_robot_status, _bg_image_data);
  
   /* use image_path to load the image */
@@ -35,9 +46,22 @@ void DataManager::NextStep() {
       
   /* use data in out_element to change
      camera position
+ 
+  
+  MoveCamera(_bg_image_data->x,
+	     _bg_image_data->y,
+	     _bg_image_data->theta);
   */
-  //       MoveCamera(out_element);
-    
+
+  x = _bg_image_data->x;
+
+  y = _bg_image_data->y;
+
+  theta = _bg_image_data->theta;
+
+
+  
+  
 }
 
     
@@ -56,17 +80,35 @@ void DataManager::LoadGLTextures(GLuint * texture, const char* filename) {
 }
 
 
-void DataManager::MoveCamera(robot_data delta) {
+void DataManager::MoveCamera(float x, float y, float theta) {
 
-  /* use data in out_element to change
-     camera position
-     (only one function make a change)
-  */
-  glTranslatef(- delta.x,
-	       0.f,
-	       - delta.y);
+  // Clear Z−Buffer
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  glRotatef(delta.theta,
-	    0.f, 1.f, 0.f);
+  // Set the camera orientation
+  glMatrixMode(GL_MODELVIEW);
+  
+  
+  glLoadIdentity();
+  gluLookAt(0, 0, -1,
+	    0 , 0 , 0,
+	    0 , 1 , 0);
+
+  // Rotate and traslate the camera 
+  glTranslatef( x*100 , 0.f , y*100);
+  glRotatef( theta , 0.f , 1.f , 0.f );
+
+
+
+  // glutSwapBuffers ( ) ;
+
+
+  std::cout << "Camera in: \t"
+	    << x << "; "
+	    << y << "; "
+	    << theta << std::endl;
+
+  // glutPostRedisplay();
+  
 
 }

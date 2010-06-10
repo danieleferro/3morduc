@@ -9,18 +9,30 @@ Robot::Robot(float x, float y, float theta)
   this->x = x;
   this->y = y;
   this->theta = theta;
+
+  this->x_zero = 0;
+  this->y_zero = 0;	
+  this->theta_zero = 0;
+
+
 }
 
 void Robot::Place(GLfloat new_x, GLfloat new_y, 
 		  GLfloat new_theta)
 {
-  this->x = new_x;
-  this->y = new_y;
-  this->theta = new_theta;
+  this->x = new_x - x_zero;
+  this->y = new_y - y_zero;
+  this->theta = new_theta - theta_zero;
 }
 
 void Robot::DrawRobot()
 {
+
+  std::cout << "Robot in: \t"
+	    << x << "; "
+	    << y << "; "
+	    << theta * 180 / M_PI << std::endl;
+
 
   GLfloat reflectance_black[] = { 0.2f, 0.2f, 0.2f};
   GLfloat reflectance_white[] = { 0.8f, 0.8f, 0.8f};
@@ -29,6 +41,8 @@ void Robot::DrawRobot()
 
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix();
+
+  glLoadIdentity();
 
   // set robot height
   glTranslatef(0.0f, -12.0f, 0.0f);
@@ -152,13 +166,23 @@ GLfloat Robot::GetX()
   return this->x;
 }
 
-GLfloat Robot::GetY() {
+GLfloat Robot::GetY()
+{
 
   return this->y;
 }
 
-GLfloat  Robot::GetTheta() {
+GLfloat Robot::GetTheta()
+{
 
   return this->theta;
 }
 
+void Robot::SetInit(float x, float y, float theta)
+{
+
+  x_zero = x;
+  y_zero = y;	
+  theta_zero = theta;
+
+}
