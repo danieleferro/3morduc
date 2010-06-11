@@ -37,13 +37,12 @@ void DataManager::NextStep() {
   
   _logic->RetrieveData(_robot_status);
 
-  /* move robot with _robot_status data
+  // move robot with _robot_status data
   _rob->Place(_robot_status->x,
-	      _robot_status->y,
-	      _robot_status->theta);
-  */     
+	      _robot_status->y - 20,
+	      _robot_status->theta);   
 
-  _rob->Place(40.f, -70.45f - 30, 0.f);
+  //_rob->Place(40.f, -70.45f - 30, 0.f);
 
 
   _logic->SelectImage(_robot_status, _bg_image_data);
@@ -82,7 +81,7 @@ void DataManager::MoveCamera() {
 			    _bg_image_data->y - prev_y) );
 
   // rotation in deegre
-  _camera->RotateY( _bg_image_data->theta - prev_theta );
+  _camera->RotateY( _bg_image_data->theta - prev_theta);
 
   prev_x = _bg_image_data->x;
   prev_y = _bg_image_data->y;

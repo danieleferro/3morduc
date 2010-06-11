@@ -91,7 +91,7 @@ void display () {
 	      1.0, 1.0, 1.0,
 	      1.0, 1.0, 1.0,
 	      20);
-	  
+	      
   glFlush();
   glutSwapBuffers();
   
@@ -244,7 +244,6 @@ void init()
   /* callback registering */
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);
-  // glutPassiveMotionFunc(getGLPos);
   glutKeyboardFunc(keyPressed);
   glutSpecialFunc(specialKeyPressed);
   //glutIdleFunc(animate);
@@ -252,9 +251,6 @@ void init()
   /* set up depth-buffering */
   glEnable(GL_DEPTH_TEST);
     
-  /* load image for texturing  */
-  //LoadGLTextures(texture, "screenshot.bmp");
-
   /* set the color for glClear() */
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -323,8 +319,8 @@ int main ( int argc, char * argv[] ) {
 
   init();
 
-  camera->Move( F3dVector(0.0, 0.0, 0.0 ));
-  camera->MoveForwards( 1.0 );
+  camera->Move( F3dVector(0.0, 0.0, 12.0 ));
+  camera->MoveForwards( 0.0 );
  
   /* tell GLUT to wait for events */
   glutMainLoop();

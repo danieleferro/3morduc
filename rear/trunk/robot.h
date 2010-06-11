@@ -20,13 +20,7 @@ class Robot
   /* position */
   GLfloat x ;
   GLfloat y ;					
-  GLfloat theta ;
-  
-  /* start point */
-  GLfloat x_zero;
-  GLfloat y_zero;					
-  GLfloat theta_zero;
-  
+  GLfloat theta ;  
   
   /* scale factor (for drawing) */
   GLfloat radius; 
@@ -36,7 +30,7 @@ class Robot
      y is equal to the robot radius in order to put the robot
      outside of the camera sight at beginning of the program
   */
-  Robot(float x = 0.f, float y = 4.f, float theta = - M_PI / 2);
+  Robot(float x = 0.f, float y = 4.f, float theta = - 90);
   void Place(GLfloat x, GLfloat y, GLfloat theta);
   void DrawRobot();
   void SetInit(float x, float y, float theta);
