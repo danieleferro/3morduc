@@ -54,11 +54,9 @@ void DataManager::NextStep() {
       
   /* use data in out_element to change
      camera position
-  */ 
-  
-  MoveCamera(_bg_image_data->x,
-	     _bg_image_data->y,
-	     _bg_image_data->theta);  
+  */   
+  MoveCamera();
+
 }
 
     
@@ -77,7 +75,7 @@ void DataManager::LoadGLTextures(GLuint * texture, const char* filename) {
 }
 
 
-void DataManager::MoveCamera(float x, float y, float theta) {
+void DataManager::MoveCamera() {
 
 
   _camera->Move( F3dVector( _bg_image_data->x - prev_x,
@@ -94,9 +92,9 @@ void DataManager::MoveCamera(float x, float y, float theta) {
 
 
   std::cout << "Camera in: \t"
-	    << x << "; "
-	    << y << "; "
-	    << theta << std::endl;
+	    << _bg_image_data->x << "; "
+	    << _bg_image_data->y << "; "
+	    << _bg_image_data->theta << std::endl;
 
 
 }

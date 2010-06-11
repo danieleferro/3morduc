@@ -46,7 +46,7 @@ class DataManager
   void LoadGLTextures(GLuint * texture, const char* filename);
 
   /* move camera */
-  void MoveCamera(float x, float y, float theta);
+  void MoveCamera();
 
  public:
   /* data manager conversion constructor */
