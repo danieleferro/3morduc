@@ -56,54 +56,9 @@ void DataManager::NextStep() {
      camera position
   */ 
   
-  /*
   MoveCamera(_bg_image_data->x,
 	     _bg_image_data->y,
-	     _bg_image_data->theta);
-  
-	       
-    x = _bg_image_data->x;
-    
-    y = _bg_image_data->y;
-    
-    theta = _bg_image_data->theta;
-
-  */
-
-  /*
-
-  prev_x = prev_x + 0.1;
-  prev_y = prev_y + 0.1;
-  prev_theta = prev_theta + 0.1;
-
-  _camera->Move( F3dVector(prev_x, 0.0, 0.0) );
-  
-  */
-
-
-  
-  _camera->Move( F3dVector( _bg_image_data->x - prev_x,
-			    0.0,
-			    _bg_image_data->y - prev_y) );
-
-  // rotation in deegre
-  _camera->RotateY( _bg_image_data->theta - prev_theta );
-
-  prev_x = _bg_image_data->x;
-  prev_y = _bg_image_data->y;
-  prev_theta = _bg_image_data->theta;
-
-
-  std::cout << "Camera in: \t"
-	    << _bg_image_data->x << "; "
-	    << _bg_image_data->y << "; "
-	    << _bg_image_data->theta << std::endl;
-  
-  
-
-  //  _camera->Move( F3dVector(40, 0.0, -50.0) );
-
-  
+	     _bg_image_data->theta);  
 }
 
     
@@ -125,28 +80,17 @@ void DataManager::LoadGLTextures(GLuint * texture, const char* filename) {
 void DataManager::MoveCamera(float x, float y, float theta) {
 
 
-  // Set the camera orientation
-  glMatrixMode(GL_MODELVIEW);
+  _camera->Move( F3dVector( _bg_image_data->x - prev_x,
+			    0.0,
+			    _bg_image_data->y - prev_y) );
 
+  // rotation in deegre
+  _camera->RotateY( _bg_image_data->theta - prev_theta );
 
-  // Rotate and traslate the camera 
-  glRotatef( - prev_theta * 180 / M_PI , 0.f , 1.f , 0.f );
-  glTranslatef( 0.f , 0.f , - prev_y);
-  glTranslatef( - prev_x , 0.f , 0.f);
+  prev_x = _bg_image_data->x;
+  prev_y = _bg_image_data->y;
+  prev_theta = _bg_image_data->theta;
 
-  
-  // Rotate and traslate the camera 
-  glTranslatef( x , 0.f , 0.f);
-  glTranslatef( 0.f , 0.f , y);
-  glRotatef( theta *  180 / M_PI, 0.f , 1.f , 0.f );
-
-
-  prev_x = x;
-  prev_y = y;
-  prev_theta = theta;
-
-
-  // glutSwapBuffers ( ) ;
 
 
   std::cout << "Camera in: \t"
