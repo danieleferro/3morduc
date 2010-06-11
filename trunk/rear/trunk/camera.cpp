@@ -1,6 +1,4 @@
 #include "camera.h"
-#include "math.h"
-#include <iostream>
 
 SF3dVector F3dVector ( GLfloat x, GLfloat y, GLfloat z )
 {
@@ -46,13 +44,13 @@ void CCamera::GetViewDir( void )
 {
   SF3dVector Step1, Step2;
   //Rotate around Y-axis:
-  Step1.x = cos( (RotatedY + 90.0) * PIdiv180);
-  Step1.z = -sin( (RotatedY + 90.0) * PIdiv180);
+  Step1.x = cos( (RotatedY + 90.0) * M_PI / 180);
+  Step1.z = -sin( (RotatedY + 90.0) * M_PI / 180);
   //Rotate around X-axis:
-  double cosX = cos (RotatedX * PIdiv180);
+  double cosX = cos (RotatedX * M_PI / 180);
   Step2.x = Step1.x * cosX;
   Step2.z = Step1.z * cosX;
-  Step2.y = sin(RotatedX * PIdiv180);
+  Step2.y = sin(RotatedX * M_PI / 180);
   //Rotation around Z-axis not yet implemented, so:
   ViewDir = Step2;
 }

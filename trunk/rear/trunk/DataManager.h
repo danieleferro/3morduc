@@ -26,10 +26,6 @@
 #include "DataLogic.h"
 #include "camera.h"
 
-/* x, y, theta (PROVA) in main.cpp */
-extern float x, y, theta;
-
-
 class DataManager
 {
  private:
