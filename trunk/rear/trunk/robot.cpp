@@ -3,6 +3,7 @@
 void PaintCylinder(GLfloat radius,GLfloat height);
 void PaintDisk(GLfloat radius);
 
+// theta in deegres
 Robot::Robot(float x, float y, float theta)
 {
   radius = y;
@@ -10,19 +11,15 @@ Robot::Robot(float x, float y, float theta)
   this->y = y;
   this->theta = theta;
 
-  this->x_zero = 0;
-  this->y_zero = 0;	
-  this->theta_zero = 0;
-
-
 }
 
+// theta in deegres
 void Robot::Place(GLfloat new_x, GLfloat new_y, 
 		  GLfloat new_theta)
 {
-  this->x = new_x - x_zero;
-  this->y = new_y - y_zero;
-  this->theta = new_theta - theta_zero;
+  this->x = new_x;
+  this->y = new_y;
+  this->theta = new_theta;
 }
 
 void Robot::DrawRobot()
@@ -31,7 +28,7 @@ void Robot::DrawRobot()
   std::cout << "Robot in: \t"
 	    << x << "; "
 	    << y << "; "
-	    << theta * 180 / M_PI << std::endl;
+	    << theta << std::endl;
 
   GLfloat modelview[16];
 
@@ -43,27 +40,6 @@ void Robot::DrawRobot()
 
   glMatrixMode(GL_MODELVIEW);
   
-  /* get the current modelview matrix
-  glGetFloatv(GL_MODELVIEW_MATRIX , modelview);
-
-  printf("\nMODELVIEW MATRIX\n");
-  for (int i = 0; i < 4; i++) {
-
-    printf("\n");
-
-    for (int j = 0; j < 4; j++) {
-
-      printf("%4.4f\t", modelview[i*4+j]);
-
-    }
-
-  }
-  printf("\n");
-  printf("\n");
-  */
-
-
-
   glPushMatrix();
 
   // glLoadIdentity();
@@ -79,7 +55,7 @@ void Robot::DrawRobot()
   glTranslatef(this->x, 0.0f, 0.0f);
   glTranslatef(0.0f, 0.0f, this->y);
 
-  glRotatef(-(this->theta) * 180 / M_PI, 0.0f, 1.0f, 0.0f);
+  glRotatef(-(this->theta) + 90, 0.0f, 1.0f, 0.0f);
 
   // compute theta's cosine and sine value
   cosine = cos(this->theta);
@@ -205,13 +181,4 @@ GLfloat Robot::GetTheta()
 {
 
   return this->theta;
-}
-
-void Robot::SetInit(float x, float y, float theta)
-{
-
-  x_zero = x;
-  y_zero = y;	
-  theta_zero = theta;
-
 }
