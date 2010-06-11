@@ -33,6 +33,8 @@ void Robot::DrawRobot()
 	    << y << "; "
 	    << theta * 180 / M_PI << std::endl;
 
+  GLfloat modelview[16];
+
 
   GLfloat reflectance_black[] = { 0.2f, 0.2f, 0.2f};
   GLfloat reflectance_white[] = { 0.8f, 0.8f, 0.8f};
@@ -40,9 +42,32 @@ void Robot::DrawRobot()
   GLfloat cosine, sine;
 
   glMatrixMode(GL_MODELVIEW);
+  
+  /* get the current modelview matrix
+  glGetFloatv(GL_MODELVIEW_MATRIX , modelview);
+
+  printf("\nMODELVIEW MATRIX\n");
+  for (int i = 0; i < 4; i++) {
+
+    printf("\n");
+
+    for (int j = 0; j < 4; j++) {
+
+      printf("%4.4f\t", modelview[i*4+j]);
+
+    }
+
+  }
+  printf("\n");
+  printf("\n");
+  */
+
+
+
   glPushMatrix();
 
-  glLoadIdentity();
+  // glLoadIdentity();
+
 
   // set robot height
   glTranslatef(0.0f, -12.0f, 0.0f);
@@ -51,7 +76,8 @@ void Robot::DrawRobot()
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, reflectance_black);
 
   // set robot position
-  glTranslatef(this->x, 0.0f, this->y);
+  glTranslatef(this->x, 0.0f, 0.0f);
+  glTranslatef(0.0f, 0.0f, this->y);
 
   glRotatef(-(this->theta) * 180 / M_PI, 0.0f, 1.0f, 0.0f);
 
@@ -107,9 +133,12 @@ void Robot::DrawRobot()
   PaintCylinder(0.1f, 1.5f);
   glTranslatef(0.8f, 0.0f, 0.0f);
 
+
   glScalef(1/radius, 1/radius, 1/radius);
 
+
   glPopMatrix();
+
 }
 
 

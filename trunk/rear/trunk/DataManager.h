@@ -24,6 +24,7 @@
 #include "robot.h"
 #include "texture_png.h"
 #include "DataLogic.h"
+#include "camera.h"
 
 /* x, y, theta (PROVA) in main.cpp */
 extern float x, y, theta;
@@ -36,9 +37,14 @@ class DataManager
   GLuint _texture[1];
   Robot * _rob;
   DataLogic * _logic;
+  CCamera * _camera;
 
   robot_data * _robot_status;
   image_data * _bg_image_data;
+
+  float prev_x;
+  float prev_y;
+  float prev_theta;
 
   /* bind the specified image to a texture */
   void LoadGLTextures(GLuint * texture, const char* filename);
@@ -51,7 +57,7 @@ class DataManager
   /* first parameter is a robot instance */
   /* second parameter is the simulation session number 
      it is only needed for offline testing */
-  DataManager(Robot *, DataLogic *); 
+  DataManager(Robot *, DataLogic *, CCamera *); 
   ~DataManager();
   void NextStep();
 };
