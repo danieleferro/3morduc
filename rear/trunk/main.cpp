@@ -24,7 +24,8 @@
 
 #include "key_mapping.h"
 #include "texture_png.h"
-//#include "camera.h"
+#include "camera.h"
+
 
 /* step for forward direction */
 #define STEP 0.1f
@@ -49,39 +50,6 @@ DataManager * manager = NULL;
 
 /* Camera declaration */
 CCamera * camera = NULL; 
-
-/* x, y, theta (PROVA) */
-float x, y, theta;
-
-void DrawNet(GLfloat size, GLint LinesX, GLint LinesZ)
-{
-  glBegin(GL_LINES);
-  for (int xc = 0; xc < LinesX; xc++)
-    {
-      glVertex3f(-size / 2.0 + xc / (GLfloat)(LinesX-1)*size,
-		 0.0,
-		 size / 2.0);
-
-      glVertex3f(-size / 2.0 + xc / (GLfloat)(LinesX-1)*size,
-		 0.0,
-		 size / -2.0);
-    }
-
-  for (int zc = 0; zc < LinesX; zc++)
-    {
-      glVertex3f(size / 2.0,
-		0.0,
-		-size / 2.0 + zc / (GLfloat)(LinesZ-1)*size);
-
-      glVertex3f(size / -2.0,
-		 0.0,
-		 -size / 2.0 + zc / (GLfloat)(LinesZ-1)*size);
-    }
-  
-  glEnd();
-  
-}
-
 
 void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB, 
 		   GLfloat diffuseR, GLfloat diffuseG, GLfloat diffuseB, 
@@ -108,56 +76,7 @@ void display () {
   //glClear(GL_COLOR_BUFFER_BIT);
 
   glLoadIdentity();
-  camera->Render();
-
-  
-  /*
-  glTranslatef(0.0,0.8,0.0);
-
-  glScalef(3.0,1.0,3.0);
-       
-  GLfloat size = 2.0;
-  GLint LinesX = 30;   
-  GLint LinesZ = 30;
-
-
-  GLfloat halfsize = size / 2.0;
-  glColor3f(1.0,1.0,1.0);
-
-  glPushMatrix();
-  {
-    glTranslatef(0.0,-halfsize ,0.0);
-    DrawNet(size,LinesX,LinesZ);
-    glTranslatef(0.0,size,0.0);
-    DrawNet(size,LinesX,LinesZ);
-  }
-  glPopMatrix();
-
-  glColor3f(0.0,0.0,1.0);
-  glPushMatrix();
-  {
-    glTranslatef(-halfsize,0.0,0.0);	
-    glRotatef(90.0,0.0,0.0,halfsize);
-    DrawNet(size,LinesX,LinesZ);
-    glTranslatef(0.0,-size,0.0);
-    DrawNet(size,LinesX,LinesZ);
-  }
-  glPopMatrix();
-
-  glColor3f(1.0,0.0,0.0);
-  glPushMatrix();
-  {
-    glTranslatef(0.0,0.0,-halfsize);
-    glRotatef(90.0,halfsize,0.0,0.0);
-    DrawNet(size,LinesX,LinesZ);
-    glTranslatef(0.0,size,0.0);
-    DrawNet(size,LinesX,LinesZ);
-  }
-  glPopMatrix();
-
-  glScalef(1/3.0,1.0,1/3.0);
-
-  */
+  camera->Render();  
 
 
   /* draw the texture */
@@ -165,18 +84,13 @@ void display () {
 
 	
   /* draw the robot */
-  //rob->Place(0.0f, -70.0f, 0.0f);
   rob->DrawRobot();
-
 
   // last set material is for the textures
   setMaterial(1.0, 1.0, 1.0,
 	      1.0, 1.0, 1.0,
 	      1.0, 1.0, 1.0,
 	      20);
-
-
-  printf("X Y THETA nel main: %4.4f %4.4f %4.4f\n", x, y, theta);
 	  
   glFlush();
   glutSwapBuffers();
@@ -312,7 +226,6 @@ void specialKeyPressed(int key, int x, int y)
 
   }
 
-  display();
   glutPostRedisplay();
 }
 
@@ -408,27 +321,10 @@ int main ( int argc, char * argv[] ) {
   /* data manager instatiation */
   manager = new DataManager(rob, logic, camera);
 
-  
   init();
 
   camera->Move( F3dVector(0.0, 0.0, 0.0 ));
   camera->MoveForwards( 1.0 );
-
-
-
-  /* define the projection transformation
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluPerspective(60, 624/442, 0.001, 100000);
-  
-  /* define the viewing transformation 
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-  gluLookAt(0.0f, 0.0f, 10.0f,
-	    0.0f, 0.0f, 0.0f,
-	    0.0f, 1.0f, 0.0f);
-
-  */
  
   /* tell GLUT to wait for events */
   glutMainLoop();
