@@ -1,6 +1,7 @@
 EXENAME = main
 SOURCES = \
 	robot.cpp \
+	camera.cpp \
 	texture_png.cpp \
 	DataLogic.cpp \
 	DataManager.cpp \

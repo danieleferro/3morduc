@@ -1,9 +1,12 @@
 #include "DataManager.h"
 
-DataManager::DataManager(Robot * robot, DataLogic * logic)
+DataManager::DataManager(Robot * robot, DataLogic * logic, CCamera * camera)
 {
   _rob = robot;
   _logic = logic;
+  _camera = camera;
+
+
   _robot_status = (robot_data *) malloc(sizeof(robot_data));
   _bg_image_data = (image_data *) malloc(sizeof(image_data));
 
@@ -13,6 +16,11 @@ DataManager::DataManager(Robot * robot, DataLogic * logic)
 
   if(_bg_image_data == NULL)
     std::cout << "Error 2" << std::endl;
+
+
+  prev_x = 0;
+  prev_y = 0;
+  prev_theta = 0;
 
   NextStep();
   
@@ -29,14 +37,14 @@ void DataManager::NextStep() {
   
   _logic->RetrieveData(_robot_status);
 
-  /* move robot with _robot_status data
+  // move robot with _robot_status data
   _rob->Place(_robot_status->x,
 	      _robot_status->y,
 	      _robot_status->theta);
 	      
-  */
+  
 
-  _rob->Place(0.f, -70.f, 0.f);
+  //_rob->Place(40.f, -70.45f - 30, 0.f);
 
 
   _logic->SelectImage(_robot_status, _bg_image_data);
@@ -46,21 +54,55 @@ void DataManager::NextStep() {
       
   /* use data in out_element to change
      camera position
- 
+  */ 
   
+  /*
   MoveCamera(_bg_image_data->x,
 	     _bg_image_data->y,
 	     _bg_image_data->theta);
+  
+	       
+    x = _bg_image_data->x;
+    
+    y = _bg_image_data->y;
+    
+    theta = _bg_image_data->theta;
+
   */
 
-  x = _bg_image_data->x;
+  /*
 
-  y = _bg_image_data->y;
+  prev_x = prev_x + 0.1;
+  prev_y = prev_y + 0.1;
+  prev_theta = prev_theta + 0.1;
 
-  theta = _bg_image_data->theta;
+  _camera->Move( F3dVector(prev_x, 0.0, 0.0) );
+  
+  */
 
 
   
+  _camera->Move( F3dVector( _bg_image_data->x - prev_x,
+			    0.0,
+			    _bg_image_data->y - prev_y) );
+
+  // rotation in deegre
+  _camera->RotateY( _bg_image_data->theta - prev_theta );
+
+  prev_x = _bg_image_data->x;
+  prev_y = _bg_image_data->y;
+  prev_theta = _bg_image_data->theta;
+
+
+  std::cout << "Camera in: \t"
+	    << _bg_image_data->x << "; "
+	    << _bg_image_data->y << "; "
+	    << _bg_image_data->theta << std::endl;
+  
+  
+
+  //  _camera->Move( F3dVector(40, 0.0, -50.0) );
+
   
 }
 
@@ -82,22 +124,26 @@ void DataManager::LoadGLTextures(GLuint * texture, const char* filename) {
 
 void DataManager::MoveCamera(float x, float y, float theta) {
 
-  // Clear Z−Buffer
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   // Set the camera orientation
   glMatrixMode(GL_MODELVIEW);
-  
-  
-  glLoadIdentity();
-  gluLookAt(0, 0, -1,
-	    0 , 0 , 0,
-	    0 , 1 , 0);
+
 
   // Rotate and traslate the camera 
-  glTranslatef( x*100 , 0.f , y*100);
-  glRotatef( theta , 0.f , 1.f , 0.f );
+  glRotatef( - prev_theta * 180 / M_PI , 0.f , 1.f , 0.f );
+  glTranslatef( 0.f , 0.f , - prev_y);
+  glTranslatef( - prev_x , 0.f , 0.f);
 
+  
+  // Rotate and traslate the camera 
+  glTranslatef( x , 0.f , 0.f);
+  glTranslatef( 0.f , 0.f , y);
+  glRotatef( theta *  180 / M_PI, 0.f , 1.f , 0.f );
+
+
+  prev_x = x;
+  prev_y = y;
+  prev_theta = theta;
 
 
   // glutSwapBuffers ( ) ;
@@ -108,7 +154,5 @@ void DataManager::MoveCamera(float x, float y, float theta) {
 	    << y << "; "
 	    << theta << std::endl;
 
-  // glutPostRedisplay();
-  
 
 }
