@@ -1,5 +1,19 @@
 #include "DataManager.h"
 
+float SpacialMetricCalc(robot_data * robot_status,
+		       image_data * bg_image_data)
+{
+  float distance;
+  
+  distance = 
+    sqrt( pow((robot_status -> x ) - (bg_image_data -> x), 2) +
+	  pow((robot_status -> y ) - (bg_image_data -> y), 2) +
+	  pow((robot_status -> theta ) - (bg_image_data -> theta), 2));
+
+  return distance;
+
+}
+
 DataManager::DataManager(Robot * robot, DataLogic * logic, Camera * camera)
 {
   _rob = robot;
@@ -45,7 +59,8 @@ void DataManager::NextStep() {
   //_rob->Place(40.f, -70.45f - 30, 0.f);
 
 
-  _logic->SelectImage(_robot_status, _bg_image_data);
+  _logic->SelectImage(_robot_status, _bg_image_data,
+		      SpacialMetricCalc);
  
   /* use image_path to load the image */
   LoadGLTextures(_texture, _bg_image_data->path);

@@ -21,7 +21,8 @@ class DataLogic : public DataLogicInterface
  public:
   DataLogic(int);
   ~DataLogic();
-  void SelectImage(robot_data *, image_data *);
+  void SelectImage(robot_data *, image_data *,
+		   float (*)(robot_data *, image_data *));
   void RetrieveData(robot_data *);
 };
 

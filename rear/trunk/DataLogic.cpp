@@ -81,23 +81,20 @@ void DataLogic::RetrieveData(robot_data * data)
 }
 
 // select the image to set as background using the euclidean metric
-void DataLogic::SelectImage(robot_data * robot_status, image_data * bg_image_data)
+void DataLogic::SelectImage(robot_data * robot_status, image_data * bg_image_data,
+			    float (* dist_calculator)(robot_data *, image_data *))
 {
   float distances[_images_collection.size()];
   float min;
 
-  // calculate the euclidean metric for each stored image
+  // calculate the distance for each stored image
   int i = 0;
   for (std::vector<image_data>::iterator it =
 	 _images_collection.begin();
        it != _images_collection.end();
        it++)
     {
-      distances[i] =
-	sqrt( pow((robot_status -> x) - (it -> x), 2) +
-	      pow((robot_status -> y) - (it -> y), 2) +
-	      pow((robot_status -> theta) - (it -> theta), 2));
-
+      distances[i] = dist_calculator(robot_status, &*it);
       i++;
     }
 
