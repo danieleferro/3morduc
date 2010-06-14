@@ -297,8 +297,8 @@ int main ( int argc, char * argv[] ) {
      new windows */
   glutInitWindowSize(624, 442);
   glutInitWindowPosition(0, 0);
-  // glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH);
-  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+  //glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH);
+  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
   /* create and set up a window */
   window = glutCreateWindow("robot");
