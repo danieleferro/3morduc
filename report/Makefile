@@ -2,12 +2,10 @@ REPORT	= report
 OUTPUT	= report.pdf
 
 all:
-#	latex $(REPORT)
-#	bibtex $(REPORT)
-#	latex $(REPORT)
-#	latex $(REPORT)
-	pdflatex $(REPORT)
+	latex $(REPORT)
 	bibtex $(REPORT)
+	latex $(REPORT)
+	latex $(REPORT)
 	pdflatex $(REPORT)
 	- rm *.aux *.log *.bbl *.blg *.toc
 	- xpdf $(OUTPUT)
