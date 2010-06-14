@@ -1,277 +1,30 @@
 \section{Rear: Rear Exocentric Augmented Reality}
 \label{sec:rear}
-\lstset{language=C++}
-\subsection{A short introduction to OpenGL}
-OpenGL is designed as a software interface to the graphics 
-hardware on your computer. It defines a platform-independent API;
-the API is then implemented in software and/or hardware for 
-various machine architectures. The advantage is that OpenGL 
-programs are easily portable to a variety of computers. 
-OpenGL provides basic commands to support rendering. 
-In particular, OpenGL doesn't provide functionality to support
-windows or user interaction (like keyboard presses or mouse 
-actions); these features are provided by a separate library called
-GLUT (the OpenGL Utility Toolkit). GLUT also provides some 
-higher-level features, such as more complex geometrical objects.
-%
 
-%
-OpenGL is a state machine, which means that you specify various 
-states or modes which remain in effect until changed.
-Each command that is executed is carried out within the current 
-state. States include things like the current window (where
-drawing will appear), color, viewing and projection matrices, 
-drawing modes, positions and characteristics of lights,
-materials, and features. These elements will not be introduced 
-throughout this document, as they are already explained in
-various tutorials \cite{opengl:brieftutorial} o manual books 
-\cite{opengl:redbook}.
-%
-Nevertheless, it is important to keep the idea of a 
-"state machine" in mind as you work with OpenGL in order to 
-understand the effects of a given command. The current state 
-is not reset when a function starts or ends - the current state
-is in effect until something changes it, regardless of where 
-in the program the next thing is. 
-%
-\subsection{Setting up a texture}
-According to \cite{opengl:distilled} \textit{texture mapping 
-is a concept that takes a moment to grasp but a lifetime 
-to master.}
-%
-As for our work, we were simply interested in drawing an 
-image as the background of a window. It is not a complex 
-task but, it could be very tricky, especially when one 
-does not have a deep understanding of what is happening 
-\textit{under the hood}.
-%
-
-%
-OpenGL provides 1D, 2D and 3D textures. A 2D texture is enough for our
-purposes.
-%
-There exists a well-defined sequence of actions to draw a texture 
-into an OpenGL application. Such a sequence made of the following steps:
-\begin{enumerate}
-\item obtain an unused texture object identifier with \texttt{glGenTextures()}, 
-  and create a texture object using \texttt{glBindTexture()}
-\item set texture-object state parameters
-\item specify the texture image using \texttt{glTexImage2D()} 
-  or \texttt{gluBuild2DMipmaps()}
-\item before rendering geometry that uses the texture object, 
-  bind the texture object with glBindTexture()
-\item before rendering geometry, enable texture mapping
-\item send geometry to OpenGL with appropriate texture 
-  coordinates
-\end{enumerate}
-%
-Let us show an example of how to take a preloaded image, binding it 
-to a texture and draw it as the background of a window. First of all, 
-we would like to define a helper structure which we will call \texttt{Image}
-to store the actual image and its size.
-%
-\begin{lstlisting}[caption={The Image structure}, label={code:image}, frame=trBL]
-struct Image {
-  unsigned long sizeX;
-  unsigned long sizeY;
-  char * data;
-};
-
-typedef struct Image Image;
-\end{lstlisting}
-%
-Now, let us suppose to have defined a \texttt{ImageLoad()} function 
-that loads an image from disk and returns an object of class \texttt{Image}. 
-Let us see how to put in code the procedure described above:
-%
-\begin{lstlisting}[caption={Texture example}, label={code:texturemapping}, frame=trBL]
-  Gluint * texture;
-  Image * image;
-    
-  // allocate space for the image
-  image = (Image *) malloc(sizeof(Image));
-
-  if (image == NULL) {
-    std::cout << "Error allocating space for the image"
-              << std::endl;
-    exit(0);
-  }
-
-  // load image from disk
-  if (!ImageLoad("image.bmp", image)) {
-    exit(1);
-  }        
-
-  // obtain an unused texture object
-  glGenTextures(1, texture);
-
-  // Bind 2d texture (x and y size)
-  glBindTexture(GL_TEXTURE_2D, * texture);   
-
-  // now let us set up some state parameters:
-  // scale linearly when image bigger than texture
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
-                                 GL_LINEAR);
- 
-  // scale linearly when image smaller than texture
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                                 GL_LINEAR); 
-
-  gluBuild2DMipmaps(GL_TEXTURE_2D, 3, image1->sizeX, 
-                    image1->sizeY, GL_RGB, GL_UNSIGNED_BYTE, 
-                    image1->data);
-
-  // enable texture mapping
-  glEnable(GL_TEXTURE_2D);
-  glMatrixMode(GL_PROJECTION);
-  glPushMatrix();
-  glLoadIdentity();
-  glMatrixMode(GL_MODELVIEW);
-  glPushMatrix();
-  glLoadIdentity();
-
-  // deactivate depth (Z Axis)
-  glDepthMask(false);
-
-  glBegin( GL_QUADS );
-
-  // actually map texture
-  {
-    glTexCoord2f( 0.f, 0.f );
-    glVertex2f( -1, -1 );
-
-    glTexCoord2f( 0.f, 1.f );
-    glVertex2f( -1, 1.f );
-
-    glTexCoord2f( 1.f, 1.f );
-    glVertex2f( 1.f, 1.f );
-
-    glTexCoord2f( 1.f, 0.f );
-    glVertex2f( 1.f, -1 );
-  }
-
-  glEnd();
-
-  // reactivate depth (Z axis)
-  glDepthMask(true);
-
-  glPopMatrix();
-  glMatrixMode(GL_PROJECTION);
-  glPopMatrix();
-  glMatrixMode(GL_MODELVIEW);
-  glDisable(GL_TEXTURE_2D);
-\end{lstlisting}
-%
-\subsection{Lighting in OpenGL}
-As shown in figure \ref{fig:lighting} OpenGL features three types of light:
-\begin{itemize}
-  \item Ambient light
-  \item Diffuse light
-  \item Specular light
-\end{itemize}
+\subsection{How it works}
+In this chapter we briefly describe how all the exocentric vision
+is implemented, along with its business logic. In order to achieve
+this, we will occasionally refer to the class diagram shown in figure
+\ref{fig:class_diagram}.
 %
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=200pt]{img/light}
-    \caption{Lighting in OpenGL}
-    \label{fig:lighting}
+    \includegraphics[width=400pt]{img/class_diagram.jpeg}  %robot pic
+    \caption{Application class diagram}
+    \label{fig:class_diagram}
   \end{center}
 \end{figure}
 %
-Ambient light simulates indirect lighting. It illuminates all 
-geometry in a scene at the same intensity.
-%
-Diffuse light illuminates a surface based on its orientation 
-to a light source. OpenGL diffuse lighting adheres to 
-Lambert's law, in which the amount of illumination is proportional 
-to the cosine of the angle between the surface normal and the 
-light vector, and the diffused light reflects equally in 
-all directions.
-%
-Specular light approximates the reflection of the light source on 
-a shiny surface.
-%
 
-%
-At first glance, controlling OpenGL lighting might appear complex. 
-The amount of code required to obtain simple lighting effects, 
-however, is actually quite small. That is:
-\begin{lstlisting}[caption={Lighting example}, label={code:lighting}, frame=trBL]
-// Enable OpenGL lighting
-glEnable( GL_LIGHTING );
 
-// Enable a single light source
-glEnable( GL_LIGHT0 );
-\end{lstlisting}
-%
-\texttt{ GL\_LIGHT0 } is one of the light points available to 
-OpenGL programmers. For every light point, one can set its 
-position and parameters for each light component. For example:
-%
-\begin{lstlisting}[caption={Complex lighting example}, label={code:complexlighting}, frame=trBL]
-GLfloat lightpos[] = { 0.0f, 0.0f, 1.0f, 0.0f };
-GLfloat lightcolor[] = { 1.0f, 1.0f, 1.0f };
-GLfloat ambcolor[] = { 1.0f, 1.0f, 1.0f };
 
-glEnable(GL_LIGHTING);
-glEnable(GL_LIGHT0);                        
-glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
-glLightfv(GL_LIGHT0, GL_AMBIENT, lightcolor);
-glLightfv(GL_LIGHT0, GL_DIFFUSE, lightcolor);
-glLightfv(GL_LIGHT0, GL_SPECULAR, lightcolor);
-\end{lstlisting}
-%
-\subsection{Perspective in OpenGL}
-Perspective in OpenGL can be something very trick to work with. 
-It all starts from the definition of \textit{frustum}, as the portion
-of space seen from the point of view (see \cite{wiki:frustum} 
-for further information). To define the frustum we use the function
-named 'gluPerspective' \cite{opengl:gluPerspective}, which takes 
-four parameters.
-%
-The first parameter indicates the FOV (e.g. Field Of View) 
-along the Y axis, in deegres: the chosen value is 60. The
-second one expresses ratio between actual width and height, 
-in our case 624/442. The last two parameters specify the distance 
-from the viewer to the near clipping plane and to the far one, 
-according to the frustum definition.
-%
-By using two close values for the far and near clipping planes 
-distance the application will not be able to display 3d
-objects, unless the point of view is relatively close to them. 
-If we want to be able to see 3d objects as they are moving away
-from the point of view, we need to increase the difference between 
-the last two parameters of the 'gluPerspective' function. In
-our case the chosen values are 0.001 and 100000 (its ratio is 
-equal to 10exp8).
-%
-The 'gluPerspective' function affects the GL PROJECTION function, 
-previously selected by changing matrix mode. Finally,
-in order to set our point of view, we must change matrix again, 
-this time to work with the GL MODELVIEW matrix. The function named
-'gluLookAt' allows to set the point of view, with its coordinates, 
-the coordinates of the point to look at and its orientation.
-%
-See \cite{opengl:gluLookAt} for further details.
-%
-\begin{lstlisting}[caption={OpenGL perspective example}, label={code:perspective}, frame=trBL]
+The overall schema can be resumed by following diagram {}. User sends a command to the exocentric vision application, in order to guide the robot in the environment. The exocentric vision application forwards the command to the robot or simulator (see paragraph {}) and waits for the response. The latter include the new robot position and the new egocentric camera images.
+All the egocentric camera images retrieved are stored in a data set and coupled with coordinates and orientation of the robot at the moment when they were shot. Going on with the application a large collection of egocentric images will be gathered.
+After retrieving response from robot, the exocentric vision application moves the robot in the openGL world (according to the robot coordinates read) and adds the images received to the egocentric collection. Later on, the application has to choose the proper image (among those collected in the set) to put as texture (i.e. background) in OpenGL and then implement the exocentric vision. Since every image owns its data about position and orientation when shot, we can move and point the camera object to obtain the right visual of the external world. Whatever the robot is situated, we will be able to watch it from the right point of view, depending on the texture image chosen.
+All the process explained above is lacking of one part: how to choose the background image, knowing the actual robot position and orientation. If we decided to choose the image shot in the closest point to the robot we would always show the egocentric vision, because the algorithm would select always the image with the same position and orientation of the robot. The distance between the robot and the selected images would be equal to zero, which is doubtless the minimum possible value.
+The algorithms to take the right image in exocentric vision can be various. Each one has its own advantages and disadvantages, we will chose the one able to guarantee the best trade-off.
 
-  /* define the projection transformation */
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluPerspective(60, 624/442, 0.001, 100000);
-  
-  /* define the viewing transformation */
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-  gluLookAt(0.0, 0.0, 10.0,
-            0.0, 0.0, 0.0,
-            0.0, 1.0, 0.0);
 
-\end{lstlisting}
-%
-To better understand these methods we recommend reading OpenGL manual.
-%
 \subsection{The Robot class}
 The robot class, present in Filippo Privitera's simulator 
 \cite{privitera}, has been simplified and then introduced in
@@ -321,14 +74,14 @@ tree cylinders which make up the robot. See figure
 %
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=200pt]{img/3morduc_opengl}  %robot pic
+    \includegraphics[width=200pt]{img/3morduc_opengl.png}  %robot pic
     \caption{The 3morduc robotic platform drawn in OpenGL}
     \label{fig:3morduc_opengl}
   \end{center}
 \end{figure}
 %
 The default \textit{radius} value is 4, but it can be 
-customized by the user: by increasing it the robot will be 
+customised by the user: by increasing it the robot will be 
 displayed larger and larger on the screen, and viceversa.
 %
 
@@ -369,3 +122,20 @@ void Place(float x, float y, float theta)
 in order to set the x and y coordinate and the rotation of the robot. 
 We remind that in the previous version these attributes
 were public, so there were no need to pass them as parameters function.
+
+\subsection{The Camera class}
+First of all, there is no thing like a camera in OpenGL, therefore we have to
+simulate one.
+%
+
+%
+A camera object allows to move and rotate the user point of view and robot
+object independently, avoiding that one interferes the other. For the exocentric
+vision application this is a basic feature, because robot can be placed
+everywhere in OpenGL world regardless of the camera position, and viceversa.
+%
+
+%
+The camera object implementation has been suggested by \cite{opengl:camera}.
+It provides some elementary commands implemented by means of mathematical matrix
+operations, to move the camera or rotate it along one axis.
