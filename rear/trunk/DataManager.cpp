@@ -1,6 +1,6 @@
 #include "DataManager.h"
 
-DataManager::DataManager(Robot * robot, DataLogic * logic, CCamera * camera)
+DataManager::DataManager(Robot * robot, DataLogic * logic, Camera * camera)
 {
   _rob = robot;
   _logic = logic;

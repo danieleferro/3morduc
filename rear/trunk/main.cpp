@@ -17,14 +17,14 @@
 
 #include <unistd.h>     // needed to sleep.
 #include <iostream>
-#include "robot.h"
+#include "Robot.h"
 
 // why does include compile ?! 
 #include "DataManager.h"
 
 #include "key_mapping.h"
 #include "texture_png.h"
-#include "camera.h"
+#include "Camera.h"
 
 
 /* step for forward direction */
@@ -49,7 +49,7 @@ DataLogic * logic = NULL;
 DataManager * manager = NULL;
 
 /* Camera declaration */
-CCamera * camera = NULL; 
+Camera * camera = NULL; 
 
 void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB, 
 		   GLfloat diffuseR, GLfloat diffuseG, GLfloat diffuseB, 
@@ -312,7 +312,7 @@ int main ( int argc, char * argv[] ) {
   logic = new DataLogic(atoi(argv[1]));
 
   /* camera instatiation */
-  camera = new CCamera();
+  camera = new Camera();
 
   /* data manager instatiation */
   manager = new DataManager(rob, logic, camera);
