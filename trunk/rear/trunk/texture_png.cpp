@@ -108,7 +108,6 @@ GLuint loadImage(const char *filename)
   png_read_image(png_ptr, row_pointers);
   png_read_end(png_ptr, NULL);
 
-
   // make it
   glGenTextures(1, &texture);
   // bind it
@@ -116,9 +115,7 @@ GLuint loadImage(const char *filename)
   // stretch it
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
   glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-  // technologic - I MEAN
 
-  // here we has the problems
   GLuint glcolours;
   (components==4) ? (glcolours = GL_RGBA): (0);
   (components==3) ? (glcolours = GL_RGB): (0);
@@ -126,6 +123,7 @@ GLuint loadImage(const char *filename)
   (components==1) ? (glcolours = GL_LUMINANCE): (0);
 
 //   glTexImage2D(GL_TEXTURE_2D, 0, components, width, height, 0, glcolours, GL_UNSIGNED_BYTE, pixels);
+
   gluBuild2DMipmaps(GL_TEXTURE_2D, 
 		    components, width, height, 
 		    glcolours, GL_UNSIGNED_BYTE, 
