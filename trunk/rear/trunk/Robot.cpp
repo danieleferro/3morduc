@@ -1,4 +1,4 @@
-#include "robot.h"
+#include "Robot.h"
 
 void PaintCylinder(GLfloat radius,GLfloat height);
 void PaintDisk(GLfloat radius);

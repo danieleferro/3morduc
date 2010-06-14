@@ -1,4 +1,4 @@
-#include "camera.h"
+#include "Camera.h"
 
 SF3dVector F3dVector ( GLfloat x, GLfloat y, GLfloat z )
 {
@@ -26,7 +26,7 @@ void AddF3dVectorToVector ( SF3dVector * Dst, SF3dVector * V2)
 
 /***************************************************************************************/
 
-CCamera::CCamera()
+Camera::Camera()
 {
   //Init with standard OGL values:
   Position = F3dVector (	0.0, 
@@ -40,7 +40,7 @@ CCamera::CCamera()
   RotatedX = RotatedY = RotatedZ = 0.0;
 }
 
-void CCamera::GetViewDir( void )
+void Camera::GetViewDir( void )
 {
   SF3dVector Step1, Step2;
   //Rotate around Y-axis:
@@ -54,24 +54,24 @@ void CCamera::GetViewDir( void )
   //Rotation around Z-axis not yet implemented, so:
   ViewDir = Step2;
 }
-void CCamera::Move (SF3dVector Direction)
+void Camera::Move (SF3dVector Direction)
 {
   AddF3dVectorToVector(&Position, &Direction );
 }
 
-void CCamera::RotateY (GLfloat Angle)
+void Camera::RotateY (GLfloat Angle)
 {
   RotatedY += Angle;
   ViewDirChanged = true;
 }
 
-void CCamera::RotateX (GLfloat Angle)
+void Camera::RotateX (GLfloat Angle)
 {
   RotatedX += Angle;
   ViewDirChanged = true;
 }
 
-void CCamera::Render( void )
+void Camera::Render( void )
 {
   glRotatef(-RotatedX , 1.0, 0.0, 0.0);
   glRotatef(-RotatedY , 0.0, 1.0, 0.0);
@@ -79,7 +79,7 @@ void CCamera::Render( void )
   glTranslatef( -Position.x, -Position.y, -Position.z );
 }
 
-void CCamera::MoveForwards( GLfloat Distance )
+void Camera::MoveForwards( GLfloat Distance )
 {
   if (ViewDirChanged) GetViewDir();
   SF3dVector MoveVector;
@@ -89,7 +89,7 @@ void CCamera::MoveForwards( GLfloat Distance )
   AddF3dVectorToVector(&Position, &MoveVector );
 }
 
-void CCamera::StrafeRight ( GLfloat Distance )
+void Camera::StrafeRight ( GLfloat Distance )
 {
   if (ViewDirChanged) GetViewDir();
   SF3dVector MoveVector;

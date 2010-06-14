@@ -33,8 +33,6 @@ class Robot
   Robot(float x = 0.f, float y = 4.f, float theta = - 90);
   void Place(GLfloat x, GLfloat y, GLfloat theta);
   void DrawRobot();
-  void SetInit(float x, float y, float theta);
-
 
   GLfloat GetX();
   GLfloat GetY();

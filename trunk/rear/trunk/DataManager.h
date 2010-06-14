@@ -21,10 +21,10 @@
 #ifndef __DATA_INTERFACE
 #define __DATA_INTERFACE
 
-#include "robot.h"
+#include "Robot.h"
 #include "texture_png.h"
 #include "DataLogic.h"
-#include "camera.h"
+#include "Camera.h"
 
 class DataManager
 {
@@ -33,7 +33,7 @@ class DataManager
   GLuint _texture[1];
   Robot * _rob;
   DataLogic * _logic;
-  CCamera * _camera;
+  Camera * _camera;
 
   robot_data * _robot_status;
   image_data * _bg_image_data;
@@ -53,7 +53,7 @@ class DataManager
   /* first parameter is a robot instance */
   /* second parameter is the simulation session number 
      it is only needed for offline testing */
-  DataManager(Robot *, DataLogic *, CCamera *); 
+  DataManager(Robot *, DataLogic *, Camera *); 
   ~DataManager();
   void NextStep();
 };
