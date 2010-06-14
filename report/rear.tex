@@ -15,14 +15,53 @@ this, we will occasionally refer to the class diagram shown in figure
   \end{center}
 \end{figure}
 %
+The overall schema can be resumed by the following diagram (see figure
+\ref{fig:overall_diagram}). User sends a command to the exocentric vision
+application, in order to guide the robot through the remote environment.
+The exocentric vision application forwards the command to the robot or the
+simulator (paragraph \ref{sec:simulator}) and waits for the response.
+The latter includes the new robot position and the new egocentric camera images.
+%
 
+%
+All the egocentric camera images retrieved are stored in a data set and coupled
+with robot coordinates and orientation at the moment when they were shot. Going
+on with the application a large collection of egocentric images will be gathered.
+%
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=400pt]{img/overall_diagram.jpeg}  %robot pic
+    \caption{Application class diagram}
+    \label{fig:overall_diagram}
+  \end{center}
+\end{figure}
+%
+After retrieving response from robot, the exocentric vision application moves the
+robot in the openGL world (according to the robot coordinates read) and adds the
+images received to the images collection. Later on, the application has to choose
+the proper image (among those collected in the set) to use as texture (i.e. background)
+in OpenGL and implement the exocentric vision.
+%
 
+%
+Since every image owns its data about position and orientation when shot, we can
+move and point the camera object to obtain the right visual of the external world.
+Wherever the robot is situated, we will be able to watch it from the right point of view,
+depending on the texture image chosen.
+%
 
-The overall schema can be resumed by following diagram {}. User sends a command to the exocentric vision application, in order to guide the robot in the environment. The exocentric vision application forwards the command to the robot or simulator (see paragraph {}) and waits for the response. The latter include the new robot position and the new egocentric camera images.
-All the egocentric camera images retrieved are stored in a data set and coupled with coordinates and orientation of the robot at the moment when they were shot. Going on with the application a large collection of egocentric images will be gathered.
-After retrieving response from robot, the exocentric vision application moves the robot in the openGL world (according to the robot coordinates read) and adds the images received to the egocentric collection. Later on, the application has to choose the proper image (among those collected in the set) to put as texture (i.e. background) in OpenGL and then implement the exocentric vision. Since every image owns its data about position and orientation when shot, we can move and point the camera object to obtain the right visual of the external world. Whatever the robot is situated, we will be able to watch it from the right point of view, depending on the texture image chosen.
-All the process explained above is lacking of one part: how to choose the background image, knowing the actual robot position and orientation. If we decided to choose the image shot in the closest point to the robot we would always show the egocentric vision, because the algorithm would select always the image with the same position and orientation of the robot. The distance between the robot and the selected images would be equal to zero, which is doubtless the minimum possible value.
-The algorithms to take the right image in exocentric vision can be various. Each one has its own advantages and disadvantages, we will chose the one able to guarantee the best trade-off.
+%
+All the process explained above is lacking of one part: how to choose the background image,
+knowing the actual robot position and orientation. If we decided to choose the closest image
+to the robot we would always show the egocentric vision, because the algorithm would select
+always the image with the same position and orientation of the robot. The distance between
+the robot and the selected images would be equal to zero, which is doubtless the minimum possible
+value.
+%
+
+%
+The algorithms to take the right image in exocentric vision can be various. Each one has its own
+advantages and disadvantages, we will chose the one able to guarantee the best trade-off.
 
 
 \subsection{The Robot class}
