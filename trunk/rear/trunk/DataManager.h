@@ -26,6 +26,9 @@
 #include "DataLogic.h"
 #include "Camera.h"
 
+float SpacialMetricCalc(robot_data * robot_status,
+			image_data * bg_image_data);
+
 class DataManager
 {
  private:

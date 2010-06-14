@@ -19,8 +19,8 @@ struct robot_data {
 class DataLogicInterface {
 
  public:
-
-  virtual void SelectImage(robot_data *, image_data *) = 0;
+  virtual void SelectImage(robot_data *, image_data *,
+			   float (*)(robot_data *, image_data *)) = 0;
   virtual void RetrieveData(robot_data *) = 0;
   
 };
