@@ -54,7 +54,7 @@ void DataManager::NextStep() {
   // move robot with _robot_status data
   _rob->Place(_robot_status->x,
 	      _robot_status->y - 20,
-	      _robot_status->theta);   
+	      _robot_status->theta); 
 
   //_rob->Place(40.f, -70.45f - 30, 0.f);
 
