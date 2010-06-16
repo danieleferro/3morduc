@@ -64,6 +64,9 @@ float PointAlgorithm(robot_data * robot_status, image_data * bg_image_data) {
   float line_c[3];
   float line_d[3];
 
+  float gamma;
+  float delta;
+
   float rhs_c;
   float rhs_d;
   int sign = 1;
@@ -79,11 +82,19 @@ float PointAlgorithm(robot_data * robot_status, image_data * bg_image_data) {
   line_a[M0] = - 1 / line_b[M0];
   //  line_a[M0] = tan( TO_RADIANS( (robot_status->theta - 90) ) );
 
-
   /* calcolo la retta "c" */
+  gamma =  Normalize180(robot_status -> theta - ( 360 - SWEEP_ANGLE ));
   line_c[X0] = robot_status->x;
   line_c[Y0] = robot_status->y;
-  line_c[M0] = tan( atan( line_b[M0] ) + TO_RADIANS( SWEEP_ANGLE ) );
+  line_c[M0] = tan( gamma );
+
+  cout << "TEST: coefficiente angolare c old: " << 
+    tan( atan( line_b[M0] ) + TO_RADIANS( SWEEP_ANGLE ) ) <<
+    endl;
+
+  cout << "TEST: coefficiente angolare c new: " <<
+    tan ( TO_RADIANS( gamma )) <<
+    endl;
 
   cout <<  "c angle: " 
     //       << TO_DEGREES(atan( line_b[M0] ) + TO_RADIANS( SWEEP_ANGLE ))
@@ -92,9 +103,19 @@ float PointAlgorithm(robot_data * robot_status, image_data * bg_image_data) {
 
 
   /* calcolo la retta "d" */
+  delta = Normalize180(robot_status -> theta + ( 360 - SWEEP_ANGLE ));
+
   line_d[X0] = robot_status->x;
   line_d[Y0] = robot_status->y;
-  line_d[M0] = tan( atan( line_b[M0] ) - TO_RADIANS( SWEEP_ANGLE ) );
+  line_d[M0] = tan( delta );
+
+  cout << "TEST: coefficiente angolare d old: " << 
+    tan( atan( line_b[M0] ) - TO_RADIANS( SWEEP_ANGLE ) ) <<
+    endl;
+
+  cout << "TEST: coefficiente angolare d new: " <<
+    tan ( TO_RADIANS( delta )) <<
+    endl;
 
   cout <<  "d angle: " 
     //       << TO_DEGREES(atan( line_b[M0] ) + TO_RADIANS( SWEEP_ANGLE ))
