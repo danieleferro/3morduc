@@ -234,8 +234,6 @@ float PointAlgorithm(robot_data * robot_status, image_data * bg_image_data) {
 
 }
 
-
-
 int main(int argc, char** argv) {
 
   srand(time(NULL));
@@ -243,18 +241,31 @@ int main(int argc, char** argv) {
 
   robot_data robot_status;
   image_data bg_image_data;
-
-  robot_status.x = 0;
-  robot_status.y = 0;
-  robot_status.theta = 30;
-
-
-  bg_image_data.x =  -1;
-  bg_image_data.y =  -1;
-  bg_image_data.theta = 0;
   
-  
-  PointAlgorithm(&robot_status, &bg_image_data);
+  float robot_theta;
+  float x_im, y_im;
+
+  for (;;)
+    {
+      cout << endl;
+      cout << "Insert robot orientation (-180, 180): " << endl;
+      cin >> robot_theta;
+      cout << "Insert image x coordinate: " << endl;
+      cin >> x_im;
+      cout << "Insert image y coordinate: " << endl;
+      cin >> y_im;
+      
+      robot_status.x = 0;
+      robot_status.y = 0;
+      robot_status.theta = robot_theta;
+      
+      
+      bg_image_data.x =  x_im;
+      bg_image_data.y =  y_im;
+      bg_image_data.theta = 0;
+   
+      PointAlgorithm(&robot_status, &bg_image_data);
+    }
 
   return 0;
 }
