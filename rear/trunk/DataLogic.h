@@ -10,6 +10,7 @@
 #include <cstdio>
 #include <cstring>
 #include "DataLogicInterface.h"
+#include "DistanceCalcInterface.h"
 
 class DataLogic : public DataLogicInterface
 {
@@ -22,7 +23,8 @@ class DataLogic : public DataLogicInterface
   DataLogic(int);
   ~DataLogic();
   void SelectImage(robot_data *, image_data *,
-		   float (*)(robot_data *, image_data *));
+		   DistanceCalcInterface *);
+
   void RetrieveData(robot_data *);
 };
 

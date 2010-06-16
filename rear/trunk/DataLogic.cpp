@@ -82,7 +82,7 @@ void DataLogic::RetrieveData(robot_data * data)
 
 // select the image to set as background using the euclidean metric
 void DataLogic::SelectImage(robot_data * robot_status, image_data * bg_image_data,
-			    float (* dist_calculator)(robot_data *, image_data *))
+			    DistanceCalcInterface * calculator)
 {
   float distances[_images_collection.size()];
   float min;
@@ -94,7 +94,7 @@ void DataLogic::SelectImage(robot_data * robot_status, image_data * bg_image_dat
        it != _images_collection.end();
        it++)
     {
-      distances[i] = dist_calculator(robot_status, &*it);
+      distances[i] = calculator -> Calculate(robot_status, &*it);
       i++;
     }
 
