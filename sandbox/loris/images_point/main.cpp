@@ -56,7 +56,6 @@ float Normalize180(float angle)
   return angle;
 }
 
-
 float PointAlgorithm(robot_data * robot_status, image_data * bg_image_data) {
 
   // robot_status->theta is always between [-180; 180]
@@ -87,7 +86,7 @@ float PointAlgorithm(robot_data * robot_status, image_data * bg_image_data) {
   gamma =  Normalize180(robot_status -> theta - ( 360 - SWEEP_ANGLE ));
   line_c[X0] = robot_status->x;
   line_c[Y0] = robot_status->y;
-  line_c[M0] = tan( gamma );
+  line_c[M0] = tan( TO_RADIANS( gamma ));
 
   if (DEBUG)
     cout << "DEBUG: coefficiente angolare retta c: " <<
@@ -98,7 +97,7 @@ float PointAlgorithm(robot_data * robot_status, image_data * bg_image_data) {
   delta = Normalize180(robot_status -> theta + ( 360 - SWEEP_ANGLE ));
   line_d[X0] = robot_status->x;
   line_d[Y0] = robot_status->y;
-  line_d[M0] = tan( delta );
+  line_d[M0] = tan( TO_RADIANS( delta ));
 
   if (DEBUG) 
     cout << "DEBUG: coefficiente angolare d: " <<
@@ -118,7 +117,15 @@ float PointAlgorithm(robot_data * robot_status, image_data * bg_image_data) {
    * identified by the SWEEP_ANGLE 
    */
   rhs_c = line_c[M0] * bg_image_data->x + ( line_c[Y0] - line_c[M0] * line_c[X0] );
+  cout << " ----------------- " << endl;
+  cout << "line_c[M0]: " << line_c[M0] << endl;
+  cout << "bg_image_data -> x: " << bg_image_data -> x << endl;
+  cout << "line_c[Y0]: " << line_c[Y0] << endl;
+  cout << "line_c[X0]: " << line_c[X0] << endl;
+
   rhs_d = line_d[M0] * bg_image_data->x + ( line_d[Y0] - line_d[M0] * line_d[X0] );
+
+  cout << "rhs_c : " << rhs_c << endl;
 
   if ( gamma >= -90 && gamma <= 90 )
     {
@@ -145,6 +152,8 @@ float PointAlgorithm(robot_data * robot_status, image_data * bg_image_data) {
 	}
 
     }
+
+  cout << "rhs_d : " << rhs_d << endl;
 
   if ( delta >= -90 && delta <= 90 )
     {
@@ -185,7 +194,10 @@ int main(int argc, char** argv) {
   robot_data robot_status;
   image_data bg_image_data;
   
-  float robot_theta;
+  float robot_x, 
+    robot_y, 
+    robot_theta;
+
   float x_im, y_im;
 
   for (;;)
@@ -193,15 +205,18 @@ int main(int argc, char** argv) {
       cout << endl;
       cout << "Insert robot orientation (-180, 180): " << endl;
       cin >> robot_theta;
+      cout << "Insert robot X: " << endl;
+      cin >> robot_x;
+      cout << "Insert robot Y: " << endl;
+      cin >> robot_y;
       cout << "Insert image x coordinate: " << endl;
       cin >> x_im;
       cout << "Insert image y coordinate: " << endl;
       cin >> y_im;
       
-      robot_status.x = 0;
-      robot_status.y = 0;
+      robot_status.x = robot_x;
+      robot_status.y = robot_y;
       robot_status.theta = robot_theta;
-      
       
       bg_image_data.x =  x_im;
       bg_image_data.y =  y_im;
