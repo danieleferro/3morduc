@@ -21,13 +21,12 @@
 #ifndef __DATA_INTERFACE
 #define __DATA_INTERFACE
 
+#include "DistanceCalcInterface.h"
 #include "Robot.h"
 #include "texture_png.h"
 #include "DataLogic.h"
 #include "Camera.h"
 
-float SpacialMetricCalc(robot_data * robot_status,
-			image_data * bg_image_data);
 
 class DataManager
 {
@@ -37,6 +36,7 @@ class DataManager
   Robot * _rob;
   DataLogic * _logic;
   Camera * _camera;
+  DistanceCalcInteface * _calculator;
 
   robot_data * _robot_status;
   image_data * _bg_image_data;
@@ -56,7 +56,9 @@ class DataManager
   /* first parameter is a robot instance */
   /* second parameter is the simulation session number 
      it is only needed for offline testing */
-  DataManager(Robot *, DataLogic *, Camera *); 
+  DataManager(Robot *, DataLogic *, Camera *, 
+	      DistanceCalcInterface *); 
+  
   ~DataManager();
   void NextStep();
 };
