@@ -15,6 +15,8 @@
 
 #define SWEEP_ANGLE 45
 
+#define DEBUG 1
+
 using namespace std;
 
 struct image_data {
@@ -80,7 +82,6 @@ float PointAlgorithm(robot_data * robot_status, image_data * bg_image_data) {
   line_a[X0] = robot_status->x;
   line_a[Y0] = robot_status->y;
   line_a[M0] = - 1 / line_b[M0];
-  //  line_a[M0] = tan( TO_RADIANS( (robot_status->theta - 90) ) );
 
   /* calcolo la retta "c" */
   gamma =  Normalize180(robot_status -> theta - ( 360 - SWEEP_ANGLE ));
@@ -88,88 +89,38 @@ float PointAlgorithm(robot_data * robot_status, image_data * bg_image_data) {
   line_c[Y0] = robot_status->y;
   line_c[M0] = tan( gamma );
 
-  cout << "TEST: coefficiente angolare c old: " << 
-    tan( atan( line_b[M0] ) + TO_RADIANS( SWEEP_ANGLE ) ) <<
-    endl;
-
-  cout << "TEST: coefficiente angolare c new: " <<
-    tan ( TO_RADIANS( gamma )) <<
-    endl;
-
-  cout <<  "c angle: " 
-    //       << TO_DEGREES(atan( line_b[M0] ) + TO_RADIANS( SWEEP_ANGLE ))
-       << Normalize180(robot_status -> theta - ( 360 - 2 * SWEEP_ANGLE / 2))
-       << endl;
-
+  if (DEBUG)
+    cout << "DEBUG: coefficiente angolare retta c: " <<
+      tan ( TO_RADIANS( gamma )) <<
+      endl;
 
   /* calcolo la retta "d" */
   delta = Normalize180(robot_status -> theta + ( 360 - SWEEP_ANGLE ));
-
   line_d[X0] = robot_status->x;
   line_d[Y0] = robot_status->y;
   line_d[M0] = tan( delta );
 
-  cout << "TEST: coefficiente angolare d old: " << 
-    tan( atan( line_b[M0] ) - TO_RADIANS( SWEEP_ANGLE ) ) <<
-    endl;
+  if (DEBUG) 
+    cout << "DEBUG: coefficiente angolare d: " <<
+      tan ( TO_RADIANS( delta )) <<
+      endl;
 
-  cout << "TEST: coefficiente angolare d new: " <<
-    tan ( TO_RADIANS( delta )) <<
-    endl;
-
-  cout <<  "d angle: " 
-    //       << TO_DEGREES(atan( line_b[M0] ) + TO_RADIANS( SWEEP_ANGLE ))
-       << Normalize180(robot_status -> theta + ( 360 - 2 * SWEEP_ANGLE / 2))
-       << endl;
-
-//   cout <<  "d angle: " 
-//        << TO_DEGREES(atan( line_b[M0] ) - TO_RADIANS( SWEEP_ANGLE ))
-//        << endl;
-
-  cout << "Line A: " << line_a[M0] << endl;
-  cout << "Line B: " << line_b[M0] << endl;
-  cout << "Line C: " << line_c[M0] << endl;
-  cout << "Line D: " << line_d[M0] << endl;
+  cout << "Gamma: " << gamma << endl;
+  cout << "Delta: " << delta << endl;
 
   cout << "Point ( "
        << bg_image_data->x << "; "
        << bg_image_data->y << "; " 
        << bg_image_data->theta << " )"
        << endl;
-
-  /* first of all, let's exclude images ahead the robot
-  rhs = line_a[M0] * bg_image_data->x + ( line_a[Y0] - line_a[M0] * line_a[X0] );
-
   
-  if ( bg_image_data->y >= rhs )
-    {
-
-      cout << " is EXcluded. (control 1)" << endl;
-      
-      return IMAGE_NOT_VALID;
-
-    }
-  */
-
-//   if ( (robot_status->theta > -90 && robot_status->theta < 90  ) ) 
-//     sign = 1;
-//   else
-//     sign = -1;
-
-  /* let's exclude images are outside the plan identified 
-     by the sweep angle: line C
-  */
-
+  /* let's exclude images that do not fall within the area
+   * identified by the SWEEP_ANGLE 
+   */
   rhs_c = line_c[M0] * bg_image_data->x + ( line_c[Y0] - line_c[M0] * line_c[X0] );
   rhs_d = line_d[M0] * bg_image_data->x + ( line_d[Y0] - line_d[M0] * line_d[X0] );
 
-  cout << "Coefficiente angolare della retta c: " << line_c[M0] << endl;
-  cout << "Angolo formato dalla retta c: " 
-       << Normalize180(robot_status -> theta - ( 360 - SWEEP_ANGLE ))
-       << endl;
-  
-  if ( Normalize180(robot_status -> theta - ( 360 - SWEEP_ANGLE)) >= - 90 &&
-       Normalize180(robot_status -> theta - ( 360 - SWEEP_ANGLE)) <= 90 )
+  if ( gamma >= -90 && gamma <= 90 )
     {
       cout << " y <= rhs_c is being evaluated " << endl;
       
@@ -177,10 +128,10 @@ float PointAlgorithm(robot_data * robot_status, image_data * bg_image_data) {
 	{
 	  cout << " is EXcluded." << endl;
 	  
-	  return IMAGE_NOT_VALID;
-	  
+	  return IMAGE_NOT_VALID;	  
 	}
     }
+
   else
     {
       cout << " y >= rhs_c is being evaluated " << endl;
@@ -195,13 +146,7 @@ float PointAlgorithm(robot_data * robot_status, image_data * bg_image_data) {
 
     }
 
-  cout << "Coefficiente angolare della retta d: " << line_c[M0] << endl;
-  cout << "Angolo formato dalla retta d: " 
-       << Normalize180(robot_status -> theta + ( 360 - SWEEP_ANGLE ))
-       << endl;
-
-  if ( Normalize180(robot_status -> theta + ( 360 - SWEEP_ANGLE)) >= - 90 &&
-       Normalize180(robot_status -> theta + ( 360 - SWEEP_ANGLE)) <= 90 )
+  if ( delta >= -90 && delta <= 90 )
     {
       cout << " y >= rhs_d is being evaluated " << endl;
       
@@ -226,29 +171,6 @@ float PointAlgorithm(robot_data * robot_status, image_data * bg_image_data) {
 	  return IMAGE_NOT_VALID;	  
 	}
     }
-
-
-  
-
-
-
-  /* let's exclude images are outside the plan identified 
-     by the sweep angle: line D
-  */
-  
-//   rhs = line_d[M0] * bg_image_data->x + ( line_d[Y0] - line_d[M0] * line_d[X0] );
-
-//   if ( bg_image_data->y*sign <= rhs*sign )
-//     {
-
-//       cout << " is EXcluded. (control 2)" << endl;
-      
-//       return IMAGE_NOT_VALID;
-
-//     }
-  
-  
-  
  
   cout << " is INcluded." << endl;
   return 0;
