@@ -26,6 +26,7 @@
 #include "texture_png.h"
 #include "DataLogic.h"
 #include "Camera.h"
+#include "data_types.h"
 
 
 class DataManager
@@ -36,7 +37,7 @@ class DataManager
   Robot * _rob;
   DataLogic * _logic;
   Camera * _camera;
-  DistanceCalcInteface * _calculator;
+  DistanceCalcInterface * _calculator;
 
   robot_data * _robot_status;
   image_data * _bg_image_data;

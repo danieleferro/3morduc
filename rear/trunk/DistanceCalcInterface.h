@@ -1,7 +1,7 @@
 #ifndef __DISTANCE_CALC_INTERFACE
 #define __DISTANCE_CALC_INTERFACE
 
-#include "DataLogicInterface.h"
+#include "data_types.h"
 
 #define IMAGE_NOT_VALID -1
 
