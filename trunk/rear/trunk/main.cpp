@@ -319,7 +319,9 @@ int main ( int argc, char * argv[] ) {
   camera = new Camera();
 
   /* image distance calculator instantiation */
-  calculator = new SweepMetricCalc(20, 20);
+  calculator = new SweepMetricCalc(30, 20,
+				   20, 5,
+				   0, 5);
 
   /* data manager instatiation */
   manager = new DataManager(rob, logic, camera, calculator);

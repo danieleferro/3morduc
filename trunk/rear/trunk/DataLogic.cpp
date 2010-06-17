@@ -95,6 +95,7 @@ void DataLogic::SelectImage(robot_data * robot_status, image_data * bg_image_dat
        it++)
     {
       distances[i] = calculator -> Calculate(robot_status, &*it);
+      std::cout << "Return value from Calculate Function: " << distances[i] << std::endl;
       i++;
     }
 
