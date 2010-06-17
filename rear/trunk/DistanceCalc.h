@@ -28,14 +28,24 @@ class SweepMetricCalc : public DistanceCalcInterface
 {
  public:
   float Calculate(robot_data *, image_data *);
-  SweepMetricCalc(float, float);
+  SweepMetricCalc(float, float, float, float, float, float);
   
  private:
   static const int X0 = 0;
   static const int Y0 = 1;
   static const int M0 = 2;
+  
   float _sweep_angle;
   float _angle_offset;
+  
+  /* gaussian parameters for assigning distance score */
+  float _mu_distance;
+  float _sigma_distance;
+
+  /* gaussian parameters for assigning angle score */
+  float _mu_angle;
+  float _sigma_angle;
+
 
   /*
     Primitives to be called by Calculate

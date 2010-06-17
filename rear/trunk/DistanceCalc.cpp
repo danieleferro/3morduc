@@ -10,22 +10,36 @@ float SpacialMetricCalc::Calculate(robot_data * robot_status,
 	  pow((robot_status -> y ) - (bg_image_data -> y), 2) +
 	  pow((robot_status -> theta ) - (bg_image_data -> theta), 2));
   
+  if (DEBUG) std::cout << "Exit from SpacilMetricCalc::Calculate." << std::endl;
   return distance;  
 }
 
 SweepMetricCalc::SweepMetricCalc( float sweep_angle,
-				  float angle_offset)
+				  float angle_offset,
+				  float mu_distance,
+				  float sigma_distance,
+				  float mu_angle,
+				  float sigma_angle
+				  )
 {
   _sweep_angle = sweep_angle;
   _angle_offset = angle_offset;
+
+  _mu_distance = mu_distance;
+  _sigma_distance = sigma_distance;
+  _mu_angle = mu_angle;
+  _sigma_angle = sigma_angle;
+
 }
 
 float SweepMetricCalc::Calculate( robot_data * robot_status,
 				  image_data * bg_image_data)
 {
+  if (DEBUG) std::cout << "With Boundaries test in progress.." << std::endl;
   if ( !WithinBoundaries(robot_status, bg_image_data) )
     return IMAGE_NOT_VALID;
   
+  if (DEBUG) std::cout << "Rightly Oriented test in progress.." << std::endl;
   if ( !RightlyOriented(robot_status, bg_image_data) )
     return IMAGE_NOT_VALID;
   
@@ -38,8 +52,32 @@ float SweepMetricCalc::PointAlgorithm( robot_data * robot_status,
 {
   
 
+  float angle;
+  float score_angle;
 
-  
+  float distance;
+  float score_distance;
+
+  angle    = fabs ( robot_status->theta - bg_image_data->theta );
+  distance = sqrt (
+		   pow( ( bg_image_data->x - robot_status->x), 2 ) +
+		   pow( ( bg_image_data->y - robot_status->y), 2 ) );
+
+
+  /* calculate distance score with gaussian function */
+  score_distance = ( 1 / ( _sigma_distance * sqrt ( 2 * M_PI ) ) );
+  score_distance = score_distance * exp( - ( distance - _mu_distance ) / ( 2 * pow ( _sigma_distance, 2 ) ) );
+
+
+  /* calculate angle  score with gaussian function */
+  score_angle = ( 1 / ( _sigma_angle * sqrt ( 2 * M_PI ) ) );
+  score_angle = score_angle * exp( - ( angle - _mu_angle ) / ( 2 * pow ( _sigma_angle, 2 ) ) );
+
+
+  if (DEBUG) std::cout << "Exit from SweepMetricCalc::PointAlorithm." << std::endl;
+  return ( score_distance + score_angle );
+
+
 }
 
 bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status, 

@@ -45,7 +45,6 @@ void DataManager::NextStep() {
 
   _logic->SelectImage(_robot_status, _bg_image_data,
 		      _calculator);
-// 		       selection_methods::SpacialMetricCalc);
 
   /* use image_path to load the image */
   LoadGLTextures(_texture, _bg_image_data->path);
