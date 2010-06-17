@@ -36,8 +36,10 @@ float SweepMetricCalc::Calculate( robot_data * robot_status,
 float SweepMetricCalc::PointAlgorithm( robot_data * robot_status,
 				       image_data * bg_image_data)
 {
+  
 
 
+  
 }
 
 bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status, 
