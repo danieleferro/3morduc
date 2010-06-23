@@ -42,10 +42,6 @@ class DataManager
   robot_data * _robot_status;
   image_data * _bg_image_data;
 
-  float prev_x;
-  float prev_y;
-  float prev_theta;
-
   /* bind the specified image to a texture */
   void LoadGLTextures(GLuint * texture, const char* filename);
 

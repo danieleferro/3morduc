@@ -18,11 +18,6 @@ DataManager::DataManager(Robot * robot, DataLogic * logic, Camera * camera,
   if(_bg_image_data == NULL)
     std::cout << "Error 2" << std::endl;
 
-
-  prev_x = 0;
-  prev_y = 0;
-  prev_theta = 0;
-
   NextStep();
 }
 
@@ -84,16 +79,9 @@ void DataManager::MoveCamera() {
 			    _bg_image_data->y) );
 
   std::cout << "Rotate camera of: " << TO_DEGREES( _bg_image_data->theta) << std::endl;
+
   // rotation in degrees
   _camera->RotateY( - TO_DEGREES( _bg_image_data->theta) );
-
-
-//   prev_x = _bg_image_data->x;
-//   prev_y = _bg_image_data->y;
-//   prev_theta = _bg_image_data->theta;
-
-
-
 
 
 }

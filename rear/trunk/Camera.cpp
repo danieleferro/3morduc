@@ -16,14 +16,20 @@ SF3dVector AddF3dVectors (SF3dVector* u, SF3dVector* v)
   result.z = u->z + v->z;
   return result;
 }
-void AddF3dVectorToVector ( SF3dVector * Dst, SF3dVector * V2)
+void SetF3dVectorToVector ( SF3dVector * Dst, SF3dVector * V2)
 {
-//   Dst->x += V2->x;
-//   Dst->y += V2->y;
-//   Dst->z += V2->z;
+
   Dst->x = V2->x;
   Dst->y = V2->y;
   Dst->z = V2->z;
+}
+
+void AddF3dVectorToVector ( SF3dVector * Dst, SF3dVector * V2)
+{
+
+  Dst->x += V2->x;
+  Dst->y += V2->y;
+  Dst->z += V2->z;
 }
 
 
@@ -59,13 +65,12 @@ void Camera::GetViewDir( void )
 }
 void Camera::Move (SF3dVector Direction)
 {
-  AddF3dVectorToVector(&Position, &Direction );
+  SetF3dVectorToVector(&Position, &Direction );
 }
 
 void Camera::RotateY (GLfloat Angle)
 {
   
-  // RotatedY += Angle;
   RotatedY = Angle;
   
   ViewDirChanged = true;
@@ -73,7 +78,7 @@ void Camera::RotateY (GLfloat Angle)
 
 void Camera::RotateX (GLfloat Angle)
 {
-  RotatedX += Angle;
+  RotatedX = Angle;
   ViewDirChanged = true;
 }
 
