@@ -12,6 +12,7 @@
 
 
 #include "math.h"
+#include <iostream>
 
 /////////////////////////////////
 //Note: All angles in degrees  //

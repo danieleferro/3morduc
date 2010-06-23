@@ -25,7 +25,7 @@ void Robot::Place(GLfloat new_x, GLfloat new_y,
 void Robot::DrawRobot()
 {
 
-  std::cout << "Robot  position is: \t"
+  std::cout << "Robot in: \t"
 	    << x << "; "
 	    << y << "; "
 	    << theta << std::endl;
@@ -36,8 +36,6 @@ void Robot::DrawRobot()
   GLfloat reflectance_black[] = { 0.2f, 0.2f, 0.2f};
   GLfloat reflectance_white[] = { 0.8f, 0.8f, 0.8f};
   
-  GLfloat cosine, sine;
-
   glMatrixMode(GL_MODELVIEW);
   
   glPushMatrix();
@@ -46,7 +44,7 @@ void Robot::DrawRobot()
 
 
   // set robot height
-  //  glTranslatef(0.0f, -12.0f, 0.0f);
+  glTranslatef(0.0f, -12.0f, 0.0f);
 
   // set robot reflectance (it is black)
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, reflectance_black);
@@ -55,15 +53,8 @@ void Robot::DrawRobot()
   glTranslatef(this->x, 0.0f, 0.0f);
   glTranslatef(0.0f, 0.0f, this->y);
 
-  //glTranslatef(0.f, 0.f, - this->x);
-  //  glTranslatef(this->y, 0.f, 0.f);
+  glRotatef( - (this->theta) + 90, 0.0f, 1.0f, 0.0f);
 
-  glRotatef(-(this->theta) + 90, 0.0f, 1.0f, 0.0f);
-
-  // compute theta's cosine and sine value
-  cosine = cos(this->theta);
-  sine = sin(this->theta);
-  
   // translate on z axis
   glTranslatef(0.0f,0.08f,0.0f);
 

@@ -18,6 +18,7 @@
 #include <unistd.h>     // needed to sleep.
 #include <iostream>
 #include "Robot.h"
+#include <math.h>
 
 // why does include compile ?! 
 #include "DataManager.h"
@@ -29,7 +30,7 @@
 
 
 /* step for forward direction */
-#define STEP 0.1f
+#define STEP 10.f
 
 /* step for rotation */
 #define ANGLE 0.1f
@@ -82,8 +83,10 @@ void display () {
   glLoadIdentity();
   camera->Render();  
 
+
   /* draw the texture */
-  //  DrawTexture();
+  DrawTexture();
+
 	
   /* draw the robot */
   rob->DrawRobot();
@@ -144,39 +147,39 @@ void keyPressed(unsigned char key, int x, int y)
     /* exit the program...normal termination. */
     exit(0);
     
-  case q:
+  case Q:
     temp = _oldTheta + ANGLE;
     rob->Place(_oldX, _oldY, temp);
     break;
 
-  case w:
+  case W:
     temp = _oldTheta - ANGLE;
     rob->Place(_oldX, _oldY, temp);
     break;
 
-  case s:
+  case S:
     
     manager->NextStep();
     break;
 
     
     // moving camera
-  case o:
+  case O:
     camera->MoveForwards( - STEP *5 );
     break;
 
     // moving camera
-  case p:
+  case P:
     camera->MoveForwards( STEP *5 );
     break;
 
     // moving camera
-  case k:
+  case K:
     camera->RotateY( STEP*5 );
     break;
 
     // moving camera
-  case l:
+  case L:
     camera->RotateY( - STEP*5 );
     break;
 
@@ -198,33 +201,38 @@ void specialKeyPressed(int key, int x, int y)
   GLfloat _oldTheta = rob->GetTheta();
 
   GLfloat temp;
+  GLfloat tempX;
+  GLfloat tempY;
 
 
   switch (key) {
 
   case GLUT_KEY_UP :
-    temp = _oldY - STEP;
-    rob->Place(_oldX, temp, _oldTheta);
+
+    tempX = _oldX + STEP*sin(TO_RADIANS(_oldTheta));
+    tempY = _oldY - STEP*cos(TO_RADIANS(_oldTheta));
+
+    rob->Place(tempX, tempY, _oldTheta);
     break;
 
   case GLUT_KEY_DOWN :
 
-    temp = _oldY + STEP;
-    rob->Place(_oldX, temp, _oldTheta);
+    tempX = _oldX - STEP*sin(TO_RADIANS(_oldTheta));
+    tempY = _oldY + STEP*cos(TO_RADIANS(_oldTheta));
+
+    rob->Place(tempX, tempY, _oldTheta);
     break;
 
   case GLUT_KEY_RIGHT :
 
-    camera->RotateY( STEP * 5);
-//     temp = _oldX + STEP;
-//     rob->Place(temp, _oldY, _oldTheta);
+    temp = _oldX + STEP;
+    rob->Place(temp, _oldY, _oldTheta);
     break;    
 
   case GLUT_KEY_LEFT :
 
-    camera->RotateY( - STEP * 5);
-//     temp = _oldX - STEP;
-//     rob->Place(temp, _oldY, _oldTheta);
+    temp = _oldX - STEP;
+    rob->Place(temp, _oldY, _oldTheta);
     break;
 
   }
@@ -317,10 +325,11 @@ int main ( int argc, char * argv[] ) {
   /* camera instatiation */
   camera = new Camera();
 
-  /* image distance calculator instantiation */
-  //   calculator = new SweepMetricCalc(30, 20,
-  // 				   20, 5,
-  // 				   0, 5);
+  /* image distance calculator instantiation 
+  calculator = new SweepMetricCalc(30, 20,
+				   20, 5,
+				   0, 5);
+  */
   calculator = new SpacialMetricCalc();
 
   /* data manager instatiation */
@@ -329,8 +338,7 @@ int main ( int argc, char * argv[] ) {
   init();
 
   //camera->Move( F3dVector(0.0, 0.0, 12.0 ));
-  //   camera->Move( F3dVector(0.0, 0.0, 0.0 ));
-  //   camera->MoveForwards( 0.0 );
+  //camera->MoveForwards( 0.0 );
  
   /* tell GLUT to wait for events */
   glutMainLoop();

@@ -1,5 +1,4 @@
 #include "Camera.h"
-#include <iostream>
 
 SF3dVector F3dVector ( GLfloat x, GLfloat y, GLfloat z )
 {
@@ -19,9 +18,12 @@ SF3dVector AddF3dVectors (SF3dVector* u, SF3dVector* v)
 }
 void AddF3dVectorToVector ( SF3dVector * Dst, SF3dVector * V2)
 {
-  Dst->x += V2->x;
-  Dst->y += V2->y;
-  Dst->z += V2->z;
+//   Dst->x += V2->x;
+//   Dst->y += V2->y;
+//   Dst->z += V2->z;
+  Dst->x = V2->x;
+  Dst->y = V2->y;
+  Dst->z = V2->z;
 }
 
 
@@ -30,14 +32,12 @@ void AddF3dVectorToVector ( SF3dVector * Dst, SF3dVector * V2)
 Camera::Camera()
 {
   //Init with standard OGL values:
-  Position = F3dVector ( 70.45,
-			 0.0,
-			 40.0);
-
+  Position = F3dVector (	0.0, 
+				0.0,
+				0.0);
   ViewDir = F3dVector(	0.0,
 			0.0,
-			1.0);
-
+			-1.0);
   ViewDirChanged = false;
   //Only to be sure:
   RotatedX = RotatedY = RotatedZ = 0.0;
@@ -64,7 +64,10 @@ void Camera::Move (SF3dVector Direction)
 
 void Camera::RotateY (GLfloat Angle)
 {
-  RotatedY += Angle;
+  
+  // RotatedY += Angle;
+  RotatedY = Angle;
+  
   ViewDirChanged = true;
 }
 
@@ -76,15 +79,11 @@ void Camera::RotateX (GLfloat Angle)
 
 void Camera::Render( void )
 {
-  std::cout << "Camera position is:" 
-	    << Position.x << ","
-	    << Position.y << ","
-	    << Position.z << std::endl;
 
-//   std::cout << "Camera orientation is:" 
-// 	    << ViewDir.x << ","
-// 	    << ViewDir.y << ","
-// 	    << ViewDir.z << std::endl;
+  std::cout << "Camera in: \t"
+	    << Position.x << "; "
+	    << Position.z << "; "
+	    << RotatedY << std::endl;
 
   glRotatef(-RotatedX , 1.0, 0.0, 0.0);
   glRotatef(-RotatedY , 0.0, 1.0, 0.0);

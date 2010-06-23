@@ -23,7 +23,7 @@ DataManager::DataManager(Robot * robot, DataLogic * logic, Camera * camera,
   prev_y = 0;
   prev_theta = 0;
 
-  NextStep(true);
+  NextStep();
 }
 
 DataManager::~DataManager()
@@ -32,36 +32,16 @@ DataManager::~DataManager()
   free(_bg_image_data);
 }
 
-void DataManager::NextStep(bool first_time) {
-
-  image_data old_image;
+void DataManager::NextStep() {
   
   _logic->RetrieveData(_robot_status);
 
   // move robot with _robot_status data
+  // theta in degrees
   _rob->Place(_robot_status->x,
 	      _robot_status->y,
-	      _robot_status->theta);
+	      TO_DEGREES(_robot_status->theta) ); 
 
-  if (first_time)
-    {
-      std::cout << "Next time called for the first time "
-		<< std::endl;
-
-      std::cout << _robot_status -> y << ","
-		<< _robot_status -> x << std::endl;
-      
-      _camera->Move( F3dVector( 0.0,
-  				0.0,
-				0.0));
-
-      // rotation angle in deegres
-      _camera->RotateY( 90 -_robot_status -> theta);
-    }
-
-  old_image.x = _bg_image_data -> x;
-  old_image.y = _bg_image_data -> y;
-    
 
   //_rob->Place(40.f, -70.45f - 30, 0.f);
 
@@ -74,10 +54,10 @@ void DataManager::NextStep(bool first_time) {
   /* use data in out_element to change
      camera position
   */   
-  if (! first_time ||
-      old_image.x == _bg_image_data -> x ||
-      old_image.y == _bg_image_data -> y )
-    MoveCamera();
+  std::cout << "Rotate robot of: " << TO_DEGREES(_robot_status->theta) << std::endl;
+
+  MoveCamera();
+
 }
 
     
@@ -98,20 +78,22 @@ void DataManager::LoadGLTextures(GLuint * texture, const char* filename) {
 
 void DataManager::MoveCamera() {
 
-  _camera->Move( F3dVector( _bg_image_data->x - prev_x,
+
+  _camera->Move( F3dVector( _bg_image_data->x,
 			    0.0,
-			    _bg_image_data->y - prev_y) );
-  
-  // rotation in deegre
-//   _camera->RotateY( _bg_image_data->theta - prev_theta);
-  
-  prev_x = _bg_image_data->x;
-  prev_y = _bg_image_data->y;
-  prev_theta = _bg_image_data->theta;
-  
-  
-  std::cout << "Camera in: \t"
-	    << _bg_image_data->x << "; "
-	    << _bg_image_data->y << "; "
-	    << _bg_image_data->theta << std::endl;
+			    _bg_image_data->y) );
+
+  std::cout << "Rotate camera of: " << TO_DEGREES( _bg_image_data->theta) << std::endl;
+  // rotation in degrees
+  _camera->RotateY( - TO_DEGREES( _bg_image_data->theta) );
+
+
+//   prev_x = _bg_image_data->x;
+//   prev_y = _bg_image_data->y;
+//   prev_theta = _bg_image_data->theta;
+
+
+
+
+
 }
