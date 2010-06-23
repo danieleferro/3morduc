@@ -50,11 +50,9 @@ void DataLogic::RetrieveData(robot_data * data)
   while (ss >> buf)
     tokens.push_back(buf);
 
-//   data->x = atof ( tokens[1].c_str() );
-//   data->y = - atof ( tokens[0].c_str() );
-  data->x = atof ( tokens[0].c_str() );
-  data->y = atof( tokens[1].c_str() );
-  data->theta = TO_DEGREES(atof ( tokens[2].c_str() ));
+  data->x = atof ( tokens[1].c_str() );
+  data->y = - atof ( tokens[0].c_str() );
+  data->theta = atof ( tokens[2].c_str() );
   data->time = atof ( tokens[3].c_str() );
 
   time = (int) data->time;
@@ -97,14 +95,9 @@ void DataLogic::SelectImage(robot_data * robot_status, image_data * bg_image_dat
        it++)
     {
       distances[i] = calculator -> Calculate(robot_status, &*it);
-      //      std::cout << "Return value from Calculate Function: " << distances[i] << std::endl;
+      // std::cout << "Return value from Calculate Function: " << distances[i] << std::endl;
       i++;
     }
-
-  for (int i = 0; i < _images_collection.size(); i ++)
-    std::cout << "distance[" << i << "]: "
-	      << distances[i]
-	      << std::endl;
 
   // find the minimum distance
   i = 0;
@@ -117,6 +110,16 @@ void DataLogic::SelectImage(robot_data * robot_status, image_data * bg_image_dat
 	  min = distances[j];
 	}
     }
+  
+  
+  std::cout << std::endl;
+  std::cout << "Image chosen data: ( ";
+  std::cout << _images_collection[i].x << "; ";
+  std::cout << _images_collection[i].y << "; ";
+  std::cout << _images_collection[i].theta << "; ";
+  std::cout << _images_collection[i].time << "; ";
+  std::cout << _images_collection[i].path << "; )" << std::endl;
+
 
   // return the selected image data
   bg_image_data->x = _images_collection[i].x;

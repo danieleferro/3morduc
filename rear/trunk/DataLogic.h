@@ -12,8 +12,6 @@
 #include "DataLogicInterface.h"
 #include "DistanceCalcInterface.h"
 
-#define TO_DEGREES(X) X * 180 / M_PI
-
 class DataLogic : public DataLogicInterface
 {
  private:

@@ -3,12 +3,12 @@
 
 /* ascii code for the keys */
 #define ESCAPE 27
-#define q 113
-#define w 119
-#define s 115
-#define o 111
-#define p 112
-#define k 107
-#define l 108
+#define Q 113
+#define W 119
+#define S 115
+#define O 111
+#define P 112
+#define K 107
+#define L 108
 
 #endif
