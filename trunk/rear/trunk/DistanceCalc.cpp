@@ -34,16 +34,49 @@ SweepMetricCalc::SweepMetricCalc( float sweep_angle,
 float SweepMetricCalc::Calculate( robot_data * robot_status,
 				  image_data * bg_image_data)
 {
-  if (DEBUG) std::cout << "With Boundaries test in progress.." << std::endl;
-  if ( !WithinBoundaries(robot_status, bg_image_data) )
+
+  robot_data robot_status_buffer;
+  image_data bg_image_data_buffer;
+
+  /* copy robot data and invert Y axis */
+  robot_status_buffer.x     = robot_status->x;
+  robot_status_buffer.y     = -1 * robot_status->y;
+  robot_status_buffer.theta = robot_status->theta;
+  robot_status_buffer.time  = robot_status->time;
+
+  /* copy image data and invert Y axis */
+  bg_image_data_buffer.x     = bg_image_data->x;
+  bg_image_data_buffer.y     = -1 * bg_image_data->y;
+  bg_image_data_buffer.theta = bg_image_data->theta;
+  bg_image_data_buffer.time  = bg_image_data->time;
+  
+  
+  std::cout << "Calculate starts with " << std::endl;
+  std::cout << "robot: \t ("
+	    << robot_status_buffer.x << "; "
+	    << robot_status_buffer.y << "; "
+	    << robot_status_buffer.theta << ") " << std::endl;
+  std::cout << "image: \t ("
+	    << bg_image_data_buffer.x << "; "
+	    << bg_image_data_buffer.y << "; "
+	    << bg_image_data_buffer.theta << ") " << std::endl;
+
+
+  if ( (robot_status_buffer.x     == bg_image_data_buffer.x) &&
+       (robot_status_buffer.y     == bg_image_data_buffer.y) &&
+       (robot_status_buffer.theta == bg_image_data_buffer.theta) )
+    return EGO_IMAGE;
+  
+  std::cout << "With Boundaries test in progress.." << std::endl;
+  if ( !WithinBoundaries(&robot_status_buffer, &bg_image_data_buffer) )
     return IMAGE_NOT_VALID;
   
-  if (DEBUG) std::cout << "Rightly Oriented test in progress.." << std::endl;
-  if ( !RightlyOriented(robot_status, bg_image_data) )
+  std::cout << "Rightly Oriented test in progress.." << std::endl;
+  if ( !RightlyOriented(&robot_status_buffer, &bg_image_data_buffer) )
     return IMAGE_NOT_VALID;
   
   // now calculates score for the image
-  return PointAlgorithm(robot_status, bg_image_data);
+  return - 1 * PointAlgorithm(&robot_status_buffer, &bg_image_data_buffer);
 }
 
 float SweepMetricCalc::PointAlgorithm( robot_data * robot_status,
@@ -65,15 +98,14 @@ float SweepMetricCalc::PointAlgorithm( robot_data * robot_status,
 
   /* calculate distance score with gaussian function */
   score_distance = ( 1 / ( _sigma_distance * sqrt ( 2 * M_PI ) ) );
-  score_distance = score_distance * exp( - ( distance - _mu_distance ) / ( 2 * pow ( _sigma_distance, 2 ) ) );
+  score_distance = score_distance * exp( - pow( ( distance - _mu_distance ), 2) / ( 2 * pow ( _sigma_distance, 2 ) ) );
 
 
   /* calculate angle  score with gaussian function */
   score_angle = ( 1 / ( _sigma_angle * sqrt ( 2 * M_PI ) ) );
-  score_angle = score_angle * exp( - ( angle - _mu_angle ) / ( 2 * pow ( _sigma_angle, 2 ) ) );
+  score_angle = score_angle * exp( - pow( ( angle - _mu_angle ), 2) / ( 2 * pow ( _sigma_angle, 2 ) ) );
 
 
-  if (DEBUG) std::cout << "Exit from SweepMetricCalc::PointAlorithm." << std::endl;
   return ( score_distance + score_angle );
 
 

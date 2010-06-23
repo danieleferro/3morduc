@@ -43,7 +43,7 @@ Camera::Camera()
 				0.0);
   ViewDir = F3dVector(	0.0,
 			0.0,
-			-1.0);
+			- 1.0);
   ViewDirChanged = false;
   //Only to be sure:
   RotatedX = RotatedY = RotatedZ = 0.0;

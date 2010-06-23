@@ -3,8 +3,6 @@
 
 #include "data_types.h"
 
-#define IMAGE_NOT_VALID -1
-
 class DistanceCalcInterface
 {
  public:

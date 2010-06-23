@@ -79,7 +79,7 @@ void display () {
   /* clear window */
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   //glClear(GL_COLOR_BUFFER_BIT);
-
+  
   glLoadIdentity();
   camera->Render();  
 
@@ -319,18 +319,18 @@ int main ( int argc, char * argv[] ) {
      do not instantiate the robot before 
      having initialized OpenGL since calls
      OpenGL functions */
-  rob = new Robot();
+  rob = new Robot(0.0f, 4.f, -90.f);
   logic = new DataLogic(atoi(argv[1]));
 
   /* camera instatiation */
   camera = new Camera();
 
-  /* image distance calculator instantiation 
+  /* image distance calculator instantiation */
   calculator = new SweepMetricCalc(30, 20,
 				   20, 5,
 				   0, 5);
-  */
-  calculator = new SpacialMetricCalc();
+  
+  //calculator = new SpacialMetricCalc();
 
   /* data manager instatiation */
   manager = new DataManager(rob, logic, camera, calculator);
