@@ -3,7 +3,7 @@
 DataLogic::DataLogic(int session)
 {
   _simulation_session = session;
-  _index = 0;
+  _index = 1;
 }
 
 DataLogic::~DataLogic()
@@ -50,8 +50,8 @@ void DataLogic::RetrieveData(robot_data * data)
   while (ss >> buf)
     tokens.push_back(buf);
 
-  data->x = atof ( tokens[1].c_str() );
-  data->y = - atof ( tokens[0].c_str() );
+  data->x = atof ( tokens[1].c_str() ) * 20;
+  data->y = - atof ( tokens[0].c_str() ) * 20;
   data->theta = atof ( tokens[2].c_str() );
   data->time = atof ( tokens[3].c_str() );
 
@@ -71,11 +71,25 @@ void DataLogic::RetrieveData(robot_data * data)
 
   strcpy(grabbed_frame_data.path, o.str().c_str());
 
-  // store the collected metadata
-  _images_collection.push_back(grabbed_frame_data);
-  
   // increase index to point the next line of the file
   _index++;
+
+  // store the collected metadata
+  // (if not present, checking by time value)
+  for (std::vector<image_data>::iterator it =
+	 _images_collection.begin();
+       it != _images_collection.end();
+       it++)
+    {
+      if ( ( (*it).time == grabbed_frame_data.time) )
+	{
+	  //std::cout << "Image not added !!" << std::cout;
+	  return;
+	}
+    }
+
+  _images_collection.push_back(grabbed_frame_data);
+  
   return;
 
 }
@@ -95,7 +109,7 @@ void DataLogic::SelectImage(robot_data * robot_status, image_data * bg_image_dat
        it++)
     {
       distances[i] = calculator -> Calculate(robot_status, &*it);
-      // std::cout << "Return value from Calculate Function: " << distances[i] << std::endl;
+      std::cout << "Return value from Calculate Function: " << distances[i] << std::endl << std::endl;
       i++;
     }
 
