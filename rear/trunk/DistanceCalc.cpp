@@ -3,15 +3,21 @@
 float SpacialMetricCalc::Calculate(robot_data * robot_status,
 				   image_data * bg_image_data)
 {
+  float score;
   float distance;
+  float optimal_distance = 20;
   
   distance = 
     sqrt( pow((robot_status -> x ) - (bg_image_data -> x), 2) +
 	  pow((robot_status -> y ) - (bg_image_data -> y), 2) +
 	  pow((robot_status -> theta ) - (bg_image_data -> theta), 2));
-  
-  if (DEBUG) std::cout << "Exit from SpacilMetricCalc::Calculate." << std::endl;
-  return distance;  
+
+  if ( distance <= optimal_distance )
+    score = distance / optimal_distance;
+  else
+    score = - ( distance - 2 * optimal_distance) / optimal_distance;
+
+  return (- score);
 }
 
 SweepMetricCalc::SweepMetricCalc( float sweep_angle,
@@ -48,22 +54,19 @@ float SweepMetricCalc::Calculate( robot_data * robot_status,
 }
 
 float SweepMetricCalc::PointAlgorithm( robot_data * robot_status,
-				       image_data * bg_image_data)
+				       image_data * bg_image_data )
 {
-  
-
   float angle;
   float score_angle;
-
+  
   float distance;
   float score_distance;
-
+  
   angle    = fabs ( robot_status->theta - bg_image_data->theta );
   distance = sqrt (
 		   pow( ( bg_image_data->x - robot_status->x), 2 ) +
 		   pow( ( bg_image_data->y - robot_status->y), 2 ) );
-
-
+  
   /* calculate distance score with gaussian function */
   score_distance = ( 1 / ( _sigma_distance * sqrt ( 2 * M_PI ) ) );
   score_distance = score_distance * exp( - ( distance - _mu_distance ) / ( 2 * pow ( _sigma_distance, 2 ) ) );
@@ -76,8 +79,6 @@ float SweepMetricCalc::PointAlgorithm( robot_data * robot_status,
 
   if (DEBUG) std::cout << "Exit from SweepMetricCalc::PointAlorithm." << std::endl;
   return ( score_distance + score_angle );
-
-
 }
 
 bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status, 
@@ -130,6 +131,22 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
     {
       std::cout << "Gamma: " << gamma << std::endl;
       std::cout << "Delta: " << delta << std::endl;
+    }
+
+  if (DEBUG)
+    {
+      std::cout << "Robot position : " 
+		<< robot_status->x 
+		<< "," 
+		<< robot_status->y 
+		<< std::endl;
+
+      std::cout << "Image position : " 
+		<< bg_image_data->x 
+		<< "," 
+		<< bg_image_data->y 
+		<< std::endl;
+
     }
 
   if (DEBUG)

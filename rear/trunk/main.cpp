@@ -53,7 +53,7 @@ DataManager * manager = NULL;
 Camera * camera = NULL; 
 
 /* Image distance calculator declaration */
-SweepMetricCalc * calculator = NULL;
+DistanceCalcInterface * calculator = NULL;
 
 void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB, 
 		   GLfloat diffuseR, GLfloat diffuseG, GLfloat diffuseB, 
@@ -82,10 +82,8 @@ void display () {
   glLoadIdentity();
   camera->Render();  
 
-
   /* draw the texture */
-  DrawTexture();
-
+  //  DrawTexture();
 	
   /* draw the robot */
   rob->DrawRobot();
@@ -205,7 +203,6 @@ void specialKeyPressed(int key, int x, int y)
   switch (key) {
 
   case GLUT_KEY_UP :
-
     temp = _oldY - STEP;
     rob->Place(_oldX, temp, _oldTheta);
     break;
@@ -218,14 +215,16 @@ void specialKeyPressed(int key, int x, int y)
 
   case GLUT_KEY_RIGHT :
 
-    temp = _oldX + STEP;
-    rob->Place(temp, _oldY, _oldTheta);
+    camera->RotateY( STEP * 5);
+//     temp = _oldX + STEP;
+//     rob->Place(temp, _oldY, _oldTheta);
     break;    
 
   case GLUT_KEY_LEFT :
 
-    temp = _oldX - STEP;
-    rob->Place(temp, _oldY, _oldTheta);
+    camera->RotateY( - STEP * 5);
+//     temp = _oldX - STEP;
+//     rob->Place(temp, _oldY, _oldTheta);
     break;
 
   }
@@ -319,17 +318,19 @@ int main ( int argc, char * argv[] ) {
   camera = new Camera();
 
   /* image distance calculator instantiation */
-  calculator = new SweepMetricCalc(30, 20,
-				   20, 5,
-				   0, 5);
+  //   calculator = new SweepMetricCalc(30, 20,
+  // 				   20, 5,
+  // 				   0, 5);
+  calculator = new SpacialMetricCalc();
 
   /* data manager instatiation */
   manager = new DataManager(rob, logic, camera, calculator);
 
   init();
 
-  camera->Move( F3dVector(0.0, 0.0, 12.0 ));
-  camera->MoveForwards( 0.0 );
+  //camera->Move( F3dVector(0.0, 0.0, 12.0 ));
+  //   camera->Move( F3dVector(0.0, 0.0, 0.0 ));
+  //   camera->MoveForwards( 0.0 );
  
   /* tell GLUT to wait for events */
   glutMainLoop();

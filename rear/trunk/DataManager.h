@@ -61,7 +61,7 @@ class DataManager
 	      DistanceCalcInterface *); 
   
   ~DataManager();
-  void NextStep();
+  void NextStep(bool first_time = false);
 };
 
 #endif
