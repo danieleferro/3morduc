@@ -50,8 +50,8 @@ void DataLogic::RetrieveData(robot_data * data)
   while (ss >> buf)
     tokens.push_back(buf);
 
-  data->x = atof ( tokens[1].c_str() ) * 20;
-  data->y = - atof ( tokens[0].c_str() ) * 20;
+  data->x = atof ( tokens[1].c_str() );
+  data->y = - atof ( tokens[0].c_str() );
   data->theta = atof ( tokens[2].c_str() );
   data->time = atof ( tokens[3].c_str() );
 
