@@ -10,8 +10,8 @@
 #ifndef __CAMERA__
 #define __CAMERA__
 
-
 #include "math.h"
+#include <iostream>
 
 /////////////////////////////////
 //Note: All angles in degrees  //
