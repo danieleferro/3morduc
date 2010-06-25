@@ -328,11 +328,11 @@ int main ( int argc, char * argv[] ) {
   camera = new Camera();
 
   /* image distance calculator instantiation */
-  calculator = new SweepMetricCalc(45, 30,
+  calculator = new SweepMetricCalc(45, 40,
 				   10, 5,
 				   0, 5);
   
-//  calculator = new SpacialMetricCalc();
+  // calculator = new SpacialMetricCalc();
 
   /* data manager instatiation */
   manager = new DataManager(rob, logic, camera, calculator);

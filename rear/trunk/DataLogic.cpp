@@ -73,11 +73,27 @@ void DataLogic::RetrieveData(robot_data * data)
 
   strcpy(grabbed_frame_data.path, o.str().c_str());
 
-  // store the collected metadata
-  _images_collection.push_back(grabbed_frame_data);
-  
   // increase index to point the next line of the file
   _index++;
+
+
+  // store the collected metadata if it's not already stored
+  for (std::vector<image_data>::iterator it =
+	 _images_collection.begin();
+       it != _images_collection.end();
+       it++)
+    {
+      if ( (*it).time == grabbed_frame_data.time )
+	{
+
+	  return;
+	}
+    }
+
+
+
+  _images_collection.push_back(grabbed_frame_data);
+  
   return;
 
 }
