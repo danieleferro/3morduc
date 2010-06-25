@@ -68,6 +68,7 @@ void DataManager::NextStep() {
 
   /* use image_path to load the image */
   LoadGLTextures(_texture, _bg_image_data->path);
+  std::cout << std::endl << std::endl;
 }
 
     

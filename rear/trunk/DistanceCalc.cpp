@@ -5,7 +5,7 @@ float SpacialMetricCalc::Calculate(robot_data * robot_status,
 {
   float distance;
   float score;
-  float optimal_distance = 10;
+  float optimal_distance = 20;
 
   distance = 
     sqrt( pow((robot_status -> x ) - (bg_image_data -> x), 2) +
@@ -139,7 +139,6 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
   if (DEBUG) std::cout << "DEBUG: coefficiente angolare retta c: " 
 		       << tan ( TO_RADIANS( gamma )) 
 		       << std::endl;
-
   /* calculate parameters for line "d" */
   delta = Normalize180(robot_status -> theta + ( 360 - _sweep_angle ));
   line_d[X0] = robot_status->y;
@@ -170,11 +169,11 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
    */
   rhs_d = line_d[M0] * bg_image_data->y + ( line_d[Y0] - line_d[M0] * line_d[X0] );
 
-  if (DEBUG) std::cout << "rhs_c : " << rhs_c << std::endl;
+  //  if (DEBUG) std::cout << "rhs_c : " << rhs_c << std::endl;
   if ( gamma >= -90 && gamma <= 90 )
     {
-      if (DEBUG) std::cout << " y <= rhs_c is being evaluated " 
-			   << std::endl;
+      //      if (DEBUG) std::cout << " y <= rhs_c is being evaluated " 
+      //			   << std::endl;
       if ( bg_image_data->x <= rhs_c )
 	{
 	  if (DEBUG) std::cout << " is EXcluded." << std::endl;
@@ -184,8 +183,8 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
 
   else
     {
-      if (DEBUG) std::cout << " y >= rhs_c is being evaluated " 
-			   << std::endl;
+      //      if (DEBUG) std::cout << " y >= rhs_c is being evaluated " 
+      //			   << std::endl;
       if ( bg_image_data->x >= rhs_c )
 	{
 	  if (DEBUG) std::cout << " is EXcluded." << std::endl;
@@ -193,11 +192,11 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
 	}
     }
 
-  if (DEBUG) std::cout << "rhs_d : " << rhs_d << std::endl;
+  //  if (DEBUG) std::cout << "rhs_d : " << rhs_d << std::endl;
   if ( delta >= -90 && delta <= 90 )
     {
-      if (DEBUG) std::cout << " y >= rhs_d is being evaluated " 
-			   << std::endl;
+      //      if (DEBUG) std::cout << " y >= rhs_d is being evaluated " 
+      //			   << std::endl;
       if ( bg_image_data->x >= rhs_d )
 	{
 	  if (DEBUG) std::cout << " is EXcluded." << std::endl;
@@ -207,8 +206,8 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
 
   else
     {
-      if (DEBUG) std::cout << " y <= rhs_d is being evaluated " 
-			   << std::endl;
+      //      if (DEBUG) std::cout << " y <= rhs_d is being evaluated " 
+      //		   << std::endl;
       if ( bg_image_data->x <= rhs_d )
 	{
 	  if (DEBUG) std::cout << " is EXcluded." << std::endl;
