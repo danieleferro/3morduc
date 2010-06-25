@@ -47,7 +47,6 @@ void Camera::Move (SF3dVector Direction)
 void Camera::SetYAngle (GLfloat Angle)
 {
   RotatedY = Angle;
-  std::cout << "Angle: **** " << Angle << std::endl;
 }
 
 void Camera::RotateY (GLfloat Angle)
@@ -58,6 +57,21 @@ void Camera::RotateY (GLfloat Angle)
 void Camera::RotateX (GLfloat Angle)
 {
   RotatedX += Angle;
+}
+
+float Camera::GetX ()
+{
+  return Position.x;
+}
+
+float Camera::GetY ()
+{
+  return Position.y;
+}
+
+float Camera::GetZ ()
+{
+  return Position.z;
 }
 
 void Camera::SetPosition(GLfloat x, GLfloat y, GLfloat z)
