@@ -123,7 +123,7 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
   /* calculate parameters for line "b" */
   line_b[X0] = robot_status->x;
   line_b[Y0] = robot_status->y;
-  line_b[M0] = tan (TO_RADIANS( robot_status -> theta ));
+  line_b[M0] = tan (TO_RADIANS( - robot_status -> theta ));
 
   /* calculate parameters for line "a" */
   line_a[X0] = robot_status->x;
@@ -131,7 +131,7 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
   line_a[M0] = - 1 / line_b[M0];
 
   /* calculate parameters for line "c" */
-  gamma =  Normalize180(robot_status -> theta - ( 360 - _sweep_angle ));
+  gamma =  Normalize180( - robot_status -> theta - ( 360 - _sweep_angle ));
   line_c[X0] = robot_status->x;
   line_c[Y0] = robot_status->y;
   line_c[M0] = tan( TO_RADIANS( gamma ));
@@ -140,7 +140,7 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
 		       << tan ( TO_RADIANS( gamma )) 
 		       << std::endl;
   /* calculate parameters for line "d" */
-  delta = Normalize180(robot_status -> theta + ( 360 - _sweep_angle ));
+  delta = Normalize180(- robot_status -> theta + ( 360 - _sweep_angle ));
   line_d[X0] = robot_status->x;
   line_d[Y0] = robot_status->y;
   line_d[M0] = tan( TO_RADIANS( delta ));
