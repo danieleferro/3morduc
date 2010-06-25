@@ -8,7 +8,7 @@
 #define TO_RADIANS(X) X * M_PI / 180
 #define TO_DEGREES(X) X * 180 / M_PI
 
-#define DEBUG 0
+#define DEBUG 1
 
 #define EGO_IMAGE       1
 #define IMAGE_NOT_VALID 2

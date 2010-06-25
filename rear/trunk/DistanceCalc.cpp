@@ -36,7 +36,6 @@ SweepMetricCalc::SweepMetricCalc( float sweep_angle,
   _sigma_distance = sigma_distance;
   _mu_angle = mu_angle;
   _sigma_angle = sigma_angle;
-
 }
 
 float SweepMetricCalc::Calculate( robot_data * robot_status,
@@ -122,19 +121,19 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
   float rhs_d;
 
   /* calculate parameters for line "b" */
-  line_b[X0] = robot_status->x;
-  line_b[Y0] = robot_status->y;
+  line_b[X0] = robot_status->y;
+  line_b[Y0] = robot_status->x;
   line_b[M0] = tan (TO_RADIANS( robot_status -> theta ));
 
   /* calculate parameters for line "a" */
-  line_a[X0] = robot_status->x;
-  line_a[Y0] = robot_status->y;
+  line_a[X0] = robot_status->y;
+  line_a[Y0] = robot_status->x;
   line_a[M0] = - 1 / line_b[M0];
 
   /* calculate parameters for line "c" */
   gamma =  Normalize180(robot_status -> theta - ( 360 - _sweep_angle ));
-  line_c[X0] = robot_status->x;
-  line_c[Y0] = robot_status->y;
+  line_c[X0] = robot_status->y;
+  line_c[Y0] = robot_status->x;
   line_c[M0] = tan( TO_RADIANS( gamma ));
 
   if (DEBUG) std::cout << "DEBUG: coefficiente angolare retta c: " 
@@ -143,8 +142,8 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
 
   /* calculate parameters for line "d" */
   delta = Normalize180(robot_status -> theta + ( 360 - _sweep_angle ));
-  line_d[X0] = robot_status->x;
-  line_d[Y0] = robot_status->y;
+  line_d[X0] = robot_status->y;
+  line_d[Y0] = robot_status->x;
   line_d[M0] = tan( TO_RADIANS( delta ));
 
   if (DEBUG) std::cout << "DEBUG: coefficiente angolare d: " 
@@ -160,8 +159,8 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
   if (DEBUG)
     {
       std::cout << "Point ( "
-		<< bg_image_data->x << "; "
-		<< bg_image_data->y << "; " 
+		<< bg_image_data->y << "; "
+		<< bg_image_data->x << "; " 
 		<< bg_image_data->theta << " )"
 		<< std::endl;
     }
@@ -169,14 +168,14 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
   /* let's exclude images that do not fall within the area
    * identified by the _sweep_angle 
    */
-  rhs_d = line_d[M0] * bg_image_data->x + ( line_d[Y0] - line_d[M0] * line_d[X0] );
+  rhs_d = line_d[M0] * bg_image_data->y + ( line_d[Y0] - line_d[M0] * line_d[X0] );
 
   if (DEBUG) std::cout << "rhs_c : " << rhs_c << std::endl;
   if ( gamma >= -90 && gamma <= 90 )
     {
       if (DEBUG) std::cout << " y <= rhs_c is being evaluated " 
 			   << std::endl;
-      if ( bg_image_data->y <= rhs_c )
+      if ( bg_image_data->x <= rhs_c )
 	{
 	  if (DEBUG) std::cout << " is EXcluded." << std::endl;
 	  return false;
@@ -187,7 +186,7 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
     {
       if (DEBUG) std::cout << " y >= rhs_c is being evaluated " 
 			   << std::endl;
-      if ( bg_image_data->y >= rhs_c )
+      if ( bg_image_data->x >= rhs_c )
 	{
 	  if (DEBUG) std::cout << " is EXcluded." << std::endl;
 	  return false;
@@ -199,7 +198,7 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
     {
       if (DEBUG) std::cout << " y >= rhs_d is being evaluated " 
 			   << std::endl;
-      if ( bg_image_data->y >= rhs_d )
+      if ( bg_image_data->x >= rhs_d )
 	{
 	  if (DEBUG) std::cout << " is EXcluded." << std::endl;
 	  return false;
@@ -210,7 +209,7 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
     {
       if (DEBUG) std::cout << " y <= rhs_d is being evaluated " 
 			   << std::endl;
-      if ( bg_image_data->y <= rhs_d )
+      if ( bg_image_data->x <= rhs_d )
 	{
 	  if (DEBUG) std::cout << " is EXcluded." << std::endl;
 	  return false;
@@ -227,6 +226,8 @@ bool SweepMetricCalc::RightlyOriented(robot_data * robot_status,
 
   float offset = fabs( Normalize180( robot_status -> theta ) -
 		       Normalize180( bg_image_data -> theta ));
+
+  std:: cout << "*******************OFFSET: " << offset << std::endl;
 
   if ( offset >= _angle_offset )
     return false;
