@@ -72,11 +72,7 @@ void DataManager::NextStep() {
 
   y = _bg_image_data->y;
 
-  theta = _bg_image_data->theta;
-
-
-  
-  
+  theta = _bg_image_data->theta;  
 }
 
     
