@@ -35,15 +35,17 @@ class Camera
  private:
   SF3dVector Position;
   GLfloat RotatedX, RotatedY, RotatedZ;	
+  GLfloat _theta;
 
  public:
   Camera();             //inits the values
   void Render ( void );	//executes some glRotates and a glTranslate command
   //Note: You should call glLoadIdentity before using Render
   void Move ( SF3dVector Direction );
-  float GetX();
-  float GetY();
-  float GetZ();
+  GLfloat GetX();
+  GLfloat GetY();
+  GLfloat GetZ();
+  GLfloat GetTheta();
   void SetPosition(GLfloat x, GLfloat y, GLfloat z);
   void SetYAngle( GLfloat Angle );
   void RotateX ( GLfloat Angle );

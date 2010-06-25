@@ -47,11 +47,13 @@ void Camera::Move (SF3dVector Direction)
 void Camera::SetYAngle (GLfloat Angle)
 {
   RotatedY = Angle;
+  _theta = Angle;
 }
 
 void Camera::RotateY (GLfloat Angle)
 {
   RotatedY += Angle;
+  _theta += Angle;
 }
 
 void Camera::RotateX (GLfloat Angle)
@@ -59,19 +61,24 @@ void Camera::RotateX (GLfloat Angle)
   RotatedX += Angle;
 }
 
-float Camera::GetX ()
+GLfloat Camera::GetX ()
 {
   return Position.x;
 }
 
-float Camera::GetY ()
+GLfloat Camera::GetY ()
 {
   return Position.y;
 }
 
-float Camera::GetZ ()
+GLfloat Camera::GetZ ()
 {
   return Position.z;
+}
+
+GLfloat Camera::GetTheta()
+{
+  return _theta;
 }
 
 void Camera::SetPosition(GLfloat x, GLfloat y, GLfloat z)
@@ -83,10 +90,10 @@ void Camera::SetPosition(GLfloat x, GLfloat y, GLfloat z)
 
 void Camera::Render( void )
 {
-  std::cout << "Camera position is:" 
+  std::cout << "Camera position is:     " 
 	    << Position.x << ","
-	    << Position.y << ","
-	    << Position.z << std::endl;
+	    << Position.z << ","
+	    << _theta + 90 << std::endl;
   
   glRotatef(-RotatedX , 1.0, 0.0, 0.0);
   glRotatef(-RotatedY , 0.0, 1.0, 0.0);
