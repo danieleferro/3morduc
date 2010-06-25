@@ -30,10 +30,6 @@ DataManager::DataManager(Robot * robot, DataLogic * logic, Camera * camera,
 			  9.f,
 			  _bg_image_data -> y);
 
-  _camera -> SetViewDir( 0.f,
-			 0.f,
-			 1.f);
-
   _camera -> RotateY(- 90);
 
   LoadGLTextures(_texture, _bg_image_data->path);
@@ -75,8 +71,8 @@ void DataManager::NextStep() {
       std::cout << "*** Moving the camera... ***" << std::endl;
       std::cout <<  _bg_image_data->theta - old_image.theta << std::endl;
 
-      _camera -> RotateY( _bg_image_data->theta - old_image.theta);
-      //      _camera -> SetYAngle( _bg_image_data -> theta);
+      //_camera -> RotateY( _bg_image_data->theta - old_image.theta);
+      _camera -> SetYAngle( _bg_image_data -> theta - 90);
       _camera -> SetPosition( _bg_image_data -> x,
 			      9.f,
 			      _bg_image_data -> y);
