@@ -1,5 +1,4 @@
 #include "Camera.h"
-#include <iostream>
 
 #define TO_DEGREES(X) X * 180 / M_PI
 #define TO_RADIANS(X) X / 180 * M_PI
