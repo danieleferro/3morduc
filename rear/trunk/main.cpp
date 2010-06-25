@@ -79,14 +79,11 @@ void display () {
   /* clear window */
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   //glClear(GL_COLOR_BUFFER_BIT);
-  
   glLoadIdentity();
   camera->Render();  
 
-
   /* draw the texture */
   DrawTexture();
-
 	
   /* draw the robot */
   rob->DrawRobot();
@@ -99,7 +96,6 @@ void display () {
 	      
   glFlush();
   glutSwapBuffers();
-  
 }
 
 void reshape ( int x, int y ) {
@@ -160,7 +156,6 @@ void keyPressed(unsigned char key, int x, int y)
   case S:    
     manager->NextStep();
     break;
-
     
     // moving camera
   case O:
