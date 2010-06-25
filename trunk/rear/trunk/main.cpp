@@ -164,12 +164,12 @@ void keyPressed(unsigned char key, int x, int y)
     
     // moving camera
   case O:
-    camera->MoveForwards( - STEP *5 );
+    //    camera->MoveForwards( - STEP *5 );
     break;
 
     // moving camera
   case P:
-    camera->MoveForwards( STEP *5 );
+    //    camera->MoveForwards( STEP *5 );
     break;
 
     // moving camera
