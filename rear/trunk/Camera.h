@@ -41,6 +41,9 @@ class Camera
   void Render ( void );	//executes some glRotates and a glTranslate command
   //Note: You should call glLoadIdentity before using Render
   void Move ( SF3dVector Direction );
+  float GetX();
+  float GetY();
+  float GetZ();
   void SetPosition(GLfloat x, GLfloat y, GLfloat z);
   void SetYAngle( GLfloat Angle );
   void RotateX ( GLfloat Angle );

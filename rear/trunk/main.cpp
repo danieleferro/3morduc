@@ -125,9 +125,13 @@ void keyPressed(unsigned char key, int x, int y)
   /* avoid thrashing this procedure */
   usleep(100);
 
-  GLfloat _oldX = rob->GetX();
-  GLfloat _oldY = rob->GetY();
-  GLfloat _oldTheta = rob->GetTheta();
+  GLfloat _oldX = rob -> GetX();
+  GLfloat _oldY = rob -> GetY();
+  GLfloat _oldTheta = rob -> GetTheta();
+
+  GLfloat _cameraX = camera -> GetX();
+  GLfloat _cameraY = camera -> GetY();
+  GLfloat _cameraZ = camera -> GetZ();
 
   GLfloat temp;
   
@@ -143,15 +147,15 @@ void keyPressed(unsigned char key, int x, int y)
     /* exit the program...normal termination. */
     exit(0);
     
-  case Q:
-    temp = _oldTheta + ANGLE;
-    rob->Place(_oldX, _oldY, temp);
-    break;
+//   case Q:
+//     temp = _oldTheta + ANGLE;
+//     rob->Place(_oldX, _oldY, temp);
+//     break;
 
-  case W:
-    temp = _oldTheta - ANGLE;
-    rob->Place(_oldX, _oldY, temp);
-    break;
+//   case W:
+//     temp = _oldTheta - ANGLE;
+//     rob->Place(_oldX, _oldY, temp);
+//     break;
 
   case S:    
     manager->NextStep();
@@ -159,22 +163,26 @@ void keyPressed(unsigned char key, int x, int y)
     
     // moving camera
   case O:
-    //    camera->MoveForwards( - STEP *5 );
+    camera -> SetPosition (_cameraX + STEP,
+			   _cameraY,
+			   _cameraZ);
     break;
 
     // moving camera
   case P:
-    //    camera->MoveForwards( STEP *5 );
+    camera -> SetPosition (_cameraX - STEP,
+			   _cameraY,
+			   _cameraZ);
     break;
 
     // moving camera
   case K:
-    camera->RotateY( STEP*5 );
+    camera->RotateY( STEP );
     break;
 
     // moving camera
   case L:
-    camera->RotateY( - STEP*5 );
+    camera->RotateY( - STEP );
     break;
 
 
@@ -203,16 +211,16 @@ void specialKeyPressed(int key, int x, int y)
 
   case GLUT_KEY_UP :
 
-    tempX = _oldX + STEP*sin(TO_RADIANS(_oldTheta));
-    tempY = _oldY - STEP*cos(TO_RADIANS(_oldTheta));
+    tempX = _oldX + STEP * cos(TO_RADIANS(_oldTheta));
+    tempY = _oldY - STEP * sin(TO_RADIANS(_oldTheta));
 
     rob->Place(tempX, tempY, _oldTheta);
     break;
 
   case GLUT_KEY_DOWN :
 
-    tempX = _oldX - STEP*sin(TO_RADIANS(_oldTheta));
-    tempY = _oldY + STEP*cos(TO_RADIANS(_oldTheta));
+    tempX = _oldX - STEP * cos(TO_RADIANS(_oldTheta));
+    tempY = _oldY + STEP * sin(TO_RADIANS(_oldTheta));
 
     rob->Place(tempX, tempY, _oldTheta);
     break;
