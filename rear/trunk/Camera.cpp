@@ -1,8 +1,5 @@
 #include "Camera.h"
 
-#define TO_DEGREES(X) X * 180 / M_PI
-#define TO_RADIANS(X) X / 180 * M_PI
-
 SF3dVector F3dVector ( GLfloat x, GLfloat y, GLfloat z )
 {
   SF3dVector tmp;
