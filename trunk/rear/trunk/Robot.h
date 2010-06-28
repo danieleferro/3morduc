@@ -30,7 +30,7 @@ class Robot
      y is equal to the robot radius in order to put the robot
      outside of the camera sight at beginning of the program
   */
-  Robot(float x = 0.f, float y = 4.f, float theta = - 90);
+  Robot(float radius = 4.0f);
   void Place(GLfloat x, GLfloat y, GLfloat theta);
   void DrawRobot();
 

@@ -321,7 +321,7 @@ int main ( int argc, char * argv[] ) {
      do not instantiate the robot before 
      having initialized OpenGL since calls
      OpenGL functions */
-  rob = new Robot(0.0f, 4.f, -90.f);
+  rob = new Robot();
   logic = new DataLogic(atoi(argv[1]));
 
   /* camera instatiation */
