@@ -258,8 +258,7 @@ Let us see how to put in code the procedure described above:
   image = (Image *) malloc(sizeof(Image));
 
   if (image == NULL) {
-    std::cout << "Error allocating space for the image"
-              << std::endl;
+    // ERROR!
     exit(0);
   }
 
@@ -397,7 +396,7 @@ for further information). To define the frustum we use the function
 named 'gluPerspective' \cite{opengl:gluPerspective}, which takes 
 four parameters.
 %
-The first parameter indicates the FOV (e.g. Field Of View) 
+The first parameter indicates the \textit{FOV} - i.e. Field Of View -
 along the Y axis, in deegres: the chosen value is 60. The
 second one expresses ratio between actual width and height, 
 in our case 624/442. The last two parameters specify the distance 
@@ -409,15 +408,15 @@ distance the application will not be able to display 3d
 objects, unless the point of view is relatively close to them. 
 If we want to be able to see 3d objects as they are moving away
 from the point of view, we need to increase the difference between 
-the last two parameters of the 'gluPerspective' function. In
+the last two parameters of the \texttt{gluPerspective()} function. In
 our case the chosen values are 0.001 and 100000 (its ratio is 
 equal to 10exp8).
 %
-The 'gluPerspective' function affects the GL PROJECTION function, 
-previously selected by changing matrix mode. Finally,
+The \texttt{gluPerspective()} function affects the \textbf{projection} 
+matrix, previously selected by changing matrix mode. Finally,
 in order to set our point of view, we must change matrix again, 
-this time to work with the GL MODELVIEW matrix. The function named
-'gluLookAt' allows to set the point of view, with its coordinates, 
+this time to work with the \textbf{modelview} matrix. The function named
+\texttt{gluLookAt()} allows to set the point of view, with its coordinates, 
 the coordinates of the point to look at and its orientation.
 %
 See \cite{opengl:gluLookAt} for further details.
@@ -437,6 +436,3 @@ See \cite{opengl:gluLookAt} for further details.
             0.0, 1.0, 0.0);
 
 \end{lstlisting}
-%
-To better understand these methods we recommend reading OpenGL manual.
-%
