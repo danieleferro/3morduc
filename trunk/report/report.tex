@@ -9,6 +9,7 @@
 \usepackage{epsfig}
 \usepackage{fancyvrb}
 \usepackage{listings}
+\usepackage[colorlinks=true, linkcolor = black, urlcolor  = black, citecolor = black, filecolor = black ]{hyperref}
 \date{}
 
 \lstset{
@@ -37,6 +38,12 @@
 \include{future_works}
 
 % Bibliography with BibTeX
+
+% see http://www.tex.ac.uk/cgi-bin/texfaq2html?label=tocbibind
+% for more details about the following command needed
+% for hyperlinking correctly the bibliography
+\cleardoublepage
+\phantomsection
 
 \addcontentsline{toc}{section}{Bibliography}
 \bibliography{biblio}
