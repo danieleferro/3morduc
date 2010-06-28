@@ -31,7 +31,7 @@ on with the application a large collection of egocentric images will be gathered
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=400pt]{img/overall_diagram.jpeg}  %robot pic
-    \caption{Application class diagram}
+    \caption{Application flowchart}
     \label{fig:overall_diagram}
   \end{center}
 \end{figure}
@@ -107,7 +107,7 @@ the exocentric vision.
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=400pt]{img/half_plan_finding.png} 
-    \caption{Application class diagram}
+    \caption{Sweep Angle Algorithm}
     \label{fig:half_plan_finding}
   \end{center}
 \end{figure}
@@ -184,10 +184,18 @@ difference. The values obtained from the two Gaussian functions, after adding th
 %
 
 %
-To summarize the method above illustrated, we coupled every image with a score: the one with the maximum value
-will be chosen and put as background. If the image is not included in the sweep area (defined by a sweep angle
-and therefore by the "c" and "d" line) it has to be discarded. The score assigned will be -2.
+To summarize the method above illustrated (illustrated in figure \ref{fig:sweep_angle_diagram}), we coupled
+every image with a score: the one with the maximum value will be chosen and put as background. If the image is
+not included in the sweep area (defined by a sweep angle and therefore by the "c" and "d" line) it has to be
+discarded. The score assigned will be -2.
 %
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=400pt]{img/sweep_angle_diagram.jpeg} 
+    \caption{Sweep angle diagram}
+    \label{fig:sweep_angle_diagram}
+  \end{center}
+\end{figure}
 
 %
 The images situated within the sweep area, but with an orientation angle that differs too much from the robot
