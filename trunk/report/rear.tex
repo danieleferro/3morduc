@@ -94,13 +94,56 @@ For instance, if the target is to select the image shoot closest to the actual r
 the returned score will be the euclidean distance between the image and robot itself. In this way
 the minimum score will be associated with the closest image.
 The algorithm described above is implemented within the \texttt{Calculate} function of the
-\texttt{SpacialMetricCalc} class (see class diagram \ref{fig:class_diagram}). Another class, named
-\texttt{SweepMetricClass}, implements the \texttt{DistanceCalcInterface}, but it defines a totally
-different and more complex algorithm. Chapter \ref{subsec:sweep_angle_algorithm} will explain
-it in detail.
+\texttt{SpacialMetricCalc} class (see class diagram \ref{fig:class_diagram} and chapter
+\ref{subsec:spacial_metric_algorithm}).
+%
 
-\subsection{The "sweep angle" algorithm}
-\label{subsec:sweep_angle_algorithm}
+%
+Another class, named \texttt{SweepMetricCalc}, implements the
+\newline
+\texttt{DistanceCalcInterface}, but it defines a totally different and more complex algorithm.
+Chapter \ref{subsec:sweep_metric_algorithm} will explain it in detail.
+
+\subsection{The spacial metric algorithm}
+\label{subsec:spacial_metric_algorithm}
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=400pt]{img/spacialMetricFunc.png} 
+    \caption{Spacial Metric Function}
+    \label{fig:spacial_metric_func}
+  \end{center}
+\end{figure}
+
+This algorithm uses a simple triangle function to couple the image processed with a score.
+%
+
+%
+The distance value between robot and image is processed by a triangle function. User specifies
+the optimal distance between image and robot, that is the distance value where
+the score function return the maximum value and therefore where the triangle is centred.
+In figure \ref{fig:spacial_metric_func} the optimal distance is set to 5.
+%
+
+%
+Since the \texttt{DataLogic} object will select the image coupled with the minimum value, we have
+to invert the score sign before returning it.
+%
+
+%
+This algorithm does not care about image orientation. For instance, it could choose an image that
+does not include the robot from its point of view. This limit makes the algorithm good only for
+quite linear route taken by the robot, but bad for more complex ones. On the other hand, its
+implementation is very simple.
+%
+
+%
+The \texttt{Sweep Metric Algorithm} in chapter \ref{subsec:sweep_metric_algorithm} will try to
+go behind this limits.
+
+
+\subsection{The sweep metric algorithm}
+\label{subsec:sweep_metric_algorithm}
 The "sweep angle" algorithm allows to choose the better background image, in order to implement
 the exocentric vision.
 %
