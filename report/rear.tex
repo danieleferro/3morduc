@@ -193,6 +193,13 @@ After excluding the badly oriented images, we proceed with the score assignment.
 the sum of two factors. The first takes in account the image angle orientation: the more the image orientation
 angle is close to the robot orientation angle, the more the score is high.
 %
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=400pt]{img/sweep_angle_diagram.jpeg} 
+    \caption{Sweep angle diagram}
+    \label{fig:sweep_angle_diagram}
+  \end{center}
+\end{figure}
 
 %
 The function to evaluate the score from the difference between the two angles is a Gaussian function centre
@@ -227,18 +234,11 @@ difference. The values obtained from the two Gaussian functions, after adding th
 %
 
 %
-To summarize the method above illustrated (illustrated in figure \ref{fig:sweep_angle_diagram}), we coupled
+To summarize the method above described (illustrated in figure \ref{fig:sweep_angle_diagram}), we coupled
 every image with a score: the one with the maximum value will be chosen and put as background. If the image is
 not included in the sweep area (defined by a sweep angle and therefore by the "c" and "d" line) it has to be
 discarded. The score assigned will be -2.
 %
-\begin{figure}[!h]
-  \begin{center}
-    \includegraphics[width=400pt]{img/sweep_angle_diagram.jpeg} 
-    \caption{Sweep angle diagram}
-    \label{fig:sweep_angle_diagram}
-  \end{center}
-\end{figure}
 
 %
 The images situated within the sweep area, but with an orientation angle that differs too much from the robot
