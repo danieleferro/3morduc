@@ -34,6 +34,14 @@ is not reset when a function starts or ends - the current state
 is in effect until something changes it, regardless of where 
 in the program the next thing is. 
 %
+In the following, we are going to analyze some peculiar 
+aspects of OpenGL. Anyway, this chapter is not intended 
+to be an exaustive guide to OpenGL programming 
+- like \cite{opengl:distilled}, \cite{opengl:redbook}, but,
+instead, as a collection of short how-tos regarding the 
+aspects of OpenGL which we have dealt with the most 
+during our work. 
+%
 \subsection{The Depth Buffer}
 When drawing up a scene with OpenGL, the order in which polygons are drawn
 greatly affects the blended result, especially when it comes to 3D.
@@ -50,6 +58,49 @@ In order to enable the use of the depth buffer, the
 \texttt{glutInitDisplayMode()} can be used, passing the 
 GLUT\_DEPTH macro as an argument.
 %
+
+%
+\subsection{OpenGL viewing model}
+OpenGL not only provides function to specify models for 
+three-dimensional objects but also allowes to specify the 
+position for each of the models we want to display in a 
+scene and also the point from which to view the scene.
+%
+The transformation process used to produce a scene for viewing 
+is analogous to taking a photograph with a camera (infact, it 
+is often addressed as \textit{the camera analogy}) and consists 
+of four steps, known as \textit{the OpenGL pipeline}\ref{fig:opengpipe}.
+%
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=300pt]{img/openGLpipe}
+    \caption{The OpenGL pipeline}
+    \label{fig:openglpipe}
+  \end{center}
+\end{figure}
+%
+At the beginning of the pipeline, we have the \textit{raw} 
+coordinates of the models we want to put on the scene. Such 
+coordinates are then multiplied by the a 4x4 \texbf{modelview} 
+matrix which elements have to be set accordingly to \textit{actually} 
+where to place items in the scene.
+%
+The second step involves the \textbf{projection} matrix, 
+which is applied to the incoming object coordinates to define a 
+viewing volume. Of course, objects outside this volume are clipped 
+so that they are not drawn in the final scene. 
+%
+In the last two steps of the pipe, incoming coordinates are transformed 
+into actual two-dimensional window coordinates and other stuff, such as 
+the light intensity for each pixel, are calculated according to depth.
+%
+\subsubsection{Matrix transformations}
+
+
+%% - specificare oggetti in 3D e poi trasformarli in 2D
+%% - matrice modelview
+%% - trasformazioni di sistema di riferimento
+
 
 %
 \subsection{Setting up a texture}
@@ -179,6 +230,8 @@ Let us see how to put in code the procedure described above:
   glMatrixMode(GL_MODELVIEW);
   glDisable(GL_TEXTURE_2D);
 \end{lstlisting}
+%
+
 %
 \subsection{Lighting in OpenGL}
 As shown in figure \ref{fig:lighting} OpenGL features three types of light:
