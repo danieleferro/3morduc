@@ -18,7 +18,7 @@
    sodipodi:docname="half_plan_finding.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1"
-   inkscape:export-filename="/home/danik/Desktop/half_plan_finding.png"
+   inkscape:export-filename="/home/danik/3morduc/report/img/half_plan_finding.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -442,6 +442,33 @@
          style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none"
          transform="scale(-0.8,-0.8)" />
     </marker>
+    <inkscape:perspective
+       id="perspective3772"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <marker
+       inkscape:stockid="TriangleInL"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleInL-94"
+       style="overflow:visible">
+      <path
+         id="path4328-1"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none"
+         transform="scale(-0.8,-0.8)" />
+    </marker>
+    <inkscape:perspective
+       id="perspective3877"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -454,10 +481,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.76"
-     inkscape:cx="515.85577"
-     inkscape:cy="494.22384"
+     inkscape:cx="279.67156"
+     inkscape:cy="283.69752"
      inkscape:document-units="px"
-     inkscape:current-layer="g2957-6-2-8"
+     inkscape:current-layer="layer1"
      showgrid="true"
      showguides="false"
      inkscape:window-width="1366"
@@ -487,12 +514,12 @@
      id="layer1"
      style="display:inline">
     <path
-       style="fill:none;stroke:#000000;stroke-width:1.18634212px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m -20,512.36218 c 131.35802,0 262.71605,0 394.07407,0 121.97532,0 243.95062,0 365.92593,0"
+       style="fill:none;stroke:#000000;stroke-width:1.17062831px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 0,512.36218 c 127.90123,0 255.80247,0 383.7037,0 118.76545,0 237.53087,0 356.2963,0"
        id="path2409" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:1.1858542px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 340,322.36218 c 0,65.62501 0,131.25002 0,196.875 0,65.62501 0,131.25001 0,196.875 0,18.75001 0,37.50001 0,56.25"
+       style="fill:none;stroke:#000000;stroke-width:1.41421378px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 340,252.36218 c 0,93.33336 0,186.6667 0,280 0,93.33336 0,186.66669 0,280 0,26.66669 0,53.33335 0,80"
        id="path2411" />
     <g
        id="g4999"
@@ -765,5 +792,95 @@
            d="m -220,432.36218 c 0,11.0457 -8.95431,20 -20,20 -11.04569,0 -20,-8.9543 -20,-20 0,-11.04569 8.95431,-20 20,-20 11.04569,0 20,8.95431 20,20 z" />
       </g>
     </g>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3803"
+       style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:cmex10;font-style:normal;font-weight:bold;font-size:16px;-inkscape-font-specification:cmex10 Medium;font-stretch:normal;font-variant:normal;text-anchor:start;text-align:start;writing-mode:lr;line-height:125%"><flowRegion
+         id="flowRegion3805"><rect
+           id="rect3807"
+           width="286.8421"
+           height="147.36842"
+           x="-22.368422"
+           y="706.30957"
+           style="-inkscape-font-specification:cmex10 Medium;font-family:cmex10;font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal;font-size:16px;text-anchor:start;text-align:start;writing-mode:lr;line-height:125%" /></flowRegion><flowPara
+         id="flowPara3809" /></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3839"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"><flowRegion
+         id="flowRegion3841"><rect
+           id="rect3843"
+           width="213.1579"
+           height="94.736839"
+           x="-313.1579"
+           y="568.15167" /></flowRegion><flowPara
+         id="flowPara3845" /></flowRoot>    <g
+       id="g2942"
+       transform="matrix(0.79394531,0,0,0.71290803,103.02735,247.6737)"
+       inkscape:export-filename="/home/danik/3morduc/report/img/half_plan_finding.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         y="832.36218"
+         x="40"
+         height="180"
+         width="640"
+         id="rect2916"
+         style="fill:#f7ffef;fill-opacity:1;stroke:#c50027;stroke-width:2.09699988;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <g
+         inkscape:transform-center-y="-60.473946"
+         inkscape:transform-center-x="119.98898"
+         transform="matrix(-0.83999708,0.20859732,-0.27092074,-0.64676163,1077.678,1045.8951)"
+         id="g2957-6-0-5"
+         style="display:inline">
+        <g
+           transform="matrix(0.64888108,-0.52286195,0.47991645,0.64069785,955.25611,200.31903)"
+           id="g5207-2-4-0-9-4">
+          <path
+             id="path3617-9-3-4-7-1"
+             d="m -240,372.36218 c 0,80 0,80 0,80"
+             style="fill:none;stroke:#000000;stroke-width:1.51185787;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:url(#TriangleInL);marker-mid:none;marker-end:none" />
+          <path
+             d="m -220,432.36218 c 0,11.0457 -8.95431,20 -20,20 -11.04569,0 -20,-8.9543 -20,-20 0,-11.04569 8.95431,-20 20,-20 11.04569,0 20,8.95431 20,20 z"
+             sodipodi:ry="20"
+             sodipodi:rx="20"
+             sodipodi:cy="432.36218"
+             sodipodi:cx="-240"
+             id="path2843-4-1-6-5-5"
+             style="fill:#0035cd;fill-opacity:1;stroke:#004790;stroke-width:1.70000005;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             sodipodi:type="arc" />
+        </g>
+      </g>
+      <rect
+         y="924.36218"
+         x="60"
+         height="40"
+         width="40"
+         id="rect3801"
+         style="fill:#000000;fill-opacity:1;stroke:#c50027;stroke-width:1.398;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <flowRoot
+         transform="translate(422.9135,-242.40366)"
+         style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Century Schoolbook L;-inkscape-font-specification:Century Schoolbook L Bold"
+         id="flowRoot3855-6"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3857-6"><rect
+             style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;font-family:Century Schoolbook L;-inkscape-font-specification:Century Schoolbook L Bold"
+             y="1108.9412"
+             x="-259.21054"
+             height="189.47368"
+             width="1127.6316"
+             id="rect3859-8" /></flowRegion><flowPara
+           id="flowPara3861-1">Image oriented by black arrow</flowPara></flowRoot>      <flowRoot
+         transform="translate(306.90037,-229.02866)"
+         style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Century Schoolbook L;-inkscape-font-specification:Century Schoolbook L Bold"
+         id="flowRoot3900"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3902"><rect
+             style="font-size:24px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;font-family:Century Schoolbook L;-inkscape-font-specification:Century Schoolbook L Bold"
+             y="1161.5728"
+             x="-140.78947"
+             height="118.42105"
+             width="834.21051"
+             id="rect3904" /></flowRegion><flowPara
+           id="flowPara3906">Robot (oriented by &quot;a&quot; line)</flowPara></flowRoot>    </g>
   </g>
 </svg>

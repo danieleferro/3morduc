@@ -84,7 +84,7 @@ be chosen.
 
 %
 All you need to run a different algorithm is to instance the right object implementing the
-\texttt{DistanceCalcInterface} and link it with the \texttt{DataManager}, who will automaticly
+\texttt{DistanceCalcInterface} and link it with the \texttt{DataManager}, who will automatically
 use the custom function to evaluate the score for every stored image. As written before, the
 one with the lowest score will be rendered as background texture.
 %
@@ -125,8 +125,8 @@ each circle.
 
 %
 We will refer to the line perpendicular to the half line "a" as "b". By rotating clockwise and
-counterclockwise the "a" line in the robot center with a predefined angle (named "sweep angle")
-we will obtain the "c" and "d" lines. These define a new portion of the plane (colored with fading red),
+counterclockwise the "a" line in the robot centre with a predefined angle (named "sweep angle")
+we will obtain the "c" and "d" lines. These define a new portion of the plane (coloured with fading red),
 named the "sweep area".
 %
 
@@ -152,13 +152,16 @@ angle is close to the robot orientation angle, the more the score is high.
 %
 
 %
-The function to evaluate the score from the difference between the two angles is a Gaussian function center
+The function to evaluate the score from the difference between the two angles is a Gaussian function centre
 in zero. The return value will be therefore always a positive number.
 %
 
 %
-The use of a Gaussian function allows to obtain different values even for two very close angle difference.
-In this way is always possible to discern the best one, by choosing the highest value returned.
+The use of a Gaussian function allows to obtain different values even for two very close angle difference
+(Gaussian is a injective function), regardless of the assigned variance. Moreover, it is defined for all real
+numbers.
+In this way is always possible to discern the best angle difference, by choosing the highest value returned by
+the function.
 %
 
 %
@@ -171,26 +174,27 @@ teleguide it properly.
 
 %
 The preferable image would distance from the robot a predefined quantity, specified by the user. This value
-indicate us where to center another Gaussian function, in order to obtain the score from the distance between
+indicate us where to centre another Gaussian function, in order to obtain the score from the distance between
 image and robot. The more the image is close to the preferred distance, the more the score assigned will be high.
 %
 
 %
 The reasons that justifies the use of the Gaussian function are the same previously explained for the angle
-difference. The values obtained from the two Gaussian function, after adding them, form the global score.
+difference. The values obtained from the two Gaussian functions, after adding them, form the global score.
 %
 
 %
-To summarize the method aboveillustrated, we coupled every image with a score: the one with the maximum value
+To summarize the method above illustrated, we coupled every image with a score: the one with the maximum value
 will be chosen and put as background. If the image is not included in the sweep area (defined by a sweep angle
 and therefore by the "c" and "d" line) it has to be discarded. The score assigned will be -2.
 %
 
 %
-The images situated within the sweep area, but with an orientation angle that differs too much from the robot orientation angle, have to be discarded as the previous one: the score assigned will be -2 again.
+The images situated within the sweep area, but with an orientation angle that differs too much from the robot
+orientation angle, have to be discarded as the previous one: the score assigned will be -2 again.
 If the image position and orientation coincide with robot position and orientation, the image represents the
 egocentric vision. We remember that in our set there will always be the egocentric image, and that this will be
-choose as background when no other image for exogentric vision are available. The score coupled with the egocentric 
+choose as background when no other image for exocentric vision are available. The score coupled with the egocentric 
 vision will be -1.
 %
 
