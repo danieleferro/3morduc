@@ -95,6 +95,24 @@ into actual two-dimensional window coordinates and other stuff, such as
 the light intensity for each pixel, are calculated according to depth.
 %
 \subsubsection{Matrix transformations}
+To edit the \textbf{modelview} and \textbf{projection} matrices, OpenGL 
+provides quite a lot of functions: some of them are 
+\textit{general purpose}, that is, they can be used to edit both of them, 
+others are specifically intended to edit either the modelview or the 
+projection matrix.
+%
+The most used \textit{general purpose} functions are 
+\begin{itemize}
+\item \texttt{glMatrixMode(GLenum mode)} \\
+  \textit{mode} specifies which matrix is the \textit{current}
+  matrix, that is, the matrix that is to be edited by following
+  functions
+
+\item \texttt{glLoadIdentity()} \\
+  sets the current matrix to be 4x4 identity matrix
+  
+\end{itemize}
+
 
 
 %% - specificare oggetti in 3D e poi trasformarli in 2D
