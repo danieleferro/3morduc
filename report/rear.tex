@@ -251,8 +251,8 @@ these fields are now useless.
 The unique attribute (changed from public to private, in 
 the new version) which survives the refactory - along with the
 triple values indicating coordinate on x axis, coordinate on 
-y axis and rotation - is named 'radius'. 'radius' is a float
-attribute, which stores the value of the radius for the 
+y axis and rotation - is named \texttt{radius}. \texttt{radius}
+is a float attribute, which stores the value of the radius for the 
 tree cylinders which make up the robot. See figure
 \ref{fig:3morduc_opengl} for a better understanding.
 %
@@ -264,7 +264,7 @@ tree cylinders which make up the robot. See figure
   \end{center}
 \end{figure}
 %
-The default \textit{radius} value is 4, but it can be 
+The default \texttt{radius} value is 4, but it can be 
 customised by the user: by increasing it the robot will be 
 displayed larger and larger on the screen, and viceversa.
 %
@@ -278,7 +278,7 @@ so a method to get each one value is declared.
 Most of the previous public methods have been removed too. 
 The constructor method, for instance, is present with one
 only definition and default parameters, instead of declaring 
-it twice (with parameters and without). The methods to set
+it twice (with parameter and without). The methods to set
 linear and angular velocity are not present anymore, for 
 the reason explained above; those to increment the collisions 
 number are actually disabled because, at this development 
