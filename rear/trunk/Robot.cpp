@@ -4,12 +4,12 @@ void PaintCylinder(GLfloat radius,GLfloat height);
 void PaintDisk(GLfloat radius);
 
 // theta in deegres
-Robot::Robot(float x, float y, float theta)
+Robot::Robot(float radius)
 {
-  radius = y;
-  this->x = x;
-  this->y = y;
-  this->theta = theta;
+  this->radius = radius;
+  this->x = 0;
+  this->y = 0;
+  this->theta = 0;
 
 }
 
