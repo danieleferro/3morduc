@@ -719,14 +719,15 @@ void CMain::Draw(bool Update)
 		}
 		glColor3f(0.0f,1.0f,0.0f);
 		//glPrint(0,1,0,"TARGET : x:%f y:%f",target.points[target_selected].x,target.points[target_selected].y);	
-		glPrint(0,1,0,"mappa n:%d collisions:%d",prova[numprova-1].nmap,robot1.collisions);
-		glPrint(0,2,0,"camera.aperture: %f",camera.aperture);	
-		glPrint(0,3,0,"camera.focal: %.3f eyesep:%.3f",camera.focallength,camera.eyesep);	
-		glPrint(0,4,0,"cx: %.3f cy: %.3f cz: %.3f SimNumber:%d",cx,cy,cz,SimNumber);	
-		glPrint(0,5,0,"robot.Time: %.3f numprova: %d",robot1.Time, numprova);	
-		glPrint(0,6,0,"Xr: %.3f Yr: %.3f Tetha: %.3f",robot1.xr,robot1.yr,robot1.tetar/DTOR);	
-		glPrint(0,7,0,"v: %6f w: %6f ",robot1.v,flo);	
-		int len=0;
+		//glPrint(0,1,0,"mappa n:%d collisions:%d",prova[numprova-1].nmap,robot1.collisions);
+		//glPrint(0,2,0,"camera.aperture: %f",camera.aperture);	
+		//glPrint(0,3,0,"camera.focal: %.3f eyesep:%.3f",camera.focallength,camera.eyesep);	
+		//glPrint(0,4,0,"cx: %.3f cy: %.3f cz: %.3f SimNumber:%d",cx,cy,cz,SimNumber);	
+		glPrint(0,49,0,"Test Set #%d", SimNumber);	
+		glPrint(0,48,0,"robot.Time: %.3f", robot1.Time);	
+		glPrint(0,47,0,"Xr: %.3f Yr: %.3f Tetha: %.3f",robot1.xr,robot1.yr,robot1.tetar/DTOR);	
+	   //glPrint(0,7,0,"v: %6f w: %6f ",robot1.v,flo);
+		/*int len=0;
 		if (SwapControl)
 			len+=glPrint(0,49,0,"SWAP CONTROL");	
 		if (StereoEnable)
@@ -743,11 +744,11 @@ void CMain::Draw(bool Update)
 		}
 		glColor3f(0.0f,0.0f,1.0f);
 		if (CameraOnRobot)
-			len+=glPrint(len,49,0,"On Robot");	
+			len+=glPrint(len,49,0,"On Robot");	*/
 
-		else 
-			len+=glPrint(len,49,0,"Fixed");	
-		glColor3f(0.0f,1.0f,0.0f);
+		//else 
+		//	len+=glPrint(len,49,0,"Fixed");	
+		//glColor3f(0.0f,1.0f,0.0f);
 
 
 		/*  // cosi appiccico un buffer in un punto.
@@ -826,13 +827,13 @@ void CMain::Draw(bool Update)
 
 
 	////// DRAW TARGET 
-	glTranslatef(target.points[target_selected].x,target.points[target_selected].z,target.points[target_selected].y);
-	GLUquadricObj *quadrica=gluNewQuadric();
-	GLfloat col_tar[] ={0.0f, 0.7f, 0.0f, 1.0f};
-	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE,col_tar);
-	target.points[target_selected].value=1.8;
-	gluSphere(quadrica,target.points[target_selected].value,32,32);
-	glTranslatef(-target.points[target_selected].x,-target.points[target_selected].z,-target.points[target_selected].y);
+	//glTranslatef(target.points[target_selected].x,target.points[target_selected].z,target.points[target_selected].y);
+	//GLUquadricObj *quadrica=gluNewQuadric();
+	//GLfloat col_tar[] ={0.0f, 0.7f, 0.0f, 1.0f};
+	//glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE,col_tar);
+	//target.points[target_selected].value=1.8;
+	//gluSphere(quadrica,target.points[target_selected].value,32,32);
+	//glTranslatef(-target.points[target_selected].x,-target.points[target_selected].z,-target.points[target_selected].y);
 	//////////////////////7
 
 	CreateFloor(&ostacoli);
@@ -1323,7 +1324,7 @@ void CMain::HandleKeyboard(char *keyDown)
 		if (numprova<TRIALNUMBER)
 		{
 			robot1.LoadSPFromFile("Data/robotstartposition.txt",prova[numprova].numberposition);
-			LoadEnv(1,"Data/map/m1.jpg");
+			LoadEnv(1,"Data/map/m13.jpg");
 			if (StartRecord==true)
 				StopRec();
 
