@@ -142,6 +142,6 @@ void DataLogic::SelectImage(robot_data * robot_status, image_data * bg_image_dat
 
   strcpy(bg_image_data->path, _images_collection[i].path);
 
-  std::cout << "----> " << bg_image_data->path << "<-----" << std::endl;
+  // std::cout << "----> " << bg_image_data->path << "<-----" << std::endl;
 
 }
