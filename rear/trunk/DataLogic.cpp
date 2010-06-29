@@ -65,8 +65,6 @@ void DataLogic::RetrieveData(robot_data * data)
   o.clear();
   o << "../log/log_" << _simulation_session << "/screenshot_" << _simulation_session << "_" << time << ".png";
 
-  std::cout << "**********************     " << o.str() << std::endl;
-
   // fill grabbed frame metadata
   grabbed_frame_data.x = data->x;
   grabbed_frame_data.y = data->y;
@@ -143,5 +141,7 @@ void DataLogic::SelectImage(robot_data * robot_status, image_data * bg_image_dat
   bg_image_data->time = _images_collection[i].time;
 
   strcpy(bg_image_data->path, _images_collection[i].path);
+
+  std::cout << "----> " << bg_image_data->path << "<-----" << std::endl;
 
 }
