@@ -5,11 +5,18 @@ for i = 1 : length(x)
 	z(i) = triangle(x(i), 5);
 endfor
 
+% clear previous plot
+clf();
+
+hold on;
 xlabel('euclidean distance value');
 ylabel('score value');
-
 title("Score function in Spacial Metric");
-
-print("../../../report/img/spacialMetricFunc.png")
-
+path_output = "../../../report/img/spacialMetricFunc.png";
 plot(x, z);
+
+print(path_output)
+
+disp("File saved in: ");
+disp(path_output);
+
