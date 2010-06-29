@@ -1780,4 +1780,3 @@ void CMain::SaveStatus() {
 			AfxBeginThread(TakeScreenshot, (void *) data);
 		}
 }
-
