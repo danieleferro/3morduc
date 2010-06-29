@@ -329,7 +329,7 @@ int main ( int argc, char * argv[] ) {
 
   /* image distance calculator instantiation */
   calculator = new SweepMetricCalc(45, 40,
-				   10, 5,
+				   20, 5,
 				   0, 5);
   
   // calculator = new SpacialMetricCalc();

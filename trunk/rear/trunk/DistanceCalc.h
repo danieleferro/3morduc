@@ -8,10 +8,18 @@
 #define TO_RADIANS(X) X * M_PI / 180
 #define TO_DEGREES(X) X * 180 / M_PI
 
-#define DEBUG 0
+#define DEBUG 1
 
 #define EGO_IMAGE       1
 #define IMAGE_NOT_VALID 2
+
+// A floating point
+struct fPoint
+{
+  float x;
+  float y;
+};
+
 
 /*
   Basic spacial metric - implements selection method 2 of
@@ -65,5 +73,10 @@ class SweepMetricCalc : public DistanceCalcInterface
   float Normalize180(float angle);
 };
 
+float AssignPoints(float distance);
+
+float Sign(fPoint p1, fPoint p2, fPoint p3);
+
+bool IsPointInTri(fPoint pt, fPoint v1, fPoint v2, fPoint v3);
 
 #endif
