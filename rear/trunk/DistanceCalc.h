@@ -73,8 +73,6 @@ class SweepMetricCalc : public DistanceCalcInterface
   float Normalize180(float angle);
 };
 
-float AssignPoints(float distance);
-
 float Sign(fPoint p1, fPoint p2, fPoint p3);
 
 bool IsPointInTri(fPoint pt, fPoint v1, fPoint v2, fPoint v3);
