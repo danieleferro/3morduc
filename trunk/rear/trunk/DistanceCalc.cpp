@@ -112,59 +112,43 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
 {
   float _radius = 100;
 
-  /* translate all system in robot_status->x and 
-     robot_status->y; at the end the system is translated again */
-  float x_zero = robot_status->x;
-  float y_zero = robot_status->y;
+  robot_data robot_status_buffer;
+  image_data bg_image_data_buffer;
 
-  std::cout << "a" << std::endl;
-  robot_status->x = 0;
-  robot_status->y = 0;
-  std::cout << "b" << std::endl;
-    
-  bg_image_data->x = bg_image_data->x - x_zero;
-  bg_image_data->y = bg_image_data->y - y_zero;
+  robot_status_buffer.x = 0;
+  robot_status_buffer.y = 0;
+  robot_status_buffer.theta = 0;
 
-//   robot_status->theta = robot_status->theta + 90;
-//   bg_image_data->theta = bg_image_data->theta + 90;
+  // translate
+  float temp_x = bg_image_data->x - robot_status->x;
+  float temp_y = bg_image_data->y - robot_status->y;
+
+  // rotate
+  bg_image_data_buffer.x = temp_x * cos(TO_RADIANS(robot_status->theta)) -
+    temp_y * sin(TO_RADIANS(robot_status->theta));
+							   
+  bg_image_data_buffer.y = temp_x * sin(TO_RADIANS(robot_status->theta)) +
+    temp_y * cos(TO_RADIANS(robot_status->theta));
+
+
+  std::cout << "--> New values for image: ( "
+	    << bg_image_data_buffer.x << "; "
+	    << bg_image_data_buffer.y << " )" 
+	    << std::endl;
   
+  // angular coefficient for line "c" 
+  float ang_coeff_line_c = tan( M_PI/2 + TO_RADIANS( _sweep_angle ) );
 
-
-  // theta must be always between [-180; 180]
-  robot_status->theta = Normalize180(robot_status->theta);
-  bg_image_data->theta = Normalize180(bg_image_data->theta);
-
-
-  float ang_coeff_line_a;
-  float ang_coeff_line_b;
-  float ang_coeff_line_c;
-  float ang_coeff_line_d;
-
-  float rhs;
-  int sign = 1;
-
-  std::cout << "Calcolo coeff a .. " << std::endl;
-  /* angular coefficient for line "a" */
-  ang_coeff_line_a = tan( TO_RADIANS(robot_status->theta + 90) );
-
-  /* angular coefficient for line "b" */
-  ang_coeff_line_b = tan( TO_RADIANS(robot_status->theta) );
-
-  /* angular coefficient for line "c" */
-  ang_coeff_line_c = tan( atan( ang_coeff_line_b ) + TO_RADIANS( _sweep_angle ) );
-
-  /* angular coefficient for line "d" */
-  ang_coeff_line_d = tan( atan( ang_coeff_line_b ) - TO_RADIANS( _sweep_angle ) );
+  // angular coefficient for line "d"
+  float ang_coeff_line_d = tan( M_PI/2 - TO_RADIANS( _sweep_angle ) );
 
   if (DEBUG)
     {
-      std::cout << "Angular coefficient line A: " << ang_coeff_line_a << std::endl;
-      std::cout << "Angular coefficient line B: " << ang_coeff_line_b << std::endl;
       std::cout << "Angular coefficient line C: " << ang_coeff_line_c << std::endl;
       std::cout << "Angular coefficient line D: " << ang_coeff_line_d << std::endl;
     }
 
-  /* find poit A and B to form AOB triangle */
+  // find poit A and B to form AOB triangle
   // A point (retrieved from line C)
   float A_x1 = sqrt( pow(_radius, 2) / ( pow( ang_coeff_line_c , 2) + 1 ) );
   float A_y1 = ang_coeff_line_c * A_x1;
@@ -184,7 +168,141 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
     }
     
 
-  /* find poit A and B to form AOB triangle */
+  // find poit A and B to form AOB triangle
+  // B point (retrieved from line D)
+  float B_x1 = sqrt( pow(_radius, 2) / ( pow( ang_coeff_line_d , 2) + 1 ) );
+  float B_y1 = ang_coeff_line_d * B_x1;
+
+  float B_x2 = -1 * B_x1;
+  float B_y2 = ang_coeff_line_d * B_x2;
+
+  if (DEBUG)
+    {
+      std::cout << "B_x1: " << B_x1 << "; "
+		<< "B_y1: " << B_y1
+		<< std::endl << std::endl;
+      
+      std::cout << "B_x2: " << B_x2 << "; "
+		<< "B_y2: " << B_y2
+		<< std::endl << std::endl;
+    }
+
+  // find out which couple values are right (point A)  
+  float A_x;
+  float A_y;
+
+  if ( A_y1 < 0 )
+    {
+      A_x = A_x1;
+      A_y = A_y1;
+
+    }
+  else
+    {
+
+      A_x = A_x2;
+      A_y = A_y2;
+
+    }
+    
+
+  // find out which couple values are right (point B)  
+  float B_x;
+  float B_y;
+  
+  if ( B_y1 < 0 )
+    {
+
+      B_x = B_x1;
+      B_y = B_y1;
+
+    }
+  else
+    {
+
+      B_x = B_x2;
+      B_y = B_y2;
+
+    }
+    
+  std::cout << "point A chosen: " << A_x << " ; " << A_y << std::endl;
+  std::cout << "point B chosen: " << B_x << " ; " << B_y << std::endl;
+
+  fPoint pt;
+  pt.y = bg_image_data_buffer.x;
+  pt.x = bg_image_data_buffer.y;
+
+  fPoint v1;
+  v1.x = 0;
+  v1.y = 0;
+  
+  fPoint v2;
+  v2.x = A_x;
+  v2.y = A_y;
+  
+  fPoint v3;
+  v3.x = B_x;
+  v3.y = B_y;
+  
+  bool flag = IsPointInTri(pt, v1, v2, v3);
+
+  
+  /*
+  std::cout << "Normalize 180: " << std::endl;
+  // theta must be always between [-180; 180]
+  robot_status->theta = Normalize180(robot_status->theta);
+  bg_image_data->theta = Normalize180(bg_image_data->theta);
+  
+
+  float ang_coeff_line_a;
+  float ang_coeff_line_b;
+  float ang_coeff_line_c;
+  float ang_coeff_line_d;
+
+  float rhs;
+  int sign = 1;
+
+  // angular coefficient for line "a" 
+  ang_coeff_line_a = tan( TO_RADIANS(robot_status->theta + 90) );
+
+  // angular coefficient for line "b" 
+  ang_coeff_line_b = tan( TO_RADIANS(robot_status->theta) );
+
+  // angular coefficient for line "c" 
+  ang_coeff_line_c = tan( atan( ang_coeff_line_b ) + TO_RADIANS( _sweep_angle ) );
+
+  // angular coefficient for line "d"
+  ang_coeff_line_d = tan( atan( ang_coeff_line_b ) - TO_RADIANS( _sweep_angle ) );
+
+  if (DEBUG)
+    {
+      std::cout << "Angular coefficient line A: " << ang_coeff_line_a << std::endl;
+      std::cout << "Angular coefficient line B: " << ang_coeff_line_b << std::endl;
+      std::cout << "Angular coefficient line C: " << ang_coeff_line_c << std::endl;
+      std::cout << "Angular coefficient line D: " << ang_coeff_line_d << std::endl;
+    }
+
+  // find poit A and B to form AOB triangle
+  // A point (retrieved from line C)
+  float A_x1 = sqrt( pow(_radius, 2) / ( pow( ang_coeff_line_c , 2) + 1 ) );
+  float A_y1 = ang_coeff_line_c * A_x1;
+  
+  float A_x2 = -1 * A_x1;
+  float A_y2 = ang_coeff_line_c * A_x2;
+  
+  if (DEBUG)
+    {
+      std::cout << "A_x1: " << A_x1 << "; "
+		<< "A_y1: " << A_y1
+		<< std::endl << std::endl;
+      
+      std::cout << "A_x2: " << A_x2 << "; "
+		<< "A_y2: " << A_y2
+		<< std::endl << std::endl;
+    }
+    
+
+  // find poit A and B to form AOB triangle
   // B point (retrieved from line D)
   float B_x1 = sqrt( pow(_radius, 2) / ( pow( ang_coeff_line_d , 2) + 1 ) );
   float B_y1 = ang_coeff_line_d * B_x1;
@@ -250,7 +368,10 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
       {
     
 	if ( robot_status->theta >= -180 && robot_status->theta < 0 )
-	  sign = -1;
+	  {
+	    std::cout << "Robot theta in [-180; 0[ " << std::endl;
+	    sign = -1;
+	  }
       }
 
   }
@@ -302,7 +423,7 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
   bool flag = IsPointInTri(pt, v1, v2, v3);
 
 
-  /* retraslate system */
+  // retraslate system
   robot_status->x = x_zero;
   robot_status->y = y_zero;
   
@@ -312,13 +433,15 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
 
 //   robot_status->theta = robot_status->theta - 90;
 //   bg_image_data->theta = bg_image_data->theta - 90;
+
+*/
   
 
   if (flag) 
     {
       std::cout << "Point ( "
-	   << bg_image_data->x - x_zero << "; "
-	   << bg_image_data->y - y_zero << "; " 
+	   << bg_image_data->x << "; "
+	   << bg_image_data->y << "; " 
 	   << bg_image_data->theta << " )";
       
       std::cout << " is included." << std::endl;
@@ -327,8 +450,8 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
   else
     {
       std::cout << "Point ( "
-	   << bg_image_data->x - x_zero << "; "
-	   << bg_image_data->y - y_zero << "; " 
+	   << bg_image_data->x << "; "
+	   << bg_image_data->y << "; " 
 	   << bg_image_data->theta << " )";
       
       std::cout << " is NOT included." << std::endl;
@@ -498,13 +621,6 @@ float SweepMetricCalc::Normalize180(float angle)
 //   return Normalize180(angle_deegres-360);
 // }
 
-
-float AssignPoints(float distance)
-{
-  /* TODO */
-
-  return distance;
-}
 
 float Sign(fPoint p1, fPoint p2, fPoint p3)
 {
