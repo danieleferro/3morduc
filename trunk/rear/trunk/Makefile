@@ -12,7 +12,7 @@ OBJECTS = $(SOURCES:.cpp=.o)
 OPTIONS = -lglut -lpng
 LIBRARY = -L/usr/X11R6/lib
 
-SESSION = 22
+SESSION = 2
 
 
 main: $(OBJECTS)

@@ -229,8 +229,6 @@ bool SweepMetricCalc::RightlyOriented(robot_data * robot_status,
   float offset = fabs( Normalize180( robot_status -> theta ) -
 		       Normalize180( bg_image_data -> theta ));
 
-  std:: cout << "*******************OFFSET: " << offset << std::endl;
-
   if ( offset >= _angle_offset )
     return false;
 

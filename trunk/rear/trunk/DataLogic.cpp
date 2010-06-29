@@ -65,6 +65,8 @@ void DataLogic::RetrieveData(robot_data * data)
   o.clear();
   o << "../log/log_" << _simulation_session << "/screenshot_" << _simulation_session << "_" << time << ".png";
 
+  std::cout << "**********************     " << o.str() << std::endl;
+
   // fill grabbed frame metadata
   grabbed_frame_data.x = data->x;
   grabbed_frame_data.y = data->y;
