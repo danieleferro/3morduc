@@ -11,14 +11,14 @@ typedef struct {
 
 typedef struct {
    double rotatespeed;       /* How fast the pulsar rotates             */
-	int spinspeed;         /* How fast the user mouse moves           */
-	int record,windowdump; /* Image recording modes                   */
-	int fullscreen;        /* Game mode or not                        */
+	int spinspeed;           /* How fast the user mouse moves           */
+	int record,windowdump;   /* Image recording modes                   */
+	int fullscreen;          /* Game mode or not                        */
 } OPTIONS;
 
 typedef struct											// Structure For 3D Points
 {
-	GLfloat	x, y, z,value,touched;									// X, Y & Z Points
+	GLfloat	x, y, z,value,touched;						// X, Y & Z Points
 } VERTEX;												// Called VERTEX
 
 typedef struct											// Structure For An Object
