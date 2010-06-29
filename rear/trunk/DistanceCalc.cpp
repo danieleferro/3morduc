@@ -117,8 +117,10 @@ bool SweepMetricCalc::WithinBoundaries( robot_data * robot_status,
   float x_zero = robot_status->x;
   float y_zero = robot_status->y;
 
+  std::cout << "a" << std::endl;
   robot_status->x = 0;
   robot_status->y = 0;
+  std::cout << "b" << std::endl;
     
   bg_image_data->x = bg_image_data->x - x_zero;
   bg_image_data->y = bg_image_data->y - y_zero;
@@ -473,17 +475,28 @@ bool SweepMetricCalc::RightlyOriented(robot_data * robot_status,
   return true;
 }
 
-float SweepMetricCalc::Normalize180(float angle_deegres)
+float SweepMetricCalc::Normalize180(float angle)
 {
-  if (angle_deegres >= 0 && angle_deegres <= 180)
-    return angle_deegres;
+  if (angle > 180)
+    return Normalize180(angle - 360);
+    
+  if (angle < -180)
+    return Normalize180(angle + 360);
+    
+  return angle;
+}
 
-  if (angle_deegres >= -180 && angle_deegres <= 0)
-    return angle_deegres;
+// float SweepMetricCalc::Normalize180(float angle_deegres)
+// {
+//   if (angle_deegres >= 0 && angle_deegres <= 180)
+//     return angle_deegres;
+
+//   if (angle_deegres >= -180 && angle_deegres <= 0)
+//     return angle_deegres;
     
  
-  return Normalize180(angle_deegres-360);
-}
+//   return Normalize180(angle_deegres-360);
+// }
 
 
 float AssignPoints(float distance)
