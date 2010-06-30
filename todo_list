@@ -1,0 +1,18 @@
+REAR
+
+• analisi sistematica delle caratteristiche del vostro approccio: ruolo dei parametri principali (tipo di traiettoria, distanza ottimale, angoli di traiettoria); prove con differenti tipi di settings
+• inserire immagini (screenshots?)
+• spostamento sistema riferimento (capitolo 4)
+• estendere paragrafo camera (capitolo 5)
+• pacchetto con make e dipendenze
+• breve spiegazione classi DataManager e DataLogic
+• dettagli su algoritmo within boundaries
+• capitolo strumenti utilizzati
+
+Futuro:
+
+• socket di comunicazione
+• implementazione 3d
+• gestione collisioni
+
+chiedere a luca e trupia per i documenti

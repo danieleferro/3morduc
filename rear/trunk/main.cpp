@@ -328,7 +328,7 @@ int main ( int argc, char * argv[] ) {
   camera = new Camera();
 
   /* image distance calculator instantiation */
-  calculator = new SweepMetricCalc(45, 40,
+  calculator = new SweepMetricCalc(45, 30,
 				   20, 5,
 				   0, 5);
   
