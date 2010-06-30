@@ -294,13 +294,14 @@ void init()
 
 int main ( int argc, char * argv[] ) {
 
-  if (argc != 2)
-    {
-      
-      printf("Usage: main <session_number>\n");
-      exit(0);
 
+  if (argc != 3)
+    {      
+      printf("Usage: main <session_number> <optimal_distance>\n");
+      exit(0);
     }
+
+  
 
   /* initialize GLUT, using any commandline parameters 
      passed to the program */
@@ -329,7 +330,7 @@ int main ( int argc, char * argv[] ) {
 
   /* image distance calculator instantiation */
   calculator = new SweepMetricCalc(45, 30,
-				   20, 5,
+				   atof(argv[2]), 5,
 				   0, 5);
   
   // calculator = new SpacialMetricCalc();
