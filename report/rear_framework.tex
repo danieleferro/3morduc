@@ -1,69 +1,111 @@
-\section{Rear: a framework for virtual exocentric vision}
+\section{Rear: a framework for virtual exocentric vision systems}
 \label{sec:rear}
 
-\subsection{How it works}
-In this chapter we briefly describe how all the exocentric vision
-is implemented, along with its business logic. In order to achieve
-this, we will occasionally refer to the class diagram shown in figure
-\ref{fig:class_diagram}.
+In this chapter we will describe \textsf{R.E.A.R.} - 
+\textit{Rear Exocentric Augmented Reality}, a framework 
+for the development of virtual exocentric vision systems.
+%
+It has been written in C++, following an object-oriented 
+approach, and implements the minimal set of tools and functionalities 
+needed to create representations of a mobile robot in its environment 
+through the use of augmented reality techniques, as described in 
+section \ref{sec:exo}.
+%
+
+%
+For what concerns graphics, \textsf{R.E.A.R.} relies on OpenGL: the approach 
+to provide an external external visualization of a robot in its 
+environment consists in drawing an OpenGL model, representing the robot,
+upon a snapshot previously captured from the robot camera, which will be 
+loaded as a texture and put as the background of an OpenGL screen. The result 
+of such a process is showed in picture \ref{fig:snap}.
 %
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=400pt]{img/class_diagram.jpeg}  %robot pic
-    \caption{Application class diagram}
-    \label{fig:class_diagram}
+    \includegraphics[width=400pt]{img/rear_snapshot_large.jpg}
+    \caption{A snapshot from a \textsf{R.E.A.R.}-based application}
+    \label{fig:snap}
   \end{center}
 \end{figure}
 %
-The overall schema can be resumed by the following diagram (see figure
-\ref{fig:overall_diagram}). User sends a command to the exocentric vision
-application, in order to guide the robot through the remote environment.
-The exocentric vision application forwards the command to the robot or the
-simulator (paragraph \ref{sec:simulator}) and waits for the response.
-The latter includes the new robot position and the new egocentric camera images.
+Hence, to run, every \textsf{R.E.A.R.} application needs, at least:
 %
-
+\begin{itemize}
+  \item a set of snaphots captured from the robot egocentric camera, 
+    together with the robot position at the time it was taken
+  \item the robot's current position
+\end{itemize}
 %
-All the egocentric camera images retrieved are stored in a data set and coupled
-with robot coordinates and orientation at the moment when they were shot. Going
-on with the application a large collection of egocentric images will be gathered.
+Such informations are collected every time the operator, using the 
+interface exposed by \textsf{R.E.A.R.}, sends a command to the robot. 
+%
+Every time new data is collected, \textsf{R.E.A.R.} chooses the 
+\textit{proper}\footnote{we will have a look at the multiple meanings 
+of this in the following sections} image to set as background 
+and redraw the robot model on it, accordingly to its current position.
+%
+The overall execution loop is resumed by the flowchart showed 
+in figure \ref{fig:overall_diagram}.
 %
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=400pt]{img/overall_diagram.jpeg}  %robot pic
+    \includegraphics[width=350pt]{img/overall_diagram.jpeg}  %robot pic
     \caption{Application flowchart}
     \label{fig:overall_diagram}
   \end{center}
 \end{figure}
 %
-After retrieving response from robot, the exocentric vision application moves the
-robot in the openGL world (according to the robot coordinates read) and adds the
-images received to the images collection. Later on, the application has to choose
-the proper image (among those collected in the set) to use as texture (i.e. background)
-in OpenGL and implement the exocentric vision.
+%% The overall schema can be resumed by the following diagram (see figure
+%% \ref{fig:overall_diagram}). User sends a command to the exocentric vision
+%% application, in order to guide the robot through the remote environment.
+%% The exocentric vision application forwards the command to the robot or the
+%% simulator (paragraph \ref{sec:simulator}) and waits for the response.
+%% The latter includes the new robot position and the new egocentric camera images.
 %
 
 %
-Since every image owns its data about position and orientation when shot, we can
-move and point the camera object to obtain the right visual of the external world.
-Wherever the robot is situated, we will be able to watch it from the right point of view,
-depending on the texture image chosen.
+%% All the egocentric camera images retrieved are stored in a data set and coupled
+%% with robot coordinates and orientation at the moment when they were shot. Going
+%% on with the application a large collection of egocentric images will be gathered.
+%% %
+%% Since every image owns its data about position and orientation when shot, we can
+%% move and point the camera object to obtain the right visual of the external world.
+%% Wherever the robot is situated, we will be able to watch it from the right point of view,
+%% depending on the texture image chosen.
+%% %
+
+%% %
+%% All the process explained above is lacking of one part: how to choose the background image,
+%% knowing the actual robot position and orientation. If we decided to choose the closest image
+%% to the robot we would always show the egocentric vision, because the algorithm would select
+%% always the image with the same position and orientation of the robot. The distance between
+%% the robot and the selected images would be equal to zero, which is doubtless the minimum possible
+%% value.
+%% %
+
+%% %
+%% The algorithms to take the right image in exocentric vision can be various. Each one has its own
+%% advantages and disadvantages, we will chose the one able to guarantee the best trade-off.
 %
 
 %
-All the process explained above is lacking of one part: how to choose the background image,
-knowing the actual robot position and orientation. If we decided to choose the closest image
-to the robot we would always show the egocentric vision, because the algorithm would select
-always the image with the same position and orientation of the robot. The distance between
-the robot and the selected images would be equal to zero, which is doubtless the minimum possible
-value.
-%
-
-%
-The algorithms to take the right image in exocentric vision can be various. Each one has its own
-advantages and disadvantages, we will chose the one able to guarantee the best trade-off.
-
 \subsection{Class diagram}
+%
+Let us have a look at \textsf{R.E.A.R.} class diagram, showed in figure 
+\ref {fig:class_diagram}.
+%
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=400pt]{img/class_diagram.jpeg}  %robot pic
+    \caption{\textsf{R.E.A.R.} class diagram}
+    \label{fig:class_diagram}
+  \end{center}
+\end{figure}
+%
+
+%% spiegare come le funzionalita` descritte nell'introduzione si mappano
+%% sulle varie classi
+\subsubsection{The DataManager Class}
 
 \subsubsection{The Robot class}
 The robot class, present in Filippo Privitera's simulator 
@@ -173,8 +215,6 @@ everywhere in OpenGL world regardless of the camera position, and viceversa.
 The camera object implementation has been suggested by \cite{opengl:camera}.
 It provides some elementary commands implemented by means of mathematical matrix
 operations, to move the camera or rotate it along one axis.
-
-\subsubsection{The DataManager Class}
 
 \subsection{How to choose the right background image}
 There are many ways of choosing the background image among the collected ones. This unique
