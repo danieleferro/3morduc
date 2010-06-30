@@ -4,11 +4,12 @@
 #include "DistanceCalcInterface.h"
 #include <iostream>
 #include <math.h>
+#include <stdlib.h>
 
 #define TO_RADIANS(X) X * M_PI / 180
 #define TO_DEGREES(X) X * 180 / M_PI
 
-#define DEBUG 1
+#define DEBUG 0
 
 #define EGO_IMAGE       1
 #define IMAGE_NOT_VALID 2
@@ -57,10 +58,18 @@ class SweepMetricCalc : public DistanceCalcInterface
   float _mu_angle;
   float _sigma_angle;
 
+  /* radius for AOB triangle (sweep area approximation) */
+  float _radius;
+  
+  /*  A, O, B triangle points */
+  fPoint * _A;
+  fPoint * _O;
+  fPoint * _B;
+
 
   /*
     Primitives to be called by Calculate
-   */
+  */
   float PointAlgorithm( robot_data * robot_status, 
 			image_data * bg_image_data);
 
@@ -71,10 +80,16 @@ class SweepMetricCalc : public DistanceCalcInterface
 			image_data * bg_image_data);
 
   float Normalize180(float angle);
+
+  float Sign(fPoint * p1, fPoint * p2, fPoint * p3);
+  
+  /* check if a point pt is included in v1v2v3 triangle */
+  bool IsPointInTri(fPoint * pt, fPoint * v1, fPoint * v2, fPoint * v3);
+
+  /* return A and B point for AOB triangle (sweep area approximation) */
+  void FindTriangleVerteces(float sweep_angle, float radius);
+
 };
 
-float Sign(fPoint p1, fPoint p2, fPoint p3);
-
-bool IsPointInTri(fPoint pt, fPoint v1, fPoint v2, fPoint v3);
 
 #endif
