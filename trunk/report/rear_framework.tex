@@ -31,12 +31,12 @@ of such a process is showed in figure \ref{fig:snap}.
 Hence, to run, every \textsf{R.E.A.R.} application needs, at least:
 %
 \begin{itemize}
-  \item a set of snaphots captured from the robot egocentric camera, 
+  \item a set of snapshots captured from the robot egocentric camera, 
     together with the robot position at the time it was taken
   \item the robot's current position
 \end{itemize}
 %
-Such informations are collected every time the operator, using the 
+Such information are collected every time the operator, using the 
 interface exposed by \textsf{R.E.A.R.}, sends a command to the robot. 
 %
 Every time new data is collected, \textsf{R.E.A.R.} chooses the 
@@ -106,8 +106,80 @@ Let us have a look at \textsf{R.E.A.R.} class diagram, showed in figure
 %% spiegare come le funzionalita` descritte nell'introduzione si mappano
 %% sulle varie classi
 \subsubsection{The DataManager Class}
+\label{sub:datamanager}
 
-\subsubsection{The Robot class}
+The \texttt{DataManger} class represents a global access point to the whole application.
+After configuring it by means of the constructor parameters, the unique public method \texttt{NextStep}
+allows to start the exocentric algorithm, regardless of the specific technologies adapted to
+communicate with the robot (socket communication, files and so on) or the algorithm used to select
+the correct background image.
+%
+
+%
+A \texttt{DataManger} instance manages and coordinates many others objects, as shown in the class
+diagram (figure \ref {fig:class_diagram}). Among these, it maintains two references pointing to the
+robot and camera objects (see respectively chapter \ref{sub:robotclass} and chapter \ref{sub:cameraclass} 
+for further details), because one of the foremost \texttt{DataManger}'s duty is to move robot and camera
+to the right coordinates within OpenGL space. Another task consists in rendering the chosen image on the
+background.
+%
+
+%
+The data regarding robot status, camera position or texture image have to be retrieved from other components,
+in our case other objects. It is for these reason that a \texttt{DataManager} instance owns the references to
+other two concrete objects, which implement the \texttt{DataLogicInterface} and the \newline
+\texttt{DistanceCalcInterface}.
+%
+
+%
+The former is called in order to transfer the next command to the robot (i.e. which way to move) and get the
+consequent new robot data (its position and orientation). Every fetched data are coupled with a timestamp value
+(see \texttt{robot\_data} struct in figure \ref {fig:class_diagram}). Besides, a concrete objects which implements
+\texttt{DataLogicInterface} allows to retrieve information about the image file selected for background
+(see \texttt{image\_data} struct, again in figure \ref {fig:class_diagram}). We refer the reader to chapters
+\ref{sub:howretrievedata} and \ref{sub:howbackgroundimage} for more details abouts \texttt{DataLogicInterface}'s
+abstract method; chapters \ref{sub:datasource} and \ref{sub:metrics} for a concrete example.
+%
+
+%
+The other reference, pointing to a \texttt{DistanceCalcInterface} implementation, is used to recall the algorithm
+whose aim consists in calculating the score value for a single image, given the robot status and image itself. We
+remind that a score algorithm has to be implemented in order to choose the proper background image among all the
+collected ones, as explained in depth in chapter \ref{sub:howbackgroundimage}.
+%
+
+%
+Since the unique method present in \texttt{DistanceCalcInterface} (named \texttt{Calculate}) is called by the
+concrete instance of \texttt{DataLogicInterface}, \newline \texttt{DataManger} forwards its reference to the latter,
+when requested. As before, we refer the reader to chapters \ref{sub:howbackgroundimage} and \ref{sub:metrics} for
+more details and some concrete examples.
+%
+
+%
+By calling the public method \texttt{NextStep}, \texttt{DataManager} forwards the new command to the concrete
+\texttt{DataLogicInterface} instance, in order to teleguide the robot and retrieve its new status
+(i.e. position and orientation). Acquired new robot data, it is then possible to move the robot in the
+right position, by setting the x, y and theta value of the robot class instance (see method \texttt{Place},
+present in class \texttt{Robot}, chapter \ref{sub:robotclass}).
+%
+
+%
+Later on, the concrete \texttt{DataLogicInterface} instance is asked again for the background image. After
+retrieving it (or better, the coupled \texttt{image\_data} struct) \texttt{DataManger} instance moves the camera
+object to the position where the selected image were shot (see methods \texttt{SetPosition} and \texttt{SetAngle},
+both present in class \texttt{Camera}, chapter \ref{sub:cameraclass}), and renders the texture image before ending.
+%
+
+%
+Next user command implies another calling to the \texttt{NextStep} method and the re-execution of all the steps just
+described.
+
+
+
+
+\subsubsection{The Robot Class}
+\label{sub:robotclass}
+
 The robot class, present in Filippo Privitera's simulator 
 \cite{privitera}, has been simplified and then introduced in
 exocentric vision control code. In this chapter we will 
@@ -199,7 +271,10 @@ in order to set the x and y coordinate and the rotation of the robot.
 We remind that in the previous version these attributes
 were public, so there were no need to pass them as parameters function.
 
-\subsubsection{The Camera class}
+\subsubsection{The Camera Class}
+\label{sub:cameraclass}
+
+
 First of all, there is no thing like a camera in OpenGL, therefore we have to
 simulate one.
 %
@@ -217,6 +292,8 @@ It provides some elementary commands implemented by means of mathematical matrix
 operations, to move the camera or rotate it along one axis.
 
 \subsection{How to choose the right background image}
+\label{sub:howbackgroundimage}
+
 There are many ways of choosing the background image among the collected ones. This unique
 block, entitled "choose K" in diagram \ref{fig:overall_diagram}, can be thought of as a
 black box, with the robot position and orientation data as input and the background image
@@ -258,3 +335,4 @@ Another class, named \texttt{SweepMetricCalc}, implements the
 Chapter \ref{subsec:sweep_metric_algorithm} will explain it in detail.
 
 \subsection{How to retrieve data}
+\label{sub:howretrievedata}
