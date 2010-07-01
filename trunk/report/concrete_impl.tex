@@ -103,7 +103,6 @@ angle is close to the robot orientation angle, the more the score is high.
     \label{fig:sweep_angle_diagram}
   \end{center}
 \end{figure}
-
 %
 The function to evaluate the score from the difference between the two angles is a Gaussian function centre
 in zero. The return value will be therefore always a positive number.
@@ -166,7 +165,18 @@ do is multiply every score for -1 before returning it: in this way we convert a 
 %
 \paragraph{The WithinBoundaries algorithm}
 \label{par:withinboundaries}
-\noindent
+
+Checking if an image is included in the "sweep angle" (see chapter \ref{subsec:sweep_metric_algorithm} for its
+definition) could be something not too easy to implement. Given image coordinates, robot coordinates and robot
+orientation, the \texttt{WithinBoundaries} method must replays (with a true or false response) to the question
+"is the image included in the sweep area ?", shown in previous diagram (figure \ref{fig:sweep_angle_diagram}).
+%
+
+%
+Since the area defined by the "sweep angle" depends on robot coordinates and orientation, we should insert in
+the source code a lot of geometrical and mathematical rules, frequently not immediately comprehensible
+(even for the authors). For this reason we decided to use a different approach.
+%
 
 \begin{figure}[htp]
   \begin{center}
@@ -179,7 +189,7 @@ do is multiply every score for -1 before returning it: in this way we convert a 
     }
 
     \subfigure[Rotated system]{
-      \label{fig:sweepal_rotation}\includegraphics[width=175pt, height=175pt]{img/sweepal_rotate.png}
+      \label{fig:sweepal_rotate}\includegraphics[width=175pt, height=175pt]{img/sweepal_rotate.png}
     } 
     \hspace*{15pt}
     \subfigure[Triangle AOB]{
@@ -197,5 +207,82 @@ do is multiply every score for -1 before returning it: in this way we convert a 
 \end{figure}
 
 %
-\vspace*{12pt}
-write something !
+Before checking if a point (i.e. an image) is included in the "sweep angle", the robot and image coordinates
+are translated and then rotated, in order to move the robot in the origin of the axis and to overlap its
+orientation arrow with the y-axis. The two transformations are shown in figure \ref{fig:sweepal_translate} and
+\ref{fig:sweepal_rotate}, while the robot and image starting coordinates are shown in figure \ref{fig:sweepal_start}.
+%
+
+%
+After executing these transformations, the sweep area is always situated in the second and third quadrant, as
+shown in figure \ref{fig:sweepal_rotate}. Now the "c" and "d" lines pass both from the origin. For an exhaustive
+definition of line "c" and "d" see chapter \ref{subsec:sweep_metric_algorithm}.
+%
+
+%
+If we draw a circle centred in the axis origin, the intersection between the circle and the "c" and "d" lines will
+return four points in the plan. Among these, the points situated in the second and third quadrant define a triangle
+with the centre of the XY axis: this will be our "sweep area", where to check if an image is included or not. Note
+that we choose the points with negative Y value (named "A" and "B") due to the translation and rotation operated
+before. Again, see figure \ref{fig:sweepal_triangle} for a graphical example.
+%
+
+%
+The circle radius must be a value large enough to include a wide number of images. In our case we defined it with a
+value of five hundred, in order to reduce the difference between the abstract "sweep area" and the practical triangle
+"AOB" (figure \ref{fig:sweepal_triangle}) used to simplify the algorithm.
+%
+
+%
+Defined the "AOB" triangle, we have to cope with a well-known problem: checking if a point is included or not in a
+triangle. The better (and more performant) way to resolve the problem exploits the cross product between vectors
+in three-dimensional Euclidean space.
+%
+
+%
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=300pt]{img/sweepal_crossproductABC.jpeg} 
+    \caption{Cross product between vectors}
+    \label{fig:sweepal_crossproductABC}
+  \end{center}
+\end{figure}
+%
+
+Referring to the image \ref{fig:sweepal_crossproductABC}, the cross product of [A-B] and [A-p] will result a vector
+pointing out of the screen. On the other hand, the cross product of [A-B] and [A-p'] will result a vector pointing
+into the screen.
+%
+
+%
+The cross product of [A-B] with the vector from A to any point above the segment AB turns out with a resulting vector
+points out of the screen, while using any point below AB yields with a vector pointing into the screen. We have to
+distinguish which direction a resulting vector must have in order to consider the point "p" inside the triangle.
+%
+
+%
+Because the triangle can be oriented in any way, what we need is a reference point, that is a point that we know is
+on a certain side of the line. For our triangle (figure \ref{fig:sweepal_crossproductABC}), this is just the third
+point C.
+%
+
+%
+Any point "p", where [A-B] cross [A-p] does not point in the same direction as [A-B] cross [A-C], is not inside the
+triangle. If the cross products do point in the same direction, then we need to test "p" with the other lines as well.
+If the point was on the same side of AB segment as C, and is also on the same side of BC segment as A, and on the same
+side of CA segment as B, then it is in the triangle.
+%
+
+%
+The chief disadvantage regarding the approach above described is that the sweep angle value must be strictly greater
+than zero and strictly less than ninety degrees. If the sweep angle exceeds previous limits the algorithm will executes
+with a wrong triangle AOB (we remember that AOB angle, shown in figure \ref{fig:sweepal_triangle}, is equal to twice
+the sweep angle).
+%
+
+%
+The described procedure, whose aim is knowing if a point is included within a triangle, can be found in reference
+\cite{withinboundaries:pointintriangle}. Its result is in the end the sought answer to the beginning question "is the
+image included in the sweep area ?" (figure \ref{fig:sweep_angle_diagram}) and will be returned by the
+\texttt{WithinBoundaries} method by means of a boolean value.
+%
