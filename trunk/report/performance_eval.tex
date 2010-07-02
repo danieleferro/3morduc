@@ -53,7 +53,7 @@ reason we decided to fix same values when testing.
 %
 
 %
-Before describing which parameters have been chosen to be fix and which to be mobile, an in depth explanation
+Before describing which parameters have been chosen to be fixed and which to be variable, an in depth explanation
 about their meaning is needed. For a better comprehension see chapter \ref{subsec:sweep_metric_algorithm}; all
 the angles are specified in degrees.
 
@@ -81,5 +81,66 @@ the angles are specified in degrees.
 \end{itemize}
 %
 
-To begin with, both the standard deviation \texttt{mu\_distance} and \texttt{mu\_angle} belongs to the set of fixed
-values. Changing the standard deviation in a Gaussian function means to 
+%
+To begin with, \texttt{sweep\_angle} has been considered a fixed parameter during the tests. We set it to 45 degrees,
+because greater values do not seem (in previous tests) to get any advantages. On the other hand, value less than 45
+degrees would not include enough images to teleguide the robot properly.
+%
+
+%
+\texttt{angle\_offset} is another fixed parameter, with the value of 40 degrees. Exceeded this value we risk to not include
+the robot within the camera field of view, when camera and robot present an orientation difference greater than 40 degrees.
+All these images can not compete for the background image, and have to be excluded thanks this parameter.
+%
+
+%
+The standard deviations \texttt{sigma\_distance} and \texttt{sigma\_angle} belong to the set of
+fixed values too. Changing the standard deviation in a Gaussian function means only to increase or decrease its higher
+point, without affecting other Gaussian property. Because later on it will be selected the greatest value among
+all the returned ones, without any absolute reference, we do not care about the standard deviations value.
+\texttt{sigma\_distance} and \texttt{sigma\_angle} are set with a default positive amount.
+%
+
+%
+In terms of Gaussian function, the \texttt{mu\_angle} represent the mean value and, at the same time, the point where
+the Gaussian function is centred. By computing the function with \texttt{mu\_angle} in input, it will return the possible
+maximum value. We remember that this function is used to calculate a score, which has to be as greater as the difference
+between the robot and image orientations are equal. Because the function input is the difference between the two angles, it
+follows that the returned value must be maximum when the input is zero, decreasing when the input moves away from zero.
+%
+
+%
+\texttt{mu\_angle} is therefore a fixed parameter, set to zero.
+%
+
+%
+At last, the \texttt{mu\_distance} is the unique variable parameter. All the general consideration made before for the 
+\texttt{mu\_angle} remain still valid, but this time we want to obtain the maximum score when the difference between
+robot and image position is equal to a determinant positive value, decreasing when the difference moves away from it.
+%
+
+%
+If we choose a \texttt{mu\_distance} close to zero, the selected background image will be near to the robot actual position.
+The robot will be drawn only partially and the exocentric vision will be similar to the egocentric. The more
+\texttt{mu\_distance} moves away from zero (with a positive value), the more the application will tend to draw
+(when possible) all the robot to provide a full exocentric control vision, because far image will gain an higher score.
+%
+
+%
+Tests has been performed with three different paths, each one with three different \texttt{mu\_distance} values: 5, 15
+and 25. The evidences deduced are examined in the next paragraph (\ref{subsec:testevaluation}).
+
+\subsection{Test evaluation}
+\label{subsec:testevaluation}
+
+\subsubsection{Square test evaluation}
+\label{subsubsec:squaretest}
+
+\subsubsection{Ellipse test evaluation}
+\label{subsubsec:ellipsetest}
+
+\subsubsection{Zig-zag test evaluation}
+\label{subsubsec:zigzagtest}
+
+\subsubsection{Final considerations}
+\label{subsubsec:finalconsiderations}
