@@ -12,11 +12,10 @@ int main ()
   image = OpenImage("screenshot_8_103.bmp");
 
   cout << "Success!" << endl;
-  cout << image->
+  cout << image->getHeight() << endl;
+  cout << image->getWidth() << endl;
+  cout << *((char *)image->getPixels());
   
-
-
-
 
 
   return 0;
