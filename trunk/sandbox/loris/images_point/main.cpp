@@ -13,7 +13,7 @@
 #define Y0 1
 #define M0 2
 
-#define SWEEP_ANGLE 45
+#define SWEEP_ANGLE 20
 
 #define DEBUG 1
 
@@ -54,6 +54,13 @@ float Normalize180(float angle)
     return Normalize180(angle + 360);
 
   return angle;
+}
+
+bool WithinBoundaries( robot_data * robot_status, image_data * bg_image_data)
+{
+  
+
+
 }
 
 float PointAlgorithm(robot_data * robot_status, image_data * bg_image_data) {
