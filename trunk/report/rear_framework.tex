@@ -37,7 +37,7 @@ Hence, to run, every \textsf{R.E.A.R.} application needs, at least:
 \end{itemize}
 %
 Such information are collected every time the operator, using the 
-interface exposed by \textsf{R.E.A.R.}, sends a command to the robot. 
+interface provided by \textsf{R.E.A.R.}, sends a command to the robot.
 %
 Every time new data is collected, \textsf{R.E.A.R.} chooses the 
 \textit{proper}\footnote{we will have a look at the multiple meanings 
@@ -180,10 +180,45 @@ described.
 \subsubsection{The Robot Class}
 \label{sub:robotclass}
 
-The robot class, present in Filippo Privitera's simulator 
-\cite{privitera}, has been simplified and then introduced in
-exocentric vision control code. In this chapter we will 
-exam the main differences.
+The robot class is the \textsf{R.E.A.R.} internal representation of 
+the actual robot. Let us have a look at its declaration,
+
+\begin{lstlisting}[caption={Robot class declaration}, label={code:robot_class}, frame=trBL]
+class Robot
+{
+ private:
+  /* position */
+  GLfloat x ;
+  GLfloat y ;					
+  GLfloat theta ;  
+  
+  /* scale factor */
+  GLfloat radius; 
+
+ public:
+  Robot(float radius = 4.0f);
+  void Place(GLfloat x, GLfloat y, GLfloat theta);
+  void DrawRobot();
+
+  GLfloat GetX();
+  GLfloat GetY();
+  GLfloat GetTheta();    
+};
+\end{lstlisting}
+%
+Three of the four private attributes (\sftext{x, y, theta}) 
+store the position of the actual robot. The fourth attribute, 
+\textsf{radius}
+
+On the one hand, it has private 
+attributes which store the robot position every time 
+new data is retrieved.
+%
+
+%% The robot class, present in Filippo Privitera's simulator 
+%% \cite{privitera}, has been simplified and then introduced in
+%% exocentric vision control code. In this chapter we will 
+%% exam the main differences.
 %
 
 %
