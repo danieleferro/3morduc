@@ -13,17 +13,34 @@ section \ref{sec:exo}.
 %
 
 %
-For what concerns graphics, \textsf{R.E.A.R.} relies on OpenGL: the approach 
-to provide an external external visualization of a robot in its 
-environment consists in drawing an OpenGL model, representing the robot,
-upon a snapshot previously captured from the robot camera, which will be 
-loaded as a texture and put as the background of an OpenGL screen. The result 
+For what concerns graphics, \textsf{R.E.A.R.} relies on OpenGL.
+It makes use of three software components: a \textit{camera}, 
+a 3D model of the \textit{robot} itself and a \textit{texture}.
+%
+The camera provides the user with a view of the OpenGL space 
+from a certain point-of-view and with a certain field-of-view. 
+It identifies a \textit{viewing frustum} - as shown in figure 
+\ref{fig:openglspace} - whose volume corresponds to the 
+portion of OpenGL space displayed on the user's screen.
+%
+To give the user the illusion of seeing the robot from an 
+external point-of-view, the 3d model of the robot is drawn 
+within the viewing frustum, while the more distant frustum base 
+is applied a texture displaying a picture previously 
+captured from the robot's egocentric camera.
+%
+The result 
 of such a process is showed in figure \ref{fig:snap}.
+%
+Of course, main issues in such an approch are \textit{where} 
+exactly to draw the robot within the viewing frustum and 
+\textit{which} of the captured images use is to be used 
+as background.
 %
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=300pt]{img/camera_frustum_scheme.png}
-    \caption{External view of a the OpenGL space}
+    \caption{The OpenGL space}
     \label{fig:openglspace}
   \end{center}
 \end{figure}
