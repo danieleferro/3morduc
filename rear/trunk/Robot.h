@@ -16,27 +16,34 @@
 
 class Robot
 {
- private:
+ protected:
   /* position */
   GLfloat x ;
   GLfloat y ;					
   GLfloat theta ;  
   
-  /* scale factor (for drawing) */
-  GLfloat radius; 
-
  public:
   /* default value for
      y is equal to the robot radius in order to put the robot
      outside of the camera sight at beginning of the program
   */
-  Robot(float radius = 4.0f);
+  Robot();
   void Place(GLfloat x, GLfloat y, GLfloat theta);
-  void DrawRobot();
+  virtual void DrawRobot() = 0;
 
   GLfloat GetX();
   GLfloat GetY();
   GLfloat GetTheta();    
 };
 
+class Morduc : public Robot
+{
+ private:
+  /* scale factor (for drawing) */
+  GLfloat radius;
+
+ public:
+  Morduc(float radius = 4.0f);
+  void DrawRobot();
+};
 #endif
