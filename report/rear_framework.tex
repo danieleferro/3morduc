@@ -88,8 +88,8 @@ would differently affect user perceptions and. We will have a
 deeper look at some image selection algorithms in section
 \ref{sub:howbackgroundimage}.
 %
-Finally, the overall execution loop is resumed by the flowchart showed 
-in figure \ref{fig:overall_diagram}.
+Finally, the overall execution loop is resumed by the flowchart 
+showed in figure \ref{fig:overall_diagram}.
 %
 \begin{figure}[!h]
   \begin{center}
@@ -131,7 +131,6 @@ in figure \ref{fig:overall_diagram}.
 %% The algorithms to take the right image in exocentric vision can be various. Each one has its own
 %% advantages and disadvantages, we will chose the one able to guarantee the best trade-off.
 %
-
 %
 \subsection{Class diagram}
 %
@@ -146,37 +145,69 @@ Let us have a look at \textsf{R.E.A.R.} class diagram, showed in figure
   \end{center}
 \end{figure}
 %
-It features three main classes: \texttt{Robot}, \texttt{Camera} and 
-\texttt{DataManager}. The former is intended to be a
-representation of the state of the actual robot. \texttt{Camera} 
-is a \textit{helper class}, which provides some methods 
-to easily set the point-of-view within any \textsf{R.E.A.R.}
-based application. Finally, \texttt{DataManager} is intended to 
-be used as the application entry point.
+Two of the components needed by \texttt{R.E.A.R.}, the robot 
+model and the camera, are mapped on two dedicated classes, 
+\texttt{Robot} and \texttt{Camera}, respectively.
 %
-The diagram also features two interfaces: \texttt{DataLogicInterface} and
-\texttt{DistanceCalcInterface}, they have to be implemented by 
-programmers who want to create their own concrete exocentric 
-vision system. 
+
 %
-Going into details, the former decouples the application 
+While the former provides methods to actually draw a 3d 
+representation of the robot... blah blah blah blah
+[forse e` meglio rendere la classe Robot privata, 
+trattandosi di un framework]
+%
+The latter is instead a \textit{helper class}, since there 
+exists no actual camera within the OpenGL space. The camera 
+model is just an abstraction used to give a more intuitive
+way to set the portion of space the user is looking at.
+In fact, the \texttt{Camera} class provides methods to 
+set the user's point-of-view within the OpenGL space.
+%
+
+%
+In the middle between \texttt{Robot} and \texttt{Camera},
+there is the \texttt{DataManager} class. It is intended to be 
+the core of every \textsf{R.E.A.R.} based application, since it 
+internally implements the loop showed in figure \ref{blah}, 
+It acts as a \textit{mediator} among all of the other classes, 
+in that it manages their interaction and, hence, reduces 
+coupling between them.
+%
+
+%
+The diagram also features two interfaces that have to be implemented 
+by programmers who want to create their own concrete exocentric 
+vision system: \texttt{DataLogicInterface} and 
+\texttt{DistanceCalcInterface}.
+%
+
+%
+The former decouples the application 
 core, that is the \texttt{DataManager}, from the data source.
-This way, \texttt{DataManager} code is totally unaware of 
+This way, \texttt{DataManager} code can be totally unaware of 
 the technology used to retrieve data from the robot - e.g. 
 sockets, web services, etc.
 %
+
+%
 \texttt{DistanceCalcInterface}, instead, defines the interface 
-of the component responsible for determining which image is the 
-\textit{proper} one to be used as background to draw on. In this 
-case, the aim of the use of an interface is to leave programmers 
-able to implement their own image-choosing algorithms without 
-having to change none of the other classes.
+of the component which implements the image selection algorithm.
 %
-Now, let us have a look under the hood at the classes we have just 
-introduced.
+In this case, the use of an interface leaves programmers 
+able to change, and even to implement new image 
+selection algorithms without having to worry about
+changing other classes.
 %
-%% spiegare come le funzionalita` descritte nell'introduzione si mappano
-%% sulle varie classi
+
+%
+In the following of this section, we will have a look 
+\textit{under the hood} of the classes and interfaces 
+we have just introduced.
+%
+We will see how \textsf{R.E.A.R.} functionalities are 
+mapped onto them and, then, how to correctly subclass/use
+them in order to build a concrete exocentric vision system.
+%
 \subsubsection{The DataManager Class}
 \label{sub:datamanager}
 As already stated, the \texttt{DataManger} class represents a global 
