@@ -4,12 +4,12 @@ void PaintCylinder(GLfloat radius,GLfloat height);
 void PaintDisk(GLfloat radius);
 
 // theta in deegres
-Robot::Robot(float radius)
+Robot::Robot()
 {
-  this->radius = radius;
-  this->x = 0;
-  this->y = 0;
-  this->theta = 0;
+//   this->radius = radius;
+  this -> x = 0;
+  this -> y = 0;
+  this -> theta = 0;
 
 }
 
@@ -17,12 +17,17 @@ Robot::Robot(float radius)
 void Robot::Place(GLfloat new_x, GLfloat new_y, 
 		  GLfloat new_theta)
 {
-  this->x = new_x;
-  this->y = new_y;
-  this->theta = new_theta;
+  this -> x = new_x;
+  this -> y = new_y;
+  this -> theta = new_theta;
 }
 
-void Robot::DrawRobot()
+Morduc::Morduc(float radius)
+{
+  this -> radius = radius;
+}
+
+void Morduc::DrawRobot()
 {
 
   std::cout << "Robot  position is: \t"
@@ -50,10 +55,10 @@ void Robot::DrawRobot()
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, reflectance_black);
 
   // set robot position
-  glTranslatef(this->x, 0.0f, 0.0f);
-  glTranslatef(0.0f, 0.0f, this->y);
+  glTranslatef(this -> x, 0.0f, 0.0f);
+  glTranslatef(0.0f, 0.0f, this -> y);
 
-  glRotatef(this->theta, 0.0f, 1.0f, 0.0f);
+  glRotatef(this -> theta, 0.0f, 1.0f, 0.0f);
   
   // translate on z axis
   glTranslatef(0.0f,0.08f,0.0f);
@@ -160,17 +165,17 @@ void PaintCylinder(GLfloat radius, GLfloat height)
 
 GLfloat Robot::GetX()
 {
-  return this->x;
+  return this -> x;
 }
 
 GLfloat Robot::GetY()
 {
 
-  return this->y;
+  return this -> y;
 }
 
 GLfloat Robot::GetTheta()
 {
 
-  return this->theta;
+  return this -> theta;
 }
