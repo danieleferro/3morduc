@@ -134,27 +134,28 @@ showed in figure \ref{fig:overall_diagram}.
 %
 \subsection{Class diagram}
 %
-Let us have a look at \textsf{R.E.A.R.} class diagram, showed in figure 
-\ref {fig:class_diagram}.
+Let us have a look at \textsf{R.E.A.R.} class diagram, 
+showed in figure \ref {fig:class_diagram}.
 %
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=400pt]{img/class_diagram.jpeg}  %robot pic
+    \includegraphics[width=400pt]{img/rear_class_diagram.png}
     \caption{\textsf{R.E.A.R.} class diagram}
     \label{fig:class_diagram}
   \end{center}
 \end{figure}
 %
-Two of the components needed by \texttt{R.E.A.R.}, the robot 
+Two of the components needed by \textsf{R.E.A.R.}, the robot 
 model and the camera, are mapped on two dedicated classes, 
 \texttt{Robot} and \texttt{Camera}, respectively.
 %
 
 %
-While the former provides methods to actually draw a 3d 
-representation of the robot... blah blah blah blah
-[forse e` meglio rendere la classe Robot privata, 
-trattandosi di un framework]
+The former is an \textit{abstract class}, serves as a storage 
+for the current position and orientation of the actual
+robot and declare a pure virtual method in which subclasses 
+must include all of the procedure to draw the OpenGL model 
+of the robot itself.
 %
 The latter is instead a \textit{helper class}, since there 
 exists no actual camera within the OpenGL space. The camera 
@@ -165,10 +166,11 @@ set the user's point-of-view within the OpenGL space.
 %
 
 %
-In the middle between \texttt{Robot} and \texttt{Camera},
+In the middle, between \texttt{Robot} and \texttt{Camera},
 there is the \texttt{DataManager} class. It is intended to be 
 the core of every \textsf{R.E.A.R.} based application, since it 
-internally implements the loop showed in figure \ref{blah}, 
+internally implements the loop showed in figure 
+\ref{fig:overall_diagram}.
 It acts as a \textit{mediator} among all of the other classes, 
 in that it manages their interaction and, hence, reduces 
 coupling between them.
@@ -207,6 +209,136 @@ we have just introduced.
 We will see how \textsf{R.E.A.R.} functionalities are 
 mapped onto them and, then, how to correctly subclass/use
 them in order to build a concrete exocentric vision system.
+%
+
+%
+\subsubsection{The Robot Class}
+\label{sub:robotclass}
+Let us have a look at the declaration of the \texttt{Robot}
+class, reported in listing \ref{code:robot_class}.
+%
+\begin{lstlisting}[caption={\texttt{Robot} class declaration}, label={code:robot_class}, frame=trBL]
+class Robot
+{
+ private:
+  GLfloat x;
+  GLfloat y;					
+  GLfloat theta;
+
+ public:
+  Robot();
+  GLfloat GetX();
+  GLfloat GetY();
+  GLfloat GetTheta();
+  void Place(GLfloat x, GLfloat y, GLfloat theta);
+  virtual void DrawRobot() = 0;
+};
+\end{lstlisting}
+%
+As already stated, private attributes of \texttt{Robot} 
+are used to store the current position and orientation 
+of the actual robot. Such attributes are initialized with 
+all-zeros by the constructor, can be read by means 
+of invoking their \textit{getter} methods and can be set 
+by means of the \texttt{Place()} method.
+%
+
+%
+\texttt{Robot} also declares an abstract \textit{hook} method, 
+\texttt{DrawRobot()}. Such a method is called by the 
+\texttt{DataManager} every time it wants to render the 
+robot model and, hence, programmers who wants to 
+use \textsf{R.E.A.R.} for their own robot should subclass 
+\texttt{Robot} and implement \texttt{DrawRobot()} as a 
+procedure that draws their custom robot model using 
+the OpenGL API.
+%
+
+%% Both classes represent the 3morduc robot in openGL world. 
+%% This means that the robot class offers, among others, a
+%% method with the purpose of drawing itself, called by the 
+%% OpenGL framework when it is necessary. The operation of 
+%% drawing is completed thanks to other two methods, able 
+%% to draw the elementary part of the robot - e.g. cylinders and disks.
+%
+
+%
+%% There are not considerable different between the tho 
+%% drawing method implantation. The main one is that in the 
+%% new method, before starting drawing, the model-view matrix 
+%% is copied in order to restore it at the end of the process. 
+%% In these way we do not affect the model-view matrix status 
+%% by drawing the robot.
+%% %
+
+%% %
+%% The robot class, after the refactoring process, loses many 
+%% of its public attributes and methods, so in the
+%% exocentric vision control it is much more simple than the 
+%% original one. First of all, the new class does not contain either
+%% attributes to store the actual speed vector component, or 
+%% a chronometer object to count the time, or information about wheels
+%% encoder. This information was stored in the simulator robot 
+%% class to calculate the position of the robot after a movement,
+%% but since we retrieve the position directly from the simulator 
+%% these fields are now useless. 
+%
+
+%
+%% The unique attribute (changed from public to private, in 
+%% the new version) which survives the refactory - along with the
+%% triple values indicating coordinate on x axis, coordinate on 
+%% y axis and rotation - is named \texttt{radius}. \texttt{radius}
+%% is a float attribute, which stores the value of the radius for the 
+%% tree cylinders which make up the robot. See figure
+%% \ref{fig:3morduc_opengl} for a better understanding.
+%% %
+%% \begin{figure}[!h]
+%%   \begin{center}
+%%     \includegraphics[width=200pt]{img/3morduc_opengl.png}  %robot pic
+%%     \caption{The 3morduc robotic platform drawn in OpenGL}
+%%     \label{fig:3morduc_opengl}
+%%   \end{center}
+%% \end{figure}
+%% %
+%% The default \texttt{radius} value is 4, but it can be 
+%% customised by the user: by increasing it the robot will be 
+%% displayed larger and larger on the screen, and viceversa.
+%% %
+
+%% %
+%% All the attributes are private in the new robot class, 
+%% so a method to get each one value is declared. 
+%% %
+
+%% %
+%% Most of the previous public methods have been removed too. 
+%% The constructor method, for instance, is present with one
+%% only definition and default parameters, instead of declaring 
+%% it twice (with parameter and without). The methods to set
+%% linear and angular velocity are not present anymore, for 
+%% the reason explained above; those to increment the collisions 
+%% number are actually disabled because, at this development 
+%% stage, the exocentric vision control does not face the collision 
+%% problem. Anyway, it is supposed to cope with collision in 
+%% the future version.
+%% %
+
+%% %
+%% Besides, the method used by Privitera's simulator to read 
+%% the robot initial position from file has been removed, since 
+%% for the exocentric vision system robot always starts from 
+%% fixed coordinates and rotation.
+%% %
+
+%% %
+%% Finally, the method named with the signature 
+%% \texttt{void move()} has been changed in \texttt{void Place(float x, float y, float theta)}
+%% in order to set the x and y coordinate and the rotation of the robot. 
+%% We remind that in the previous version these attributes
+%% were public, so there were no need to pass them as parameters function.
+%
+
 %
 \subsubsection{The DataManager Class}
 \label{sub:datamanager}
@@ -349,135 +481,6 @@ both present in class \texttt{Camera}, chapter \ref{sub:cameraclass}), and rende
 %
 Next user command implies another calling to the \texttt{NextStep} method and the re-execution of all the steps just
 described.
-
-\subsubsection{The Robot Class}
-\label{sub:robotclass}
-
-The robot class is the \textsf{R.E.A.R.} internal representation of 
-the actual robot. Let us have a look at its declaration,
-
-\begin{lstlisting}[caption={Robot class declaration}, label={code:robot_class}, frame=trBL]
-class Robot
-{
- private:
-  /* position */
-  GLfloat x ;
-  GLfloat y ;					
-  GLfloat theta ;  
-  
-  /* scale factor */
-  GLfloat radius; 
-
- public:
-  Robot(float radius = 4.0f);
-  void Place(GLfloat x, GLfloat y, GLfloat theta);
-  void DrawRobot();
-
-  GLfloat GetX();
-  GLfloat GetY();
-  GLfloat GetTheta();    
-};
-\end{lstlisting}
-%
-Three of the four private attributes (\textsf{x, y, theta}) 
-store the position of the actual robot. The fourth attribute, 
-\textsf{radius}
-
-On the one hand, it has private 
-attributes which store the robot position every time 
-new data is retrieved.
-%
-
-%% The robot class, present in Filippo Privitera's simulator 
-%% \cite{privitera}, has been simplified and then introduced in
-%% exocentric vision control code. In this chapter we will 
-%% exam the main differences.
-%
-
-%
-Both classes represent the 3morduc robot in openGL world. 
-This means that the robot class offers, among others, a
-method with the purpose of drawing itself, called by the 
-OpenGL framework when it is necessary. The operation of 
-drawing is completed thanks to other two methods, able 
-to draw the elementary part of the robot - e.g. cylinders and disks.
-%
-
-%
-There are not considerable different between the tho 
-drawing method implantation. The main one is that in the 
-new method, before starting drawing, the model-view matrix 
-is copied in order to restore it at the end of the process. 
-In these way we do not affect the model-view matrix status 
-by drawing the robot.
-%
-
-%
-The robot class, after the refactoring process, loses many 
-of its public attributes and methods, so in the
-exocentric vision control it is much more simple than the 
-original one. First of all, the new class does not contain either
-attributes to store the actual speed vector component, or 
-a chronometer object to count the time, or information about wheels
-encoder. This information was stored in the simulator robot 
-class to calculate the position of the robot after a movement,
-but since we retrieve the position directly from the simulator 
-these fields are now useless. 
-%
-
-%
-The unique attribute (changed from public to private, in 
-the new version) which survives the refactory - along with the
-triple values indicating coordinate on x axis, coordinate on 
-y axis and rotation - is named \texttt{radius}. \texttt{radius}
-is a float attribute, which stores the value of the radius for the 
-tree cylinders which make up the robot. See figure
-\ref{fig:3morduc_opengl} for a better understanding.
-%
-\begin{figure}[!h]
-  \begin{center}
-    \includegraphics[width=200pt]{img/3morduc_opengl.png}  %robot pic
-    \caption{The 3morduc robotic platform drawn in OpenGL}
-    \label{fig:3morduc_opengl}
-  \end{center}
-\end{figure}
-%
-The default \texttt{radius} value is 4, but it can be 
-customised by the user: by increasing it the robot will be 
-displayed larger and larger on the screen, and viceversa.
-%
-
-%
-All the attributes are private in the new robot class, 
-so a method to get each one value is declared. 
-%
-
-%
-Most of the previous public methods have been removed too. 
-The constructor method, for instance, is present with one
-only definition and default parameters, instead of declaring 
-it twice (with parameter and without). The methods to set
-linear and angular velocity are not present anymore, for 
-the reason explained above; those to increment the collisions 
-number are actually disabled because, at this development 
-stage, the exocentric vision control does not face the collision 
-problem. Anyway, it is supposed to cope with collision in 
-the future version.
-%
-
-%
-Besides, the method used by Privitera's simulator to read 
-the robot initial position from file has been removed, since 
-for the exocentric vision system robot always starts from 
-fixed coordinates and rotation.
-%
-
-%
-Finally, the method named with the signature 
-\texttt{void move()} has been changed in \texttt{void Place(float x, float y, float theta)}
-in order to set the x and y coordinate and the rotation of the robot. 
-We remind that in the previous version these attributes
-were public, so there were no need to pass them as parameters function.
 
 \subsubsection{The Camera Class}
 \label{sub:cameraclass}
