@@ -253,7 +253,49 @@ use \textsf{R.E.A.R.} for their own robot should subclass
 procedure that draws their custom robot model using 
 the OpenGL API.
 %
+When doing that, one must always keep in mind that 
+\textsf{R.E.A.R.} makes use of a three-dimensional OpenGL 
+space, while position information is often represented 
+as a \texttt{(x,y)} pair. \texttt{R.E.A.R.} maps the \texttt{x} 
+value of such a pair onto the x axis of its OpenGL space, 
+while the \texttt{y} value is mapped onto the z axis.
+%
+That is, the actual XY plan corresponds to the OpenGL 
+XZ plan. Such a correspondence is represented in figure 
+\ref{fig:reference_systems}.
+%
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=300pt]{img/reference_system.png}
+    \caption{Reference systems}
+    \label{fig:reference_systems}
+  \end{center}
+\end{figure}
+%
 
+%
+Moreover, to draw the robot in the right position within 
+the OpenGL space, the first thing a \texttt{DrawRobot()} should 
+do is to invoke OpenGL function \texttt{glTranslate()}.
+%
+
+%
+A skeleton of a concrete implementation of \texttt{DrawRobot()}
+would look like this:
+\begin{lstlisting}[caption={\texttt{Robot} class declaration}, label={code:robot_class}, frame=trBL]  
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+
+  // set robot position
+  glTranslatef(this -> x, 0.0f, this -> y);
+
+  // rotate the robot 
+  glRotatef(this -> theta, 0.0f, 1.0f, 0.0f);
+
+  // code to actually draw the robot
+
+  glPopMatrix();
+\end{lstlisting}
 %% Both classes represent the 3morduc robot in openGL world. 
 %% This means that the robot class offers, among others, a
 %% method with the purpose of drawing itself, called by the 
@@ -393,7 +435,7 @@ regardless of where the camera is, and vice versa.
 \texttt{Camera} methods are pretty simple: they just make 
 use of OpenGL basic functions (such as \texttt{glTranslate} 
 and \texttt{glRotate}) to actually move the OpenGL reference 
-system and, hence, move the point-of-view and the sight 
+system and, hence, move the point-of-view and change the sight 
 direction.
 %
 The only thing to care about when using such a class is 
