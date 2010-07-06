@@ -340,6 +340,71 @@ the OpenGL API.
 %
 
 %
+\subsubsection{The Camera Class}
+\label{sub:cameraclass}
+OpenGL does not provide any \textit{camera}, anyway it proved 
+to be extremely useful to have a helper class that permits 
+to easily set position and orienation of the user's 
+point of view and sight, without worrying about lower-level 
+OpenGL details.
+%
+
+%
+A basic implementation of such a helper class is suggested 
+in \cite{opengl:camera}. Such an implementation is slightly 
+similar the one featured by \textsf{R.E.A.R.}, whose 
+declaration is reported in listing \ref{code:camera_class}.
+%
+\begin{lstlisting}[caption={\texttt{Camera} class declaration}, label={code:camera_class}, frame=trBL]
+class Camera
+{
+ private:
+  SF3dVector Position;
+  GLfloat RotatedX, RotatedY, RotatedZ;	
+  GLfloat _theta;
+
+ public:
+  Camera();
+  void Render ( void );
+  void Move ( SF3dVector Direction );
+  GLfloat GetX();
+  GLfloat GetY();
+  GLfloat GetZ();
+  GLfloat GetTheta();
+  void SetPosition(GLfloat x, GLfloat y, GLfloat z);
+  void SetYAngle ( GLfloat Angle );
+  void RotateX ( GLfloat Angle );
+  void RotateY ( GLfloat Angle );
+  void RotateZ ( GLfloat Angle );
+  void RotateXYZ ( SF3dVector Angles );
+};
+\end{lstlisting}
+%
+The \texttt{Camera} class allows to move and rotate the user 
+point of view and independently from the robot, avoiding 
+that one interferes with the other. 
+%
+This is essential for our purposes, since \textsf{R.E.A.R.}
+must be able to draw the robot everywhere in the OpenGL space, 
+regardless of where the camera is, and vice versa.
+%
+
+%
+\texttt{Camera} methods are pretty simple: they just make 
+use of OpenGL basic functions (such as \texttt{glTranslate} 
+and \texttt{glRotate}) to actually move the OpenGL reference 
+system and, hence, move the point-of-view and the sight 
+direction.
+%
+The only thing to care about when using such a class is 
+to invoke the OpenGL commands \texttt{glMatrixMode(GL\_MODELVIEW)} 
+and \texttt{glLoadIdentity()} before invoking its 
+\texttt{Render()} method. This avoids previous modifications 
+of the \texttt{GL\_MODELVIEW} matrix from affecting the 
+positioning of the camera.
+%
+
+%
 \subsubsection{The DataManager Class}
 \label{sub:datamanager}
 As already stated, the \texttt{DataManger} class represents a global 
@@ -481,26 +546,6 @@ both present in class \texttt{Camera}, chapter \ref{sub:cameraclass}), and rende
 %
 Next user command implies another calling to the \texttt{NextStep} method and the re-execution of all the steps just
 described.
-
-\subsubsection{The Camera Class}
-\label{sub:cameraclass}
-
-
-First of all, there is no thing like a camera in OpenGL, therefore we have to
-simulate one.
-%
-
-%
-A camera object allows to move and rotate the user point of view and robot
-object independently, avoiding that one interferes the other. For the exocentric
-vision application this is a basic feature, because robot can be placed
-everywhere in OpenGL world regardless of the camera position, and viceversa.
-%
-
-%
-The camera object implementation has been suggested by \cite{opengl:camera}.
-It provides some elementary commands implemented by means of mathematical matrix
-operations, to move the camera or rotate it along one axis.
 
 \subsection{How to choose the right background image}
 \label{sub:howbackgroundimage}
