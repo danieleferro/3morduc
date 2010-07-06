@@ -29,13 +29,9 @@ within the viewing frustum, while the more distant frustum base
 is applied a texture displaying a picture previously 
 captured from the robot's egocentric camera.
 %
-The result 
-of such a process is showed in figure \ref{fig:snap}.
+
 %
-Of course, main issues in such an approch are \textit{where} 
-exactly to draw the robot within the viewing frustum and 
-\textit{which} of the captured images use is to be used 
-as background.
+An example of what a user sees is showed in figure \ref{fig:snap}.
 %
 \begin{figure}[!h]
   \begin{center}
@@ -53,7 +49,24 @@ as background.
   \end{center}
 \end{figure}
 %
-Hence, to run, every \textsf{R.E.A.R.} application needs, at least:
+
+%
+Main issues in the approch we have just described are 1. 
+\textit{where} to draw the robot within the viewing frustum 
+and 2. \textit{which} of the captured images is to be used 
+as background.
+%
+For what concerns the first issue, one can intuitively guess 
+that the simplest way to determine the robot position 
+within the frustum is to know the current robot position 
+and orientation and the position and orientation of the egocentric 
+camera when the snapshot was taken and, then, to set the 
+position of the 3d model of the robot and the point-of-view 
+of the camera accordingly.
+Well, that's what \textsf{R.E.A.R.} does.
+%
+Therefore, to run, every \textsf{R.E.A.R.} concrete implementation 
+needs, at least:
 %
 \begin{itemize}
   \item a set of snapshots captured from the robot egocentric camera, 
@@ -61,15 +74,21 @@ Hence, to run, every \textsf{R.E.A.R.} application needs, at least:
   \item the robot's current position
 \end{itemize}
 %
-Such information are collected every time the operator, using the 
-interface provided by \textsf{R.E.A.R.}, sends a command to the robot.
+Such data is retrieved every time the operator, using the 
+interface provided by \textsf{R.E.A.R.} itself, sends a 
+motion command to the robot.
 %
-Every time new data is collected, \textsf{R.E.A.R.} chooses the 
-\textit{proper}\footnote{we will have a look at the multiple meanings 
-of this in the following sections} image to set as background 
-and redraw the robot model on it, accordingly to its current position.
+Only once new data is collected, \textsf{R.E.A.R.} chooses 
+an image to set as background and draw the robot model within 
+the frustum. So, for what concerns issue no. #2, as already 
+underlined in \cite{sugimoto}, let us say that there is not 
+a \textit{unique} way to determine which image is to be set 
+as background, since different image selection algorithms 
+would differently affect user perceptions and. We will have a 
+deeper look at some image selection algorithms in section
+\ref{sub:howbackgroundimage}.
 %
-The overall execution loop is resumed by the flowchart showed 
+Finally, the overall execution loop is resumed by the flowchart showed 
 in figure \ref{fig:overall_diagram}.
 %
 \begin{figure}[!h]
