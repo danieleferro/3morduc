@@ -25,7 +25,8 @@
 #include "key_mapping.h"
 #include "texture_png.h"
 #include "Camera.h"
-#include "DistanceCalc.h"
+#include "SpacialMetricCalc.h"
+#include "SweepMetricCalc.h"
 #include "Robot.h"
 #include "Morduc.h"
 
@@ -316,7 +317,7 @@ int main ( int argc, char * argv[] ) {
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
   /* create and set up a window */
-  window = glutCreateWindow("robot");
+  window = glutCreateWindow("R.E.A.R.");
 
 
   /* robot instantiation

@@ -29,14 +29,17 @@ DataManager::~DataManager()
   free(_bg_image_data);
 }
 
-void DataManager::NextStep() {
+void DataManager::NextStep(int command) {
 
   image_data old_image;
 
   old_image.x = _bg_image_data -> x;
   old_image.y = _bg_image_data -> y;
   old_image.theta = _bg_image_data -> theta;
-  
+
+
+  // send command to the robot and then retrieve new data
+  _logic->Command(command);
   _logic->RetrieveData(_robot_status);
 
   // move robot with _robot_status data
