@@ -489,7 +489,7 @@ positioning of the camera.
 %
 \subsubsection{The DataManager Class}
 \label{sub:datamanager}
-As already stated, the \texttt{DataManger} class is the \textit{core}
+As already stated, the \texttt{DataManager} class is the \textit{core}
 of the whole framework. Its declaration is reported in 
 listing \ref{code:datamanager_class}.
 %
@@ -536,7 +536,7 @@ to move robot and camera within the OpenGL space. Moreover,
 it's also responsible for 1. providing the user an interface 
 to send commands to the robot, 2. retrieving position 
 data from the actual robot every time the user asks 
-for it, 3. for picking one the available snapshots, 
+for it, 3. for picking one of the available snapshots, 
 4. displaying it in the background. 
 %
 All of these operations are performed within the 
@@ -570,7 +570,7 @@ void DataManager::NextStep(int command) {
   _logic->SelectImage(_robot_status, _bg_image_data,
 		      _calculator);
 
-  // if the choosen image is not the currently
+  // if the chosen image is not the currently
   // displayed one, then  move the camera
   // into the new position and change its 
   // orientation accorgindly
@@ -637,7 +637,7 @@ its orientation accordingly to the image metadata.
 %% (see \texttt{robot\_data} struct in figure \ref {fig:class_diagram}). Besides, a concrete objects which implements
 %% \texttt{IDataLogic} allows to retrieve information about the image file selected for background
 %% (see \texttt{image\_data} struct, again in figure \ref {fig:class_diagram}). We refer the reader to chapters
-%% \ref{sub:howretrievedata} and \ref{sub:howbackgroundimage} for more details abouts \texttt{IDataLogic}'s
+%% \ref{sub:idatalogic} and \ref{sub:howbackgroundimage} for more details abouts \texttt{IDataLogic}'s
 %% abstract method; chapters \ref{sub:datasource} and \ref{sub:metrics} for a concrete example.
 %% %
 
@@ -673,48 +673,191 @@ its orientation accordingly to the image metadata.
 %% %
 %% Next user command implies another calling to the \texttt{NextStep} method and the re-execution of all the steps just
 %% described.
-\subsection{How to choose the right background image}
-\label{sub:howbackgroundimage}
+%
+\subsubsection{The IDataLogic interface}
+\label{sub:idatalogic}
+\texttt{IDataLogic} provides a communication inteface 
+with the robot, decoupling the \texttt{DataManager} 
+from the actual technology used to interact with it 
+and to collect data from it. Its declaration is: 
+\begin{lstlisting}[caption={\texttt{IDataLogic} declaration}, label={code:idatalogic}, frame=trBL]
+class IDataLogic {
+ public:
+  virtual void Command(int) = 0;
+  virtual void RetrieveData(robot_data *) = 0;
+  virtual void SelectImage(robot_data *, image_data *,
+			   IImageSelector *) = 0;
+};
+\end{lstlisting}
+%
+When implementing a class of type \texttt{IDataLogic}
+programmers should keep in mind the followings:
+\begin{itemize}
+  \item \texttt{RetrieveData()} must fill the passed 
+    robot\_data structure with the retrieved position and
+    orientation of the robot. It must also keep track of 
+    all retrieved snapshots.
+  \item \texttt{SelectImage()} is passed the robot's current 
+    position and orientation and an object of type 
+    \texttt{IImageSelector}. In order to obtain the image 
+    to set as background (whose metadata will be saved 
+    in the \texttt{image\_data} structure), an 
+    invocation of the \texttt{IImageSelector::ChooseImage()}
+    is required.
+\end{itemize}
+%
+A skeleton of either \texttt{RetrieveData()} and 
+\texttt{SelectImage()} is presented in listing 
+\ref{code:idatalogic_skeleton}.
+%
+\begin{lstlisting}[caption={\texttt{IDataLogic} methods skeleton}, label={code:idatalogic_skeleton}, frame=trBL]
+void DataLogic::RetrieveData( robot_data * data )
+{
+  // actually retrieve new data
 
-There are many ways of choosing the background image among the collected ones. This unique
-block, entitled "choose K" in diagram \ref{fig:overall_diagram}, can be thought of as a
-black box, with the robot position and orientation data as input and the background image
-(or better, its path) as output.
+  // store the collected snapshot into an
+  // internal data structure
+  
+  data -> x = retrieved_robot_data.x;
+  data -> y = retrieved_robot_data.y;
+  data -> theta = retrieved_robot_data.theta; 
+  data -> time = retrieved_robot_data.time;
+
+  return;
+}
+
+void DataLogic::SelectImage( robot_data * robot_status, 
+                             image_data * bg_image_data,
+			     IImageSelector * calculator )
+{
+  // say we have used a vector to store 
+  // metadata of the collected snapshots, 
+  // then we could invoke the ChooseImage method
+
+  selector -> ChooseImage( robot_status, bg_image_data, 
+                             &_images_collection );
+}
+\end{lstlisting}
 %
 
 %
-To make easier the definition and the deployment of a new algorithm, the interface
-\texttt{IImageSelector} has been declared, with only one pure virtual method named
-\texttt{Calculate}. Every new algorithm able to choose a background image has to be defined
-within the \texttt{Calculate} function.
-\texttt{Calculate} return a float value, that is a score value; the parameters taken are a
-single image and the robot data. When the robot changes its position or orientation, the
-framework built computes the \texttt{Calculate} function for every image, with the new robot
-values. Every image is therefore coupled with a score, and the one with minimum associated value
-will be chosen.
+\subsubsection{The IImageSelector interface}
+Last, but not least, the \texttt{IImageSelector} interface
+defines the type of classes that encapsulate an image 
+selection algorithm. It declares just a method, that 
+we have already encountered in the preovious section:
+%
+\begin{lstlisting}[caption={\texttt{IImageSelector} declaration}, label={code:iimageselector}, frame=trBL]
+class IImageSelector
+{
+ public:
+  virtual void ChooseImage(robot_data *, image_data *, 
+                           std::vector<image_data> *) = 0;
+};
+\end{lstlisting}
+%
+\texttt{ChooseImage()} is passed the current robot position and
+orientation and a vector of images metadata. It will process them 
+and will fill the passed \texttt{image\_data} structured fields 
+with the metadata of the selected image.
 %
 
 %
-All you need to run a different algorithm is to instance the right object implementing the
-\texttt{IImageSelector} and link it with the \texttt{DataManager}, who will automatically
-use the custom function to evaluate the score for every stored image. As written before, the
-one with the lowest score will be rendered as background texture.
+Say we want to define a class that implements the selection 
+method 2 presented in \cite{sugimoto}. That selection method
+chooses the image taken as near as possible to the robot
+current position. 
+%
+We could, then, write:
+\begin{lstlisting}[caption={A possible \texttt{ChooseImage} implementation}, label={code:chooseimage_impl}, frame=trBL]
+class SpacialMetricSelector : public IImageSelector
+{
+  public:
+  void ChooseImage(robot_data *, image_data *, 
+                   std::vector<image_data> *);
+};
+
+
+void SpacialMetricSelector::
+      ChooseImage( robot_data * robot_status, 
+                   image_data * bg_image_data,
+		   std::vector<image_data> * 
+                      _images_collection)
+{
+
+  float distances[_images_collection->size()];
+  float min;
+
+  // calculate the distance for each stored image
+  int i = 0;
+  for (std::vector<image_data>::iterator it =
+	 _images_collection->begin();
+       it != _images_collection->end();
+       it++)
+    {
+      distances[i] = Calculate(robot_status, &*it);
+      i++;
+    }
+
+  // find the minimum distance
+  i = 0;
+  min = distances[0];
+  for (int j = 1; j < _images_collection->size(); j++)
+    {
+      if (distances[j] < min)
+	{
+	  i = j;
+	  min = distances[j];
+	}
+    }
+
+  // return the selected image data
+  bg_image_data->x = (*_images_collection)[i].x;
+  bg_image_data->y = (*_images_collection)[i].y;
+  bg_image_data->theta = (*_images_collection)[i].theta;
+  bg_image_data->time = (*_images_collection)[i].time;
+}
+\end{lstlisting}
+%
+%% \subsection{How to choose the right background image}
+%% \label{sub:howbackgroundimage}
+
+%% There are many ways of choosing the background image among the collected ones. This unique
+%% block, entitled "choose K" in diagram \ref{fig:overall_diagram}, can be thought of as a
+%% black box, with the robot position and orientation data as input and the background image
+%% (or better, its path) as output.
+%% %
+
+%% %
+%% To make easier the definition and the deployment of a new algorithm, the interface
+%% \texttt{IImageSelector} has been declared, with only one pure virtual method named
+%% \texttt{Calculate}. Every new algorithm able to choose a background image has to be defined
+%% within the \texttt{Calculate} function.
+%% \texttt{Calculate} return a float value, that is a score value; the parameters taken are a
+%% single image and the robot data. When the robot changes its position or orientation, the
+%% framework built computes the \texttt{Calculate} function for every image, with the new robot
+%% values. Every image is therefore coupled with a score, and the one with minimum associated value
+%% will be chosen.
+%% %
+
+%% %
+%% All you need to run a different algorithm is to instance the right object implementing the
+%% \texttt{IImageSelector} and link it with the \texttt{DataManager}, who will automatically
+%% use the custom function to evaluate the score for every stored image. As written before, the
+%% one with the lowest score will be rendered as background texture.
+%% %
+
+%% %
+%% For instance, if the target is to select the image shoot closest to the actual robot position,
+%% the returned score will be the euclidean distance between the image and robot itself. In this way
+%% the minimum score will be associated with the closest image.
+%% The algorithm described above is implemented within the \texttt{Calculate} function of the
+%% \texttt{SpacialMetricCalc} class (see class diagram \ref{fig:class_diagram} and chapter
+%% \ref{subsec:spacial_metric_algorithm}).
 %
 
 %
-For instance, if the target is to select the image shoot closest to the actual robot position,
-the returned score will be the euclidean distance between the image and robot itself. In this way
-the minimum score will be associated with the closest image.
-The algorithm described above is implemented within the \texttt{Calculate} function of the
-\texttt{SpacialMetricCalc} class (see class diagram \ref{fig:class_diagram} and chapter
-\ref{subsec:spacial_metric_algorithm}).
-%
-
-%
-Another class, named \texttt{SweepMetricCalc}, implements the
-\newline
-\texttt{IImageSelector}, but it defines a totally different and more complex algorithm.
-Chapter \ref{subsec:sweep_metric_algorithm} will explain it in detail.
-
-\subsection{How to retrieve data}
-\label{sub:howretrievedata}
+%% Another class, named \texttt{SweepMetricCalc}, implements the
+%% \newline
+%% \texttt{IImageSelector}, but it defines a totally different and more complex algorithm.
+%% Chapter \ref{subsec:sweep_metric_algorithm} will explain it in detail.
