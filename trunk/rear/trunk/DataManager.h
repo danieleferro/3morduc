@@ -57,7 +57,7 @@ class DataManager
 	      DistanceCalcInterface *); 
   
   ~DataManager();
-  void NextStep();
+  void NextStep(int command = 0);
 };
 
 #endif

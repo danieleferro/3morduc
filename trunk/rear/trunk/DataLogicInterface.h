@@ -11,6 +11,8 @@ class DataLogicInterface {
 			   DistanceCalcInterface *) = 0;
 
   virtual void RetrieveData(robot_data *) = 0;
+
+  virtual void Command(int) = 0;
   
 };
 

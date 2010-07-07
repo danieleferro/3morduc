@@ -28,6 +28,10 @@ class DataLogic : public DataLogicInterface
 		   DistanceCalcInterface *);
 
   void RetrieveData(robot_data *);
+
+  void Command(int);
+
+
 };
 
 #endif

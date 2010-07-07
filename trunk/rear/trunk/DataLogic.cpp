@@ -3,7 +3,7 @@
 DataLogic::DataLogic(int session)
 {
   _simulation_session = session;
-  _index = 0;
+  _index = -1;
 }
 
 DataLogic::~DataLogic()
@@ -73,10 +73,6 @@ void DataLogic::RetrieveData(robot_data * data)
 
   strcpy(grabbed_frame_data.path, o.str().c_str());
 
-  // increase index to point the next line of the file
-  _index++;
-
-
   // store the collected metadata if it's not already stored
   for (std::vector<image_data>::iterator it =
 	 _images_collection.begin();
@@ -90,58 +86,32 @@ void DataLogic::RetrieveData(robot_data * data)
 	}
     }
 
-
-
   _images_collection.push_back(grabbed_frame_data);
   
   return;
 
 }
 
+void DataLogic::Command(int command) {
+
+
+  /* sends the command to the robot
+     (in our case read next line from file)
+  */
+     
+  // increase index to point the next line of the file
+  _index++;
+
+
+}
+
+
 // select the image to set as background using the euclidean metric
 void DataLogic::SelectImage(robot_data * robot_status, image_data * bg_image_data,
 			    DistanceCalcInterface * calculator)
 {
-  float distances[_images_collection.size()];
-  float min;
 
-  // calculate the distance for each stored image
-  int i = 0;
-  for (std::vector<image_data>::iterator it =
-	 _images_collection.begin();
-       it != _images_collection.end();
-       it++)
-    {
-      distances[i] = calculator -> Calculate(robot_status, &*it);
-      //      std::cout << "Return value from Calculate Function: " << distances[i] << std::endl;
-      i++;
-    }
+  calculator->ChooseImage(robot_status, bg_image_data, &_images_collection);
 
-  for (int i = 0; i < _images_collection.size(); i ++)
-    std::cout << "distance[" << i << "]: "
-	      << distances[i]
-	      << std::endl;
-
-  // find the minimum distance
-  i = 0;
-  min = distances[0];
-  for (int j = 1; j < _images_collection.size(); j++)
-    {
-      if (distances[j] < min)
-	{
-	  i = j;
-	  min = distances[j];
-	}
-    }
-
-  // return the selected image data
-  bg_image_data->x = _images_collection[i].x;
-  bg_image_data->y = _images_collection[i].y;
-  bg_image_data->theta = _images_collection[i].theta;
-  bg_image_data->time = _images_collection[i].time;
-
-  strcpy(bg_image_data->path, _images_collection[i].path);
-
-  // std::cout << "----> " << bg_image_data->path << "<-----" << std::endl;
 
 }

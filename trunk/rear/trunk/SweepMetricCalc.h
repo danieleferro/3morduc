@@ -1,10 +1,11 @@
-#ifndef __DISTANCE_CALC
-#define __DISTANCE_CALC
+#ifndef __SWEEP_METRIC
+#define __SWEEP_METRIC
 
 #include "DistanceCalcInterface.h"
 #include <iostream>
 #include <math.h>
 #include <stdlib.h>
+#include <cstring>
 
 #define TO_RADIANS(X) X * M_PI / 180
 #define TO_DEGREES(X) X * 180 / M_PI
@@ -23,23 +24,12 @@ struct fPoint
 
 
 /*
-  Basic spacial metric - implements selection method 2 of
-  [sugimoto]
-*/
-class SpacialMetricCalc : public DistanceCalcInterface
-{
- public:
-  float Calculate(robot_data *, image_data *);
-};
-
-
-/*
   Sweep metric - implements method described in report
 */
 class SweepMetricCalc : public DistanceCalcInterface
 {
  public:
-  float Calculate(robot_data *, image_data *);
+  void ChooseImage(robot_data *, image_data *, std::vector<image_data> *);
   SweepMetricCalc(float, float, float, float, float, float);
   
  private:
@@ -66,6 +56,7 @@ class SweepMetricCalc : public DistanceCalcInterface
   fPoint * _O;
   fPoint * _B;
 
+  float Calculate(robot_data *, image_data *);
 
   /*
     Primitives to be called by Calculate

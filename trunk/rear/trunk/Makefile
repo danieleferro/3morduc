@@ -6,7 +6,8 @@ SOURCES = \
 	texture_png.cpp \
 	DataLogic.cpp \
 	DataManager.cpp \
-	DistanceCalc.cpp \
+	SpacialMetricCalc.cpp \
+	SweepMetricCalc.cpp \
 	main.cpp
 
 OBJECTS = $(SOURCES:.cpp=.o)
