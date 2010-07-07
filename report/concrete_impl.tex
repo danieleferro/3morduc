@@ -4,12 +4,97 @@
 \subsection{Data source}
 \label{sub:datasource}
 
+This chapter will explain, briefly, a concrete implementation of \\
+\texttt{IDataLogic}, created to use the log files data written
+in previously runs of Morduc simulations (see chapter \ref{sec:simulator}).
+%
+
+%
+Every simulation is identified by a number of session. It contains several
+images files (the egocentric robot vision) and one textual file, filled with the
+odometer values. For more information about its format, see again chapter
+\ref{sec:simulator}.
+%
+
+%
+The concrete class \texttt{DataLogic} presumes to find logs data in a prefixed
+path, since the latter is included in the source code. In order to execute the
+application, log data must be saved in the \texttt{log} upper-level folder (compared
+to the execution path).
+%
+
+%
+\texttt{log} folder must contains a single folder for every logged session, named
+\texttt{log\_$\langle$number of session$\rangle$}. Within this, the images files and the
+textual one are stored.
+%
+
+%
+To implement \texttt{IDataLogic}, \texttt{DataLogic} must define three methods (for more
+details see chapter \ref{sub:idatalogic}):
+:
+%
+\begin{itemize}
+
+  \item \texttt{Command\{int \}} \\
+    \texttt{int} specifies where robot must move 
+
+  \item \texttt{RetrieveData\{robot\_data *\}} \\
+    \texttt{robot\_data} will be used to return new robot status
+
+  \item \texttt{SelectImage\{robot\_data *, image\_data *, IImageSelector *\}} \\
+    \texttt{robot\_data} points to actual robot status; \texttt{image\_data} will be used
+    to return the chosen image; \texttt{ImageSelector} points to the class where the image
+    selection algorithm is defined.
+
+
+\end{itemize}
+%
+
+Since the \texttt{DataLogic} class reads from a textual file robot status (i.e. orientation
+and position), we can not decide the direction in which the robot moves, because a previous
+path has been already covered. For this reason the \texttt{Command} will not take into account
+the received command, but will simply increment an internal counter used to know which is the next
+line to read in the textual file (we remember that every line contains data about robot status).
+%
+
+%
+Different implementation of \texttt{IDataLogic} can instead exploits the \texttt{int} parameters
+in order to send the right command to the robot o the simulator, if the interaction is in real time
+(see chapter \ref{sec:future_works} for more details).
+%
+
+%
+The \texttt{RetrieveData} method allows to read the new robot status from the session textual file
+and fill the \texttt{robot\_data} pointed struct with the right values. Besides, it adds a new
+\texttt{image\_data} struct to its set, in this case implemented with a \texttt{std::vector} instance.
+The struct added represents the image shoot by the robot in the new position (the egocentric
+vision).
+%
+
+%
+Finally, the \texttt{SelectImage} method calls \texttt{ChooseImage} method on a con created instance
+of \texttt{IImageSelector} interface, thanks to the given reference in input. For further details
+about \texttt{ChooseImage} method see chapter \ref{sub:iimageselector}.
+%
+
+%
+Because the \texttt{ChooseImage} takes a pointer to the actual robot status and an
+\texttt{image\_data} pointer used to return the chosen image, the main difference lies in the third (and last)
+parameter. The concrete \texttt{ChooseImage} requests an \texttt{std::vector} object with all the image stored,
+whereas a generic \texttt{IDataLogic} implementation can use a different type of set. In this case, the
+\texttt{ChooseImage} method must convert the generic set containing \texttt{image\_data} in to an \texttt{std::vector},
+before calling the \texttt{ChooseImagem} method. Finally, the retrieved image will be then returned.
+%
+
+
+
 \subsection{Metrics}
 \label{sub:metrics}
 
 This chapter will introduce two algorithms implemented to choose the
 background image, by defining the \texttt{ChooseImage} function (see
-chapter \ref{sub:howbackgroundimage}).
+chapter \ref{sub:iimageselector}).
 
 %
 
@@ -53,7 +138,7 @@ score.
 %
 
 %
-For further details, we refer to chapter \ref{sub:howbackgroundimage}.
+For further details, we refer to chapter \ref{sub:iimageselector}.
 
 
 
