@@ -111,6 +111,10 @@ void DataLogic::SelectImage(robot_data * robot_status, image_data * bg_image_dat
 			    DistanceCalcInterface * calculator)
 {
 
+  // call the "calculator" instance to choose the right image
+
+  // since our data are already stored with vector,
+  // we simply pass its reference
   calculator->ChooseImage(robot_status, bg_image_data, &_images_collection);
 
 
