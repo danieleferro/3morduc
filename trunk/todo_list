@@ -6,11 +6,8 @@ REAR
 • estendere paragrafo camera (capitolo 5)
 • pacchetto con make e dipendenze
 • breve spiegazione classi DataManager e DataLogic
-• dettagli su algoritmo within boundaries
 • capitolo strumenti utilizzati
 • spiegazione tasti nel readme (s, o, p)
-• rinominare titolo finestra in REAR
-• pulire DataManager.cpp
 
 
 Futuro:
