@@ -1,7 +1,6 @@
-\section{\textsf{Rear:} a framework for virtual exocentric vision systems}
+\section{\textsf{REAR:} a framework for virtual exocentric vision systems}
 \label{sec:rear}
-
-In this chapter we will describe \textsf{R.E.A.R.} - 
+In this section we will describe \textsf{R.E.A.R.} - 
 \textit{Rear Exocentric Augmented Reality}, a framework 
 for the development of virtual exocentric vision systems.
 %
@@ -202,6 +201,43 @@ changing other classes.
 %
 
 %
+Finally, the class diagram presents two structures, 
+\texttt{image\_data} and \texttt{robot\_data}, whose 
+declarations are reported in listing \ref{code:data}.
+%
+The former is used to store all the metadata 
+relative to a specific snapshot - i.e. the position 
+and the orientation of the camera when it was taken, 
+a timestamp and an array of chars that can be used by 
+programmers who would like to add other data - e.g. 
+a code or a sequence number.
+%
+
+%
+The latter is similar to the former, it is meant to be 
+used by \texttt{DataManager} to exchange informations
+about the current robot position and orientation with 
+lower-level objects, in a compact way.
+%
+\begin{lstlisting}[caption={\textsf{R.E.A.R.} data structures}, label={code:data}, frame=trBL]
+struct image_data {
+  float x;
+  float y;
+  float theta;
+  float time;
+  char path[100];
+};
+
+struct robot_data {
+  float x;
+  float y;
+  float theta;
+  float time;
+};
+\end{lstlisting}
+%
+
+%
 In the following of this section, we will have a look 
 \textit{under the hood} of the classes and interfaces 
 we have just introduced.
@@ -296,6 +332,11 @@ would look like this:
 
   glPopMatrix();
 \end{lstlisting}
+%
+
+%
+%  take the robot one step higher if it fails to be seen
+% 
 %% Both classes represent the 3morduc robot in openGL world. 
 %% This means that the robot class offers, among others, a
 %% method with the purpose of drawing itself, called by the 
@@ -423,8 +464,7 @@ class Camera
 \end{lstlisting}
 %
 The \texttt{Camera} class allows to move and rotate the user 
-point of view and independently from the robot, avoiding 
-that one interferes with the other. 
+point of view, independently from the robot.
 %
 This is essential for our purposes, since \textsf{R.E.A.R.}
 must be able to draw the robot everywhere in the OpenGL space, 
@@ -433,7 +473,7 @@ regardless of where the camera is, and vice versa.
 
 %
 \texttt{Camera} methods are pretty simple: they just make 
-use of OpenGL basic functions (such as \texttt{glTranslate} 
+use of OpenGL basic commands (such as \texttt{glTranslate} 
 and \texttt{glRotate}) to actually move the OpenGL reference 
 system and, hence, move the point-of-view and change the sight 
 direction.
@@ -449,11 +489,11 @@ positioning of the camera.
 %
 \subsubsection{The DataManager Class}
 \label{sub:datamanager}
-As already stated, the \texttt{DataManger} class represents a global 
-access point to the whole application. Its declaration is reported in
+As already stated, the \texttt{DataManger} class is the \textit{core}
+of the whole framework. Its declaration is reported in 
 listing \ref{code:datamanager_class}.
 %
-\begin{lstlisting}[caption={DataManager class declaration}, label={code:datamanager_class}, frame=trBL]
+\begin{lstlisting}[caption={\texttt{DataManager} class declaration}, label={code:datamanager_class}, frame=trBL]
 class DataManager
 {
  private:
@@ -473,19 +513,19 @@ class DataManager
   DataManager(Robot *, DataLogic *, Camera *, 
 	      DistanceCalcInterface *); 
   ~DataManager();
-  void NextStep();
+  void NextStep(int command = 0);
 };
 \end{lstlisting}
 %
-The \texttt{DataManger} is meant to be used as a \textit{singleton}, 
+Of course, \texttt{DataManger} is meant to be used as a \textit{singleton}, 
 that is, there must be a unique instance of \texttt{DataManager} 
-within a \textsf{R.E.A.R.} based application.
+within the context of a \textsf{R.E.A.R.} based application.
 %
 As its name suggests, \texttt{DataManager} manages and coordinates 
 all of the components of the exocentric vision system and, hence, 
 keeps a private reference to all of them: 
-the \texttt{Robot} unique instance (see section \ref{sub:robotclass}), the 
-\texttt{Camera} unique instance (see section \ref{sub:cameraclass}),
+the \texttt{Robot} instance (see section \ref{sub:robotclass}), the 
+\texttt{Camera} instance (see section \ref{sub:cameraclass}),
 a \texttt{DataLogicInterface} object, a \texttt{DistanceCalcInterface} 
 object and an OpenGL texture id number.
 %
@@ -493,37 +533,45 @@ object and an OpenGL texture id number.
 %
 Once the application is started, it's \texttt{DataManger}'s duty 
 to move robot and camera within the OpenGL space. Moreover, 
-it's also responsible for retrieving position data from the actual robot
-every time the user asks for it and for asking a \texttt{DistanceCalcInterface}
-object to choose one of the images recorded by the robot's 
-egocentric camera and for displaying it on the background. 
-All of these operations are performed within the \texttt{NextStep()}
-method, reported in listing \ref{code:next_step}.
+it's also responsible for retrieving position data from the 
+actual robot every time the user asks for it and for 
+picking one the available snapshots and displaying it in 
+the background. 
+%
+All of these operations are performed within the 
+\texttt{NextStep()} method, reported in listing 
+\ref{code:next_step}.
 %
 \begin{lstlisting}[caption={The \texttt{DataManager::NextStep()} method}, label={code:next_step}, frame=trBL]
-void DataManager::NextStep() {
+void DataManager::NextStep(int command) {
 
   image_data old_image;
 
-  // save old background image position and orientation
+  // save metadata of the currently displayed 
+  // image
   old_image.x = _bg_image_data -> x;
   old_image.y = _bg_image_data -> y;
   old_image.theta = _bg_image_data -> theta;
-  
-  // retrieve new position data from the robot
+
+
+  // send command to the robot
+  _logic->Command(command);
+
+  // retrieve new data from the robot
   _logic->RetrieveData(_robot_status);
 
   // move robot with _robot_status data
   _rob->Place(_robot_status->x,
 	      _robot_status->y,
 	      _robot_status->theta ); 
-    
-  // select an image to set as background
+
+  // choose an image to set as background
   _logic->SelectImage(_robot_status, _bg_image_data,
 		      _calculator);
 
-  // if the selected image differs from the previously
-  // selected one, move the camera
+  // if the choosen image is not the currently
+  // displayed one, then, move the camera
+  // into the new position
   if ( old_image.x != _bg_image_data -> x ||
        old_image.y != _bg_image_data -> y ||
        old_image.theta != _bg_image_data -> theta )
@@ -535,10 +583,12 @@ void DataManager::NextStep() {
       _camera -> SetYAngle( _bg_image_data -> theta - 90);
     }
 
-  // actually draw the image in the background
+  // actually set the choosen image as background
   LoadGLTextures(_texture, _bg_image_data->path);
 }
 \end{lstlisting}
+%
+
 %
 %% The data regarding robot status, camera position or texture image have to be retrieved from other components,
 %% in our case other objects. It is for these reason that a \texttt{DataManager} instance owns the references to
