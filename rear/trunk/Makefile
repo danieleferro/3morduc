@@ -1,5 +1,4 @@
-EXENAME = main
-SOURCES = \
+SOURCES  = \
 	Robot.cpp \
 	Morduc.cpp \
 	Camera.cpp \
@@ -10,18 +9,34 @@ SOURCES = \
 	SweepMetricCalc.cpp \
 	main.cpp
 
-OBJECTS = $(SOURCES:.cpp=.o)
-OPTIONS = -lglut -lpng
-LIBRARY = -L/usr/X11R6/lib
+EXENAME   = REAR
+OBJDIR	  = obj/
+SOURCEDIR = source/
+BINDIR    = ./
 
-SESSION = 8
+OBJECTS   = $(SOURCES:.cpp=.o)
 
 
-main: $(OBJECTS)
-	g++ $(LIBRARY) $(OPTIONS) -o $(EXENAME) $(OBJECTS) 
+CSOURCES  = $(addprefix $(SOURCEDIR), $(SOURCES))
+COBJECTS  = $(addprefix $(OBJDIR), $(OBJECTS))
+CEXE      = $(addprefix $(BINDIR), $(EXENAME))
 
-.cpp.o:
-	g++ $(LIBRARY) $(OPTIONS) -c $<
+CFLAGS    = -lglut -lpng
+LIBRARY   = -L/usr/X11R6/lib
+
+CC = g++
+RM = rm
+
+SESSION   = 8
+OPT_DIST  = 15
+
+main: $(CSOURCES) $(CEXE)
+
+$(CEXE): $(COBJECTS)
+	$(CC) $(LIBRARY) $(CFLAGS) $(COBJECTS) -o $@ 
+
+$(OBJDIR)%.o: $(SOURCEDIR)%.cpp
+	$(CC) $(LIBRARY) $(CFLAGS) -c $< -o $@
 
 # if header file changes:
 # touch cpp file
@@ -32,14 +47,8 @@ main: $(OBJECTS)
 # 	touch main.cpp
 
 clean:
-	-rm *.o; rm $(EXENAME)
-	-rm *.h.gch
-
-tar:
-	tar -c *.h *.cpp readme.txt -f $(EXENAME).tar
+	-$(RM) -f $(COBJECTS)
+	-$(RM) -f $(CEXE)
 
 run:	main
-	./${EXENAME} ${SESSION}
-
-force:
-	g++ $(SOURCES) -o $(EXENAME)
+	./$(EXENAME) $(SESSION) $(OPT_DIST)
