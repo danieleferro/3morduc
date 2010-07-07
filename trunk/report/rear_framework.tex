@@ -178,8 +178,8 @@ coupling between them.
 %
 The diagram also features two interfaces that have to be implemented 
 by programmers who want to create their own concrete exocentric 
-vision system: \texttt{DataLogicInterface} and 
-\texttt{DistanceCalcInterface}.
+vision system: \texttt{IDataLogic} and 
+\texttt{IImageSelector}.
 %
 
 %
@@ -191,7 +191,7 @@ sockets, web services, etc.
 %
 
 %
-\texttt{DistanceCalcInterface}, instead, defines the interface 
+\texttt{IImageSelector}, instead, defines the interface 
 of the component which implements the image selection algorithm.
 %
 In this case, the use of an interface leaves programmers 
@@ -500,8 +500,8 @@ class DataManager
   GLuint _texture[1];
   Robot * _rob;
   Camera * _camera;
-  DataLogicInterface * _logic;
-  DistanceCalcInterface * _calculator;
+  IDataLogic * _logic;
+  IImageSelector * _calculator;
 
   robot_data * _robot_status;
   image_data * _bg_image_data;
@@ -511,7 +511,7 @@ class DataManager
 
  public:
   DataManager(Robot *, DataLogic *, Camera *, 
-	      DistanceCalcInterface *); 
+	      IImageSelector *); 
   ~DataManager();
   void NextStep(int command = 0);
 };
@@ -526,7 +526,7 @@ all of the components of the exocentric vision system and, hence,
 keeps a private reference to all of them: 
 the \texttt{Robot} instance (see section \ref{sub:robotclass}), the 
 \texttt{Camera} instance (see section \ref{sub:cameraclass}),
-a \texttt{DataLogicInterface} object, a \texttt{DistanceCalcInterface} 
+a \texttt{IDataLogic} object, a \texttt{IImageSelector} 
 object and an OpenGL texture id number.
 %
 
@@ -596,7 +596,7 @@ the user wants to send a command to the robot.
 Such a command, encoded as an integer, has to be passed to 
 \texttt{NextStep()} as an argument.
 %
-Then, \texttt{DataManager} asks its \texttt{DataLogicInterface} 
+Then, \texttt{DataManager} asks its \texttt{IDataLogic} 
 instance to send the command to the robot and to 
 retrieve the new robot position and orientation, which will be 
 stored in the \texttt{\_robot\_status} private attribute.
@@ -605,9 +605,9 @@ stored in the \texttt{\_robot\_status} private attribute.
 %
 To select an image to set as background, \texttt{DataManager} 
 invokes the \\
-\texttt{DataLogicInterface::SelectImage()} method, 
+\texttt{IDataLogic::SelectImage()} method, 
 passing it the current robot position and orientation, 
-an object of type \texttt{DistanceCalcInterface} which 
+an object of type \texttt{IImageSelector} which 
 encapsulates the image selection algorithm and a structure 
 of type \texttt{image\_data}.
 %
@@ -627,44 +627,44 @@ its orientation accordingly to the image metadata.
 %
 %% The data regarding robot status, camera position or texture image have to be retrieved from other components,
 %% in our case other objects. It is for these reason that a \texttt{DataManager} instance owns the references to
-%% other two concrete objects, which implement the \texttt{DataLogicInterface} and the \newline
-%% \texttt{DistanceCalcInterface}.
+%% other two concrete objects, which implement the \texttt{IDataLogic} and the \newline
+%% \texttt{IImageSelector}.
 %
 
 %% %
 %% The former is called in order to transfer the next command to the robot (i.e. which way to move) and get the
 %% consequent new robot data (its position and orientation). Every fetched data are coupled with a timestamp value
 %% (see \texttt{robot\_data} struct in figure \ref {fig:class_diagram}). Besides, a concrete objects which implements
-%% \texttt{DataLogicInterface} allows to retrieve information about the image file selected for background
+%% \texttt{IDataLogic} allows to retrieve information about the image file selected for background
 %% (see \texttt{image\_data} struct, again in figure \ref {fig:class_diagram}). We refer the reader to chapters
-%% \ref{sub:howretrievedata} and \ref{sub:howbackgroundimage} for more details abouts \texttt{DataLogicInterface}'s
+%% \ref{sub:howretrievedata} and \ref{sub:howbackgroundimage} for more details abouts \texttt{IDataLogic}'s
 %% abstract method; chapters \ref{sub:datasource} and \ref{sub:metrics} for a concrete example.
 %% %
 
 %% %
-%% The other reference, pointing to a \texttt{DistanceCalcInterface} implementation, is used to recall the algorithm
+%% The other reference, pointing to a \texttt{IImageSelector} implementation, is used to recall the algorithm
 %% whose aim consists in calculating the score value for a single image, given the robot status and image itself. We
 %% remind that a score algorithm has to be implemented in order to choose the proper background image among all the
 %% collected ones, as explained in depth in chapter \ref{sub:howbackgroundimage}.
 %% %
 
 %% %
-%% Since the unique method present in \texttt{DistanceCalcInterface} (named \texttt{Calculate}) is called by the
-%% concrete instance of \texttt{DataLogicInterface}, \newline \texttt{DataManger} forwards its reference to the latter,
+%% Since the unique method present in \texttt{IImageSelector} (named \texttt{Calculate}) is called by the
+%% concrete instance of \texttt{IDataLogic}, \newline \texttt{DataManger} forwards its reference to the latter,
 %% when requested. As before, we refer the reader to chapters \ref{sub:howbackgroundimage} and \ref{sub:metrics} for
 %% more details and some concrete examples.
 %% %
 
 %% %
 %% By calling the public method \texttt{NextStep}, \texttt{DataManager} forwards the new command to the concrete
-%% \texttt{DataLogicInterface} instance, in order to teleguide the robot and retrieve its new status
+%% \texttt{IDataLogic} instance, in order to teleguide the robot and retrieve its new status
 %% (i.e. position and orientation). Acquired new robot data, it is then possible to move the robot in the
 %% right position, by setting the x, y and theta value of the robot class instance (see method \texttt{Place},
 %% present in class \texttt{Robot}, chapter \ref{sub:robotclass}).
 %% %
 
 %% %
-%% Later on, the concrete \texttt{DataLogicInterface} instance is asked again for the background image. After
+%% Later on, the concrete \texttt{IDataLogic} instance is asked again for the background image. After
 %% retrieving it (or better, the coupled \texttt{image\_data} struct) \texttt{DataManger} instance moves the camera
 %% object to the position where the selected image were shot (see methods \texttt{SetPosition} and \texttt{SetAngle},
 %% both present in class \texttt{Camera}, chapter \ref{sub:cameraclass}), and renders the texture image before ending.
@@ -684,7 +684,7 @@ black box, with the robot position and orientation data as input and the backgro
 
 %
 To make easier the definition and the deployment of a new algorithm, the interface
-\texttt{DistanceCalcInterface} has been declared, with only one pure virtual method named
+\texttt{IImageSelector} has been declared, with only one pure virtual method named
 \texttt{Calculate}. Every new algorithm able to choose a background image has to be defined
 within the \texttt{Calculate} function.
 \texttt{Calculate} return a float value, that is a score value; the parameters taken are a
@@ -696,7 +696,7 @@ will be chosen.
 
 %
 All you need to run a different algorithm is to instance the right object implementing the
-\texttt{DistanceCalcInterface} and link it with the \texttt{DataManager}, who will automatically
+\texttt{IImageSelector} and link it with the \texttt{DataManager}, who will automatically
 use the custom function to evaluate the score for every stored image. As written before, the
 one with the lowest score will be rendered as background texture.
 %
@@ -713,7 +713,7 @@ The algorithm described above is implemented within the \texttt{Calculate} funct
 %
 Another class, named \texttt{SweepMetricCalc}, implements the
 \newline
-\texttt{DistanceCalcInterface}, but it defines a totally different and more complex algorithm.
+\texttt{IImageSelector}, but it defines a totally different and more complex algorithm.
 Chapter \ref{subsec:sweep_metric_algorithm} will explain it in detail.
 
 \subsection{How to retrieve data}
