@@ -533,14 +533,15 @@ object and an OpenGL texture id number.
 %
 Once the application is started, it's \texttt{DataManger}'s duty 
 to move robot and camera within the OpenGL space. Moreover, 
-it's also responsible for retrieving position data from the 
-actual robot every time the user asks for it and for 
-picking one the available snapshots and displaying it in 
-the background. 
+it's also responsible for 1. providing the user an interface 
+to send commands to the robot, 2. retrieving position 
+data from the actual robot every time the user asks 
+for it, 3. for picking one the available snapshots, 
+4. displaying it in the background. 
 %
 All of these operations are performed within the 
-\texttt{NextStep()} method, reported in listing 
-\ref{code:next_step}.
+scope of \texttt{NextStep()} method, reported in 
+listing \ref{code:next_step}.
 %
 \begin{lstlisting}[caption={The \texttt{DataManager::NextStep()} method}, label={code:next_step}, frame=trBL]
 void DataManager::NextStep(int command) {
@@ -570,14 +571,15 @@ void DataManager::NextStep(int command) {
 		      _calculator);
 
   // if the choosen image is not the currently
-  // displayed one, then, move the camera
-  // into the new position
+  // displayed one, then  move the camera
+  // into the new position and change its 
+  // orientation accorgindly
   if ( old_image.x != _bg_image_data -> x ||
        old_image.y != _bg_image_data -> y ||
        old_image.theta != _bg_image_data -> theta )
     {
       _camera -> SetPosition( _bg_image_data -> x,
-			      9.f,
+			      0.f,
 			      _bg_image_data -> y);
       
       _camera -> SetYAngle( _bg_image_data -> theta - 90);
@@ -588,7 +590,40 @@ void DataManager::NextStep(int command) {
 }
 \end{lstlisting}
 %
+\texttt{NextStep()} has to be called every time 
+the user wants to send a command to the robot. 
+%
+Such a command, encoded as an integer, has to be passed to 
+\texttt{NextStep()} as an argument.
+%
+Then, \texttt{DataManager} asks its \texttt{DataLogicInterface} 
+instance to send the command to the robot and to 
+retrieve the new robot position and orientation, which will be 
+stored in the \texttt{\_robot\_status} private attribute.
+%
 
+%
+To select an image to set as background, \texttt{DataManager} 
+invokes the \\
+\texttt{DataLogicInterface::SelectImage()} method, 
+passing it the current robot position and orientation, 
+an object of type \texttt{DistanceCalcInterface} which 
+encapsulates the image selection algorithm and a structure 
+of type \texttt{image\_data}.
+%
+The method will fill the fields of such a structure with 
+the metadata of the selected image, so that the 
+\texttt{DataManager()} can pick it up, load it as a 
+texture and display it on the background of the 
+viewing frustum - by means of calling the 
+\texttt{LoadGLTextures()} function.
+%
+
+%
+In order to give the illusion of watching the scene 
+from the point the selected image was taken, 
+\texttt{NextStep()} also moves the camera and change 
+its orientation accordingly to the image metadata.
 %
 %% The data regarding robot status, camera position or texture image have to be retrieved from other components,
 %% in our case other objects. It is for these reason that a \texttt{DataManager} instance owns the references to
@@ -596,49 +631,48 @@ void DataManager::NextStep(int command) {
 %% \texttt{DistanceCalcInterface}.
 %
 
-%
-The former is called in order to transfer the next command to the robot (i.e. which way to move) and get the
-consequent new robot data (its position and orientation). Every fetched data are coupled with a timestamp value
-(see \texttt{robot\_data} struct in figure \ref {fig:class_diagram}). Besides, a concrete objects which implements
-\texttt{DataLogicInterface} allows to retrieve information about the image file selected for background
-(see \texttt{image\_data} struct, again in figure \ref {fig:class_diagram}). We refer the reader to chapters
-\ref{sub:howretrievedata} and \ref{sub:howbackgroundimage} for more details abouts \texttt{DataLogicInterface}'s
-abstract method; chapters \ref{sub:datasource} and \ref{sub:metrics} for a concrete example.
-%
+%% %
+%% The former is called in order to transfer the next command to the robot (i.e. which way to move) and get the
+%% consequent new robot data (its position and orientation). Every fetched data are coupled with a timestamp value
+%% (see \texttt{robot\_data} struct in figure \ref {fig:class_diagram}). Besides, a concrete objects which implements
+%% \texttt{DataLogicInterface} allows to retrieve information about the image file selected for background
+%% (see \texttt{image\_data} struct, again in figure \ref {fig:class_diagram}). We refer the reader to chapters
+%% \ref{sub:howretrievedata} and \ref{sub:howbackgroundimage} for more details abouts \texttt{DataLogicInterface}'s
+%% abstract method; chapters \ref{sub:datasource} and \ref{sub:metrics} for a concrete example.
+%% %
 
-%
-The other reference, pointing to a \texttt{DistanceCalcInterface} implementation, is used to recall the algorithm
-whose aim consists in calculating the score value for a single image, given the robot status and image itself. We
-remind that a score algorithm has to be implemented in order to choose the proper background image among all the
-collected ones, as explained in depth in chapter \ref{sub:howbackgroundimage}.
-%
+%% %
+%% The other reference, pointing to a \texttt{DistanceCalcInterface} implementation, is used to recall the algorithm
+%% whose aim consists in calculating the score value for a single image, given the robot status and image itself. We
+%% remind that a score algorithm has to be implemented in order to choose the proper background image among all the
+%% collected ones, as explained in depth in chapter \ref{sub:howbackgroundimage}.
+%% %
 
-%
-Since the unique method present in \texttt{DistanceCalcInterface} (named \texttt{Calculate}) is called by the
-concrete instance of \texttt{DataLogicInterface}, \newline \texttt{DataManger} forwards its reference to the latter,
-when requested. As before, we refer the reader to chapters \ref{sub:howbackgroundimage} and \ref{sub:metrics} for
-more details and some concrete examples.
-%
+%% %
+%% Since the unique method present in \texttt{DistanceCalcInterface} (named \texttt{Calculate}) is called by the
+%% concrete instance of \texttt{DataLogicInterface}, \newline \texttt{DataManger} forwards its reference to the latter,
+%% when requested. As before, we refer the reader to chapters \ref{sub:howbackgroundimage} and \ref{sub:metrics} for
+%% more details and some concrete examples.
+%% %
 
-%
-By calling the public method \texttt{NextStep}, \texttt{DataManager} forwards the new command to the concrete
-\texttt{DataLogicInterface} instance, in order to teleguide the robot and retrieve its new status
-(i.e. position and orientation). Acquired new robot data, it is then possible to move the robot in the
-right position, by setting the x, y and theta value of the robot class instance (see method \texttt{Place},
-present in class \texttt{Robot}, chapter \ref{sub:robotclass}).
-%
+%% %
+%% By calling the public method \texttt{NextStep}, \texttt{DataManager} forwards the new command to the concrete
+%% \texttt{DataLogicInterface} instance, in order to teleguide the robot and retrieve its new status
+%% (i.e. position and orientation). Acquired new robot data, it is then possible to move the robot in the
+%% right position, by setting the x, y and theta value of the robot class instance (see method \texttt{Place},
+%% present in class \texttt{Robot}, chapter \ref{sub:robotclass}).
+%% %
 
-%
-Later on, the concrete \texttt{DataLogicInterface} instance is asked again for the background image. After
-retrieving it (or better, the coupled \texttt{image\_data} struct) \texttt{DataManger} instance moves the camera
-object to the position where the selected image were shot (see methods \texttt{SetPosition} and \texttt{SetAngle},
-both present in class \texttt{Camera}, chapter \ref{sub:cameraclass}), and renders the texture image before ending.
-%
+%% %
+%% Later on, the concrete \texttt{DataLogicInterface} instance is asked again for the background image. After
+%% retrieving it (or better, the coupled \texttt{image\_data} struct) \texttt{DataManger} instance moves the camera
+%% object to the position where the selected image were shot (see methods \texttt{SetPosition} and \texttt{SetAngle},
+%% both present in class \texttt{Camera}, chapter \ref{sub:cameraclass}), and renders the texture image before ending.
+%% %
 
-%
-Next user command implies another calling to the \texttt{NextStep} method and the re-execution of all the steps just
-described.
-
+%% %
+%% Next user command implies another calling to the \texttt{NextStep} method and the re-execution of all the steps just
+%% described.
 \subsection{How to choose the right background image}
 \label{sub:howbackgroundimage}
 
