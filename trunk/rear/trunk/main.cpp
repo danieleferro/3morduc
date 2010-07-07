@@ -56,7 +56,7 @@ DataManager * manager = NULL;
 Camera * camera = NULL; 
 
 /* Image distance calculator declaration */
-DistanceCalcInterface * calculator = NULL;
+IImageSelector * calculator = NULL;
 
 void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB, 
 		   GLfloat diffuseR, GLfloat diffuseG, GLfloat diffuseB, 

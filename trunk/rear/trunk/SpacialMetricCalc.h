@@ -1,7 +1,7 @@
 #ifndef __SPACIAL_METRIC
 #define __SPACIAL_METRIC
 
-#include "DistanceCalcInterface.h"
+#include "IImageSelector.h"
 #include <iostream>
 #include <math.h>
 #include <stdlib.h>
@@ -14,7 +14,7 @@
   Basic spacial metric - implements selection method 2 of
   [sugimoto]
 */
-class SpacialMetricCalc : public DistanceCalcInterface
+class SpacialMetricCalc : public IImageSelector
 {
  private:
   float Calculate(robot_data *, image_data *);

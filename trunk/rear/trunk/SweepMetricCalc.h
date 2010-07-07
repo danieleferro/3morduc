@@ -1,7 +1,7 @@
 #ifndef __SWEEP_METRIC
 #define __SWEEP_METRIC
 
-#include "DistanceCalcInterface.h"
+#include "IImageSelector.h"
 #include <iostream>
 #include <math.h>
 #include <stdlib.h>
@@ -26,7 +26,7 @@ struct fPoint
 /*
   Sweep metric - implements method described in report
 */
-class SweepMetricCalc : public DistanceCalcInterface
+class SweepMetricCalc : public IImageSelector
 {
  public:
   void ChooseImage(robot_data *, image_data *, std::vector<image_data> *);

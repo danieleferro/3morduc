@@ -108,7 +108,7 @@ void DataLogic::Command(int command) {
 
 // select the image to set as background using the euclidean metric
 void DataLogic::SelectImage(robot_data * robot_status, image_data * bg_image_data,
-			    DistanceCalcInterface * calculator)
+			    IImageSelector * calculator)
 {
 
   // call the "calculator" instance to choose the right image

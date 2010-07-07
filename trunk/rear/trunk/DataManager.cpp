@@ -1,7 +1,7 @@
 #include "DataManager.h"
 
 DataManager::DataManager(Robot * robot, DataLogic * logic, Camera * camera, 
-			 DistanceCalcInterface * calculator)
+			 IImageSelector * calculator)
 {
   _rob = robot;
   _logic = logic;

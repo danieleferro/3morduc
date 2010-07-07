@@ -4,7 +4,7 @@
 #include "data_types.h"
 #include <vector>
 
-class DistanceCalcInterface
+class IImageSelector
 {
  public:
   virtual void ChooseImage(robot_data *, image_data *, std::vector<image_data> *) = 0;
