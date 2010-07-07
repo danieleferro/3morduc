@@ -14,33 +14,68 @@ techniques.
 Dependencies
 ------------
 
-Rear needs just an implementation of the OpenGL(TM) API 
-and the C++ standard libraries.
+Rear is written in C++ and makes use of OpenGL(TM) commands.
+Hence, in most cases, in order to use it, all you need to 
+do is install:
+ 
+ - a C++ compiler
+ - the C++ standard library
+ - an implementation of the OpenGL(TM) api
 
+Rear has been developed using GNU gcc as the c++ compiler, 
+Mesa as the implementation of OpenGL. It has been tested on 
+the following Debian-like platforms:
 
-rear has been tested 
+ - Debian Lenny (5.0.5)
+   with gcc 4.3.2
+   with Mesa 7.0.3
+ 
+ - Ubuntu Karmic Koala
+   with gcc ???
+   with Mesa 7.6.0
 
-getting rear working on Debian Lenny:
+If you are not using a Debian-like package manager, and would 
+like to compile Mesa yourself, you will have to install a 
+number of additional libraries. They are all free software, so
+just google for their source code. 
+Here is a working configuration for Debian Lenny:
 
-- libdrm >= 2.4.3 or <= 2.4.14
-- dri2proto 2.3
-- xxf86vm (repo)
-- xdamage 1.1.1.1
-- libexpat 2.0.1
-- x11-proto-gl-dev (repo)
+  - libdrm >= 2.4.3 or <= 2.4.14
+  - dri2proto 2.3
+  - xxf86vm (repo)
+  - xdamage 1.1.1.1
+  - libexpat 2.0.1
+  - x11-proto-gl-dev (repo)
+  - freeglut3 2.4.0
+  - Mesa 7.6.0
 
-- freeglut3 2.4.0
-  (comment lines 1687-1688 of 
-   freeglut-joystick.c )
-
-- Mesa 7.6.0
+Be adviced that, when compiling freeglut, you could get a 
+compilation error regarding lines 1687-1688 of 
+freeglut-joystick.c
+Just open that file with a text editor and comment them, 
+since they are not needed by rear.
 
 Compiling
 ---------
+Once you are done with writing the code of your 
+custom classes, just put the source file within 
+the /src directory and, then, add the objects to 
+Makefile targets. Then, you will only have to type 
 
-    make
+    $make
+    $make run
+
+Rear comes with some example custom classes, so could 
+find useful to have a look at them.
+For a complete programming guide, please refer to the 
+techical report included in the /doc directory.
 
 Good luck, and happy coding.
+
+License
+-------
+rear is released under the terms of GNU GPL v3.
+for a copy of the license, see <http://www.gnu.org/licenses/>
 
 Authors and maintainers
 -----------------------
