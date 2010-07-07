@@ -1,5 +1,54 @@
-Library required
+rear - a framework for virtual exocentric vision systems of
+       mobile robots
 
-- zlib
-- libpng
-- openGL
+Brief description
+-----------------
+
+rear is a c++ framework that implements a minimal set of
+tools and functionalities needed by a virtual 
+exocentric vision system, that is, a software that makes 
+you able to create an external visualization of a robot 
+using a egocentric-mounted camera and augmented reality 
+techniques.
+
+Dependencies
+------------
+
+Rear needs just an implementation of the OpenGL(TM) API 
+and the C++ standard libraries.
+
+
+rear has been tested 
+
+getting rear working on Debian Lenny:
+
+- libdrm >= 2.4.3 or <= 2.4.14
+- dri2proto 2.3
+- xxf86vm (repo)
+- xdamage 1.1.1.1
+- libexpat 2.0.1
+- x11-proto-gl-dev (repo)
+
+- freeglut3 2.4.0
+  (comment lines 1687-1688 of 
+   freeglut-joystick.c )
+
+- Mesa 7.6.0
+
+Compiling
+---------
+
+    make
+
+Good luck, and happy coding.
+
+Authors and maintainers
+-----------------------
+
+- Daniele Ferro (original author and former mantainer, 2010)
+  mail: daniele.ferro86 at gmail dot com
+  web :
+  
+- Loris Fichera (original author and former mantainer, 2010)
+  mail: loris.fichera at gmail dot com 
+  web :
