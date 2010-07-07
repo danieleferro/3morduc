@@ -21,7 +21,7 @@
 #ifndef __DATA_INTERFACE
 #define __DATA_INTERFACE
 
-#include "DistanceCalcInterface.h"
+#include "IImageSelector.h"
 #include "Robot.h"
 #include "texture_png.h"
 #include "DataLogic.h"
@@ -37,7 +37,7 @@ class DataManager
   Robot * _rob;
   DataLogic * _logic;
   Camera * _camera;
-  DistanceCalcInterface * _calculator;
+  IImageSelector * _calculator;
 
   robot_data * _robot_status;
   image_data * _bg_image_data;
@@ -54,7 +54,7 @@ class DataManager
   /* second parameter is the simulation session number 
      it is only needed for offline testing */
   DataManager(Robot *, DataLogic *, Camera *, 
-	      DistanceCalcInterface *); 
+	      IImageSelector *); 
   
   ~DataManager();
   void NextStep(int command = 0);

@@ -9,12 +9,12 @@
 #include <iostream>
 #include <cstdio>
 #include <cstring>
-#include "DataLogicInterface.h"
-#include "DistanceCalcInterface.h"
+#include "IDataLogic.h"
+#include "IImageSelector.h"
 
 #define TO_DEGREES(X) X * 180 / M_PI
 
-class DataLogic : public DataLogicInterface
+class DataLogic : public IDataLogic
 {
  private:
   std::vector<image_data> _images_collection;
@@ -25,7 +25,7 @@ class DataLogic : public DataLogicInterface
   DataLogic(int);
   ~DataLogic();
   void SelectImage(robot_data *, image_data *,
-		   DistanceCalcInterface *);
+		   IImageSelector *);
 
   void RetrieveData(robot_data *);
 
