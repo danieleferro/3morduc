@@ -8,8 +8,25 @@
 \label{sub:metrics}
 
 This chapter will introduce two algorithms implemented to choose the
-background image. A single algorithm, whose aim is to compute a score value
-for every image, takes its stand on a specific metric.
+background image, by defining the \texttt{ChooseImage} function (see
+chapter \ref{sub:howbackgroundimage}).
+
+%
+
+%
+Both algorithms use a \texttt{Calculate} function to assign a score
+value for each image, by knowing the robot status and a single image.
+%
+
+%
+After assigning a score for every collected image, the one coupled with the
+lower score will be returned (or better, assigned to the \texttt{image\_data}
+pointer passed to \texttt{ChooseImage} method).
+%
+
+%
+Both algorithms take its stand on a specific metric, expressed by the \texttt{Calculate}
+method.
 %
 
 %
@@ -21,14 +38,18 @@ in C++ (see diagram in figure \ref{fig:class_diagram}).
 %
 
 %
-The concrete implementations of the \texttt{Calculate} function return a score
-(or distance) value associated with the robot status and the image, both taken from
-input. Even though the metric function is able to work with every couple of input
-data, the \texttt{DataLogic} instance, which calls the \texttt{Calculate} function
-when required, will calls the method for every stored images, but always with the
-same robot status (the last retrieved). In this way it is possible to find which is
-the closer (according to the chosen metric) image to a specific robot status, by
-selecting the image coupled with the lowest score.
+The \texttt{Calculate} function returns a score (or distance) value associated with a robot
+status and a single image. The former is retrieved directly from the \texttt{ChooseImage} 
+method, the latter by iterating the image collection parameter.
+%
+
+%
+Even though the metric function is able to work with every couple of input
+data, the two concrete instances of \texttt{DistanceCalcInterface} will call
+the \texttt{Calculate} method for every stored images, but always with the
+same robot status. In this way it is possible to find which is the closer (according to the
+chosen metric) image to a specific robot status, by selecting the image coupled with the lowest
+score.
 %
 
 %
@@ -52,14 +73,14 @@ This algorithm uses a simple triangle function to couple the image processed wit
 %
 
 %
-The distance value between robot and image is processed by a triangle function. User specifies
+The euclidean distance between robot and image is processed by a triangle function. User specifies
 the optimal distance between image and robot, that is the distance value where
-the score function return the maximum value and therefore where the triangle is centred.
+the score function returns the maximum tally and therefore where the triangle is centred.
 In figure \ref{fig:spacial_metric_func} the optimal distance is set to five.
 %
 
 %
-Since the \texttt{DataLogic} object will select the image coupled with the minimum value, we have
+Since the \texttt{ChooseImage} method will select the image coupled with the minimum value, we have
 to invert the score sign before returning it.
 %
 
@@ -188,8 +209,9 @@ if there are no preferable images, the image with -1 (i.e. the egocentric image)
 %
 
 %
-Because the DataLogic is designed to choose the image with the minimum score and not with maximum, all we have to
-do is multiply every score for -1 before returning it: in this way we convert a maximum research in a minimum one.
+Because the \texttt{ChooseImage} method is designed to choose the image with the minimum score and not with maximum,
+all we have to do is multiply every score for -1 before returning it: in this way we convert a maximum research in
+a minimum one.
 %
 
 %
