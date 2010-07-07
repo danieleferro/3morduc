@@ -17,7 +17,6 @@
 
 #include <unistd.h>     // needed to sleep.
 #include <iostream>
-#include "Robot.h"
 #include <math.h>
 
 // why does include compile ?! 
@@ -27,6 +26,8 @@
 #include "texture_png.h"
 #include "Camera.h"
 #include "DistanceCalc.h"
+#include "Robot.h"
+#include "Morduc.h"
 
 
 /* step for forward direction */

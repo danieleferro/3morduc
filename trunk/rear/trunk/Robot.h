@@ -36,14 +36,4 @@ class Robot
   GLfloat GetTheta();    
 };
 
-class Morduc : public Robot
-{
- private:
-  /* scale factor (for drawing) */
-  GLfloat radius;
-
- public:
-  Morduc(float radius = 4.0f);
-  void DrawRobot();
-};
 #endif
