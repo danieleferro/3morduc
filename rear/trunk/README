@@ -30,8 +30,8 @@ the following Debian-like platforms:
    with gcc 4.3.2
    with Mesa 7.0.3
  
- - Ubuntu Karmic Koala
-   with gcc ???
+ - Ubuntu Karmic Koala (9.10)
+   with gcc 4.4.1
    with Mesa 7.6.0
 
 If you are not using a Debian-like package manager, and would 
