@@ -212,7 +212,7 @@ class DataLogic : public IDataLogic
 \end{lstlisting}
 %
 Upon instantiation, \texttt{DataLogic} objects needs to be 
-configurated with a session identifier, to be passed to 
+configured with a session identifier, to be passed to 
 the constructor. 
 %
 
@@ -380,11 +380,11 @@ background.
 %% parameter. The concrete \texttt{ChooseImage} requests an \texttt{std::vector} object with all the image stored,
 %% whereas a generic \texttt{IDataLogic} implementation can use a different type of set. In this case, the
 %% \texttt{ChooseImage} method must convert the generic set containing \texttt{image\_data} in to an \texttt{std::vector},
-%% before calling the \texttt{ChooseImagem} method. Finally, the retrieved image will be then returned.
+%% before calling the \texttt{ChooseImage()} method. Finally, the retrieved image will be then returned.
 %
 \subsection{Image selection algorithms}
 \label{sub:metrics}
-As already sayed, there exists many image selection algorithms. 
+As already said, there exists many image selection algorithms. 
 Three of them are presented in \cite{sugimoto} and, according 
 to the results presented, two proved to be unsatisfactory for 
 they do not produced results that could effectively improve 
@@ -424,7 +424,7 @@ method.
 In our case, a metric or distance function is a function which defines a
 distance between elements belonging to two different and separate sets. The
 first one contains the robot status elements, the second one the egocentric images
-shot by the robot. Both types of elements are represented, in practice, by two structs
+shot by the robot. Both types of elements are represented, in practice, by two structures
 in C++ (see diagram in figure \ref{fig:class_diagram}).
 %
 
@@ -436,7 +436,7 @@ method, the latter by iterating the image collection parameter.
 
 %
 Even though the metric function is able to work with every couple of input
-data, the two concrete instances of \texttt{DistanceCalcInterface} will call
+data, the two concrete instances of \texttt{IImageSelector} will call
 the \texttt{Calculate} method for every stored images, but always with the
 same robot status. In this way it is possible to find which is the closer (according to the
 chosen metric) image to a specific robot status, by selecting the image coupled with the lowest
@@ -461,9 +461,9 @@ This algorithm uses a simple triangle function to couple the image processed wit
 %
 
 %
-The euclidean distance between robot and image is processed by a triangle function. User specifies
+The Euclidean distance between robot and image is processed by a triangle function. User specifies
 the optimal distance between image and robot, that is the distance value where
-the score function returns the maximum tally and therefore where the triangle is centred.
+the score function returns the maximum tally and therefore where the triangle is centered.
 In figure \ref{fig:spacial_metric_func} the optimal distance is set to five.
 %
 
@@ -511,7 +511,7 @@ each circle.
 %
 We will refer to the line perpendicular to the half line "a" as "b". By rotating clockwise and
 counterclockwise the "a" line in the robot centre with a predefined angle (named "sweep angle")
-we will obtain the "c" and "d" lines. These define a new portion of the plane (coloured with fading red),
+we will obtain the "c" and "d" lines. These define a new portion of the plane (colored with fading red),
 named the "sweep area".
 %
 
@@ -556,7 +556,7 @@ the function.
 %
 
 %
-Finally, we have to take in account the euclidean distance between the image and the robot. If the distance is
+Finally, we have to take in account the Euclidean distance between the image and the robot. If the distance is
 zero, we are examining the egocentric image. On one side, the images too close to the robot will be coupled
 with a low score, because they are too similar to the egocentric one. On the other side, the images too far
 from the robot will be coupled again with a low score, because they would show the robot too distance to
@@ -660,7 +660,7 @@ definition of line "c" and "d" see chapter \ref{subsec:sweep_metric_algorithm}.
 %
 
 %
-If we draw a circle centred in the axis origin, the intersection between the circle and the "c" and "d" lines will
+If we draw a circle centered in the axis origin, the intersection between the circle and the "c" and "d" lines will
 return four points in the plan. Among these, the points situated in the second and third quadrant define a triangle
 with the centre of the XY axis: this will be our "sweep area", where to check if an image is included or not. Note
 that we choose the points with negative Y value (named "A" and "B") due to the translation and rotation operated
