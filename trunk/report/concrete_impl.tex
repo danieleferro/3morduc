@@ -159,7 +159,7 @@ for the of the cylinders which make up the robot.
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=200pt]{img/3morduc_opengl.png}
-    \caption{The 3morduc robotic platform drawn in OpenGL}
+    \caption{Three dimensional model of Morduc}
     \label{fig:3morduc_opengl}
   \end{center}
 \end{figure}
@@ -169,101 +169,219 @@ has been set to 4.0.
 %
 
 %
-\subsection{Data source}
+\subsection{The DataLogic}
 \label{sub:datasource}
 For the reasons explained in section \ref{sec:simulator}, 
 we used a Morduc simulator in order to generate and record 
-test data.
-
-
-
-This chapter will show a concrete implementation of 
-\texttt{IDataLogic}, created to use the log files data written
-in previously runs of Morduc simulations (see chapter \ref{sec:simulator}).
-
-
+test data to use during \textit{offline} tests.
 %
-
+For every simulation session, such data consist of:
 %
-Every simulation is identified by a number of session. It contains several
-images files (the egocentric robot vision) and one textual file, filled with the
-odometer values. For more information about its format, see again chapter
+\begin{itemize}
+  \item a set of captured images, encoded in the png format
+  \item a log file reporting sampled odometry data
+\end{itemize}
+%
+The format of the log file is the one described in section 
 \ref{sec:simulator}.
 %
 
 %
-The concrete class \texttt{DataLogic} presumes to find logs data in a prefixed
-path, since the latter is included in the source code. In order to execute the
-application, log data must be saved in the \texttt{log} upper-level folder (compared
-to the execution path).
+The concrete \texttt{DataLogic} class will, then, provide 
+robot's odometry data and snapshots simply by reading 
+those files.
+%
+Let us have a look at its declaration:
+%
+\begin{lstlisting}[caption={\texttt{DataLogic} declaration}, label={code:datalogic}, frame=trBL]
+class DataLogic : public IDataLogic
+{
+ private:
+  std::vector<image_data> _images_collection;
+  int _index;
+  int _simulation_session;
+  
+ public:
+  DataLogic(int);
+  ~DataLogic();
+  void Command(int);
+  void RetrieveData(robot_data *);
+  void SelectImage(robot_data *, image_data *,
+		   IImageSelector *);
+};
+\end{lstlisting}
+%
+Upon instantiation, \texttt{DataLogic} objects needs to be 
+configurated with a session identifier, to be passed to 
+the constructor. 
 %
 
 %
-\texttt{log} folder must contains a single folder for every logged session, named
-\texttt{log\_$\langle$number of session$\rangle$}. Within this, the images files and the
-textual one are stored.
+In order for the \texttt{DataLogic} objects to find them, 
+log data must be stored within the relative path 
+\texttt{../log}, with respect to the actual execution path.
+%
+Such a directory must contain a single subdirectory for every 
+logged session, named \texttt{log\_$\langle$number of session$\rangle$}. 
 %
 
 %
-To implement \texttt{IDataLogic}, \texttt{DataLogic} must define three methods (for more
-details see chapter \ref{sub:idatalogic}):
-:
+Let us now have a look at how \texttt{DataLogic} implements 
+\texttt{IDataLogic} methods:
 %
-\begin{itemize}
+\begin{lstlisting}[caption={\texttt{DataLogic::Command() method}}, label={code:command_method}, frame=trBL]
+void DataLogic::Command(int command) 
+{
 
-  \item \texttt{Command\{int \}} \\
-    \texttt{int} specifies where robot must move 
+  // sends the command to the robot
 
-  \item \texttt{RetrieveData\{robot\_data *\}} \\
-    \texttt{robot\_data} will be used to return new robot status
-
-  \item \texttt{SelectImage\{robot\_data *, image\_data *, IImageSelector *\}} \\
-    \texttt{robot\_data} points to actual robot status; \texttt{image\_data} will be used
-    to return the chosen image; \texttt{ImageSelector} points to the class where the image
-    selection algorithm is defined.
-
-
-\end{itemize}
+  // in our case, just 
+  // increase index to point the next line of the file
+  _index++;
+}
+\end{lstlisting}
 %
+The \texttt{Command()} method is pretty simple in this 
+implementation. Since \texttt{DataLogic} has been designed 
+for offline testing, there's no actual command to send to the robot.
+%
+For this reason \texttt{Command()} will not take into account
+the received command, the only thing that it does is 
+incrementing the private attribute \texttt{\_index}, which 
+will be used by \texttt{RetrieveData()} to select which line 
+of the log file is to read next.
+%
+\begin{lstlisting}[caption={\texttt{DataLogic::RetrieveData()} method}, label={code:retrievedata_method}, frame=trBL]
+void DataLogic::RetrieveData(robot_data * data)
+{
+  // pointer to text file containing data
+  FILE * position_data;
+  char line[50];
+  
+  std::string * line_read;
+  std::string line_values[4];
+  std::string position_data_name;
+  std::ostringstream o;
+  
+  int time;
+  int line_number = _index;
 
-Since the \texttt{DataLogic} class reads from a textual file robot status (i.e. orientation
-and position), we can not decide the direction in which the robot moves, because a previous
-path has been already covered. For this reason the \texttt{Command} will not take into account
-the received command, but will simply increment an internal counter used to know which is the next
-line to read in the textual file (we remember that every line contains data about robot status).
-%
+  // grabbed image metadata
+  image_data grabbed_frame_data;
+  
+  o << "../log/log_" 
+    << _simulation_session 
+    << "/data_" 
+    << _simulation_session << ".txt";
 
-%
-Different implementation of \texttt{IDataLogic} can instead exploits the \texttt{int} parameters
-in order to send the right command to the robot o the simulator, if the interaction is in real time
-(see chapter \ref{sec:future_works} for more details).
-%
+  position_data_name = o.str();
 
-%
-The \texttt{RetrieveData} method allows to read the new robot status from the session textual file
-and fill the \texttt{robot\_data} pointed struct with the right values. Besides, it adds a new
-\texttt{image\_data} struct to its set, in this case implemented with a \texttt{std::vector} instance.
-The struct added represents the image shoot by the robot in the new position (the egocentric
-vision).
-%
+  position_data = fopen(position_data_name.c_str(), "rt");
 
-%
-Finally, the \texttt{SelectImage} method calls \texttt{ChooseImage} method on a con created instance
-of \texttt{IImageSelector} interface, thanks to the given reference in input. For further details
-about \texttt{ChooseImage} method see chapter \ref{sub:iimageselector}.
-%
+  while(fgets(line, 50, position_data) &&
+	line_number > 1)
+    {
+      line_number--;
+    }
 
+  line_read = new std::string(line);
+
+  std::string buf;
+  std::stringstream ss(*line_read);
+
+  // Create vector to hold our words
+  std::vector<std::string> tokens;
+  
+  // put token in vector element
+  while (ss >> buf)
+    tokens.push_back(buf);
+
+  data->x = atof ( tokens[0].c_str() );
+  data->y = atof( tokens[1].c_str() );
+  data->theta = TO_DEGREES(- atof ( tokens[2].c_str() ));
+  data->time = atof ( tokens[3].c_str() );
+
+  time = (int) data->time;
+
+  // clear the stream and 
+  // add a new value to it
+  o.str("");
+  o.clear();
+  o << "../log/log_" 
+    << _simulation_session 
+    << "/screenshot_" 
+    << _simulation_session 
+    << "_" << time << ".png";
+
+  // fill grabbed frame metadata
+  grabbed_frame_data.x = data->x;
+  grabbed_frame_data.y = data->y;
+  grabbed_frame_data.theta = data->theta;
+  grabbed_frame_data.time = data->time;
+
+  strcpy(grabbed_frame_data.path, o.str().c_str());
+
+  // store the collected metadata 
+  // if it's not already stored
+  for (std::vector<image_data>::iterator it =
+	 _images_collection.begin();
+       it != _images_collection.end();
+       it++)
+    {
+      if ( (*it).time == grabbed_frame_data.time )
+	{
+
+	  return;
+	}
+    }
+
+  _images_collection.push_back(grabbed_frame_data);
+  return;
+}
+\end{lstlisting}
 %
-Because the \texttt{ChooseImage} takes a pointer to the actual robot status and an
-\texttt{image\_data} pointer used to return the chosen image, the main difference lies in the third (and last)
-parameter. The concrete \texttt{ChooseImage} requests an \texttt{std::vector} object with all the image stored,
-whereas a generic \texttt{IDataLogic} implementation can use a different type of set. In this case, the
-\texttt{ChooseImage} method must convert the generic set containing \texttt{image\_data} in to an \texttt{std::vector},
-before calling the \texttt{ChooseImagem} method. Finally, the retrieved image will be then returned.
+What the \texttt{RetrieveData()} do is just read the line from the log 
+file identified by the \texttt{\_index} private attribute of the class.
+Once read, the line is \textit{parsed} and the odometry data contained 
+in it is used to fill the \texttt{robot\_data} passed as argument, in 
+order to return the \textit{current} robot position.
 %
+Behind the curtain, \texttt{RetrieveData()} also creates a new 
+\texttt{image\_data} structure, fills it with the data just 
+gathered and then adds it to the \texttt{\_image\_collection} 
+private attribute.
+%
+This way, every time a new line of the file is read, and, hence, 
+every time a new captured image is available, the \texttt{DataLogic} 
+is made able to keep track of it using its metadata, without actually 
+loading the image - since it would be useless and time-consuming.
+%
+\begin{lstlisting}[caption={\texttt{DataLogic::SelectImage()} method}, label={code:selectimage_method}, frame=trBL]
+void DataLogic::SelectImage(robot_data * robot_status,
+                            image_data * bg_image_data,
+			    IImageSelector * selector)
+{
 
-
-
+  // since our data are already stored with vector,
+  // we simply pass its reference
+  selector -> ChooseImage(robot_status, bg_image_data, &_images_collection);
+}
+\end{lstlisting}
+%
+Finally, \texttt{SelectImage()} calls the \texttt{ChooseImage} method 
+on an object of type \texttt{IImageSelector}, and passes it, as last 
+parameter, a reference to its internal \texttt{\_images\_collection}, 
+so that the selector can actually select the image to set as 
+background.
+%
+%
+%% \texttt{ChooseImage} takes a pointer to the actual robot status and an
+%% \texttt{image\_data} pointer used to return the chosen image, the main difference lies in the third (and last)
+%% parameter. The concrete \texttt{ChooseImage} requests an \texttt{std::vector} object with all the image stored,
+%% whereas a generic \texttt{IDataLogic} implementation can use a different type of set. In this case, the
+%% \texttt{ChooseImage} method must convert the generic set containing \texttt{image\_data} in to an \texttt{std::vector},
+%% before calling the \texttt{ChooseImagem} method. Finally, the retrieved image will be then returned.
+%
 \subsection{Metrics}
 \label{sub:metrics}
 
