@@ -1,6 +1,6 @@
-\section{Setting up a 3morduc simulator}
+\section{Setting up a Morduc simulator}
 \label{sec:simulator}
-A basic exocentric vision system for 3morduc would need, 
+A basic exocentric vision system for Morduc would need, 
 at least, some images captured from the camera mounted 
 on top of it and, for each image, the actual position of 
 the robot at the time it was captured.
@@ -40,7 +40,7 @@ it is simple and immediate to establish several test cases.
 The first simulator adopted was Rosen\cite{rosen}. Written in 
 Erlang \cite{erlang}, Rosen has been developed at the University
 of Catania in order to simulate the behavior of robot with 
-features completely different from 3morduc. The chief one 
+features completely different from Morduc. The chief one 
 was that the robot had its own algorithm to set its movement, 
 it was indeed not guided by a human operator. 
 %
@@ -55,7 +55,7 @@ Rosen made us to look for a more suitable simulator.
 
 %
 In 2006, at the Aalborg University, the Italian student Filippo 
-Privitera wrote a simulator to teleguide the 3morduc robot 
+Privitera wrote a simulator to teleguide the Morduc robot 
 \cite{privitera}. The simulator reproduces the robot (drawing its 
 physical features) situated in a room with a variable numbers 
 of walls. Walls' position is specified by the user, by giving 
@@ -83,7 +83,7 @@ For more information see \cite{privitera}.
 %
 
 %
-With a simulator specifically built for the 3morduc robot, it 
+With a simulator specifically built for the Morduc robot, it 
 was not difficult to edit the source code to obtain what we 
 needed. First of all, we needed to record data about egocentric 
 vision and robot status, because they are the input value 
@@ -146,4 +146,4 @@ Furthermore, with log files the robot route is statically
 decided when they are created. With a network connection user
 could teleguide the robot in real time, without caring 
 if on the server side is present the simulator or the real 
-robot 3morduc.
+robot Morduc.
