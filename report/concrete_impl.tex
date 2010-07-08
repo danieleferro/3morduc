@@ -1,12 +1,59 @@
-\section{A concrete implementation of REAR}
+\section{An exocentric vision system for Morduc}
 \label{sec:concr}
+This section will show how to use \textsf{REAR} to implement a 
+concrete exocentric vision system, specifically designed for 
+Morduc.
+%
+
+%
+As section \ref{sec:rear} explains, in order to get things 
+done, all we need to write is:
+\begin{itemize}
+\item a concrete subclass of \texttt{Robot}
+\item an implementation of the \texttt{IDataLogic} interface
+\item an implementation of the \texttt{IImageSelector} interface
+\end{itemize}
+%
+The class diagram of the complete system is reported in figure 
+\ref{fig:class_diagram_complete}. 
+%
+As it's easy to notice, it features two implementations 
+of the \texttt{IImageSelector} interface: \texttt{SpacialMetricCalc} 
+and \texttt{SweepMetricCalc}. The former is nothing more than 
+a mere implementation of the image selectio method 2 reported in 
+\cite{sugimoto} and already introduced in section \ref{sub:iimageselector}.
+%
+The latter, instead, encapsulates a brand new selection algorithm. 
+It will be widely discussed later in section 
+\ref{subsec:sweep_metric_algorithm}.
+%
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=420pt]{img/class_diagram.png} 
+    \caption{Class diagram of the whole system}
+    \label{fig:class_diagram_complete}
+  \end{center}
+\end{figure}
+%
+\subsection{The Morduc Class}
+
+
+
+
 
 \subsection{Data source}
 \label{sub:datasource}
+For the reasons explained in section \ref{sec:simulator}, 
+we used a Morduc simulator in order to generate and record 
+test data.
 
-This chapter will explain, briefly, a concrete implementation of \\
+
+
+This chapter will show a concrete implementation of 
 \texttt{IDataLogic}, created to use the log files data written
 in previously runs of Morduc simulations (see chapter \ref{sec:simulator}).
+
+
 %
 
 %
