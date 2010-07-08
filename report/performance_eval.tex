@@ -2,28 +2,31 @@
 \label{sec:performance_evaluation}
 
 This chapter will describe some tests performed at the University of Hertfordshire
-(Hatfield, UK), along with their results. The R.E.A.R. framework has been tested with
-the "sweep metric algorithm" (chapter \ref{subsec:sweep_metric_algorithm}), which can
-be configured with some initial parameters (chapter \ref{subsec:parameters}).
+(Hatfield, UK), along with their results. 
+%
+The application described in \ref{sec:concr} has been tested 
+featuring the \textit{sweep metric algorithm} (see section 
+\ref{subsec:sweep_metric_algorithm}), which was 
+given different paramaters per each testing session.
 %
 
 %
-The final target is to underline the chief differences occurring when one or more parameters
-change their values, within defined ranges. After asking users their options and perceptions
+The test target is to underline the main differences 
+occurring when one or more parameters change their values, 
+within defined ranges. After asking users their options and perceptions
 about teleguiding the robot with an exocentric vision, we could at the end identify the advantages
 and the disadvantages correlated with different sets of initial parameters.
 %
 
 %
-Data about robot status and egocentric images are not retrieved dynamically from an active server (the
-robot itself or a simulator), but read from files formerly stored. This means that user can not choose
-the direction in which the robot moves, but simply request the next step. All the step form a path
-already performed by the robot and saved in log files. 
-
+Since working offline (see section \ref{sec:concr}), users can not actually 
+command the robot, but simply request the application to go one step
+further and, hence, just see the robot performing the trajectory 
+it did during the recorded test session.
 %
 
 %
-Be careful that this tests do not have a scientific validity. In literature there is a lot of theories
+Be advised that this tests do not have a scientific validity. In literature there is a lot of theories
 and rules to follow in order to demonstrate or confute a specific hypothesis. In our case, we simply
 intend to test R.E.A.R. application by presenting it to users who were not involved in its development,
 noting down their impressions. Even tough, probably, the basic rules for testing has not been followed,
@@ -33,8 +36,8 @@ we think our test case can be useful to identify future improvements (see chapte
 \label{subsec:parameters}
 
 Testing the "sweep metric algorithm" (see chapter \ref{subsec:sweep_metric_algorithm}) means to define
-the parameters hold by the \texttt{SweepMetricCalc} objects. All these parameters are set with the
-constructor method, whose signature is the following:
+the parameters hold by the \texttt{SweepMetricCalc} objects. All these parameters are 
+to be passed to the class constructor, whose signature is the following:
 \\
 %
 \begin{verbatim}
@@ -88,15 +91,16 @@ degrees would not include enough images to teleguide the robot properly.
 %
 
 %
-\texttt{angle\_offset} is another fixed parameter, with the value of 40 degrees. Exceeded this value we risk to not include
-the robot within the camera field of view, when camera and robot present an orientation difference greater than 40 degrees.
-All these images can not compete for the background image, and have to be excluded thanks this parameter.
+\texttt{angle\_offset} is another fixed parameter, set to 40 degrees. Exceeding this value, we risk not to include
+the robot within the camera field of view, when camera and robot present an orientation offset greater than 40 degrees.
+Hence, all those images whose orientation exceedes 40 degrees cannot compete to be the background image, 
+and have to be excluded.
 %
 
 %
 The standard deviations \texttt{sigma\_distance} and \texttt{sigma\_angle} belong to the set of
 fixed values too. Changing the standard deviation in a Gaussian function means only to increase or decrease its higher
-point, without affecting other Gaussian property. Because later on it will be selected the greatest value among
+point, without affecting other Gaussian properties. Because later on it will be selected the greatest value among
 all the returned ones, without any absolute reference, we do not care about the standard deviations value.
 \texttt{sigma\_distance} and \texttt{sigma\_angle} are set with a default positive amount.
 %
