@@ -51,7 +51,7 @@ An example of what a user sees is showed in figure \ref{fig:snap}.
 %
 
 %
-Main issues in the approch we have just described are 1. 
+Main issues in the approach we have just described are 1. 
 \textit{where} to draw the robot within the viewing frustum 
 and 2. \textit{which} of the captured images is to be used 
 as background.
@@ -186,7 +186,7 @@ a code or a sequence number.
 
 %
 The latter is similar to the former, it is meant to be 
-used by \texttt{DataManager} to exchange informations
+used by \texttt{DataManager} to exchange information
 about the current robot position and orientation with 
 lower-level objects, in a compact way.
 %
@@ -311,7 +311,7 @@ would look like this:
 
 OpenGL does not provide any \textit{camera}, anyway it proved 
 to be extremely useful to have a helper class that permits 
-to easily set position and orienation of the user's 
+to easily set position and orientation of the user's 
 point of view and sight, without worrying about lower-level 
 OpenGL details.
 %
@@ -470,7 +470,7 @@ void DataManager::NextStep(int command) {
       _camera -> SetYAngle( _bg_image_data -> theta - 90);
     }
 
-  // actually set the choosen image as background
+  // actually set the chosen image as background
   LoadGLTextures(_texture, _bg_image_data->path);
 }
 \end{lstlisting}
@@ -514,7 +514,7 @@ its orientation accordingly to the image metadata.
 \subsubsection{The IDataLogic interface}
 \label{sub:idatalogic}
 
-\texttt{IDataLogic} provides a communication inteface 
+\texttt{IDataLogic} provides a communication interface 
 with the robot, decoupling the \texttt{DataManager} 
 from the actual technology used to interact with it 
 and to collect data from it. Its declaration is: 
@@ -586,7 +586,7 @@ void DataLogic::SelectImage( robot_data * robot_status,
 Last, but not least, the \texttt{IImageSelector} interface
 defines the type of classes that encapsulate an image 
 selection algorithm. It declares just a method, that 
-we have already encountered in the preovious section:
+we have already encountered in the previous section:
 %
 \begin{lstlisting}[caption={\texttt{IImageSelector} declaration}, label={code:iimageselector}, frame=trBL]
 class IImageSelector
@@ -616,11 +616,11 @@ estimates the euclidean distance between robot and a generic image.
 If we decided to choose the closest image to the robot, we would
 show the egocentric vision, because the algorithm would always
 select the image coupled with distance equal to zero. We remember
-that the egocentric vision image is always prensent in our images'set.
+that the egocentric vision image is always present in our images' set.
 %
 In order to not show only the egocentric vision, the \texttt{ChooseImage()}
 does not return the image coupled with the minimum distance, but the one
-(if avaiable) with the minimum distance greater than zero.
+(if available) with the minimum distance greater than zero.
 %
 
 We could, then, write:
