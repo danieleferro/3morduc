@@ -364,7 +364,9 @@ void DataLogic::SelectImage(robot_data * robot_status,
 
   // since our data are already stored with vector,
   // we simply pass its reference
-  selector -> ChooseImage(robot_status, bg_image_data, &_images_collection);
+  selector -> ChooseImage(robot_status, 
+                          bg_image_data, 
+                          & _images_collection);
 }
 \end{lstlisting}
 %
