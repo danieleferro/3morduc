@@ -20,12 +20,14 @@ OpenGL is a state machine, which means that you specify various
 states or modes which remain in effect until changed.
 Each command that is executed is carried out within the current 
 state. States include things like the current window (where
-drawing will appear), color, viewing and projection matrices, 
+drawing will appear), colour, viewing and projection matrices, 
 drawing modes, positions and characteristics of lights,
 materials, and features. These elements will not be introduced 
 throughout this document, as they are already explained in
 various tutorials \cite{opengl:brieftutorial} o manual books 
 \cite{opengl:redbook}.
+%
+
 %
 Nevertheless, it is important to keep the idea of a 
 "state machine" in mind as you work with OpenGL in order to 
@@ -34,11 +36,13 @@ is not reset when a function starts or ends - the current state
 is in effect until something changes it, regardless of where 
 in the program the next thing is. 
 %
-In the following, we are going to analyze some peculiar 
+
+%
+In the following, we are going to analyse some peculiar 
 aspects of OpenGL. Anyway, this chapter is not intended 
-to be an exaustive guide to OpenGL programming 
+to be an exhaustive guide to OpenGL programming 
 - like \cite{opengl:distilled}, \cite{opengl:redbook}, but,
-instead, as a collection of short how-tos regarding the 
+instead, as a collection of short how-to regarding the 
 aspects of OpenGL which we have dealt with the most 
 during our work. 
 %
@@ -53,7 +57,7 @@ taking different parameters. They used, instead, the following scheme:
     glCommandName{NTd}()
 \end{verbatim}
 %
-that is, every OpenGL function is preceeded by \texttt{gl} and can be 
+that is, every OpenGL function is preceded by \texttt{gl} and can be 
 followed by
 %
 \begin{itemize}
@@ -87,30 +91,33 @@ For example, the \texttt{glVertex} can be invoked as:
 When drawing up a scene with OpenGL, the order in which polygons are drawn
 greatly affects the blended result, especially when it comes to 3D.
 %
+
+%
 The depth buffer keeps track of the distance between the viewpoint and 
 the portion of the object occupying a given pixel in a window on the 
-screen; when another candidate color arrives for that pixel, it's drawn 
+screen; when another candidate colour arrives for that pixel, it's drawn 
 only if its object is closer to the viewpoint, in which case its depth
 value is stored in the depth buffer. With this method, obscured (or hidden)
 portions of surfaces aren't drawn and, therefore, aren't used for
 blending.
+%
+
 %
 In order to enable the use of the depth buffer, the 
 \texttt{glutInitDisplayMode()} can be used, passing the 
 GLUT\_DEPTH macro as an argument.
 %
 
-%
-% parlare delle primitive per disegnare?
-%
 \subsection{OpenGL viewing model}
 OpenGL not only provides function to specify models for 
-three-dimensional objects but also allowes to specify the 
+three-dimensional objects but also allows to specify the 
 position for each of the models we want to display in a 
 scene and also the point from which to view the scene.
 %
+
+%
 The transformation process used to produce a scene for viewing 
-is analogous to taking a photograph with a camera (infact, it 
+is analogous to taking a photograph with a camera (in fact, it 
 is often addressed as \textit{the camera analogy}\cite{opengl:cameraanalogy}) 
 and consists of four steps, known as 
 \textit{the OpenGL pipeline} (see figure \ref{fig:openglpipe}).
@@ -128,12 +135,16 @@ coordinates of the models we want to put on the scene. Such
 coordinates are then multiplied by the a 4x4 \textbf{modelview} 
 matrix, that is, a matrix that stores both \textit{model} and 
 \textit{viewing} transformations and which elements have been set 
-set accordingly to \textit{actually} where to place items in the scene.
+accordingly to \textit{actually} where to place items in the scene.
+%
+
 %
 The second step involves the \textbf{projection} matrix, 
 which is applied to the incoming object coordinates to define a 
 viewing volume. Of course, objects outside this volume are clipped 
 so that they are not drawn in the final scene. 
+%
+
 %
 In the last two steps of the pipe, incoming coordinates are transformed 
 into actual two-dimensional window coordinates and other stuff, such as 
@@ -145,6 +156,8 @@ provides quite a lot of functions: some of them are
 \textit{general purpose}, that is, they can be used to edit both of them, 
 others are specifically intended to edit either the modelview or the 
 projection matrix.
+%
+
 %
 The most used \textit{general purpose} functions are 
 %
@@ -178,8 +191,8 @@ editing the modelview matrix. The most used are
   (x, y, z). The angle parameter specifies the angle of rotation in degrees.
 \end{itemize}
 Two examples are shown in figures \ref{fig:gltranslate}, \ref{fig:glrotate}:
-the first one showes the effects of invoking \texttt{glTranslatef(0.0, 0.0, -5.0)} 
-on the view, while the second one showes how to rotate a model of 45 degrees 
+the first one shows the effects of invoking \texttt{glTranslatef(0.0, 0.0, -5.0)} 
+on the view, while the second one shows how to rotate a model of 45 degrees 
 invoking \texttt{glRotatef(45.0, 0.0, 0.0, 1.0)}.
 %
 \begin{figure}[!h]
@@ -348,12 +361,16 @@ As shown in figure \ref{fig:lighting} OpenGL features three types of light:
 Ambient light simulates indirect lighting. It illuminates all 
 geometry in a scene at the same intensity.
 %
+
+%
 Diffuse light illuminates a surface based on its orientation 
 to a light source. OpenGL diffuse lighting adheres to 
 Lambert's law, in which the amount of illumination is proportional 
 to the cosine of the angle between the surface normal and the 
 light vector, and the diffused light reflects equally in 
 all directions.
+%
+
 %
 Specular light approximates the reflection of the light source on 
 a shiny surface.
@@ -393,15 +410,19 @@ Perspective in OpenGL can be something very trick to work with.
 It all starts from the definition of \textit{frustum}, as the portion
 of space seen from the point of view (see \cite{wiki:frustum} 
 for further information). To define the frustum we use the function
-named 'gluPerspective' \cite{opengl:gluPerspective}, which takes 
+named \texttt{gluPerspective()} \cite{opengl:gluPerspective}, which takes 
 four parameters.
 %
+
+%
 The first parameter indicates the \textit{FOV} - i.e. Field Of View -
-along the Y axis, in deegres: the chosen value is 60. The
+along the Y axis, in degrees: the chosen value is 60. The
 second one expresses ratio between actual width and height, 
 in our case 624/442. The last two parameters specify the distance 
 from the viewer to the near clipping plane and to the far one, 
 according to the frustum definition.
+%
+
 %
 By using two close values for the far and near clipping planes 
 distance the application will not be able to display 3d
@@ -412,12 +433,20 @@ the last two parameters of the \texttt{gluPerspective()} function. In
 our case the chosen values are 0.001 and 100000 (its ratio is 
 equal to 10exp8).
 %
+
+%
 The \texttt{gluPerspective()} function affects the \textbf{projection} 
 matrix, previously selected by changing matrix mode. Finally,
 in order to set our point of view, we must change matrix again, 
-this time to work with the \textbf{modelview} matrix. The function named
+this time to work with the \textbf{modelview} matrix.
+%
+
+%
+The function named
 \texttt{gluLookAt()} allows to set the point of view, with its coordinates, 
 the coordinates of the point to look at and its orientation.
+%
+
 %
 See \cite{opengl:gluLookAt} for further details.
 %
