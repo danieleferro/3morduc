@@ -23,19 +23,25 @@ and \texttt{SweepMetricCalc}. The former is nothing more than
 a mere implementation of the image selection method 2 reported in 
 \cite{sugimoto} and already introduced in section \ref{sub:iimageselector}.
 %
-The latter, instead, encapsulates a brand new selection algorithm. 
-It will be widely discussed later in section 
-\ref{subsec:sweep_metric_algorithm}.
+
 %
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=420pt]{img/class_diagram.png} 
+    \includegraphics[width=400pt]{img/class_diagram.png} 
     \caption{Class diagram of the whole system}
     \label{fig:class_diagram_complete}
   \end{center}
 \end{figure}
 %
+
+The latter, instead, encapsulates a brand new selection algorithm. 
+It will be widely discussed later in section 
+\ref{subsec:sweep_metric_algorithm}.
+
+
 \subsection{The Morduc Class}
+\label{subsec:morducclass}
+
 The \texttt{Morduc} class publicly inherits from \texttt{Robot} 
 and, hence, implements the \texttt{DrawRobot()} method:
 %
