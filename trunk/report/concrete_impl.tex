@@ -169,8 +169,8 @@ has been set to 4.0.
 %
 
 %
-\subsection{The DataLogic}
-\label{sub:datasource}
+\subsection{The DataLogic Class}
+\label{sub:datalogic}
 For the reasons explained in section \ref{sec:simulator}, 
 we used a Morduc simulator in order to generate and record 
 test data to use during \textit{offline} tests.
@@ -382,13 +382,25 @@ background.
 %% \texttt{ChooseImage} method must convert the generic set containing \texttt{image\_data} in to an \texttt{std::vector},
 %% before calling the \texttt{ChooseImagem} method. Finally, the retrieved image will be then returned.
 %
-\subsection{Metrics}
+\subsection{Image selection algorithms}
 \label{sub:metrics}
+As already sayed, there exists many image selection algorithms. 
+Three of them are presented in \cite{sugimoto} and, according 
+to the results presented, two proved to be unsatisfactory for 
+they do not produced results that could effectively improve 
+the quality of the operator-robot interaction.
+%
+A third one is told to be better but, according to us, it has 
+been described poorly and, furthermore, no actual implementation 
+of it is given.
+%
 
-This chapter will introduce two algorithms implemented to choose the
-background image, by defining the \texttt{ChooseImage} function (see
-chapter \ref{sub:iimageselector}).
-
+%
+The rest of this chapter will present the theoretical results 
+of our investigations on image selection algorithms: 
+specifically, it will introduce two algorithms,
+which have been implemented by defining two subclasses of 
+the \texttt{IImageSelector} interface.
 %
 
 %
@@ -403,7 +415,8 @@ pointer passed to \texttt{ChooseImage} method).
 %
 
 %
-Both algorithms take its stand on a specific metric, expressed by the \texttt{Calculate}
+Moreover, both algorithms take its stand on a specific metric, 
+expressed by the \texttt{Calculate}
 method.
 %
 
@@ -432,10 +445,7 @@ score.
 
 %
 For further details, we refer to chapter \ref{sub:iimageselector}.
-
-
-
-
+%
 \subsubsection{The spacial metric algorithm}
 \label{subsec:spacial_metric_algorithm}
 
