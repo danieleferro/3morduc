@@ -390,7 +390,8 @@ As already said, there exists many image selection algorithms.
 Three of them are presented in \cite{sugimoto} and, according 
 to the results presented, two proved to be unsatisfactory for 
 they do not produced results that could effectively improve 
-the quality of the operator-robot interaction.
+the quality of the operator-robot interaction in situations 
+in which the robot moves along comples trajectories.
 %
 A third one is told to be better but, according to us, it has 
 been described poorly and, furthermore, no actual implementation 
@@ -398,55 +399,38 @@ of it is given.
 %
 
 %
+We, then started an investigation on image selection algorithms.
 The rest of this chapter will present the theoretical results 
-of our investigations on image selection algorithms: 
-specifically, it will introduce two algorithms,
-which have been implemented by defining two subclasses of 
-the \texttt{IImageSelector} interface.
+of our investigations:specifically, it will introduce 
+two algorithms, which have been implemented by means of 
+the definition of two subclasses of the 
+\texttt{IImageSelector} interface.
 %
 
 %
-Both algorithms use a \texttt{Calculate} function to assign a score
-value for each image, by knowing the robot status and a single image.
+Both classes use a \texttt{Calculate} method to assign a 
+\textit{score}. Such a score is computed according to 
+a specific \textit{metric}, that is, a function that, 
+given a pair <\texttt{robot\_data, image\_data}>, 
+returns a number. 
+%
+The \texttt{robot\_data} identifies the robot current position, 
+while the \texttt{image\_data} contains the position 
+in which the image we want to calculate the score of, 
+was taken.
 %
 
 %
-After assigning a score for every collected image, the one coupled with the
-lower score will be returned (or better, assigned to the \texttt{image\_data}
-pointer passed to \texttt{ChooseImage} method).
+In both cases, after assigning a score to every collected image, 
+the one with the lower score will be returned 
+(or better, assigned to the \texttt{image\_data} pointer 
+passed to \texttt{IImageSelector::ChooseImage} method).
 %
 
 %
-Moreover, both algorithms take its stand on a specific metric, 
-expressed by the \texttt{Calculate}
-method.
-%
-
-%
-In our case, a metric or distance function is a function which defines a
-distance between elements belonging to two different and separate sets. The
-first one contains the robot status elements, the second one the egocentric images
-shot by the robot. Both types of elements are represented, in practice, by two structures
-in C++ (see diagram in figure \ref{fig:class_diagram}).
-%
-
-%
-The \texttt{Calculate} function returns a score (or distance) value associated with a robot
-status and a single image. The former is retrieved directly from the \texttt{ChooseImage} 
-method, the latter by iterating the image collection parameter.
-%
-
-%
-Even though the metric function is able to work with every couple of input
-data, the two concrete instances of \texttt{IImageSelector} will call
-the \texttt{Calculate} method for every stored images, but always with the
-same robot status. In this way it is possible to find which is the closer (according to the
-chosen metric) image to a specific robot status, by selecting the image coupled with the lowest
-score.
-%
-
-%
-For further details, we refer to chapter \ref{sub:iimageselector}.
+This way, it is possible to find which of the snapshots is 
+the \texit{closest} (according to the chosen metric) to 
+the current robot position.
 %
 \subsubsection{The spacial metric algorithm}
 \label{subsec:spacial_metric_algorithm}
