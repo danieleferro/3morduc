@@ -491,11 +491,17 @@ the robot from its point of view.
 This limit makes the algorithm good only for situations 
 in which the robot moves along straight trajectories.
 %
-The \texttt{Sweep Metric Algorithm}, presented in the next section, 
+The \textit{Sweep Metric Algorithm}, presented in the next section, 
 will try to go behind this limits.
 %
 \subsubsection{The sweep metric algorithm}
 \label{subsec:sweep_metric_algorithm}
+%
+The  \textit{Sweep Metric Algorithm}, encapsulated into the 
+\texttt{SweepMetricCalc} class, aims at being a more 
+complete and flexible image selection algorithm than the one 
+we analyzed in the previous section.
+%
 Let us assume to have  mobile robot moving on a plan, 
 taking snapshots from its egocentric-mounted camera.
 %
@@ -534,7 +540,7 @@ portion of the plane (colored with fading red), namely the
 Since we would like to see the robot from its rear, 
 all images taken within this area will be taken into account
 when selecting the image to set as background.
-The other ones will be discarded. 
+The other ones will be discarded.
 %
 
 %
@@ -551,8 +557,14 @@ therefore the camera will not see the robot.
 %
 
 %
-All the remained images will be assigned a score.
-The score is computed as the sum of two factors;
+To recognize all discarded images, the \tettt{Calculate} method 
+assigns them -2 as score.
+%
+
+%
+The score of all the remaining image is computed as sum 
+of two factors:
+%
 the first takes into account the image angle orientation: 
 the more the image orientation angle is close to the 
 robot orientation angle, the more the score is high.
@@ -576,7 +588,7 @@ Moreover, since Gaussian is a surjective function,
 it is defined for all real numbers.
 %
 This way, images with a little orientation difference with 
-the robot current orientation will be assigned a higher value.
+the robot current heading will be assigned a higher value.
 %
 
 %
@@ -584,66 +596,53 @@ The second factor is computed taking into account the Euclidean
 distance between the position in which the image was taken 
 and the robot current position. 
 %
-The approach followed here is the same of the \textit{spacial metric 
-algorithm} presented in the previous section: 
+The approach followed here is the same of the \textit{spacial 
+metric algorithm} presented in the previous section: 
+given an \textit{optimal} distance, the more the image position 
+is close to such a distance, the more the score assigned 
+to it will be high.
 %
-The preferable image would be distant a predefined quantity
-from the robot, specified by the user. This value
-indicate us where to centre another Gaussian function, in 
-order to obtain the score from the distance between image and 
-robot. The more the image is close to the preferred distance, 
-the more the score assigned will be high.
-%
-
-%
-The reasons that justifies the use of the Gaussian function are the same previously explained for the angle
-difference. The values obtained from the two Gaussian functions, after adding them, form the global score.
+This time, instead of using a \textit{triangle} function, 
+we will use a Gaussian function, with a given variance and 
+whose centre will be the optimal distance.
 %
 
 %
-To summarize the method above described (illustrated in figure \ref{fig:sweep_angle_diagram}), we coupled
-every image with a score: the one with the maximum value will be chosen and put as background. If the image is
-not included in the sweep area (defined by a sweep angle and therefore by the "c" and "d" line) it has to be
-discarded. The score assigned will be -2.
+If the image position and orientation coincide with robot position 
+and orientation - i.e. the Euclidean distance between the image and 
+the robot is zero, the image represents the egocentric vision. 
+The score coupled with the egocentric vision will 
+always be -1.
 %
 
 %
-The images situated within the sweep area, but with an orientation angle that differs too much from the robot
-orientation angle, have to be discarded as the previous one: the score assigned will be -2 again.
-If the image position and orientation coincide with robot position and orientation, the image represents the
-egocentric vision. We remember that in our set there will always be the egocentric image, and that this will be
-choose as background when no other image for exocentric vision are available. The score coupled with the egocentric 
-vision will be -1.
+Finally, all computer scores are multiplied by -1 and 
+the image with the littlest score is returned.
 %
 
 %
-Finally, all the other images - if present - are coupled with a positive number, because obtained by the sum of
-values calculated with Gaussian functions. The most high score indicate the better image to chose as background;
-if there are no preferable images, the image with -1 (i.e. the egocentric image) will be chosen.
-%
-
-%
-Because the \texttt{ChooseImage} method is designed to choose the image with the minimum score and not with maximum,
-all we have to do is multiply every score for -1 before returning it: in this way we convert a maximum research in
-a minimum one.
-%
-
+If the sweep area does not contain any valid image, all images will
+have 2 as score. In such a situation, since the \texttt{ChooseImage} 
+search the image with the lowest score, the egocentric image 
+will be chosen.
 %
 \paragraph{The WithinBoundaries algorithm}
 \label{par:withinboundaries}
-
-Checking if an image is included in the "sweep angle" (see chapter \ref{subsec:sweep_metric_algorithm} for its
-definition) could be something not too easy to implement. Given image coordinates, robot coordinates and robot
-orientation, the \texttt{WithinBoundaries} method must replays (with a true or false response) to the question
-"is the image included in the sweep area ?", shown in previous diagram (figure \ref{fig:sweep_angle_diagram}).
+%
+Checking if an image is included within the \textit{sweep area}
+could be something tricky to implement. Given image coordinates, 
+robot coordinates and robot orientation, the \texttt{WithinBoundaries} 
+method of the \texttt{SweepMetricCalc} class 
+will anwer (with a true or false response) the question
+"\textit{is the image included within the sweep area ?}".
 %
 
 %
-Since the area defined by the "sweep angle" depends on robot coordinates and orientation, we should insert in
-the source code a lot of geometrical and mathematical rules, frequently not immediately comprehensible
-(even for the authors). For this reason we decided to use a different approach.
+Since the area defined by the "sweep angle" depends on robot 
+coordinates and orientation, the \texttt{Within Boundaries}
+performs some geometrical tricks in order to give its answer. 
+Such tricks deserve some space to be fully explained.
 %
-
 \begin{figure}[htp]
   \begin{center}
     \subfigure[Initial robot and image coordinates]{
@@ -673,38 +672,53 @@ the source code a lot of geometrical and mathematical rules, frequently not imme
 \end{figure}
 
 %
-Before checking if a point (i.e. an image) is included in the "sweep angle", the robot and image coordinates
-are translated and then rotated, in order to move the robot in the origin of the axis and to overlap its
-orientation arrow with the y-axis. The two transformations are shown in figure \ref{fig:sweepal_translate} and
-\ref{fig:sweepal_rotate}, while the robot and image starting coordinates are shown in figure \ref{fig:sweepal_start}.
+Before checking whether a point (i.e. an image) is included 
+whithin the \texttit{sweep area}, the robot and image coordinates
+are translated and then rotated, in order to move the robot in 
+the origin of the axis and to overlap its orientation arrow with 
+the y-axis. The two transformations are shown in figure 
+\ref{fig:sweepal_translate} and \ref{fig:sweepal_rotate}, 
+while the robot and image starting coordinates are shown in 
+figure \ref{fig:sweepal_start}.
 %
 
 %
-After executing these transformations, the sweep area is always situated in the second and third quadrant, as
-shown in figure \ref{fig:sweepal_rotate}. Now the "c" and "d" lines pass both from the origin. For an exhaustive
-definition of line "c" and "d" see chapter \ref{subsec:sweep_metric_algorithm}.
+After executing these transformations, the sweep area is always 
+situated in the second and third quadrant, as 
+shown in figure \ref{fig:sweepal_rotate}. Now the "c" and "d" 
+lines pass both from the origin.
 %
 
 %
-If we draw a circle centered in the axis origin, the intersection between the circle and the "c" and "d" lines will
-return four points in the plan. Among these, the points situated in the second and third quadrant define a triangle
-with the centre of the XY axis: this will be our "sweep area", where to check if an image is included or not. Note
-that we choose the points with negative Y value (named "A" and "B") due to the translation and rotation operated
-before. Again, see figure \ref{fig:sweepal_triangle} for a graphical example.
+If we draw a circle centered in the axis origin, the intersection 
+between the circle and the "c" and "d" lines will
+return four points in the plan. Among these, the points situated 
+in the second and third quadrant define a triangle
+with the centre of the XY axis: this will be our "sweep area", 
+where to check if an image is included or not. Note
+that we choose the points with negative Y value (named "A" and "B") 
+due to the translation and rotation operated
+before. Again, see figure \ref{fig:sweepal_triangle} 
+for a graphical example.
 %
 
 %
-The circle radius must be a value large enough to include a wide number of images. In our case we defined it with a
-value of five hundred, in order to reduce the difference between the abstract "sweep area" and the practical triangle
+The circle radius must be a value large enough to include a wide 
+number of images. In our case we defined it with a
+value of five hundred, in order to reduce the difference between 
+the abstract "sweep area" and the actual triangle 
 "AOB" (figure \ref{fig:sweepal_triangle}) used to simplify the algorithm.
 %
 
 %
-Defined the "AOB" triangle, we have to cope with a well-known problem: checking if a point is included or not in a
-triangle. The better (and more rapid) way to resolve the problem exploits the cross product between vectors
-in three-dimensional Euclidean space.
+We have now reduced the problem to check whether a point 
+lies on the \textit{sweep area} to a well-known problem:
+checking if a point is included whithin triangle
+\cite{withinboundaries:pointintriangle}. 
 %
-
+The better (and more rapid) way to resolve such problem 
+exploits the cross product between vectors
+in three-dimensional Euclidean space.
 %
 \begin{figure}[!h]
   \begin{center}
@@ -713,8 +727,6 @@ in three-dimensional Euclidean space.
     \label{fig:sweepal_crossproductABC}
   \end{center}
 \end{figure}
-%
-
 Referring to the image \ref{fig:sweepal_crossproductABC}, the cross product of [A-B] and [A-p] will result a vector
 pointing out of the screen. On the other hand, the cross product of [A-B] and [A-p'] will result a vector pointing
 into the screen.
@@ -740,15 +752,8 @@ side of CA segment as B, then it is in the triangle.
 %
 
 %
-The chief disadvantage regarding the approach above described is that the sweep angle value must be strictly greater
+The main disadvantage regarding the approach above described is that the sweep angle value must be strictly greater
 than zero and strictly less than ninety degrees. If the sweep angle exceeds previous limits the algorithm will executes
 with a wrong triangle AOB (we remember that AOB angle, shown in figure \ref{fig:sweepal_triangle}, is equal to twice
 the sweep angle).
-%
-
-%
-The described procedure, whose aim is knowing if a point is included within a triangle, can be found in reference
-\cite{withinboundaries:pointintriangle}. Its result is in the end the sought answer to the beginning question "is the
-image included in the sweep area ?" (figure \ref{fig:sweep_angle_diagram}) and will be returned by the
-\texttt{WithinBoundaries} method by means of a boolean value.
 %
