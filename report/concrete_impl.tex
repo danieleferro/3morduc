@@ -402,7 +402,7 @@ of it is given.
 %
 We, then started an investigation on image selection algorithms.
 The rest of this chapter will present the theoretical results 
-of our investigations:specifically, it will introduce 
+of our investigations: specifically, it will introduce 
 two algorithms, which have been implemented by means of 
 the definition of two subclasses of the 
 \texttt{IImageSelector} interface.
@@ -491,8 +491,52 @@ the robot from its point of view.
 This limit makes the algorithm good only for situations 
 in which the robot moves along straight trajectories.
 %
-The \textit{Sweep Metric Algorithm}, presented in the next section, 
-will try to go behind this limits.
+The \textit{Sweep Metric Algorithm}, presented section
+\ref{subsec:sweep_metric_algorithm}, will try to go beyond 
+this limit.
+%
+
+%
+\subsubsection{The SpacialMetricCalc class}
+The \texttt{SpacialMetricCalc} class encapsulates the 
+algorithm presented in the previous section.
+%
+The value of the \textit{optimal} distance is hardcoded in the
+\texttt{Calculate} function:
+%
+\begin{lstlisting}[caption={\texttt{SweepMetricCalc} class declaration}, label={code:sweepmetriccalc}, frame=trBL]
+float SpacialMetricCalc::
+          Calculate(robot_data * robot_status, 
+                    image_data * bg_image_data) {
+
+  float distance;
+  float score;
+  float optimal_distance = 20;
+
+  distance = 
+    sqrt( pow((robot_status -> x ) - 
+              (bg_image_data -> x), 2) +
+	  pow((robot_status -> y ) - 
+              (bg_image_data -> y), 2) );
+
+  if ( distance <= optimal_distance )
+    score = distance / optimal_distance;
+ else
+    score = - ( distance - 2 * optimal_distance) /
+            optimal_distance;
+
+  return (- score);
+}
+\end{lstlisting}
+%
+It is not a good solution since, every time one wants to change 
+such a values should recompile the code. 
+%
+On the other hand, this is just a prototype of an algorithm we 
+abandoned almost immediately. That is why we did not make any 
+code improvement.
+%
+
 %
 \subsubsection{The sweep metric algorithm}
 \label{subsec:sweep_metric_algorithm}
@@ -756,4 +800,48 @@ The main disadvantage regarding the approach above described is that the sweep a
 than zero and strictly less than ninety degrees. If the sweep angle exceeds previous limits the algorithm will executes
 with a wrong triangle AOB (we remember that AOB angle, shown in figure \ref{fig:sweepal_triangle}, is equal to twice
 the sweep angle).
+%
+\subsubsection{The SweepMetricCalc class}
+Once we are done with the description of the algorithm, 
+let us see how to actually use the \texttt{SweepMetricCalc} 
+class. 
+%
+
+%
+All is needed in order to use the class, is to instantiate it,
+using its conversion constructor:
+%
+\begin{lstlisting}[caption={\texttt{SweepMetricCalc} class declaration}, label={code:sweepmetriccalc}, frame=trBL]
+SweepMetricCalc::SweepMetricCalc( float sweep_angle,
+				  float angle_offset,
+				  float mu_distance,
+				  float sigma_distance,
+				  float mu_angle,
+				  float sigma_angle );				  
+\end{lstlisting}
+%
+Here is a brief description of the constructor parameters:
+%
+\begin{itemize}
+  \item \texttt{sweep\_angle} \\
+    half the angle which defines the \textit{sweep area}
+  \item \texttt{angle\_offset} \\
+    maximum difference allowed between robot and 
+    image orientation 
+  \item \texttt{mu\_distance} \\
+    expected value (i.e. mean value) for the Gaussian 
+    which assigns the score on the basis of distance between
+    image and robot
+  \item \texttt{sigma\_distance} \\
+    standard deviation for the Gaussian which assigns the 
+    score on the basis of distance between image and robot
+  \item \texttt{mu\_angle} \\
+    expected value (i.e. mean value) for the Gaussian which 
+    assigns the score on the basis of orientation difference
+    between image and robot
+  \item \texttt{sigma\_angle} \\
+    standard deviation for the Gaussian which assigns the 
+    score on the basis of orientation difference between image
+    and robot
+\end{itemize}
 %
