@@ -1,22 +1,9 @@
 REAR
 
 • analisi sistematica delle caratteristiche del vostro approccio: ruolo dei parametri principali (tipo di traiettoria, distanza ottimale, angoli di traiettoria); prove con differenti tipi di settings
-• inserire immagini (screenshots?)
-• spostamento sistema riferimento (capitolo 4)
-• estendere paragrafo camera (capitolo 5)
-• pacchetto con make e dipendenze
-• breve spiegazione classi DataManager e DataLogic
-• capitolo strumenti utilizzati
 • spiegazione tasti nel readme (s, o, p)
 
 
 Futuro:
 
-• socket di comunicazione
 • evidenziare possibilita` di allontanamento camera in caso di rotazione con angolo ampio
-• implementazione 3d
-• gestione collisioni
-• interfaccia grafica per definire alcuni parametri iniziali
-
-
-chiedere a luca e trupia per i documenti

@@ -7,7 +7,7 @@ uniform way.
 %
 
 %
-An important point could be making a comparison between the \texttt{Sweep Angle
+An important point is making a comparison between the \texttt{Sweep Angle
 Algorithm} (see chapter \ref{subsec:sweep_metric_algorithm}) and the 3rd method
 described in article \cite{sugimoto} (pages 6 and 7).
 The formula used in \cite{sugimoto} to compare the view-point of an image with
@@ -20,3 +20,58 @@ ties them together.
 After resolving and implementing the formula, it could be interesting to evaluate
 the same case tests with the two approaches, in order to underline the advantages
 and the disadvantages shown by each method and compare them.
+%
+
+%
+As already discussed in chapter \ref{sec:simulator}, another possible feature to
+implement is a communication system between a concrete \textsf{R.E.A.R.}
+application and a \textit{generic server}. The latter could be the robot itself,
+situated in Catania, or a simulator.
+%
+
+%
+In both cases, the class implementing \texttt{IDataLogic} must open a communication
+channel, in order to send commands to the robot and retrieve its data; on the other
+side, server must accept the connection and communicate properly with the client.
+%
+
+%
+If the server contacted is the Morduc itself, the concrete \textsf{R.E.A.R.} must obey
+to the Morduc specific protocol (see section 2.4 of \cite{morduc:dasero}). Otherwise,
+if the client communicates with a custom simulator, the communication protocol could be
+chosen by the developer.
+%
+
+%
+In document \cite{morduc:neri}, Neri and others prove (by several tests) that \textit{3D
+vision guarantees a major precision in the teleguide and good performances on the obstacles
+avoidance}. An interesting future development could add the stereoscopic vision to a concrete
+\textsf{R.E.A.R.} application, in order to merge the advantages brought by the two different
+approaches in robot teleguiding.
+%
+
+%
+To implement a 3D vision, the robot server must provide both the right and left camera images,
+whereas the OpenGL functions must draw robot in the proper way on the images retrieved, to render
+the 3D effect. More details depends on the 3D technologies chosen by the developer: shutter-glasses,
+anaglyph, polarized, or other.
+%
+
+%
+The concrete \textsf{R.E.A.R.} discussed in this document does not take into account robot
+collisions. If the environment the robot moves in presents walls or obstacles to avoid, it could
+be useful to advice user in case of an imminent or already happened collision.
+%
+
+%
+The signal can be implemented once again with OpenGL functions, therefore with augmented reality.
+The laser value, provided by the Morduc robot and never used within \textsf{R.E.A.R.} application,
+can help to understand when and where draw warnings, as shown in document \cite{morduc:macalusodetommaso}.
+%
+
+%
+A more simple, but doubtless useful, future development consists in creating a graphical interface,
+which allows user to define some initial parameters in a more friendly way. Actually, all these
+parameters (e.g. the number of log session or the optimal distance) are specified by the command line.
+If some of the previous suggested developments will be implanted, the number of initial parameters
+could increase and make the command line more and more difficult to use.
