@@ -2,7 +2,7 @@ clear
 
 x = -5:0.1:15;
 for i = 1 : length(x)
-	z(i) = triangle(x(i), 5);
+	z(i) = -1 * triangle(x(i), 5);
 endfor
 
 % clear previous plot
