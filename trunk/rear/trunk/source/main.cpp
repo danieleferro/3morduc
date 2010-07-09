@@ -149,16 +149,6 @@ void keyPressed(unsigned char key, int x, int y)
     /* exit the program...normal termination. */
     exit(0);
     
-//   case Q:
-//     temp = _oldTheta + ANGLE;
-//     rob->Place(_oldX, _oldY, temp);
-//     break;
-
-//   case W:
-//     temp = _oldTheta - ANGLE;
-//     rob->Place(_oldX, _oldY, temp);
-//     break;
-
   case S:    
     manager->NextStep();
     break;

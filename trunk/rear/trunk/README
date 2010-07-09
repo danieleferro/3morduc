@@ -68,7 +68,7 @@ Makefile targets. Then, you will only have to type
 Rear comes with some example custom classes, so could 
 find useful to have a look at them.
 For a complete programming guide, please refer to the 
-techical report included in the /doc directory.
+technical report included in the /doc directory.
 
 Good luck, and happy coding.
 
@@ -77,13 +77,50 @@ License
 rear is released under the terms of GNU GPL v3.
 for a copy of the license, see <http://www.gnu.org/licenses/>
 
+
+Keyboard action
+---------------
+The following explains all the possible keyboard actions.
+
+- ESCAPE
+  close and exit from the application
+
+- S
+  call "NextStep" method in DataManager
+
+- O
+  move camera forward along the X axis
+
+- P
+  move camera backward along the X axis
+
+- K
+  rotate camera around Y axis (clockwise)
+
+- L
+  rotate camera around Y axis (counterclockwise)
+
+- UP ARROW
+  move robot forward along its direction
+
+- DOWN ARROW
+  move robot backward along its direction
+
+- RIGHT ARROW
+  move robot forward along X direction
+
+- LEFT ARROW
+  move robot backward along X direction
+
+
+
 Authors and maintainers
 -----------------------
 
-- Daniele Ferro (original author and former mantainer, 2010)
+- Daniele Ferro (original author and former maintainer, 2010)
   mail: daniele.ferro86 at gmail dot com
   web :
   
-- Loris Fichera (original author and former mantainer, 2010)
+- Loris Fichera (original author and former maintainer, 2010)
   mail: loris.fichera at gmail dot com 
   web :
