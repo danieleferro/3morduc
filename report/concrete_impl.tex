@@ -19,9 +19,10 @@ The class diagram of the complete system is reported in figure
 %
 As it's easy to notice, it features two implementations 
 of the \texttt{IImageSelector} interface: \texttt{SpacialMetricCalc} 
-and \texttt{SweepMetricCalc}. The former is nothing more than 
-a mere implementation of the image selection method 2 reported in 
-\cite{sugimoto} and already introduced in section \ref{sub:iimageselector}.
+and \texttt{SweepMetricCalc}. The former is a variant 
+of the image selection method 2 reported in \cite{sugimoto} and 
+whose possible implementation is showed in section 
+\ref{sub:iimageselector}.
 %
 
 %
@@ -411,7 +412,7 @@ the definition of two subclasses of the
 Both classes use a \texttt{Calculate} method to assign a 
 \textit{score}. Such a score is computed according to 
 a specific \textit{metric}, that is, a function that, 
-given a pair <\texttt{robot\_data, image\_data}>, 
+given a pair $<$\texttt{robot\_data, image\_data}$>$, 
 returns a number. 
 %
 The \texttt{robot\_data} identifies the robot current position, 
@@ -429,12 +430,27 @@ passed to \texttt{IImageSelector::ChooseImage} method).
 
 %
 This way, it is possible to find which of the snapshots is 
-the \texit{closest} (according to the chosen metric) to 
+the \textit{closest} (according to the chosen metric) to 
 the current robot position.
 %
 \subsubsection{The spacial metric algorithm}
 \label{subsec:spacial_metric_algorithm}
+The spacial metric algorithm is a slightly different variant 
+of the selection method 2 presented in \cite{sugimoto}.
+%
+The \texttt{SpacialMetricCalc} class, which encapsulates 
+the algorithm, makes use of the Euclidean metric, that is,
+its \texttt{Calculate} method returns a value that 
+depends from the spacial distance between the current 
+robot position and the position in which the snapshot 
+was taken.
+%
 
+%
+Once all spacial distances have been calculated, such values 
+are passed as input to the \textit{triangle} function 
+showed in picture \ref{fig:spacial_metric_func}.
+%
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=400pt]{img/spacialMetricFunc.png} 
@@ -442,38 +458,49 @@ the current robot position.
     \label{fig:spacial_metric_func}
   \end{center}
 \end{figure}
-
-This algorithm uses a simple triangle function to couple the image processed with a score.
+%
+Since the \texttt{ChooseImage} method will select the image with 
+the minimum score, it's easy to figure out that 
+images that has been taken when camera was around 
+5 spacial units distant from the current robot position
+are most likely to bet chosen.
 %
 
 %
-The Euclidean distance between robot and image is processed by a triangle function. User specifies
-the optimal distance between image and robot, that is the distance value where
-the score function returns the maximum tally and therefore where the triangle is centered.
-In figure \ref{fig:spacial_metric_func} the optimal distance is set to five.
+The motivation lying the algorithm is the following: 
+if the euclidean distance of the snapshots from the current 
+robot position is around zero, using such images as background 
+will result in displaying only a part of the 3D model of the robot.
+%
+If, instead, such a distance is very high, the model will be drawn 
+very far from the camera's (and user's) point-of-view.
+%
+There, hence, exists, an \textit{optimal distance} that allows 
+to draw the robot entirely, but not too far from the camera's 
+point-of-view. 
 %
 
 %
-Since the \texttt{ChooseImage} method will select the image coupled with the minimum value, we have
-to invert the score sign before returning it.
+On the one hand, this algorithm is very simple to implement.
 %
-
+On the other hand, it does not care about image orientation. 
 %
-This algorithm does not care about image orientation. For instance, it could choose an image that
-does not include the robot from its point of view. This limit makes the algorithm good only for
-quite linear route taken by the robot, but bad for more complex ones. On the other hand, its
-implementation is very simple.
+It could, for instance, choose an image that does not include 
+the robot from its point of view. 
 %
-
+This limit makes the algorithm good only for situations 
+in which the robot moves along straight trajectories.
 %
-The \texttt{Sweep Metric Algorithm} in chapter \ref{subsec:sweep_metric_algorithm} will try to
-go behind this limits.
-
-
+The \texttt{Sweep Metric Algorithm}, presented in the next section, 
+will try to go behind this limits.
+%
 \subsubsection{The sweep metric algorithm}
 \label{subsec:sweep_metric_algorithm}
-The "sweep angle" algorithm allows to choose the better background image, in order to implement
-the exocentric vision.
+Let us assume to have  mobile robot moving on a plan, 
+taking snapshots from its egocentric-mounted camera.
+%
+Such a situation is represented in figure 
+\ref{fig:half_plan_finding}:
 %
 \begin{figure}[!h]
   \begin{center}
@@ -483,43 +510,52 @@ the exocentric vision.
   \end{center}
 \end{figure}
 %
-All the explanation will refer to image \ref{fig:half_plan_finding}. In the latter, the black
-square represents the robot, with its orientation indicated by the arrow "a", starting from the
-square.
+the black square represents the robot, with its orientation 
+indicated by the arrow "a", starting from the square.
 %
 
 %
-The several blue circles represent instead the previous shoot images. The orientation of each
-image (i.e. the orientation of the robot when they were shoot) is shown by an arrow starting from
-each circle.
+The several blue circles represent instead the previous 
+taken images. The orientation of each image - i.e. the 
+orientation of the robot when they were taken - 
+is shown by an arrow starting from each circle.
 %
 
 %
-We will refer to the line perpendicular to the half line "a" as "b". By rotating clockwise and
-counterclockwise the "a" line in the robot centre with a predefined angle (named "sweep angle")
-we will obtain the "c" and "d" lines. These define a new portion of the plane (colored with fading red),
-named the "sweep area".
+We will refer to the line normal to the half line "a" as "b". 
+By rotating clockwise and counterclockwise the "a" line in 
+the robot centre with a predefined angle (named "sweep angle")
+we will obtain the "c" and "d" lines. These define a new 
+portion of the plane (colored with fading red), namely the 
+\textit{sweep area}.
 %
 
 %
-Since we want to control the robot from the rear position, the sought image will be included within
-this area: all the other ones will be discarded. Even tough this method allows us to exclude many
-images, the selection is certainly not over.
+Since we would like to see the robot from its rear, 
+all images taken within this area will be taken into account
+when selecting the image to set as background.
+The other ones will be discarded. 
 %
 
 %
-First of all, we have to discard all the images with an orientation angle that differs too much from the
-robot orientation angle. If the difference between the two angles is greater than a specified threshold,
-the image can not be chosen as background, because the latter does not include the robot from its point
-of view. For instance, if the difference angle between the robot and the image orientation is 180 degrees,
-it means that robot and camera are oriented in opposite way, therefore the camera can not see the robot
-itself.
+Then, we have to discard all the images with an orientation 
+angle that differs too much from the robot current orientation angle. 
+If the difference between the two angles is greater than a specified 
+threshold, the image would make the robot being not included 
+within the viewing frustum.
+%
+For instance, if we choose an image whose difference angle with 
+the robot current orientation is 180 degrees, it means that robot and 
+the camera will be oriented in opposite ways, 
+therefore the camera will not see the robot.
 %
 
 %
-After excluding the badly oriented images, we proceed with the score assignment. The latter is obtained by
-the sum of two factors. The first takes in account the image angle orientation: the more the image orientation
-angle is close to the robot orientation angle, the more the score is high.
+All the remained images will be assigned a score.
+The score is computed as the sum of two factors;
+the first takes into account the image angle orientation: 
+the more the image orientation angle is close to the 
+robot orientation angle, the more the score is high.
 %
 \begin{figure}[!h]
   \begin{center}
@@ -529,30 +565,34 @@ angle is close to the robot orientation angle, the more the score is high.
   \end{center}
 \end{figure}
 %
-The function to evaluate the score from the difference between the two angles is a Gaussian function centre
-in zero. The return value will be therefore always a positive number.
+To compute such a factor, a Gaussian function, centered
+in zero, is used. The return value will be therefore 
+always a positive number.
+%
+The use of a Gaussian function allows to obtain different 
+values even for two very close angle difference, 
+regardless of its variance. 
+Moreover, since Gaussian is a surjective function, 
+it is defined for all real numbers.
+%
+This way, images with a little orientation difference with 
+the robot current orientation will be assigned a higher value.
 %
 
 %
-The use of a Gaussian function allows to obtain different values even for two very close angle difference
-(Gaussian is a injective function), regardless of the assigned variance. Moreover, it is defined for all real
-numbers.
-In this way is always possible to discern the best angle difference, by choosing the highest value returned by
-the function.
+The second factor is computed taking into account the Euclidean 
+distance between the position in which the image was taken 
+and the robot current position. 
 %
-
+The approach followed here is the same of the \textit{spacial metric 
+algorithm} presented in the previous section: 
 %
-Finally, we have to take in account the Euclidean distance between the image and the robot. If the distance is
-zero, we are examining the egocentric image. On one side, the images too close to the robot will be coupled
-with a low score, because they are too similar to the egocentric one. On the other side, the images too far
-from the robot will be coupled again with a low score, because they would show the robot too distance to
-teleguide it properly.
-%
-
-%
-The preferable image would distance from the robot a predefined quantity, specified by the user. This value
-indicate us where to centre another Gaussian function, in order to obtain the score from the distance between
-image and robot. The more the image is close to the preferred distance, the more the score assigned will be high.
+The preferable image would be distant a predefined quantity
+from the robot, specified by the user. This value
+indicate us where to centre another Gaussian function, in 
+order to obtain the score from the distance between image and 
+robot. The more the image is close to the preferred distance, 
+the more the score assigned will be high.
 %
 
 %
