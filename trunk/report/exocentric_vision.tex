@@ -7,32 +7,36 @@ are inaccessible or dangerous for human beings - e.g.
 search-and-rescue missions within unknown regions or into 
 collapsed buildings, caves, etc.
 %
+
+%
 The supervisors' research group has been widely involved 
 during the last years in such a field: \cite{livatino2010}.
 %
-As testing platform, they have been using \textit{3morduc},
-a differential-driven mobile robot - showed in figure \ref{fig:3morduc} -
+As testing platform, they have been using \textit{Morduc},
+a differential-driven mobile robot - showed in figure \ref{fig:Morduc} -
 equipped with a pair of \textit{Videre Design} \cite{videredesign} 
 stereo cameras and a laser scanner. They have been focused 
 mainly on the making of a reliable hardware and software 
 infrastructure which could make a remote operator able to drive 
-the 3morduc in comfort.
+the Morduc in comfort.
 %% parlare dei campi di ricerca coinvolti?
 %
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=200pt]{img/3morduc.jpg}  %robot pic
-    \caption{The 3morduc robotic platform}
-    \label{fig:3morduc}
+    \includegraphics[width=200pt]{img/3morduc.jpg}
+    \caption{The Morduc robotic platform}
+    \label{fig:Morduc}
   \end{center}
 \end{figure}
 %
-Indeed, our work will focus on \textit{robot-operator interaction} and, 
+Indeed, our work focused on \textit{robot-operator interaction} and, 
 hence, on how to improve such interaction. 
+%
+
 %
 Analyzing previous work and data produced by the supervisors' 
 research group, it emerges that the stereo cameras mounted on 
-top of 3morduc, were used to provide the remote operators a 
+top of Morduc were used to provide the remote operators a 
 \textit{first-person} point of view. In literature, such a 
 system is also called an \textit{egocentric} vision system.
 %
@@ -47,11 +51,15 @@ vehicle's position and direction and the distances to a
 target strictly based on camera images from the first person 
 viewpoint}.
 %
+
+%
 In order to improve the interaction between the robot and the operator 
 an exocentric camera would be effective since it would provide a 
-representation of the robot in the operating environment and, thus, 
-a better understanding of where the robot is located into the environment 
-and its actual direction.
+view of the robot in the operating environment and, thus, 
+a better understanding of where the robot is located into the
+ environment and its actual direction.
+%
+
 %
 Unfortunately the use of an exocentric camera is not straightforward: 
 for example, it could be mounted on a rear-mounted protuberance of the 
@@ -75,7 +83,7 @@ to the end user.
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=200pt]{img/exocentric_vision.jpg}
-    \caption{The 3morduc robotic platform}
+    \caption{The Morduc robotic platform}
     \label{fig:exocentric}
   \end{center}
 \end{figure}
@@ -108,7 +116,8 @@ on the image, but also of \textit{how} to set up lighting, robot dimensions,
 perspective to make the end user not aware of the fact that what he is
 seeing is not the actual environment.
 %
-We will analyze such aspects in the following of this report.
 
-%% Non solo, una immagine precedente, contiene informazioni ambientali piu' 
-%% ampie rispetto a quelle di una camera montata sul posteriore del robot.
+%
+The issues introduced above will be deeply analyzed in the following 
+of this report.
+%

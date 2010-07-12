@@ -1,6 +1,6 @@
-\section{\textsf{REAR:} a framework for virtual exocentric vision systems}
+\section{\framework{}: a framework for virtual exocentric vision systems}
 \label{sec:rear}
-In this section we will describe \textsf{R.E.A.R.} - 
+In this section we will describe \framework{} - 
 \textit{Rear Exocentric Augmented Reality}, a framework 
 for the development of virtual exocentric vision systems.
 %
@@ -12,7 +12,7 @@ section \ref{sec:exo}.
 %
 
 %
-For what concerns graphics, \textsf{R.E.A.R.} relies on OpenGL.
+For what concerns graphics, \framework{} relies on OpenGL.
 It makes use of three software components: a \textit{camera}, 
 a 3D model of the \textit{robot} itself and a \textit{texture}.
 %
@@ -43,7 +43,7 @@ An example of what a user sees is showed in figure \ref{fig:snap}.
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=300pt]{img/rear_snapshot_large.jpg}
-    \caption{A snapshot from a \textsf{R.E.A.R.}-based application}
+    \caption{A snapshot from a \framework{}-based application}
     \label{fig:snap}
   \end{center}
 \end{figure}
@@ -62,9 +62,9 @@ and orientation and the position and orientation of the egocentric
 camera when the snapshot was taken and, then, to set the 
 position of the 3d model of the robot and the point-of-view 
 of the camera accordingly.
-Well, that's what \textsf{R.E.A.R.} does.
+Well, that's what \framework{} does.
 %
-Therefore, to run, every \textsf{R.E.A.R.} concrete implementation 
+Therefore, to run, every \framework{} concrete implementation 
 needs, at least:
 %
 \begin{itemize}
@@ -74,11 +74,11 @@ needs, at least:
 \end{itemize}
 %
 Such data is retrieved every time the operator, using the 
-interface provided by \textsf{R.E.A.R.} itself, sends a 
+interface provided by \framework{} itself, sends a 
 motion command to the robot.
 %
 After collecting new data, which include new robot status and
-the associated egocentric camera image, \textsf{R.E.A.R.} chooses 
+the associated egocentric camera image, \framework{} chooses 
 an image to set as background and draw the robot model within 
 the frustum. So, for what concerns issue no. 2, as already 
 underlined in \cite{sugimoto}, let us say that there is not 
@@ -102,18 +102,18 @@ showed in figure \ref{fig:overall_diagram}.
 \subsection{Class diagram}
 \label{sec:classdiagram}
 %
-Let us have a look at \textsf{R.E.A.R.} class diagram, 
+Let us have a look at \framework{} class diagram, 
 showed in figure \ref {fig:class_diagram}.
 %
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=400pt]{img/rear_class_diagram.png}
-    \caption{\textsf{R.E.A.R.} class diagram}
+    \caption{\framework{} class diagram}
     \label{fig:class_diagram}
   \end{center}
 \end{figure}
 %
-Two of the components needed by \textsf{R.E.A.R.}, the robot 
+Two of the components needed by \framework{}, the robot 
 model and the camera, are mapped on two dedicated classes, 
 \texttt{Robot} and \texttt{Camera}, respectively.
 %
@@ -137,7 +137,7 @@ chapter \ref{sec:cameraclass}).
 %
 In the middle, between \texttt{Robot} and \texttt{Camera},
 there is the \texttt{DataManager} class. It is intended to be 
-the core of every \textsf{R.E.A.R.} based application, since it 
+the core of every \framework{} based application, since it 
 internally implements the loop showed in figure 
 \ref{fig:overall_diagram}.
 It acts as a \textit{mediator} among all of the other classes, 
@@ -189,7 +189,7 @@ used by \texttt{DataManager} to exchange information
 about the current robot position and orientation with 
 lower-level objects, in a compact way.
 %
-\begin{lstlisting}[caption={\textsf{R.E.A.R.} data structures}, label={code:data}, frame=trBL]
+\begin{lstlisting}[caption={\framework{} data structures}, label={code:data}, frame=trBL]
 struct image_data {
   float x;
   float y;
@@ -212,7 +212,7 @@ In the following of this section, we will have a look
 \textit{under the hood} of the classes and interfaces 
 we have just introduced.
 %
-We will see how \textsf{R.E.A.R.} functionalities are 
+We will see how \framework{} functionalities are 
 mapped onto them and, then, how to correctly subclass/use
 them in order to build a concrete exocentric vision system.
 %
@@ -254,13 +254,13 @@ by means of the \texttt{Place()} method.
 \texttt{DrawRobot()}. Such a method is called by the 
 \texttt{DataManager} every time it wants to render the 
 robot model and, hence, programmers who wants to 
-use \textsf{R.E.A.R.} for their own robot should subclass 
+use \framework{} for their own robot should subclass 
 \texttt{Robot} and implement \texttt{DrawRobot()} as a 
 procedure that draws their custom robot model using 
 the OpenGL API.
 %
 When doing that, one must always keep in mind that 
-\textsf{R.E.A.R.} makes use of a three-dimensional OpenGL 
+\framework{} makes use of a three-dimensional OpenGL 
 space, while position information is often represented 
 as a \texttt{(x,y)} pair. \texttt{R.E.A.R.} maps the \texttt{x} 
 value of such a pair onto the x axis of its OpenGL space, 
@@ -318,7 +318,7 @@ OpenGL details.
 %
 A basic implementation of such a helper class is suggested 
 in \cite{opengl:camera}. Such an implementation is slightly 
-similar the one featured by \textsf{R.E.A.R.}, whose 
+similar the one featured by \framework{}, whose 
 declaration is reported in listing \ref{code:camera_class}.
 %
 \begin{lstlisting}[caption={\texttt{Camera} class declaration}, label={code:camera_class}, frame=trBL]
@@ -349,7 +349,7 @@ class Camera
 The \texttt{Camera} class allows to move and rotate the user 
 point of view, independently from the robot.
 %
-This is essential for our purposes, since \textsf{R.E.A.R.}
+This is essential for our purposes, since \framework{}
 must be able to draw the robot everywhere in the OpenGL space, 
 regardless of where the camera is, and vice versa.
 %
@@ -403,7 +403,7 @@ class DataManager
 %
 Of course, \texttt{DataManger} is meant to be used as a \textit{singleton}, 
 that is, there must be a unique instance of \texttt{DataManager} 
-within the context of a \textsf{R.E.A.R.} based application.
+within the context of a \framework{} based application.
 %
 As its name suggests, \texttt{DataManager} manages and coordinates 
 all of the components of the exocentric vision system and, hence, 

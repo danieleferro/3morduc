@@ -40,46 +40,41 @@ it is simple and immediate to establish several test cases.
 The first simulator adopted was \textit{Rosen} (\cite{rosen}). Written in 
 \textit{Erlang}\cite{erlang}, \textit{Rosen} has been developed at
 the \textit{University of Catania} in order to simulate the behaviour of
-robot with  features completely different from Morduc. The chief one 
-was that the robot had its own algorithm to set its movement, 
-it was indeed not guided by a human operator. 
+autonomous mobile robots (AMRs).
+%
+\textit{Rosen} has been used as test bench for robots taking part in 
+the \textit{Eurobot} competition\cite{eurobot}, and hence, 
+for robots with completely different features from the ones of Morduc. 
+%
+As soon as we realized \textit{Rosen} does not meet our needs, 
+we started looking for a more suitable simulator.
 %
 
 %
-\textit{Rosen} was used a couple of years ago for robot taking part 
-in \textit{Eurobot} competition\cite{eurobot},
-but for our purpose was not fit since it does not even 
-provide a egocentric vision. The difficulties faced to edit 
-\textit{Rosen} made us to look for a more suitable simulator.
+In 2006, at the \textit{Aalborg University}, Filippo 
+Privitera wrote a simulator specifically intended for 
+the Morduc platform\cite{privitera}. 
 %
-
-%
-In 2006, at the \textit{Aalborg University}, the Italian student Filippo 
-Privitera wrote a simulator to teleguide the Morduc robot 
-\cite{privitera}. The simulator reproduces the robot (drawing its 
-physical features) situated in a room with a variable numbers 
-of walls. Walls' position is specified by the user, by giving 
+Such asimulator reproduces the Morduc itself (actually a 
+3d model of it) situated in a customizable room: the position 
+of walls can be specified by the user, by giving 
 the simulator a black and white bitmap image with the room 
-plane to build the whole environment from. 
+planimetry, to build the whole environment from. 
 %
 
 %
 Besides, Privitera's simulator allows to enable the 
 stereoscopic vision, with anaglyph or polarized method (both 
-types are applied on the egocentric camera). These features 
-make not too tricky to implement the exocentric vision control 
-with 3d effect, in order to improve the user's ability in 
-moving the robot. Other information like the number of collisions 
-or the robot distance from the nearest obstacle are provided 
-by simulator.
+types are applied on the egocentric camera). Other informations 
+like the number of collisions or the robot distance from the 
+nearest obstacle are provided by simulator.
 %
 
 %
-This simulator was written in \textit{MFC} (Microsoft Foundation Class) 
-framework and has been used for testing user ability in
-driving the robot, in comparison with the real robot server 
-to quantify the differences between the two facilities. 
-For more information see \cite{privitera}.
+The simulator was written using the Microsoft Foundation Class
+(MFC) framework and has been used for testing user ability in
+tele operating driving a robot, in comparison with the actual 
+robot to quantify the differences between the two facilities. 
 %
 
 %
@@ -112,7 +107,7 @@ where the timestamp refers to the beginning of the simulation.
 %
 
 %
-Beside the text file there are several PNG files, each for every 
+Beside the text file there are several PNG images, each for every 
 line written in 'data\_$\langle$number of session$\rangle$.txt'. 
 These files are named 'screenshot\_$\langle$number of 
 session$\rangle$\_$\langle$timestamp$\rangle$.png', where the 
@@ -131,19 +126,3 @@ the robot over the background in the right position and
 orientation, depending on its route; to prevent or signal 
 collisions to the user, and so on.
 %
-
-%
-Future development can reach a more interactive collaboration 
-between simulator and exocentric vision control program. For
-example, it would be better if the control program could 
-interact (by a socket or another data stream) with the 
-simulator, sending the movement command and retrieving 
-information about robot status. In this case log files 
-would be substituted by a local or global connection, 
-and the exocentric program would not read information from 
-file (as it actually does) but from the network.
-Furthermore, with log files the robot route is statically 
-decided when they are created. With a network connection user
-could teleguide the robot in real time, without caring 
-if on the server side is present the simulator or the real 
-robot Morduc.
