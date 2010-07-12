@@ -6,8 +6,8 @@ path = [ "../../log/log_", number, "/data_", number, ".txt"];
 
 S = load("-ascii", path);
 
-S = S(:, 1:2);
-
+% S = S(:, 1:2);
+S= [ S(:,1) S(:,2)*-1];
 
 
 
@@ -19,8 +19,7 @@ clf();
 hold on;
 xlabel('Y value');
 ylabel('X value');
-title([ "Path session # ", number ]);
-axis(  [0, 140, 0, 80 ]);
+axis(  [0, 140, -80, 0 ]);
 plot( S(:, 1), S(:, 2), 'o');
 
 
