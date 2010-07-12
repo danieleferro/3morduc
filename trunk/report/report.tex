@@ -2,15 +2,13 @@
 \usepackage[english]{babel}
 \usepackage[pdftex]{graphicx}
 \usepackage[latin1]{inputenc}
-\usepackage{verbatim}
 \usepackage{listings}
 \usepackage{amsfonts}
 \usepackage{color}
-\usepackage{epsfig}
-\usepackage{fancyvrb}
 \usepackage{listings}
 \usepackage[colorlinks=true, linkcolor = black, urlcolor  = black, citecolor = black, filecolor = black ]{hyperref}
 \usepackage{subfigure}
+\usepackage{pdfpages}
 \date{}
 
 \setcounter{secnumdepth}{4}%
@@ -26,6 +24,7 @@
 
 % set paragraph layout
 \makeatletter
+\newcommand\Item[1]{\emph{(#1)}}
 \renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
   {-3.25ex\@plus -1ex \@minus -.2ex}%
   {1.5ex \@plus .2ex}%
@@ -47,13 +46,14 @@
 \include{pref}   % preface
 %% \include{hmd_display_state_art}
 \tableofcontents
-\include{exocentric_vision}
-\include{simulator}
-\include{opengl}
-\include{rear_framework}
-\include{concrete_impl}
-\include{performance_eval}
-\include{future_works}
+ \include{exocentric_vision}
+%% \include{simulator}
+%% \include{opengl}
+%% \include{rear_framework}
+%% \include{concrete_impl}
+%% \include{performance_eval}
+%% \include{future_works}
+\include{questionnaire}
 
 % Bibliography with BibTeX
 
