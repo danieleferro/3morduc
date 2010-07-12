@@ -106,13 +106,9 @@ The robot will be drawn only partially and the exocentric vision will be similar
 \texttt{mu\_distance} moves away from zero (with a positive value), the more the application will tend to draw
 (when possible) all the robot to provide a full exocentric control vision, because far image will gain an higher score.
 %
-
+\subsection{Test preparation}
+\label{subsec:testpreparation}
 %
-Tests has been performed with three different paths, each one with three different \texttt{mu\_distance} values: 5, 15
-and 25. The evidences deduced are examined in the next paragraph (\ref{subsec:testevaluation}).
-
-\subsection{Test evaluation}
-\label{subsec:testevaluation}
 The target of such tests was to verify \Item{i} if, using 
 an exocentric vision system provided with such an algorithm, 
 users are able to perceive the trajectory actually 
@@ -121,12 +117,29 @@ sudden point-of-view changes for users, \Item{iii} how
 comfortable is for them to view a robot from a 
 virtual exocentric point-of-view.
 %
-%
-%% Be advised that this tests do not have a scientific validity. In literature there is a lot of theories
-%% and rules to follow in order to demonstrate or confute a specific hypothesis. In our case, we simply
-%% intend to test R.E.A.R. application by presenting it to users who were not involved in its development,
-%% noting down their impressions. Even tough, probably, the basic rules for testing has not been followed,
 
+%
+People involved in the tests have had no experience in 
+robotics, neither they knew what a virtual exocentric 
+vision system is.
+%
+
+%
+The testing session schedule was the following:
+\begin{enumerate}
+  \item testers were given a brief introduction to exocentric vision systems
+  \item each tester is given three different scenarios and has to 
+    complete them, unassisted
+  \item for each scenario, testers have to answer the questions 
+    of a questionnaire
+\end{enumerate}
+%
+
+%
+Three different recorded logs have been used, each of which featuring 
+a different trajectory. Each of such session has been tested
+using three different \texttt{mu\_distance} values: 5, 15 and 25. 
+%
 \subsubsection{Square test evaluation}
 \label{subsubsec:squaretest}
 
