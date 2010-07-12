@@ -1,37 +1,46 @@
 \section{Performance Evaluation}
 \label{sec:performance_evaluation}
 %
-This chapter will describe some tests performed at the University of Hertfordshire
-(Hatfield, UK), along with their results. 
+This chapter will describe some tests peformed at the 
+University of Hertfordshire (Hatfield, UK), along with 
+their results. 
 %
-The application described in \ref{sec:concr} has been tested 
-featuring the \textit{sweep metric algorithm} (see section 
-\ref{subsec:sweep_metric_algorithm}), which was 
-given different paramaters per each testing session.
+
+%
+The algorithm presented in \ref{subsec:sweep_metric_algorithm}
+was used as the image selection algorithm. Several tests 
+have been carried out, each time changing the passed parameters
+(see \ref{subsubsec:sweep_metric_class}).
 %
 
 %
 The test target is to underline the main differences 
 occurring when one or more parameters change their values, 
-within defined ranges. After asking users their options and perceptions
-about teleguiding the robot with an exocentric vision, we could at the end identify the advantages
-and the disadvantages correlated with different sets of initial parameters.
+within defined ranges. After asking users their options 
+and perceptions about teleguiding the robot with an 
+exocentric vision system, we could at the end identify 
+the advantages and the disadvantages correlated with 
+different sets of initial parameters.
 %
 
 %
-Since working offline (see section \ref{sec:concr}), users can not actually 
-command the robot, but simply request the application to go one step
-further and, hence, just see the robot performing the trajectory 
-it did during the recorded test session.
+Since tests have been carried out using saved logs 
+(see section \ref{sub:datalogic}), users were not 
+able to actually command the robot, but simply 
+to request the application to go one step
+further and, hence, just see the robot moving along 
+the trajectory it performed during a recorded 
+session.
 %
 
 %
-Be advised that this tests do not have a scientific validity. In literature there is a lot of theories
-and rules to follow in order to demonstrate or confute a specific hypothesis. In our case, we simply
-intend to test R.E.A.R. application by presenting it to users who were not involved in its development,
-noting down their impressions. Even tough, probably, the basic rules for testing has not been followed,
-we think our test case can be useful to identify future improvements (see chapter \ref{sec:future_works}).
-
+Be advised that, due to the low number of testers, 
+the obtained results have not statical validity.
+%
+On the other hand, they were useful to identify 
+possible future improvements of the algorithm 
+(see chapter \ref{sec:future_works}).
+%
 \subsection{Parameters}
 \label{subsec:parameters}
 
@@ -43,33 +52,13 @@ With six parameters it is tricky to evaluate how changing a single one affects o
 reason we decided to fix same values when testing.
 %
 
-%
-Before describing which parameters have been chosen to be fixed and which to be variable, an in depth explanation
-about their meaning is needed. For a better comprehension see chapter \ref{subsec:sweep_metric_algorithm}; all
-the angles are specified in degrees.
+%% %
+%% Before describing which parameters have been chosen to be fixed and which to be variable, an in depth explanation
+%% about their meaning is needed. For a better comprehension see chapter \ref{subsec:sweep_metric_algorithm}; all
+%% the angles are specified in degrees.
 
 %
-\begin{itemize}
 
-  \item \texttt{sweep\_angle} \\
-    half the angle which defines the "sweep area" 
-  \item \texttt{angle\_offset} \\
-    maximum difference allowed between robot and image orientation 
-
-  \item \texttt{mu\_distance} \\
-    expected value (i.e. mean value) for the Gaussian which assigns the score on the basis of distance between
-    image and robot
-  \item \texttt{sigma\_distance} \\
-    standard deviation for the Gaussian which assigns the score on the basis of distance between image and robot
-
-  \item \texttt{mu\_angle} \\
-    expected value (i.e. mean value) for the Gaussian which assigns the score on the basis of orientation difference
-    between image and robot
-  \item \texttt{sigma\_angle} \\
-    standard deviation for the Gaussian which assigns the score on the basis of orientation difference between image
-    and robot
-
-\end{itemize}
 %
 
 %
@@ -124,6 +113,19 @@ and 25. The evidences deduced are examined in the next paragraph (\ref{subsec:te
 
 \subsection{Test evaluation}
 \label{subsec:testevaluation}
+The target of such tests was to verify \Item{i} if, using 
+an exocentric vision system provided with such an algorithm, 
+users are able to perceive the trajectory actually 
+performed by the robot, \Item{ii} how much disturbing are 
+sudden point-of-view changes for users, \Item{iii} how 
+comfortable is for them to view a robot from a 
+virtual exocentric point-of-view.
+%
+%
+%% Be advised that this tests do not have a scientific validity. In literature there is a lot of theories
+%% and rules to follow in order to demonstrate or confute a specific hypothesis. In our case, we simply
+%% intend to test R.E.A.R. application by presenting it to users who were not involved in its development,
+%% noting down their impressions. Even tough, probably, the basic rules for testing has not been followed,
 
 \subsubsection{Square test evaluation}
 \label{subsubsec:squaretest}
