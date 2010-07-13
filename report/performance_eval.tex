@@ -140,44 +140,107 @@ Three different recorded logs have been used, each of which featuring
 a different trajectory. Each of such session has been tested
 using three different \texttt{mu\_distance} values: 5, 15 and 25. 
 %
-\subsubsection{Square test evaluation}
-\label{subsubsec:squaretest}
+\subsubsection{Rectangle test evaluation}
+\label{subsubsec:rectangletest}
 
+Figure \ref{fig:rectangletest} shows the first test trajectory:
+it is a rectangle. This path has been chosen for testing since it
+features long straight segments and hard turnings (more than 80
+degrees).
+
+%
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=300pt]{img/path_session_9.png}
-    \caption{Square test trajectory}
-    \label{fig:openglspace}
+    \caption{Rectangle test trajectory}
+    \label{fig:rectangletest}
   \end{center}
 \end{figure}
 %
+
+% grafico su domanda numero 2
+
+The result evidence is that most of the users figured out the
+trajectory performed by the robot, even tough they perceived
+sudden point of view changes during hard turnings.
+%
+
+%
+To sum up, they evaluated the experience positively when the
+optimal distance were set to 5 or 25; not too comfortable
+when set to 15.
 
 
 \subsubsection{Ellipse test evaluation}
 \label{subsubsec:ellipsetest}
 
+Figure \ref{fig:ellipsetest} shows the second test trajectory:
+it is an ellipse. This path has been chosen for testing since it
+features long smooth turns.
+
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=300pt]{img/path_session_5.png}
     \caption{Ellipse test trajectory}
-    \label{fig:openglspace}
+    \label{fig:ellipsetest}
   \end{center}
 \end{figure}
 %
+
+% grafico su domanda numero 2
+
+The result evidence is that all of the users figured out the
+trajectory performed by the robot. This case allows to point out
+a specify trend: the more the optimal distance is, the less users
+perceive sudden point of view changes.
+%
+
+%
+Testers also reported they had very comfortable experience.
 
 
 \subsubsection{Zig-zag test evaluation}
 \label{subsubsec:zigzagtest}
 
+Figure \ref{fig:zigzagtest} shows the third test trajectory:
+it is made up of broken lines. This path has been chosen for testing
+since it features straight lines and sudden hard turnings.
+
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=300pt]{img/path_session_6.png}
     \caption{Zig zag test trajectory}
-    \label{fig:openglspace}
+    \label{fig:zigzagtest}
   \end{center}
 \end{figure}
 %
 
+% grafico su domanda numero 2
+
+The result evidence is the users did not recognise the performed path.
+Moreover, it also emerged that the more the optimal distance is short,
+the less are the occurrences of sudden point of view changes.
+%
+
+%
+For the reasons above, testers reported a not very comfortable experience.
+
 
 \subsubsection{Final considerations}
 \label{subsubsec:finalconsiderations}
+
+According to us, two chief conclusion can be drawn.
+%
+
+%
+The former is that when the robot moves along straight lines
+the optimal distance should be set to higher values, in order
+to show the entire robot model and, hence, to give a \textit{fully}
+exocentric vision.
+%
+
+%
+The latter one regards turnings. When robot performs hard turnings
+the \textit{sweep metric algorithm} often selects the egocentric
+point of view: changing from an exocentric to an egocentric vision
+causes disturbance to users.
