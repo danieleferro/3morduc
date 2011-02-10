@@ -22,6 +22,10 @@
   basicstyle=\small
 }
 
+%% avoid text space afternewline
+\setlength{\parindent}{0pt}
+
+
 % set paragraph layout
 \makeatletter
 \renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
@@ -30,6 +34,11 @@
   {\normalfont\normalsize\bfseries}}
 \makeatother
 % end paragraph layout
+
+
+% avoid overflow margin limit
+\sloppy
+
 
 \newcommand{\bigtilde}{$\sim$}
 \def\framework{\textsf{REAR}}
