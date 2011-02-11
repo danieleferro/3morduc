@@ -1,5 +1,5 @@
-#ifndef __SWEEP_METRIC
-#define __SWEEP_METRIC
+#ifndef __ANOTHER_SWEEP_METRIC
+#define __ANOTHER_SWEEP_METRIC
 
 #include "IImageSelector.h"
 #include <iostream>
@@ -16,14 +16,15 @@
 #define EGO_IMAGE       1
 #define IMAGE_NOT_VALID 2
 
+
 /*
   Sweep metric - implements method described in report
 */
-class SweepMetricCalc : public IImageSelector
+class AnotherSweepMetricCalc : public IImageSelector
 {
  public:
   void ChooseImage(robot_data *, image_data *, std::vector<image_data> *);
-  SweepMetricCalc(float, float, float, float, float, float);
+  AnotherSweepMetricCalc(float, float, float, float, float, float);
   
  private:
   static const int X0 = 0;

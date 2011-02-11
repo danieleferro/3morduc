@@ -27,6 +27,7 @@
 #include "Camera.h"
 #include "SpacialMetricCalc.h"
 #include "SweepMetricCalc.h"
+#include "AnotherSweepMetricCalc.h"
 #include "Robot.h"
 #include "Morduc.h"
 
@@ -321,9 +322,9 @@ int main ( int argc, char * argv[] ) {
   camera = new Camera();
 
   /* image distance calculator instantiation */
-  calculator = new SweepMetricCalc(45, 30,
-				   atof(argv[2]), 5,
-				   0, 5);
+  calculator = new AnotherSweepMetricCalc(45, 30,
+					  atof(argv[2]), 5,
+					  0, 5);
   
   // calculator = new SpacialMetricCalc();
 

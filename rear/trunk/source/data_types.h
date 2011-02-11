@@ -37,4 +37,12 @@ struct robot_data {
   float time;
 };
 
+
+// A floating point
+struct fPoint
+{
+  float x;
+  float y;
+};
+
 #endif
