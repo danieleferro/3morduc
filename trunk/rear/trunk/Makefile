@@ -7,6 +7,7 @@ SOURCES  = \
 	DataManager.cpp \
 	SpacialMetricCalc.cpp \
 	SweepMetricCalc.cpp \
+	AnotherSweepMetricCalc.cpp \
 	main.cpp
 
 EXENAME   = REAR
@@ -27,7 +28,7 @@ LIBRARY   = -L/usr/X11R6/lib
 CC = g++
 RM = rm
 
-SESSION   = 8
+SESSION   = 2
 OPT_DIST  = 15
 
 main: $(CSOURCES) $(CEXE)
