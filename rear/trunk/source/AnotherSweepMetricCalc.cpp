@@ -9,18 +9,20 @@ AnotherSweepMetricCalc::AnotherSweepMetricCalc( float sweep_angle,
 				  )
 {
 
-  if (sweep_angle < 0 || sweep_angle > 90)
-    {
+  if (sweep_angle < 0 || sweep_angle > 90) {
       std::cout << "Error ! \"sweep angle\" value must be in range ]0; 90[. Value assigned is 45 degrees."
 		<< std::endl;
       
       _sweep_angle = 45;
+      
+  }
+  else {
+    _sweep_angle = sweep_angle;
+  }
+  
+  skip_turn = 0;
 
-    }
-  else
-    {
-      _sweep_angle = sweep_angle;
-    }
+  
 
   _angle_offset = angle_offset;
 
@@ -47,46 +49,45 @@ AnotherSweepMetricCalc::AnotherSweepMetricCalc( float sweep_angle,
 
 }
 
-float AnotherSweepMetricCalc::Calculate(robot_data * robot_status, image_data * bg_image_data) {
+float AnotherSweepMetricCalc::Calculate(robot_data * robot_status,
+					image_data * bg_image_data) {
 
-  if (DEBUG)
-    {
-      std::cout << std::endl;
-      std::cout << "*** Calculates starts with: " << std::endl;
-      std::cout << "Robot position: (" 
-		<< robot_status -> x << ", "
-		<< robot_status -> y << ", "
-		<< robot_status -> theta << ")"
-		<< std::endl;
+  if (_ASM_DEBUG) {
+    std::cout << std::endl;
+    std::cout << "*** Calculates starts with: " << std::endl;
+    std::cout << "Robot position: (" 
+	      << robot_status -> x << ", "
+	      << robot_status -> y << ", "
+	      << robot_status -> theta << ")"
+	      << std::endl;
 
-      std::cout << "Image position: (" 
-		<< bg_image_data -> x << ", "
-		<< bg_image_data -> y << ", "
+    std::cout << "Image position: (" 
+	      << bg_image_data -> x << ", "
+	      << bg_image_data -> y << ", "
 		<< bg_image_data -> theta << ")"
-		<< std::endl;
-    }
+	      << std::endl;
+  }
+
 
   if ((robot_status -> x == bg_image_data -> x) &&
       (robot_status -> y == bg_image_data -> y) &&
       (robot_status -> theta == bg_image_data -> theta))
     return EGO_IMAGE;
-  
-  if (DEBUG) std::cout << "With Boundaries test in progress.." 
+    
+  if (_ASM_DEBUG) std::cout << "With Boundaries test in progress.." 
 		       << std::endl;
-
+  
   if ( !WithinBoundaries(robot_status, bg_image_data) )
     return IMAGE_NOT_VALID;
   
-  if (DEBUG) std::cout << "Rightly Oriented test in progress.." 
+  if (_ASM_DEBUG) std::cout << "Rightly Oriented test in progress.." 
 		       << std::endl;
-
+  
   if ( !RightlyOriented(robot_status, bg_image_data) )
     return IMAGE_NOT_VALID;
   
   // now calculates score for the image
   return - PointAlgorithm(robot_status, bg_image_data);
-
-
 }
 
 
@@ -94,26 +95,89 @@ void AnotherSweepMetricCalc::ChooseImage( robot_data * robot_status, image_data 
 				   std::vector<image_data> * _images_collection)
 {
 
-
-  float distances[_images_collection->size()];
+  int   collect_size = _images_collection->size(); 
+  float distances[collect_size];
   float min;
 
-  // calculate the distance for each stored image
+
+  // PRE-ELABORATE CODE
+
+  distances[collect_size-1] = EGO_IMAGE;
+
+  int j = 0;
   int i = 0;
-  for (std::vector<image_data>::iterator it =
-	 _images_collection->begin();
-       it != _images_collection->end();
-       it++)
-    {
-      distances[i] = Calculate(robot_status, &*it);
-      //      std::cout << "Return value from Calculate Function: " << distances[i] << std::endl;
-      i++;
+  bool turn_flag = false;
+  float buffer_robot_theta = robot_status->theta;
+
+  int buffer_skip_turn = 0;
+
+  for(j = collect_size-2; j > 0; j--) {
+
+    
+    if ( abs(robot_status->x - (*_images_collection)[j].x) < 0.01 &&
+	 abs(robot_status->y - (*_images_collection)[j].y) < 0.01) {
+      
+      std::cout << "---TURNING !!" << std::endl;
+      turn_flag = true;
+      distances[j] = IMAGE_NOT_VALID;
+      buffer_skip_turn++;
+
+    }
+    else {
+
+      if (turn_flag == true) {
+
+	// set robot angle as this image
+	robot_status->theta = (*_images_collection)[j].theta;
+	theta_before_turning = (*_images_collection)[j].theta;
+      }
+      break;
+
+    }
+    
+  }
+
+  /*
+  if (turn_flag == false) {
+
+    // set robot angle as this image
+    //robot_status->theta = theta_before_turning;
+
+    for(j = collect_size-2; j > collect_size-2-skip_turn; j--) {
+
+      std::cout << "EXTRA CODE; skip_turn: \t" << skip_turn
+		<< "theta robot: \t" << theta_before_turning
+		<< std::endl << std::endl;
+      distances[j] = IMAGE_NOT_VALID;
     }
 
-  for (int i = 0; i < _images_collection->size(); i ++)
+  }
+    
+  */
+  
+  
+
+  for (i = j; i >= 0; i--) {
+
+    distances[i] = Calculate(robot_status, &(*_images_collection)[i]);
+    // std::cout << "Return value from Calculate Function: " << distances[i] << std::endl;
+  }
+
+
+  robot_status->theta = buffer_robot_theta;
+    
+
+
+
+
+  for (int i = 0; i < _images_collection->size(); i ++) {
+
     std::cout << "distance[" << i << "]: "
 	      << distances[i]
 	      << std::endl;
+
+  }
+  
 
   // find the minimum distance
   i = 0;
@@ -176,7 +240,7 @@ void AnotherSweepMetricCalc::FindTriangleVerteces(float sweep_angle, float radiu
   // angular coefficient for line "d"
   ang_coeff_line_d = tan( M_PI/2 - TO_RADIANS( _sweep_angle ) );
 
-  if (DEBUG)
+  if (_ASM_DEBUG)
     {
       std::cout << "Angular coefficient line C: " << ang_coeff_line_c << std::endl;
       std::cout << "Angular coefficient line D: " << ang_coeff_line_d << std::endl;
@@ -193,7 +257,7 @@ void AnotherSweepMetricCalc::FindTriangleVerteces(float sweep_angle, float radiu
   A_x2 = -1 * A_x1;
   A_y2 = ang_coeff_line_c * A_x2;
   
-  if (DEBUG)
+  if (_ASM_DEBUG)
     {
       std::cout << "A_x1: " << A_x1 << "; "
 		<< "A_y1: " << A_y1
@@ -216,7 +280,7 @@ void AnotherSweepMetricCalc::FindTriangleVerteces(float sweep_angle, float radiu
   B_x2 = -1 * B_x1;
   B_y2 = ang_coeff_line_d * B_x2;
 
-  if (DEBUG)
+  if (_ASM_DEBUG)
     {
       std::cout << "B_x1: " << B_x1 << "; "
 		<< "B_y1: " << B_y1
@@ -259,7 +323,7 @@ void AnotherSweepMetricCalc::FindTriangleVerteces(float sweep_angle, float radiu
 
     }
     
-  if (DEBUG) 
+  if (_ASM_DEBUG) 
     {
       std::cout << "point A chosen: " << A_x << " ; " << A_y << std::endl;
       std::cout << "point B chosen: " << B_x << " ; " << B_y << std::endl;
@@ -304,9 +368,14 @@ float AnotherSweepMetricCalc::PointAlgorithm( robot_data * robot_status,
   score_angle = ( 1 / ( _sigma_angle * sqrt ( 2 * M_PI ) ) );
   score_angle = score_angle * exp( - pow( ( angle - _mu_angle ), 2) / ( 2 * pow ( _sigma_angle, 2 ) ) );
 
+  if (_ASM_DEBUG) {
+    
+    std::cout << "Distance score: \t" << score_distance << std::endl; 
+    std::cout << "Angle score: \t" << score_angle << std::endl; 
+  }
 
-  //  return ( score_distance + score_angle );
-  return score_distance;
+  return ( score_distance + score_angle );
+  // return score_distance;
 }
 
 
@@ -333,7 +402,7 @@ bool AnotherSweepMetricCalc::WithinBoundaries( robot_data * robot_status,
     temp_y * cos(TO_RADIANS(robot_status->theta));
 
   
-  if (DEBUG)
+  if (_ASM_DEBUG)
     {
       std::cout << "--> New values for image: ( "
 		<< pt.y << "; "
@@ -345,7 +414,7 @@ bool AnotherSweepMetricCalc::WithinBoundaries( robot_data * robot_status,
   flag = IsPointInTri(&pt, _O, _A, _B);
   
 
-  if (DEBUG) 
+  if (_ASM_DEBUG) 
     {
       if (flag) 
 	{
@@ -398,7 +467,7 @@ bool AnotherSweepMetricCalc::RightlyOriented(robot_data * robot_status,
 				      image_data * bg_image_data)
 {
 
-  if (DEBUG)
+  if (_ASM_DEBUG)
     {
       std::cout << "Robot orientation: " << robot_status->theta << std::endl;
       std::cout << "Camera orientation: " << bg_image_data->theta << std::endl;

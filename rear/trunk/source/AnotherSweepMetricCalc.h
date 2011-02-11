@@ -11,7 +11,7 @@
 #define TO_RADIANS(X) X * M_PI / 180
 #define TO_DEGREES(X) X * 180 / M_PI
 
-#define DEBUG 0
+#define _ASM_DEBUG 0
 
 #define EGO_IMAGE       1
 #define IMAGE_NOT_VALID 2
@@ -30,6 +30,11 @@ class AnotherSweepMetricCalc : public IImageSelector
   static const int X0 = 0;
   static const int Y0 = 1;
   static const int M0 = 2;
+
+  // EXTRA
+  int skip_turn;
+  float theta_before_turning;
+  // END EXTRA
   
   float _sweep_angle;
   float _angle_offset;
