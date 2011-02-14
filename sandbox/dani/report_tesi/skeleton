@@ -1,0 +1,8 @@
+1. paper visione exocentrica (descrizione)
+2. descrizione modifiche simulatore privitera
+3. lavoro svolto in openGL
+   . brevissima descrizione di openGL
+   3a. come fare una texture (per lo sfondo)
+   3b. refactoring della classe robot
+   3c. illuminazione di una scena in openGL
+   3d. prospettiva in openGL (near, far, frustum...)
