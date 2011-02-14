@@ -1,0 +1,80 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage[pdftex]{graphicx}
+\usepackage[latin1]{inputenc}
+\usepackage{listings}
+%% \usepackage{amsfonts}
+%% \usepackage{color}
+\usepackage{listings}
+\usepackage[colorlinks=true, linkcolor = black, urlcolor  = black, citecolor = black, filecolor = black ]{hyperref}
+\usepackage{subfigure}
+\usepackage{pdfpages}
+\date{}
+
+\setcounter{secnumdepth}{4}%
+\setcounter{tocdepth}{4}% 
+
+\lstset{
+  %backgroundcolor=\color{gray},
+  frameround=fttt,
+  stringstyle=\ttfamily,
+  language=python,
+  basicstyle=\small
+}
+
+%% avoid text space afternewline
+\setlength{\parindent}{0pt}
+
+
+% set paragraph layout
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+  {-3.25ex\@plus -1ex \@minus -.2ex}%
+  {1.5ex \@plus .2ex}%
+  {\normalfont\normalsize\bfseries}}
+\makeatother
+% end paragraph layout
+
+
+% avoid overflow margin limit
+\sloppy
+
+
+\newcommand{\bigtilde}{$\sim$}
+\def\framework{\textsf{REAR}}
+\newcommand\Item[1]{\emph{(#1)}}
+%% \definecolor{unih}{RGB}{1, 178, 170}
+%% \def\framework{\textsc{Report}}
+
+%\advance\textwidth by -1truecm
+%\advance\oddsidemargin by 1truecm
+%\advance\baselineskip by \baselineskip
+
+\begin{document}
+\include{front}  % Frontpage
+\include{pref}   % preface
+%% \include{hmd_display_state_art}
+\tableofcontents
+\include{exocentric_vision}
+\include{simulator}
+\include{opengl}
+\include{rear_framework}
+\include{concrete_impl}
+\include{performance_eval}
+\include{future_works}
+\include{getting_source_code}
+\include{questionnaire}
+
+% Bibliography with BibTeX
+
+% see http://www.tex.ac.uk/cgi-bin/texfaq2html?label=tocbibind
+% for more details about the following command needed
+% for hyperlinking correctly the bibliography
+\cleardoublepage
+\phantomsection
+
+\addcontentsline{toc}{section}{Bibliography}
+\bibliography{biblio}
+\bibliographystyle{style/IEEEtran}
+
+\end{document}
