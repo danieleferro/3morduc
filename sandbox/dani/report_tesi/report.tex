@@ -1,14 +1,20 @@
 \documentclass[12pt]{article}
+
+% when apply return carriage
 \usepackage[english]{babel}
 \usepackage[pdftex]{graphicx}
 \usepackage[latin1]{inputenc}
 \usepackage{listings}
+\usepackage{multicol}
+
+%% \usepackage{url}
 %% \usepackage{amsfonts}
 %% \usepackage{color}
-\usepackage{listings}
+
 \usepackage[colorlinks=true, linkcolor = black, urlcolor  = black, citecolor = black, filecolor = black ]{hyperref}
 \usepackage{subfigure}
 \usepackage{pdfpages}
+\usepackage{comment}
 \date{}
 
 \setcounter{secnumdepth}{4}%
@@ -18,13 +24,12 @@
   %backgroundcolor=\color{gray},
   frameround=fttt,
   stringstyle=\ttfamily,
-  language=python,
+  language=C++,
   basicstyle=\small
 }
 
 %% avoid text space afternewline
 \setlength{\parindent}{0pt}
-
 
 % set paragraph layout
 \makeatletter
@@ -35,10 +40,8 @@
 \makeatother
 % end paragraph layout
 
-
 % avoid overflow margin limit
 \sloppy
-
 
 \newcommand{\bigtilde}{$\sim$}
 \def\framework{\textsf{REAR}}
@@ -53,9 +56,9 @@
 \begin{document}
 \include{front}  % Frontpage
 \include{pref}   % preface
-%% \include{hmd_display_state_art}
-%%\tableofcontents
-\include{exocentric_vision}
+\tableofcontents
+\include{intro}
+%%\include{exocentric_vision}
 %%\include{simulator}
 %%\include{opengl}
 %\include{rear_framework}
