@@ -1,0 +1,19 @@
+installare la versione scelta di jpeg dal tar, tramite
+
+./configure
+make
+make install
+
+inserire nella cartella gli header della stessa versione della
+libraria che si vuole usare;
+
+inserire il percorso locale agli header nei file sorgenti;
+
+compilare separatamente i due moduli con
+
+g++ -lglut -c main.c -o main.o
+g++ -lglut -c jpegloader.c -o jpegloader.o
+
+linkare (in modo statico) la libreria installata con
+
+g++ -lglut -o out main.o jpegloader.o  /usr/local/lib/libjpeg.a
