@@ -1,0 +1,126 @@
+rear - a framework for virtual exocentric vision systems of
+       mobile robots
+
+Brief description
+-----------------
+
+rear is a c++ framework that implements a minimal set of
+tools and functionalities needed by a virtual 
+exocentric vision system, that is, a software that makes 
+you able to create an external visualization of a robot 
+using a egocentric-mounted camera and augmented reality 
+techniques.
+
+Dependencies
+------------
+
+Rear is written in C++ and makes use of OpenGL(TM) commands.
+Hence, in most cases, in order to use it, all you need to 
+do is install:
+ 
+ - a C++ compiler
+ - the C++ standard library
+ - an implementation of the OpenGL(TM) api
+
+Rear has been developed using GNU gcc as the c++ compiler, 
+Mesa as the implementation of OpenGL. It has been tested on 
+the following Debian-like platforms:
+
+ - Debian Lenny (5.0.5)
+   with gcc 4.3.2
+   with Mesa 7.0.3
+ 
+ - Ubuntu Karmic Koala (9.10)
+   with gcc 4.4.1
+   with Mesa 7.6.0
+
+If you are not using a Debian-like package manager, and would 
+like to compile Mesa yourself, you will have to install a 
+number of additional libraries. They are all free software, so
+just google for their source code. 
+Here is a working configuration for Debian Lenny:
+
+  - libdrm >= 2.4.3 or <= 2.4.14
+  - dri2proto 2.3
+  - xxf86vm (repo)
+  - xdamage 1.1.1.1
+  - libexpat 2.0.1
+  - x11-proto-gl-dev (repo)
+  - freeglut3 2.4.0
+  - Mesa 7.6.0
+
+Be adviced that, when compiling freeglut, you could get a 
+compilation error regarding lines 1687-1688 of 
+freeglut-joystick.c
+Just open that file with a text editor and comment them, 
+since they are not needed by rear.
+
+Compiling
+---------
+Once you are done with writing the code of your 
+custom classes, just put the source file within 
+the /src directory and, then, add the objects to 
+Makefile targets. Then, you will only have to type 
+
+    $make
+    $make run
+
+Rear comes with some example custom classes, so could 
+find useful to have a look at them.
+For a complete programming guide, please refer to the 
+technical report included in the /doc directory.
+
+Good luck, and happy coding.
+
+License
+-------
+rear is released under the terms of GNU GPL v3.
+for a copy of the license, see <http://www.gnu.org/licenses/>
+
+
+Keyboard action
+---------------
+The following explains all the possible keyboard actions.
+
+- ESCAPE
+  close and exit from the application
+
+- S
+  call "NextStep" method in DataManager
+
+- O
+  move camera forward along the X axis
+
+- P
+  move camera backward along the X axis
+
+- K
+  rotate camera around Y axis (clockwise)
+
+- L
+  rotate camera around Y axis (counterclockwise)
+
+- UP ARROW
+  move robot forward along its direction
+
+- DOWN ARROW
+  move robot backward along its direction
+
+- RIGHT ARROW
+  move robot forward along X direction
+
+- LEFT ARROW
+  move robot backward along X direction
+
+
+
+Authors and maintainers
+-----------------------
+
+- Daniele Ferro (original author and former maintainer, 2010)
+  mail: daniele.ferro86 at gmail dot com
+  web :
+  
+- Loris Fichera (original author and former maintainer, 2010)
+  mail: loris.fichera at gmail dot com 
+  web :
