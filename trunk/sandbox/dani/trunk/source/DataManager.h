@@ -48,7 +48,7 @@
 #include "DataLogic.h"
 #include "Camera.h"
 #include "data_types.h"
-
+#include "command_mapping.h"
 
 class DataManager
 {

@@ -3,6 +3,7 @@ SOURCES  = \
 	Morduc.cpp \
 	Camera.cpp \
 	texture_png.cpp \
+	texture_jpeg.cpp \
 	DataLogic.cpp \
 	DataManager.cpp \
 	SpacialMetricCalc.cpp \
@@ -24,6 +25,7 @@ CEXE      = $(addprefix $(BINDIR), $(EXENAME))
 
 CFLAGS    = -lglut -lpng
 LIBRARY   = -L/usr/X11R6/lib
+LIBJPEGOBJ = /usr/local/lib/libjpeg.a
 
 CC = g++
 RM = rm
@@ -34,7 +36,7 @@ OPT_DIST  = 15
 main: $(CSOURCES) $(CEXE)
 
 $(CEXE): $(COBJECTS)
-	$(CC) $(LIBRARY) $(CFLAGS) $(COBJECTS) -o $@ 
+	$(CC) $(LIBRARY) $(CFLAGS) $(COBJECTS) $(LIBJPEGOBJ) -o $@ 
 
 $(OBJDIR)%.o: $(SOURCEDIR)%.cpp
 	$(CC) $(LIBRARY) $(CFLAGS) -c $< -o $@

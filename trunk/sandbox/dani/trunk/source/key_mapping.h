@@ -24,12 +24,32 @@
 
 /* ascii code for the keys */
 #define ESCAPE 27
-#define Q 113
-#define W 119
-#define S 115
-#define O 111
-#define P 112
+
+#define A 97
+#define B 98  
+#define C 99 
+#define D 100
+#define E 101
+#define F 102
+#define G 103
+#define H 104
+#define I 105
+#define J 106
 #define K 107
 #define L 108
+#define M 109
+#define N 110
+#define O 111
+#define P 112
+#define Q 113
+#define R 114
+#define S 115
+#define T 116
+#define U 117
+#define V 118
+#define W 119
+#define X 120
+#define Y 121
+#define Z 122
 
 #endif

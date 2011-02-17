@@ -99,7 +99,7 @@ void DataManager::NextStep(int command) {
 void DataManager::LoadGLTextures(GLuint * texture, const char* filename) {	
 
   /* load image from png file */
-  * texture = loadImage(filename);
+  * texture = loadPNGImage(filename);
   if (!*texture) {
     std::cout << "Texture value: " << *texture << std::endl;
     exit(1);

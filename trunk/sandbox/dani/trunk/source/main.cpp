@@ -23,6 +23,7 @@
 #include "DataManager.h"
 
 #include "key_mapping.h"
+#include "command_mapping.h"
 #include "texture_png.h"
 #include "Camera.h"
 #include "SpacialMetricCalc.h"
@@ -58,6 +59,52 @@ Camera * camera = NULL;
 
 /* Image distance calculator declaration */
 IImageSelector * calculator = NULL;
+
+void DrawTexture()
+{
+
+  glEnable(GL_TEXTURE_2D);
+
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  glLoadIdentity();
+
+  // No depth buffer writes for background.
+  glDepthMask(false);
+
+  glBegin( GL_QUADS );
+
+  {
+    glTexCoord2f( 0.f, 1.f );
+    glVertex2f( -1, -1 );
+
+    glTexCoord2f( 0.f, 0.f );
+    glVertex2f( -1, 1.f );
+
+
+    glTexCoord2f( 1.f, 0.f );
+    glVertex2f( 1.f, 1.f );
+
+    glTexCoord2f( 1.f, 1.f );
+    glVertex2f( 1.f, -1 );
+
+  }
+
+  glEnd();
+
+  glDepthMask(true);
+
+  glPopMatrix();
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW);
+
+  glDisable(GL_TEXTURE_2D);
+}
 
 void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB, 
 		   GLfloat diffuseR, GLfloat diffuseG, GLfloat diffuseB, 
@@ -150,30 +197,44 @@ void keyPressed(unsigned char key, int x, int y)
     /* exit the program...normal termination. */
     exit(0);
     
+    /* robot command */
+
+  case A:
+    manager->NextStep(FORWARD);
+    break;
+ 
   case S:    
-    manager->NextStep();
+    manager->NextStep(BACKWARD);
+    break;
+
+  case Q:    
+    manager->NextStep(LEFT);
+    break;
+   
+
+  case W:    
+    manager->NextStep(RIGHT);
     break;
     
-    // moving camera
+
+    /* camera command */
+
   case O:
     camera -> SetPosition (_cameraX + STEP,
 			   _cameraY,
 			   _cameraZ);
     break;
 
-    // moving camera
   case P:
     camera -> SetPosition (_cameraX - STEP,
 			   _cameraY,
 			   _cameraZ);
     break;
 
-    // moving camera
   case K:
     camera->RotateY( STEP );
     break;
 
-    // moving camera
   case L:
     camera->RotateY( - STEP );
     break;
