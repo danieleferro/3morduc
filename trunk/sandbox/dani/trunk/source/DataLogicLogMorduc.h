@@ -1,5 +1,5 @@
 /*
- * DataLogic.h    
+ * DataLogicLogSimulator.h    
  *
  * This file is part of REAR.
  * Copyright (C) 2010 Daniele Ferro (daniele.ferro86@gmail.com) 
@@ -19,8 +19,8 @@
  * along with REAR.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __DATA_LOGIC
-#define __DATA_LOGIC
+#ifndef __DATA_LOGIC_LOG_MORDUC
+#define __DATA_LOGIC_LOG_MORDUC
 
 #include <string>
 #include <vector>
@@ -35,16 +35,19 @@
 
 #define TO_DEGREES(X) X * 180 / M_PI
 
-class DataLogic : public IDataLogic
+class DataLogicLogMorduc : public IDataLogic
 {
  private:
+
+  
   std::vector<image_data> _images_collection;
   int _index;
+  
   int _simulation_session;
   
  public:
-  DataLogic(int);
-  ~DataLogic();
+  DataLogicLogMorduc(int);
+  ~DataLogicLogMorduc();
   void SelectImage(robot_data *, image_data *,
 		   IImageSelector *);
 

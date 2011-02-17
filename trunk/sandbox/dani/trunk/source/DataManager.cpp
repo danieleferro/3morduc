@@ -21,7 +21,7 @@
 
 #include "DataManager.h"
 
-DataManager::DataManager(Robot * robot, DataLogic * logic, Camera * camera, 
+DataManager::DataManager(Robot * robot, IDataLogic * logic, Camera * camera, 
 			 IImageSelector * calculator)
 {
   _rob = robot;
@@ -98,8 +98,37 @@ void DataManager::NextStep(int command) {
     
 void DataManager::LoadGLTextures(GLuint * texture, const char* filename) {	
 
-  /* load image from png file */
-  * texture = loadPNGImage(filename);
+  std::string temp_filename = filename;
+  short point_index = temp_filename.find_last_of('.');
+  
+
+  temp_filename = temp_filename.substr(point_index, temp_filename.length()); 
+
+  if (!temp_filename.compare(".png")) {
+  
+    std::cout << "A png image" << std::endl;
+
+    /* load image from png file */
+    * texture = loadPNGImage(filename);
+
+  }
+  else {
+    if (!temp_filename.compare(".jpg") || !temp_filename.compare(".jpeg")) {
+      
+      std::cout << "A jpeg image" << std::endl;
+      /* load image from jpeg file */
+      * texture = loadJPEGImage(filename);
+
+    }
+    
+    else {
+      // unknown type
+      std::cout << "Not a valide texture image format." << std::endl;
+      exit(1);
+    }
+
+  }
+
   if (!*texture) {
     std::cout << "Texture value: " << *texture << std::endl;
     exit(1);
