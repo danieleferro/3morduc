@@ -62,6 +62,40 @@ Camera * camera = NULL;
 /* Image distance calculator declaration */
 IImageSelector * calculator = NULL;
 
+
+/* Bool, draw message to user */
+bool print_message = true;
+
+void DrawText(GLint x, GLint y,
+	      char* s, GLfloat r, GLfloat g, GLfloat b,
+	      void* font)
+{
+  int lines;
+  char* p;
+  
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  glOrtho(0.0, glutGet(GLUT_WINDOW_WIDTH), 
+	  0.0, glutGet(GLUT_WINDOW_HEIGHT), -1.0, 1.0);
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  glLoadIdentity();
+  glColor3f(r,g,b);
+  glRasterPos2i(x, y);
+  for(p = s, lines = 0; *p; p++) {
+    if (*p == '\n') {
+      lines++;
+	      glRasterPos2i(x, y-(lines*18));
+    }
+    glutBitmapCharacter(font, *p);
+  }
+  glPopMatrix();
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW);
+}
+
 void DrawTexture()
 {
 
@@ -140,12 +174,20 @@ void display () {
   /* draw the robot */
   rob->DrawRobot();
 
+
   // last set material is for the textures
   setMaterial(1.0, 1.0, 1.0,
 	      1.0, 1.0, 1.0,
 	      1.0, 1.0, 1.0,
 	      20);
-	      
+
+  /* draw some text */
+  if (print_message)
+    DrawText(350, 50, "generic string to advise user", 1.0f, 0.0f, 1.0f,
+	     GLUT_BITMAP_HELVETICA_18);
+  print_message = !print_message;
+
+	       
   glFlush();
   glutSwapBuffers();
 }
@@ -174,6 +216,7 @@ void reshape ( int x, int y ) {
 /* The function called whenever a key is pressed. */
 void keyPressed(unsigned char key, int x, int y) 
 {
+
   /* avoid thrashing this procedure */
   usleep(100);
 
@@ -381,7 +424,7 @@ int main ( int argc, char * argv[] ) {
   rob = new Morduc();
   
 
-  // logic = new DataLogicLogSimulator(atoi(argv[1]));
+  //logic = new DataLogicLogSimulator(atoi(argv[1]));
 
   logic = new DataLogicLogMorduc(1);
 
@@ -402,7 +445,7 @@ int main ( int argc, char * argv[] ) {
 
   //camera->Move( F3dVector(0.0, 0.0, 12.0 ));
   //camera->MoveForwards( 0.0 );
- 
+
   /* tell GLUT to wait for events */
   glutMainLoop();
 }
