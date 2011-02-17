@@ -46,7 +46,7 @@ int GetTextureInfo(int ColourType)
 
 }
 
-GLuint loadImage(const char *filename)
+GLuint loadPNGImage(const char *filename)
 {
   GLuint texture;
   png_structp png_ptr = NULL;
@@ -161,7 +161,7 @@ GLuint loadImage(const char *filename)
 
 }
 
-
+/*
 void DrawTexture()
 {
 
@@ -207,3 +207,4 @@ void DrawTexture()
 
   glDisable(GL_TEXTURE_2D);
 }
+*/
