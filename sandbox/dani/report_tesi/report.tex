@@ -54,12 +54,17 @@
 %\advance\oddsidemargin by 1truecm
 %\advance\baselineskip by \baselineskip
 
+\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+
+
+
 \begin{document}
-\include{front}  % Frontpage
-\include{pref}   % preface
+%\include{front}  % Frontpage
+%\include{pref}   % preface
 \tableofcontents
 \include{intro}
-%%\include{exocentric_vision}
+\include{exocentric_vision}
 %%\include{simulator}
 %%\include{opengl}
 %\include{rear_framework}
