@@ -4,7 +4,8 @@ SOURCES  = \
 	Camera.cpp \
 	texture_png.cpp \
 	texture_jpeg.cpp \
-	DataLogic.cpp \
+	DataLogicLogSimulator.cpp \
+	DataLogicLogMorduc.cpp \
 	DataManager.cpp \
 	SpacialMetricCalc.cpp \
 	SweepMetricCalc.cpp \

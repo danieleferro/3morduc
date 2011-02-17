@@ -36,6 +36,7 @@
 #include <sstream>
 #include <vector>
 #include <iostream>
+#include <string>
 
 #endif
 
@@ -45,7 +46,8 @@
 #include "IImageSelector.h"
 #include "Robot.h"
 #include "texture_png.h"
-#include "DataLogic.h"
+#include "texture_jpeg.h"
+#include "IDataLogic.h"
 #include "Camera.h"
 #include "data_types.h"
 #include "command_mapping.h"
@@ -56,7 +58,7 @@ class DataManager
 
   GLuint _texture[1];
   Robot * _rob;
-  DataLogic * _logic;
+  IDataLogic * _logic;
   Camera * _camera;
   IImageSelector * _calculator;
 
@@ -74,7 +76,7 @@ class DataManager
   /* first parameter is a robot instance */
   /* second parameter is the simulation session number 
      it is only needed for offline testing */
-  DataManager(Robot *, DataLogic *, Camera *, 
+  DataManager(Robot *, IDataLogic *, Camera *, 
 	      IImageSelector *); 
   
   ~DataManager();

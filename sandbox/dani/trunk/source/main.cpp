@@ -29,6 +29,8 @@
 #include "SpacialMetricCalc.h"
 #include "SweepMetricCalc.h"
 #include "AnotherSweepMetricCalc.h"
+#include "DataLogicLogSimulator.h"
+#include "DataLogicLogMorduc.h"
 #include "Robot.h"
 #include "Morduc.h"
 
@@ -49,7 +51,7 @@ int window;
 Robot * rob = NULL;
 
 /* Data Logic declaration */
-DataLogic * logic = NULL;
+IDataLogic * logic = NULL;
 
 /* Data Manager declaration */
 DataManager * manager = NULL;
@@ -377,7 +379,11 @@ int main ( int argc, char * argv[] ) {
      having initialized OpenGL since calls
      OpenGL functions */
   rob = new Morduc();
-  logic = new DataLogic(atoi(argv[1]));
+  
+
+  // logic = new DataLogicLogSimulator(atoi(argv[1]));
+
+  logic = new DataLogicLogMorduc(1);
 
   /* camera instatiation */
   camera = new Camera();

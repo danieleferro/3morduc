@@ -1,5 +1,5 @@
 /*
- * DataLogic.cpp
+ * DataLogicLogSimulator.cpp
  *
  * This file is part of REAR.
  * Copyright (C) 2010 Daniele Ferro (daniele.ferro86@gmail.com) 
@@ -19,20 +19,20 @@
  * along with REAR.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "DataLogic.h"
+#include "DataLogicLogSimulator.h"
 
-DataLogic::DataLogic(int session)
+DataLogicLogSimulator::DataLogicLogSimulator(int session)
 {
   _simulation_session = session;
   _index = -1;
 }
 
-DataLogic::~DataLogic()
+DataLogicLogSimulator::~DataLogicLogSimulator()
 {
   delete &(_images_collection);
 }
 
-void DataLogic::RetrieveData(robot_data * data)
+void DataLogicLogSimulator::RetrieveData(robot_data * data)
 {
   // pointer to text file containing data
   FILE * position_data;
@@ -113,7 +113,7 @@ void DataLogic::RetrieveData(robot_data * data)
 
 }
 
-void DataLogic::Command(int command) {
+void DataLogicLogSimulator::Command(int command) {
 
 
   /* sends the command to the robot
@@ -128,7 +128,7 @@ void DataLogic::Command(int command) {
 
 
 // select the image to set as background using the euclidean metric
-void DataLogic::SelectImage(robot_data * robot_status, image_data * bg_image_data,
+void DataLogicLogSimulator::SelectImage(robot_data * robot_status, image_data * bg_image_data,
 			    IImageSelector * calculator)
 {
 
