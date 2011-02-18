@@ -1,0 +1,5 @@
+HTTP/1.1 200 OK
+Server:Morduc/5000/1.2/0/0/0/50
+Data: Laser/25/16/18/
+Content-Type: image/jpg
+Content-Length: 2435

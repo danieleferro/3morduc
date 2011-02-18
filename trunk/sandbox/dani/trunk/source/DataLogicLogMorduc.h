@@ -55,7 +55,6 @@ class DataLogicLogMorduc : public IDataLogic
 
   void Command(int);
 
-
 };
 
 #endif

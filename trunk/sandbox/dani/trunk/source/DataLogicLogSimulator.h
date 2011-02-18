@@ -52,7 +52,6 @@ class DataLogicLogSimulator : public IDataLogic
 
   void Command(int);
 
-
 };
 
 #endif

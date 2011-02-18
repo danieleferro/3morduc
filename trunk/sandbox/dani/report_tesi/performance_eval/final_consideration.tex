@@ -1,0 +1,25 @@
+\subsection{Final considerations}
+\label{performance_evaluation:tests_result:finalconsiderations}
+According to us, two chief conclusion can be drawn.
+\\
+The former is that when the robot moves along straight lines
+the optimal distance should be set to higher values, in order
+to show the entire robot model and, hence, to give a \textit{fully}
+exocentric vision.
+\\
+The latter one regards turnings. When robot performs hard turnings
+the \textit{sweep metric algorithm} often selects the egocentric
+point of view: changing from an exocentric to an egocentric vision
+causes disturbance to users.
+\\
+To overcome this deficiency an evolution of the \textit{sweep metric
+algorithm} was afterwards developed. It is named \textit{another sweep
+metric algorithm} (proving the authors' lack of imagination), and
+exposed in sections 
+\ref{concr:iimageselector:another_sweep_metric_algorithm} and
+\ref{concr:iimageselector:another_sweep_metric_class}.
+\\
+Even though the new algorithm has never been tested with users, its
+benefits are immediately evident, in particular if the robot moves
+along a `square' path, where long straight distances are interspersed
+with strict turns (angles greater than 45 degrees).
