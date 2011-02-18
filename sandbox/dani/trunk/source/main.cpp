@@ -65,6 +65,7 @@ IImageSelector * calculator = NULL;
 
 /* Bool, draw message to user */
 bool print_message = true;
+char message[50];
 
 void DrawText(GLint x, GLint y,
 	      char* s, GLfloat r, GLfloat g, GLfloat b,
@@ -86,7 +87,7 @@ void DrawText(GLint x, GLint y,
   for(p = s, lines = 0; *p; p++) {
     if (*p == '\n') {
       lines++;
-	      glRasterPos2i(x, y-(lines*18));
+      glRasterPos2i(x, y-(lines*18));
     }
     glutBitmapCharacter(font, *p);
   }
@@ -182,10 +183,8 @@ void display () {
 	      20);
 
   /* draw some text */
-  if (print_message)
-    DrawText(350, 50, "generic string to advise user", 1.0f, 0.0f, 1.0f,
-	     GLUT_BITMAP_HELVETICA_18);
-  print_message = !print_message;
+  DrawText(280, 50, message, 1.0f, 0.0f, 1.0f,
+	   GLUT_BITMAP_HELVETICA_18);
 
 	       
   glFlush();
@@ -245,20 +244,37 @@ void keyPressed(unsigned char key, int x, int y)
     /* robot command */
 
   case A:
+
+    strcpy(message, "Sending forward command, please wait.");
+    display();
     manager->NextStep(FORWARD);
+    strcpy(message, "Command sent successfully.");
+    display();
     break;
  
   case S:    
+    strcpy(message, "Sending backword command, please wait.");
+    display();
     manager->NextStep(BACKWARD);
+    strcpy(message, "Command sent successfully.");
+    display();
     break;
 
   case Q:    
+    strcpy(message, "Sending left command, please wait.");
+    display();
     manager->NextStep(LEFT);
+    strcpy(message, "Command sent successfully.");
+    display();
     break;
    
 
   case W:    
+    strcpy(message, "Sending right command, please wait.");
+    display();
     manager->NextStep(RIGHT);
+    strcpy(message, "Command sent successfully.");
+    display();
     break;
     
 
@@ -400,7 +416,6 @@ int main ( int argc, char * argv[] ) {
       exit(0);
     }
 
-  
 
   /* initialize GLUT, using any commandline parameters 
      passed to the program */
@@ -408,7 +423,8 @@ int main ( int argc, char * argv[] ) {
 
   /* setup the size, position, and display mode for 
      new windows */
-  glutInitWindowSize(624, 442);
+  //glutInitWindowSize(624, 442);
+  glutInitWindowSize(640, 480);
   glutInitWindowPosition(0, 0);
   //glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -423,10 +439,10 @@ int main ( int argc, char * argv[] ) {
      OpenGL functions */
   rob = new Morduc();
   
-
   //logic = new DataLogicLogSimulator(atoi(argv[1]));
 
-  logic = new DataLogicLogMorduc(1);
+  logic = new DataLogicLogMorduc(2);
+
 
   /* camera instatiation */
   camera = new Camera();

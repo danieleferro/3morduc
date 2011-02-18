@@ -1,0 +1,16 @@
+
+
+getting rear working on Debian Lenny:
+
+- libdrm >= 2.4.3 or <= 2.4.14
+- dri2proto 2.3
+- xxf86vm (repo)
+- xdamage 1.1.1.1
+- libexpat 2.0.1
+- x11-proto-gl-dev (repo)
+
+- freeglut3 2.4.0
+  (comment lines 1687-1688 of 
+   freeglut-joystick.c )
+
+- Mesa 7.6.0

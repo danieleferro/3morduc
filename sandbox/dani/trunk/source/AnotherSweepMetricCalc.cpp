@@ -92,7 +92,7 @@ float AnotherSweepMetricCalc::Calculate(robot_data * robot_status,
 
 
 void AnotherSweepMetricCalc::ChooseImage( robot_data * robot_status, image_data * bg_image_data,
-				   std::vector<image_data> * _images_collection)
+					  std::vector<image_data> * _images_collection)
 {
 
   int   collect_size = _images_collection->size(); 
