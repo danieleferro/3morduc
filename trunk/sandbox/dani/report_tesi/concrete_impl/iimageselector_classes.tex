@@ -288,13 +288,13 @@ within the \textit{sweep area}, the robot and image coordinates
 are translated and then rotated, in order to move the robot in 
 the origin of the axis and to overlap its orientation arrow with 
 the y-axis. The two transformations are shown in figure 
-\ref{fig:sweepal_translate} and \ref{fig:sweepal_rotate}, 
+\subref{fig:sweepal_translate} and \subref{fig:sweepal_rotate}, 
 while the robot and image starting coordinates are shown in 
-figure \ref{fig:sweepal_start}.
+figure \subref{fig:sweepal_start}.
 \\
 After executing these transformations, the sweep area is always 
 situated in the second and third quadrant, as 
-shown in figure \ref{fig:sweepal_rotate}. Now the `c' and `d' 
+shown in figure \subref{fig:sweepal_rotate}. Now the `c' and `d' 
 lines pass both from the origin.
 \\
 If we draw a circle centered in the axis origin, the intersection 
@@ -305,14 +305,14 @@ with the centre of the XY axis: this will be our "sweep area",
 where to check if an image is included or not. Note
 that we choose the points with negative Y value (named "A" and "B") 
 due to the translation and rotation operated
-before. Again, see figure \ref{fig:sweepal_triangle} 
+before. Again, see figure \subref{fig:sweepal_triangle} 
 for a graphical example.
 \\
 The circle radius must be a value large enough to include a wide 
 number of images. In our case we defined it with a
 value of five hundred, in order to reduce the difference between 
 the abstract `sweep area' and the actual triangle 
-`AOB' (figure \ref{fig:sweepal_triangle}) used to simplify the algorithm.
+`AOB' (figure \subref{fig:sweepal_triangle}) used to simplify the algorithm.
 \\
 We have now reduced the problem to check whether a point 
 lies on the \textit{sweep area} to a well-known problem:
@@ -362,7 +362,7 @@ sweep angle value must be strictly greater
 than zero and strictly less than ninety degrees. If the sweep angle exceeds
 previous limits the algorithm will executes
 with a wrong triangle AOB (we remember that AOB angle, shown in figure
-\ref{fig:sweepal_triangle}, is equal to twice
+\subref{fig:sweepal_triangle}, is equal to twice
 the sweep angle).
 
 
@@ -469,16 +469,16 @@ by the `a' axis. The read area indicates the sweep angle.
   \label{fig:ASM_explain}
 \end{figure}
 
-In \ref{fig:ASM_straight} the robot is correctly drawn by \framework{}
+In \subref{fig:ASM_straight} the robot is correctly drawn by \framework{}
 and user can control it from an exocentric point of view, thanks to
 the previous collected images. When robot begins to turn, for narrow
 angles of rotation the images are still included in the sweep area, so
 \framework{} draws the robot while it is turning (figure
-\ref{fig:ASM_straight_2}).
+\subref{fig:ASM_straight_2}).
 \\
 When the rotation angle begin too large, all the previous collected images
-become invalid, as shown by figures \ref{fig:ASM_straight_3} and
-especially \ref{fig:ASM_straight_4}. For this reason \framework{} provide
+become invalid, as shown by figures \subref{fig:ASM_straight_3} and
+especially \subref{fig:ASM_straight_4}. For this reason \framework{} provide
 immediately the egocentric point of view to the user, but this sudden change
 of point of view causes disorientation to the teleoperator, who often is
 no more able to proper collocate the robot in the remote environment. The
