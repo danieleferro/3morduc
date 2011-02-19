@@ -441,7 +441,7 @@ int main ( int argc, char * argv[] ) {
   
   //logic = new DataLogicLogSimulator(atoi(argv[1]));
 
-  logic = new DataLogicLogMorduc(2);
+  logic = new DataLogicLogMorduc(1);
 
 
   /* camera instatiation */
