@@ -301,8 +301,16 @@ std::string DataLogicLogMorduc::GetSingleImage() {
   o << "../log_morduc/log_" << _simulation_session << "/img" << _index << ".jpg";
   ret = ReadHalfJPEGFile(o.str().c_str());
   
-  if (ret != 1)
-    std::cout << "Error reading JPEG image !" << std::endl;
+  if (ret != 1) {
+    std::cout << "Image not read !" << std::endl;
+    // return previous path
+    _index--;
+
+    o.str("");
+    o.clear();
+    o << "../log_morduc/log_" << _simulation_session << "/img" << _index << ".jpg";
+    return o.str();
+  }
 
   o.str("");
   o.clear();
@@ -314,8 +322,9 @@ std::string DataLogicLogMorduc::GetSingleImage() {
   if (ret != 1)
     std::cout << "Error writing JPEG image !" << std::endl;
 
+  
+  
   // return half image path
-
   return o.str();
 
 
