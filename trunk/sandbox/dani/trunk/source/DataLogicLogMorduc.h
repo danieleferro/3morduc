@@ -32,8 +32,11 @@
 #include <cstring>
 #include "IDataLogic.h"
 #include "IImageSelector.h"
+#include "../jpeg-8c/jpeglib.h"
 
 #define TO_DEGREES(X) X * 180 / M_PI
+#define MAGNITUDE 100
+
 
 class DataLogicLogMorduc : public IDataLogic
 {
@@ -44,6 +47,14 @@ class DataLogicLogMorduc : public IDataLogic
   int _index;
   
   int _simulation_session;
+ 
+  void GetOdometricData(robot_data*);
+  std::string GetSingleImage();
+
+  unsigned char * _raw_image;
+  int ReadHalfJPEGFile(const char*);
+  int WriteJPEGFile(const char*, int, int);
+
   
  public:
   DataLogicLogMorduc(int);
@@ -54,6 +65,8 @@ class DataLogicLogMorduc : public IDataLogic
   void RetrieveData(robot_data *);
 
   void Command(int);
+
+
 
 };
 
