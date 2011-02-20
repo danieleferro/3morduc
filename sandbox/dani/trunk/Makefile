@@ -24,7 +24,7 @@ CSOURCES  = $(addprefix $(SOURCEDIR), $(SOURCES))
 COBJECTS  = $(addprefix $(OBJDIR), $(OBJECTS))
 CEXE      = $(addprefix $(BINDIR), $(EXENAME))
 
-CFLAGS    = -lglut -lpng
+CFLAGS    = -lglut -lpng -lGLU
 LIBRARY   = -L/usr/X11R6/lib
 LIBJPEGOBJ = /usr/local/lib/libjpeg.a
 
