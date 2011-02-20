@@ -437,7 +437,7 @@ int main ( int argc, char * argv[] ) {
      do not instantiate the robot before 
      having initialized OpenGL since calls
      OpenGL functions */
-  rob = new Morduc();
+  rob = new Morduc(4.8);
   
   //logic = new DataLogicLogSimulator(atoi(argv[1]));
 
@@ -451,6 +451,12 @@ int main ( int argc, char * argv[] ) {
   calculator = new AnotherSweepMetricCalc(45, 30,
 					  atof(argv[2]), 5,
 					  0, 5);
+
+  /*
+  calculator = new SweepMetricCalc(45, 30,
+				   atof(argv[2]), 5,
+				   0, 5);
+  */
   
   // calculator = new SpacialMetricCalc();
 

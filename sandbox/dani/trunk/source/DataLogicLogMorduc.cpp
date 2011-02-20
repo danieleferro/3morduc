@@ -299,6 +299,14 @@ std::string DataLogicLogMorduc::GetSingleImage() {
 
   // path image to read
   o << "../log_morduc/log_" << _simulation_session << "/img" << _index << ".jpg";
+
+  // apri immagine, se giusta dimenzione ritorna suo path
+  // se non esister ritorna errrore
+  // se dimensione doppia chiama ReadHalfJPEGFile & WriteJPEGFile per sovrascriverla
+  // se dimensione scorretta torna errore
+
+
+
   ret = ReadHalfJPEGFile(o.str().c_str());
   
   if (ret != 1) {

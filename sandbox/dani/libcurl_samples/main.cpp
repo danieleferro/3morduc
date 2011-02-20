@@ -1,14 +1,24 @@
-//#include <stdio.h>
 //#include <string.h>
 //#include <sys/types.h>
 //#include <fcntl.h>
 #include <stdlib.h>
 #include <curl/curl.h>
+#include <string>
+#include <iostream>
+
 
 // g++ -lcurl main.c -o out
 
 static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream)
 {
+
+  /* enable if ptr point to text data
+  std::string string1((char*)ptr);
+  std::cout << "-------- PRINTING TEXT:"
+	    << std::endl
+	    << string1 << std::endl;
+  */
+
   int written = fwrite(ptr, size, nmemb, (FILE *)stream);
   return written;
 }
