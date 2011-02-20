@@ -32,7 +32,7 @@ CC = g++
 RM = rm
 
 SESSION   = 2
-OPT_DIST  = 15
+OPT_DIST  = 25
 
 main: $(CSOURCES) $(CEXE)
 
