@@ -1,0 +1,128 @@
+\subsection{Setting up a texture}
+\label{sec:opengl:setting_texture}
+\lstset{language=C++}
+
+According to \cite{opengl:distilled} \textit{texture mapping 
+is a concept that takes a moment to grasp but a lifetime 
+to master.}
+\\
+As for our work, we were simply interested in drawing an 
+image as the background of a window. It is not a complex 
+task but, it could be very tricky, especially when one 
+does not have a deep understanding of what is happening 
+\textit{under the hood}.
+\\
+OpenGL provides 1D, 2D and 3D textures. A 2D texture is enough for our
+purposes.
+\\
+There exists a well-defined sequence of actions to draw a texture 
+into an OpenGL application. Such a sequence made of the following steps:
+
+\begin{enumerate}
+\item obtain an unused texture object identifier with \texttt{glGenTextures()}, 
+  and create a texture object using \texttt{glBindTexture()}
+\item set texture-object state parameters
+\item specify the texture image using \texttt{glTexImage2D()} 
+  or \texttt{gluBuild2DMipmaps()}
+\item before rendering geometry that uses the texture object, 
+  bind the texture object with glBindTexture()
+\item before rendering geometry, enable texture mapping
+\item send geometry to OpenGL with appropriate texture 
+  coordinates
+\end{enumerate}
+
+Let us show an example of how to take a preloaded image, binding it 
+to a texture and draw it as the background of a window. First of all, 
+we would like to define a helper structure which we will call \texttt{Image}
+to store the actual image and its size.
+
+\begin{lstlisting}[caption={The Image structure}, label={code:image}, frame=trBL]
+struct Image {
+  unsigned long sizeX;
+  unsigned long sizeY;
+  char * data;
+};
+
+typedef struct Image Image;
+\end{lstlisting}
+
+Now, let us suppose to have defined a \texttt{ImageLoad()} function 
+that loads an image from disk and returns an object of class \texttt{Image}. 
+Let us see how to put in code the procedure described above:
+
+\begin{lstlisting}[caption={Texture example}, label={code:texturemapping}, frame=trBL]
+  Gluint * texture;
+  Image * image;
+    
+  // allocate space for the image
+  image = (Image *) malloc(sizeof(Image));
+
+  if (image == NULL) {
+    // ERROR!
+    exit(0);
+  }
+
+  // load image from disk
+  if (!ImageLoad("image.bmp", image)) {
+    exit(1);
+  }        
+
+  // obtain an unused texture object
+  glGenTextures(1, texture);
+
+  // Bind 2d texture (x and y size)
+  glBindTexture(GL_TEXTURE_2D, * texture);   
+
+  // now let us set up some state parameters:
+  // scale linearly when image bigger than texture
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+                                 GL_LINEAR);
+ 
+  // scale linearly when image smaller than texture
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                                 GL_LINEAR); 
+
+  gluBuild2DMipmaps(GL_TEXTURE_2D, 3, image1->sizeX, 
+                    image1->sizeY, GL_RGB, GL_UNSIGNED_BYTE, 
+                    image1->data);
+
+  // enable texture mapping
+  glEnable(GL_TEXTURE_2D);
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  glLoadIdentity();
+
+  // deactivate depth (Z Axis)
+  glDepthMask(false);
+
+  glBegin( GL_QUADS );
+
+  // actually map texture
+  {
+    glTexCoord2f( 0.f, 0.f );
+    glVertex2f( -1, -1 );
+
+    glTexCoord2f( 0.f, 1.f );
+    glVertex2f( -1, 1.f );
+
+    glTexCoord2f( 1.f, 1.f );
+    glVertex2f( 1.f, 1.f );
+
+    glTexCoord2f( 1.f, 0.f );
+    glVertex2f( 1.f, -1 );
+  }
+
+  glEnd();
+
+  // reactivate depth (Z axis)
+  glDepthMask(true);
+
+  glPopMatrix();
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW);
+  glDisable(GL_TEXTURE_2D);
+\end{lstlisting}

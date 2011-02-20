@@ -1,0 +1,107 @@
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\setcounter{lstlisting}{0}
+
+\section{Future works}
+\label{sec:future_works}
+
+%% This chapter recovers the suggested future implementations scattered in the
+%% previous sections, along with some new ideas expressed in a more detailed and
+%% uniform way.
+%
+This section contains some tips for the future development of 
+\framework{} and the \textit{sweep metric algorithm}.
+%
+
+%
+It would be good to make a comparison between the \textit{sweep angle
+algorithm} and selection method no. 3 described in \cite{sugimoto}.
+%
+The formula used in \cite{sugimoto} to compare the view-point of an image with
+the robot's current position and direction is not clear at all. Some parameters
+are ambiguous and there is not an exhaustive explanation about the formula that
+ties them together.
+%
+After resolving and implementing the formula, it could be interesting to evaluate
+the same case tests with the two approaches, in order to underline the advantages
+and the disadvantages shown by each method and compare them.
+%
+
+%
+New implementations of the \texttt{IDataLogic} interface could be 
+developed. One could, for instance, interact by a socket or another 
+data stream) with the simulator making the whole system working \textit{online}, 
+without the need for saved log files and images. Another one could exploit the 
+same approach to connect to the actual Morduc. It would also make possible 
+to actually operate the robot remotely.
+%
+
+%
+In both cases, the class implementing \texttt{IDataLogic} must open a communication
+channel, in order to send commands to the robot and retrieve its data.
+%
+If the server contacted is the Morduc itself, the concrete \texttt{IDataLogic} 
+implementation must know the Morduc communication protocol (see section 2.4 of 
+\cite{morduc:dasero}). Otherwise, if the client communicates with a custom 
+simulator, the communication protocol could be chosen by the developer.
+%
+
+%
+In document \cite{morduc:neri}, Neri and others prove (by several tests) that \textit{3D
+vision guarantees a major precision in the teleguide and good performances on the obstacles
+avoidance}. An interesting future development could add the stereoscopic vision to a concrete
+\framework{} application, in order to merge the advantages brought by the two different
+approaches in robot teleguiding.
+%
+
+%
+To implement 3D vision, the robot server must provide both the right and left camera images,
+whereas the OpenGL functions must draw robot in the proper way on the images retrieved, to render
+the 3D effect. More details depends on the 3D technologies chosen by the developer: shutter-glasses,
+anaglyph, polarized, or other.
+%
+
+%
+The work presented in this document dis not take into account 
+collisions. If the environment the robot moves in presents walls 
+or obstacles to avoid, it could be useful to advise user in case 
+of an imminent or already happened collision.
+%
+A signalling system could be implemented once again with OpenGL, therefore 
+with augmented reality.The laser value, provided by the Morduc,
+could help to understand when and where draw warnings, as shown in 
+\cite{morduc:macalusodetommaso}.
+%
+
+%
+A more simple, but doubtless useful, future upgrade would consists in 
+creating a graphical interface, which allows user to define the
+\textit{sweep metric algorithm} initial parameters in a more friendly way. 
+%
+Currently, all these parameters (e.g. the number of log session or the 
+optimal distance) are given by command line.
+%
+
+%
+Last, but surely not least, two suggestions for the 
+\textit{sweep metric algorithm} reported in section 
+\ref{subsubsec:finalconsiderations}.
+%
+
+%
+An upgraded version of the algorithm could feature a 
+\textit{variable} optimal distance value. That value 
+could, for instance, be increased when the robot is moving 
+along straight lines and could be decreased when it starts 
+turning.
+%
+
+%
+To avoid sudden point-of-view changings during hard turnings, 
+a possible solution would be to modify the image selection algorithm 
+to have it behaving as follows: when it detects hard turnings, the 
+image to be set as background should provide a greater field-of-view. 
+In other words, instead of selecting the image provided by the 
+egocentric camera, the algorithm should select an image taken 
+in a position more distant than the optimal distance.
+%
