@@ -23,14 +23,53 @@
 
 DataLogicLogMorduc::DataLogicLogMorduc(int session) {
 
+  _index_max = 0;
   _simulation_session = session;
   _index = 0;
   _raw_image = NULL;
+  // file with all odometry for this log session
+  odom_file = NULL;
+  // image file
+  img_file = NULL;
+
+  // char array where to store a text line
+  char        line[150];
+  std::ostringstream o;
+
+  // path to read odometric info
+  o << "../log_morduc/log_" << _simulation_session << "/odometric.txt";
+
+  // try open text file in read mode (rt)
+  odom_file = fopen(o.str().c_str(), "rt");
+
+  if (odom_file == NULL) {
+    
+    std::cout << "Error on opening \n" << o.str()
+	      << std::endl << "Program will terminate." << std::endl;
+    exit(1);
+
+  }
+  
+  while(fgets(line, 150, odom_file)) {
+
+    // count line number
+    _index_max++;
+  }
+
+  // restore position indicator
+  rewind(odom_file);
+
+  // file will be closed by destructor
+  // fclose(odom_file);
+
+
+
 }
 
 DataLogicLogMorduc::~DataLogicLogMorduc() {
 
   delete &(_images_collection);
+  fclose(odom_file);
 }
 
 void DataLogicLogMorduc::RetrieveData(robot_data * data) {
@@ -85,7 +124,8 @@ void DataLogicLogMorduc::Command(int command) {
   */
      
   // increase index to point the next line of the file
-  _index++;
+  if (_index <= _index_max)
+    _index++;
 
 }
 
@@ -106,38 +146,27 @@ void DataLogicLogMorduc::SelectImage(robot_data * robot_status, image_data * bg_
 
 void DataLogicLogMorduc::GetOdometricData(robot_data* data) {
 
-  /* this function will create two files,
-     one with odometry data string and
-     one with coupled image */
-
-  std::ostringstream o;
-
-  // file with all odometry for this log session
-  FILE * odom_data_in;
-
   // char array and string where to store a text line
   char        line[150];
   std::string line_read;
-
-  // number line to read
-  int line_number = _index;
-
-  // temp counter
-  int counter;
-
-  // path to read odometric info
-  o << "../log_morduc/log_" << _simulation_session << "/odometric.txt";
-
-  // open text file in read mode (rt)
-  odom_data_in = fopen(o.str().c_str(), "rt");
+  int         counter = 0;
 
   // read file line
-  while(fgets(line, 150, odom_data_in) &&
-	line_number > 1) {
-    
-    line_number--;
+  if (_index <= _index_max)
+    fgets(line, 150, odom_file);
+
+  else {
+
+    data->x     = _last_robot_data.x;
+    data->y     = _last_robot_data.y;
+    data->theta = _last_robot_data.theta;
+    data->time  = _last_robot_data.time;
+
+    return;
+
   }
 
+  // from char * to string
   line_read = line;
 
   // get tokens from string
@@ -167,122 +196,98 @@ void DataLogicLogMorduc::GetOdometricData(robot_data* data) {
   line_read = line_read.substr(counter);
 
 
-  // std::cout << line_read << std::endl;
+  // std::cout << _index << " -->" << line_read << std::endl;
+
+  // save returned data
+  _last_robot_data.x     = data->x;
+  _last_robot_data.y     = data->y;
+  _last_robot_data.theta = data->theta;
+  _last_robot_data.time  = data->time;
+
 
   return;
   
 }
 
 
-int DataLogicLogMorduc::ReadHalfJPEGFile(const char * filename) {
+int DataLogicLogMorduc::ReadHalfJPEGFile() {
 
-  /* these are standard libjpeg structures for reading(decompression) */
-  struct jpeg_decompress_struct cinfo;
-  struct jpeg_error_mgr jerr;
-  
   /* libjpeg data structure for storing one row, that is, scanline of an image */
   JSAMPROW row_pointer[1];
   
-  FILE *infile = fopen( filename, "rb" );
   unsigned long location = 0;
   int i = 0;
-  
-  if ( !infile ) {
-    printf("Error opening jpeg file %s\n!", filename );
-    return -1;
-  }
 
-  /* here we set up the standard libjpeg error handler */
-  cinfo.err = jpeg_std_error( &jerr );
-  
-  /* setup decompression process and source, then read JPEG header */
-  jpeg_create_decompress( &cinfo );
-  
-  /* this makes the library read from infile */
-  jpeg_stdio_src( &cinfo, infile );
-  
-  /* reading the image header which contains image information */
-  jpeg_read_header( &cinfo, TRUE );
-  
-  /* Uncomment the following to output image information, if needed. */
-  
-  /*
-  printf( "JPEG File Information: \n" );
-  printf( "Image width and height: %d pixels and %d pixels.\n", cinfo.image_width, cinfo.image_height );
-  printf( "Color components per pixel: %d.\n", cinfo.num_components );
-  printf( "Color space: %d.\n", cinfo.jpeg_color_space );
-  */
-	
   /* Start decompression jpeg here */
-  jpeg_start_decompress( &cinfo );
+  jpeg_start_decompress(&_decomp_cinfo);
 
   /* allocate memory to hold the uncompressed image */
   // cinfo.image_width/2 because i wanto to split the image
-  _raw_image = (unsigned char*)malloc( cinfo.output_width/2*cinfo.output_height*cinfo.num_components );
+  _raw_image = (unsigned char*) malloc(_decomp_cinfo.output_width/2*
+				      _decomp_cinfo.output_height*
+				      _decomp_cinfo.num_components );
   
   /* now actually read the jpeg into the raw buffer */
-  row_pointer[0] = (unsigned char *)malloc( cinfo.output_width*cinfo.num_components );
+  row_pointer[0] = (unsigned char *) malloc(_decomp_cinfo.output_width*
+					    _decomp_cinfo.num_components);
   
   /* read one scan line at a time */
-  while( cinfo.output_scanline < cinfo.image_height ) {
-    jpeg_read_scanlines( &cinfo, row_pointer, 1 );
+  while (_decomp_cinfo.output_scanline < _decomp_cinfo.image_height) {
+
+    jpeg_read_scanlines( &_decomp_cinfo, row_pointer, 1 );
     
     // cinfo.image_width/2 because i wanto to split the image
-    for( i=0; i < (cinfo.image_width/2)*cinfo.num_components; i++) 
+    for( i=0; i < (_decomp_cinfo.image_width/2)*_decomp_cinfo.num_components; i++)
+
       _raw_image[location++] = row_pointer[0][i];
+
   }
   
   /* wrap up decompression, destroy objects, free pointers and close open files */
-  jpeg_finish_decompress( &cinfo );
-  jpeg_destroy_decompress( &cinfo );
+  jpeg_finish_decompress( &_decomp_cinfo );
+  jpeg_destroy_decompress( &_decomp_cinfo );
   free( row_pointer[0] );
-  fclose( infile );
 
   /* yup, we succeeded! */
   return 1;
 }
 
 
-int DataLogicLogMorduc::WriteJPEGFile(const char* filename, int width, int height) {
+int DataLogicLogMorduc::WriteJPEGFile() {
 
-  struct jpeg_compress_struct cinfo;
-  struct jpeg_error_mgr jerr;
-  
   /* this is a pointer to one row of image data */
   JSAMPROW row_pointer[1];
-  FILE *outfile = fopen( filename, "wb" );
-  
-  if ( !outfile ) {
-    printf("Error opening output jpeg file %s\n!", filename );
-    return -1;
-  }
 
-  cinfo.err = jpeg_std_error( &jerr );
-  jpeg_create_compress(&cinfo);
-  jpeg_stdio_dest(&cinfo, outfile);
+  _comp_cinfo.err = jpeg_std_error(&_jerr );
+  jpeg_create_compress(&_comp_cinfo);
+  jpeg_stdio_dest(&_comp_cinfo, img_file);
   
   /* Setting the parameters of the output file here */
-  cinfo.image_width = width;	
-  cinfo.image_height = height;
-  cinfo.input_components = 3;  /* or 1 for GRACYSCALE images */
-  cinfo.in_color_space = JCS_RGB; /* or JCS_GRAYSCALE for grayscale images */
+  _comp_cinfo.image_width = 640;	
+  _comp_cinfo.image_height = 480;
+  _comp_cinfo.input_components = 3;  /* or 1 for GRACYSCALE images */
+  _comp_cinfo.in_color_space = JCS_RGB; /* or JCS_GRAYSCALE for grayscale images */
   
   /* default compression parameters, we shouldn't be worried about these */
-  jpeg_set_defaults( &cinfo );
+  jpeg_set_defaults(&_comp_cinfo);
   
   /* Now do the compression .. */
-  jpeg_start_compress( &cinfo, TRUE );
+  jpeg_start_compress(&_comp_cinfo, TRUE);
   
   /* like reading a file, this time write one row at a time */
-  while( cinfo.next_scanline < cinfo.image_height ) {
-    row_pointer[0] = &_raw_image[ cinfo.next_scanline * cinfo.image_width *  cinfo.input_components];
-    jpeg_write_scanlines( &cinfo, row_pointer, 1 );
+  while (_comp_cinfo.next_scanline < _comp_cinfo.image_height) {
+
+    row_pointer[0] = &_raw_image[_comp_cinfo.next_scanline*
+				 _comp_cinfo.image_width*
+				 _comp_cinfo.input_components];
+
+    jpeg_write_scanlines(&_comp_cinfo, row_pointer, 1);
+
   }
   
   /* similar to read file, clean up after we're done compressing */
-  jpeg_finish_compress( &cinfo );
-  jpeg_destroy_compress( &cinfo );
-  fclose( outfile );
+  jpeg_finish_compress(&_comp_cinfo);
+  jpeg_destroy_compress(&_comp_cinfo);
   
   /* success code is 1! */
   return 1;
@@ -294,46 +299,83 @@ int DataLogicLogMorduc::WriteJPEGFile(const char* filename, int width, int heigh
 std::string DataLogicLogMorduc::GetSingleImage() {
 
   int ret;
-
   std::ostringstream o;
+
+  if (_index > _index_max)
+    // no more image, return last
+    return _last_image_path;
+
 
   // path image to read
   o << "../log_morduc/log_" << _simulation_session << "/img" << _index << ".jpg";
 
-  // apri immagine, se giusta dimenzione ritorna suo path
-  // se non esister ritorna errrore
-  // se dimensione doppia chiama ReadHalfJPEGFile & WriteJPEGFile per sovrascriverla
-  // se dimensione scorretta torna errore
+  // open a binary file for reading
+  img_file = fopen(o.str().c_str(), "rb" );  
 
-
-
-  ret = ReadHalfJPEGFile(o.str().c_str());
-  
-  if (ret != 1) {
-    std::cout << "Image not read !" << std::endl;
-    // return previous path
-    _index--;
-
-    o.str("");
-    o.clear();
-    o << "../log_morduc/log_" << _simulation_session << "/img" << _index << ".jpg";
-    return o.str();
+  if ( img_file == NULL ) {
+    std::cout << "Error on opening \n" << o.str()
+	      << std::endl << "Program will terminate." << std::endl;
+    exit(1);
   }
 
-  o.str("");
-  o.clear();
+  // set up the standard libjpeg error handler
+  _decomp_cinfo.err = jpeg_std_error(&_jerr);
+  
+  // setup decompression process and source, then read JPEG header
+  jpeg_create_decompress(&_decomp_cinfo);
+  
+  // this makes the library read from img_file
+  jpeg_stdio_src(&_decomp_cinfo, img_file);
+  
+  // reading the image header which contains image information
+  jpeg_read_header(&_decomp_cinfo, TRUE);
+  
+  /* Uncomment the following to output image information, if needed. */
+  
+  /*
+  printf( "JPEG File Information: \n" );
+  printf( "Image width and height: %d pixels and %d pixels.\n", cinfo.image_width, cinfo.image_height );
+  printf( "Color components per pixel: %d.\n", cinfo.num_components );
+  printf( "Color space: %d.\n", _decomp_cinfo.jpeg_color_space );
+  */  
+  
+  if (_decomp_cinfo.image_width == 1280 && _decomp_cinfo.image_height == 480) {
 
-  // path image to write (half the previous one)
-  o << "../log_morduc/log_" << _simulation_session << "/half_img" << _index << ".jpg";
-  ret = WriteJPEGFile(o.str().c_str(), 640, 480);
+    // call functions to override image with 640x480 one
 
-  if (ret != 1)
-    std::cout << "Error writing JPEG image !" << std::endl;
+    ReadHalfJPEGFile();
+    fclose(img_file);
+
+    // reopen binary file for writing.
+    img_file = fopen(o.str().c_str(), "wb" );  
+    WriteJPEGFile();
+
+  }
+  else {
+    
+    if (_decomp_cinfo.image_width == 640 && _decomp_cinfo.image_height == 480) {
+
+      // dimension image are right
+      jpeg_destroy_decompress(&_decomp_cinfo);
+    }
+    else {
+
+      // invalid cases
+      std::cout << "Image \n" << o.str()
+		<< " has not the proper dimension (1280x480 or 640x480)."
+		<< std::endl << "Program will terminate." << std::endl;
+      fclose(img_file);
+      exit(1);
+
+    }
+
+  }
 
   
+  fclose(img_file);
+  free(_raw_image);
+  _last_image_path = o.str();
   
-  // return half image path
   return o.str();
-
 
 }
