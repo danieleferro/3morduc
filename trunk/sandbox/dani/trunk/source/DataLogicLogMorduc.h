@@ -45,15 +45,29 @@ class DataLogicLogMorduc : public IDataLogic
   
   std::vector<image_data> _images_collection;
   int _index;
-  
   int _simulation_session;
+  int _index_max;
+
+  FILE * odom_file;
+  FILE * img_file;
+
+  robot_data _last_robot_data;
+  std::string _last_image_path;
+
+  // standard libjpeg structures
+  struct jpeg_decompress_struct _decomp_cinfo;
+  struct jpeg_compress_struct   _comp_cinfo;
+  struct jpeg_error_mgr _jerr;
+
+
+
  
   void GetOdometricData(robot_data*);
   std::string GetSingleImage();
 
   unsigned char * _raw_image;
-  int ReadHalfJPEGFile(const char*);
-  int WriteJPEGFile(const char*, int, int);
+  int ReadHalfJPEGFile();
+  int WriteJPEGFile();
 
   
  public:
