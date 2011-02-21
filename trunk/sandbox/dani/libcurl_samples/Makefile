@@ -5,4 +5,4 @@ clean:
 	-rm -rf out body_out head_out
 
 run:	main
-	./out localhost
+	./out localhost/stereo.jpg
