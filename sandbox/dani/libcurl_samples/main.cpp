@@ -46,7 +46,7 @@ int main(int varnum, char ** varargs) {
   curl_handle = curl_easy_init();
 
   printf("Set url to download\n");
-  // curl_easy_setopt(curl, CURLOPT_URL, "http://localhost");
+  // curl_easy_setopt(curl_handle, CURLOPT_URL, "http://localhost");
   curl_easy_setopt(curl_handle, CURLOPT_URL, varargs[1]);
 
   /* send all data to this function  */ 

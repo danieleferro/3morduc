@@ -6,6 +6,7 @@ SOURCES  = \
 	texture_jpeg.cpp \
 	DataLogicLogSimulator.cpp \
 	DataLogicLogMorduc.cpp \
+	DataLogicMorduc.cpp \
 	DataManager.cpp \
 	SpacialMetricCalc.cpp \
 	SweepMetricCalc.cpp \
@@ -24,14 +25,14 @@ CSOURCES  = $(addprefix $(SOURCEDIR), $(SOURCES))
 COBJECTS  = $(addprefix $(OBJDIR), $(OBJECTS))
 CEXE      = $(addprefix $(BINDIR), $(EXENAME))
 
-CFLAGS    = -lglut -lpng -lGLU
+CFLAGS    = -lglut -lpng -lGLU -lcurl
 LIBRARY   = -L/usr/X11R6/lib
 LIBJPEGOBJ = /usr/local/lib/libjpeg.a
 
 CC = g++
 RM = rm
 
-SESSION   = 2
+SESSION   = 1
 OPT_DIST  = 25
 
 main: $(CSOURCES) $(CEXE)
