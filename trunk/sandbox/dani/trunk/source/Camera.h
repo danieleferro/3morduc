@@ -33,6 +33,8 @@
 
 #include "math.h"
 #include <iostream>
+#define  __CAMERA__DBG 0
+
 
 /////////////////////////////////
 //Note: All angles in degrees  //

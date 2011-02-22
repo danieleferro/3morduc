@@ -117,7 +117,9 @@ void AnotherSweepMetricCalc::ChooseImage( robot_data * robot_status, image_data 
     if ( abs(robot_status->x - (*_images_collection)[j].x) < 0.01 &&
 	 abs(robot_status->y - (*_images_collection)[j].y) < 0.01) {
       
-      std::cout << "---TURNING !!" << std::endl;
+      if (_ASM_DEBUG) 
+	std::cout << "---TURNING !!" << std::endl;
+      
       turn_flag = true;
       distances[j] = IMAGE_NOT_VALID;
       buffer_skip_turn++;
@@ -168,16 +170,17 @@ void AnotherSweepMetricCalc::ChooseImage( robot_data * robot_status, image_data 
     
 
 
+  if (_ASM_DEBUG) {
 
-
-  for (int i = 0; i < _images_collection->size(); i ++) {
-
-    std::cout << "distance[" << i << "]: "
-	      << distances[i]
-	      << std::endl;
-
+    for (int i = 0; i < _images_collection->size(); i ++) {
+      
+      std::cout << "distance[" << i << "]: "
+		<< distances[i]
+		<< std::endl;
+      
+    }
   }
-  
+
 
   // find the minimum distance
   i = 0;

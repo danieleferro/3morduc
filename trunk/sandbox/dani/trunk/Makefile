@@ -4,6 +4,8 @@ SOURCES  = \
 	Camera.cpp \
 	texture_png.cpp \
 	texture_jpeg.cpp \
+	jpeg_library.cpp \
+	HTTPFunctor.cpp \
 	DataLogicLogSimulator.cpp \
 	DataLogicLogMorduc.cpp \
 	DataLogicMorduc.cpp \
@@ -25,7 +27,7 @@ CSOURCES  = $(addprefix $(SOURCEDIR), $(SOURCES))
 COBJECTS  = $(addprefix $(OBJDIR), $(OBJECTS))
 CEXE      = $(addprefix $(BINDIR), $(EXENAME))
 
-CFLAGS    = -lglut -lpng -lGLU -lcurl
+CFLAGS    = -lglut -lpng -lGLU -lcurlpp
 LIBRARY   = -L/usr/X11R6/lib
 LIBJPEGOBJ = /usr/local/lib/libjpeg.a
 

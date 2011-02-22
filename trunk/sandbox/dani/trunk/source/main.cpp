@@ -442,16 +442,16 @@ int main ( int argc, char * argv[] ) {
   
   //logic = new DataLogicLogSimulator(atoi(argv[1]));
 
-  // logic = new DataLogicLogMorduc(atoi(argv[1]));
+  logic = new DataLogicLogMorduc(10); //atoi(argv[1]));
 
-  logic = new DataLogicMorduc("localhost", "../log_morduc/log_10");
+  //logic = new DataLogicMorduc("localhost", "../log_morduc/log_10");
   
 
   /* camera instatiation */
   camera = new Camera();
 
   /* image distance calculator instantiation */
-  calculator = new AnotherSweepMetricCalc(44, 30,
+  calculator = new AnotherSweepMetricCalc(45, 30,
 					  atof(argv[2]), 5,
 					  0, 5);
 

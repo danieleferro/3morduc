@@ -30,10 +30,13 @@
 #include <iostream>
 #include <cstdio>
 #include <cstring>
-#include <curl/curl.h>
+#include <stdlib.h>
+
 #include "IDataLogic.h"
 #include "IImageSelector.h"
 #include "../jpeg-8c/jpeglib.h"
+#include "HTTPFunctor.h"
+#include "command_mapping.h"
 
 #define TO_DEGREES(X) X * 180 / M_PI
 #define MAGNITUDE 100
@@ -52,26 +55,10 @@ class DataLogicMorduc : public IDataLogic
   FILE * odom_file;
   FILE * img_file;
 
-
   std::string _path_server;
   std::string _path_data;
 
-  // standard libjpeg structures
-  struct jpeg_decompress_struct _decomp_cinfo;
-  struct jpeg_compress_struct   _comp_cinfo;
-  struct jpeg_error_mgr _jerr;
-
-  void WriteFilesFromServer();
-  void GetOdometricData(robot_data*);
-  std::string GetSingleImage();
-
-  unsigned char * _raw_image;
-  int ReadHalfJPEGFile();
-  int WriteJPEGFile();
-
-  
-  static size_t WriteToFile(void* ptr, size_t size, size_t nmemb, void*stream);
-  size_t handle_impl(char * data, size_t size, size_t nmemb, void*stream);
+  HTTPFunctor _http_functor;
   
  public:
   DataLogicMorduc(const char*, const char*);

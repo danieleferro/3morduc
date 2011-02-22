@@ -54,13 +54,13 @@ DataLogicLogMorduc::DataLogicLogMorduc(int session) {
 
     // count line number
     _index_max++;
-  }
 
-  // restore position indicator
-  rewind(odom_file);
+  };
 
-  // file will be closed by destructor
-  // fclose(odom_file);
+  if (__DATA_LOGIC_LOG_MORDUC_DEBUG) 
+    std::cout << ">> CONSTRUCTOR: Line number: " << _index_max << std::endl;
+  
+  fclose(odom_file);
 
 
 
@@ -69,7 +69,6 @@ DataLogicLogMorduc::DataLogicLogMorduc(int session) {
 DataLogicLogMorduc::~DataLogicLogMorduc() {
 
   delete &(_images_collection);
-  fclose(odom_file);
 }
 
 void DataLogicLogMorduc::RetrieveData(robot_data * data) {
@@ -79,11 +78,15 @@ void DataLogicLogMorduc::RetrieveData(robot_data * data) {
 
   /* STEP 1: retrieve data from file (server) */
   GetOdometricData(data);
-  
-  std::cout << "X value: " << data->x << std::endl;
-  std::cout << "Y value: " << data->y << std::endl;
-  std::cout << "Theta value: " << data->theta << std::endl;
-  std::cout << "Time value: " << data->time << std::endl;
+
+  if (__DATA_LOGIC_LOG_MORDUC_DEBUG) {
+
+    std::cout << "X value: " << data->x << std::endl;
+    std::cout << "Y value: " << data->y << std::endl;
+    std::cout << "Theta value: " << data->theta << std::endl;
+    std::cout << "Time value: " << data->time << std::endl;
+  }
+
 
   /* STEP 2: get single image path */
   image_path = GetSingleImage();
@@ -150,17 +153,49 @@ void DataLogicLogMorduc::GetOdometricData(robot_data* data) {
   char        line[150];
   std::string line_read;
   int         counter = 0;
+  std::ostringstream o;
+
+  // path to read odometric info
+  o << "../log_morduc/log_" << _simulation_session << "/odometric.txt";
 
   // read file line
-  if (_index <= _index_max)
-    fgets(line, 150, odom_file);
+  if (_index <= _index_max) {
+    
+    // try open text file in read mode (rt)
+    odom_file = fopen(o.str().c_str(), "rt");
+    
+    if (odom_file == NULL) {
+      
+      std::cout << "Error on opening \n" << o.str()
+		<< std::endl << "Program will terminate." << std::endl;
+      exit(1);
+      
+    }
 
+    
+    while(counter < _index) {
+      
+      fgets(line, 150, odom_file);
+      // count line number
+      counter++;
+      
+    };
+    
+    if (__DATA_LOGIC_LOG_MORDUC_DEBUG)
+      std::cout << "Read line number: " << _index << std::endl;
+
+    fclose(odom_file);
+    
+  }
   else {
 
     data->x     = _last_robot_data.x;
     data->y     = _last_robot_data.y;
     data->theta = _last_robot_data.theta;
     data->time  = _last_robot_data.time;
+    
+    if (__DATA_LOGIC_LOG_MORDUC_DEBUG)
+      std::cout << "Return previous data." << std::endl;
 
     return;
 
@@ -354,6 +389,11 @@ std::string DataLogicLogMorduc::GetSingleImage() {
   else {
     
     if (_decomp_cinfo.image_width == 640 && _decomp_cinfo.image_height == 480) {
+
+      if (__DATA_LOGIC_LOG_MORDUC_DEBUG)
+	std::cout << "Image " << o.str()
+		  << " (640x480) read."
+		  << std::endl;
 
       // dimension image are right
       jpeg_destroy_decompress(&_decomp_cinfo);

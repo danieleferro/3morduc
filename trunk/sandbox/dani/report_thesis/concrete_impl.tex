@@ -19,7 +19,7 @@ done, all we need to write is:
 \item an implementation of the \texttt{IImageSelector} interface
 \end{itemize}
 
-The class diagram of the complete system is reported in figure 
+The class diagram of the complete system is reported in figure
 \ref{fig:class_diagram_complete}. 
 \\
 As it's easy to notice, it features two implementations 
@@ -33,13 +33,25 @@ whose possible implementation is showed in sections
 \ref{concr:iimageselector:spacial_metric_algorithm} and
 \ref{concr:iimageselector:spacial_metric_class}.
 
+\ifthenelse{\isodd{\thepage}}{
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=\textwidth]{img/class_diagram.png} 
+    \includegraphics[width=\textheight, angle=270]{img/class_diagram.png} 
     \caption{Class diagram of the whole system}
     \label{fig:class_diagram_complete}
   \end{center}
 \end{figure}
+}
+{
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=\textheight, angle=90]{img/class_diagram.png} 
+    \caption{Class diagram of the whole system}
+    \label{fig:class_diagram_complete}
+  \end{center}
+\end{figure}
+}
+
 
 The latters, instead, encapsulates a brand new selection algorithm. 
 It will be widely discussed later from section

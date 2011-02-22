@@ -111,10 +111,11 @@ void Camera::SetPosition(GLfloat x, GLfloat y, GLfloat z)
 
 void Camera::Render( void )
 {
-  std::cout << "Camera position is:     " 
-	    << Position.x << ","
-	    << Position.z << ","
-	    << _theta + 90 << std::endl;
+  if (__CAMERA__DBG)
+    std::cout << "Camera position is:     " 
+	      << Position.x << ","
+	      << Position.z << ","
+	      << _theta + 90 << std::endl;
   
   glRotatef(-RotatedX , 1.0, 0.0, 0.0);
   glRotatef(-RotatedY , 0.0, 1.0, 0.0);

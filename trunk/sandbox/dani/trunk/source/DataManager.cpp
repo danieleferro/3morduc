@@ -41,7 +41,7 @@ DataManager::DataManager(Robot * robot, IDataLogic * logic, Camera * camera,
       exit(-1);
     }
 
-  NextStep();
+  NextStep(FORWARD);
 }
 
 DataManager::~DataManager()
@@ -80,8 +80,9 @@ void DataManager::NextStep(int command) {
        old_image.y != _bg_image_data -> y ||
        old_image.theta != _bg_image_data -> theta )
     {
-      std::cout << "*** Moving the camera... ***" << std::endl;
-      std::cout <<  _bg_image_data->theta - old_image.theta << std::endl;
+      
+      //std::cout << "*** Moving the camera... ***" << std::endl;
+      //std::cout <<  _bg_image_data->theta - old_image.theta << std::endl;
 
       _camera -> SetPosition( _bg_image_data -> x,
 			      9.f,
@@ -106,8 +107,7 @@ void DataManager::LoadGLTextures(GLuint * texture, const char* filename) {
 
   if (!temp_filename.compare(".png")) {
   
-    std::cout << "A png image" << std::endl;
-
+    //std::cout << "A png image" << std::endl;
     /* load image from png file */
     * texture = loadPNGImage(filename);
 
@@ -115,7 +115,7 @@ void DataManager::LoadGLTextures(GLuint * texture, const char* filename) {
   else {
     if (!temp_filename.compare(".jpg") || !temp_filename.compare(".jpeg")) {
       
-      std::cout << "A jpeg image" << std::endl;
+      //std::cout << "A jpeg image" << std::endl;
       /* load image from jpeg file */
       * texture = loadJPEGImage(filename);
 
