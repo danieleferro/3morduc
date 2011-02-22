@@ -170,11 +170,15 @@ void AnotherSweepMetricCalc::ChooseImage( robot_data * robot_status, image_data 
     
 
 
-  if (_ASM_DEBUG) {
+  
+  //  if (_ASM_DEBUG) {
+  if (true) {
 
     for (int i = 0; i < _images_collection->size(); i ++) {
       
-      std::cout << "distance[" << i << "]: "
+      std::cout << (*_images_collection)[i].path;
+
+      std::cout << "\t distance: \t"
 		<< distances[i]
 		<< std::endl;
       

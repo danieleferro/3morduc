@@ -2,7 +2,7 @@
 #define __MORDUC
 
 #include "Robot.h"
-#define __MORDUC_DBG 0
+#define __MORDUC_DBG 1
 
 class Morduc : public Robot
 {
