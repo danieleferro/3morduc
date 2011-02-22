@@ -68,8 +68,8 @@ class DataManager
   /* bind the specified image to a texture */
   void LoadGLTextures(GLuint * texture, const char* filename);
 
-  /* move camera */
-  /* void MoveCamera(); */
+  void FirstStep();
+
 
  public:
   /* data manager conversion constructor */

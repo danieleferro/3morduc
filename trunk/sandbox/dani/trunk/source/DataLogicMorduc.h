@@ -40,7 +40,7 @@
 
 #define TO_DEGREES(X) X * 180 / M_PI
 #define MAGNITUDE 100
-
+#define __DATA_LOGIC_MORDUC__DBG 1
 
 class DataLogicMorduc : public IDataLogic
 {
