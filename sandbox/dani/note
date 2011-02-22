@@ -3,3 +3,8 @@
 - creare/sistemare due dataLogicMorduc
 - provare nuovi log
 - cancellare contenuto di /etc/apache2/httpd.conf (riavviare demone)
+
+
+
+add "/usr/local/lib" to /etc/ld.so.conf 
+./sbin/ldconfig 

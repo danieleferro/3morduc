@@ -36,7 +36,7 @@
 
 #define TO_DEGREES(X) X * 180 / M_PI
 #define MAGNITUDE 100
-
+#define __DATA_LOGIC_LOG_MORDUC_DEBUG 1
 
 class DataLogicLogMorduc : public IDataLogic
 {

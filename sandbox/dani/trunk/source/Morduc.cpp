@@ -8,10 +8,12 @@ Morduc::Morduc(float radius)
 void Morduc::DrawRobot()
 {
 
-  std::cout << "Robot  position is: \t"
-	    << x << "; "
-	    << y << "; "
-	    << theta << std::endl;
+  if (__MORDUC_DBG)
+
+    std::cout << "Robot  position is: \t"
+	      << x << "; "
+	      << y << "; "
+	      << theta << std::endl;
 
   GLfloat modelview[16];
 
