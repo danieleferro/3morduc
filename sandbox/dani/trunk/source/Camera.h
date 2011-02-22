@@ -33,7 +33,7 @@
 
 #include "math.h"
 #include <iostream>
-#define  __CAMERA__DBG 0
+#define  __CAMERA__DBG 1
 
 
 /////////////////////////////////

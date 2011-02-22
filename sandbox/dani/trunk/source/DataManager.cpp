@@ -61,7 +61,6 @@ void DataManager::FirstStep() {
   */
 
   // retrieve first data from robot
-  // _logic->Command(command);
   _logic->RetrieveData(_robot_status);
 
   // move robot with _robot_status data
@@ -73,8 +72,20 @@ void DataManager::FirstStep() {
   _logic->SelectImage(_robot_status, _bg_image_data,
 		      _calculator);
 
+  // move camera
+  _camera -> SetPosition( _bg_image_data -> x,
+			  9.f,
+			  _bg_image_data -> y);
+  
+  _camera -> SetYAngle( _bg_image_data -> theta - 90);
+  
+
   /* use image_path to load the image */
   LoadGLTextures(_texture, _bg_image_data->path);
+
+  std::cout << "--** Data collected successfully (first step)."
+	    << std::endl << std::endl;
+
 }
 
 

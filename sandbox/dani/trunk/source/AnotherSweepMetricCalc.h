@@ -3,6 +3,7 @@
 
 #include "IImageSelector.h"
 #include <iostream>
+#include <fstream>
 #include <math.h>
 #include <stdlib.h>
 #include <cstring>
