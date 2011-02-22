@@ -24,7 +24,7 @@
 DataLogicLogSimulator::DataLogicLogSimulator(int session)
 {
   _simulation_session = session;
-  _index = -1;
+  _index = 0;
 }
 
 DataLogicLogSimulator::~DataLogicLogSimulator()

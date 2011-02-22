@@ -25,7 +25,7 @@ DataLogicLogMorduc::DataLogicLogMorduc(int session) {
 
   _index_max = 0;
   _simulation_session = session;
-  _index = 0;
+  _index = 1;
   _raw_image = NULL;
   // file with all odometry for this log session
   odom_file = NULL;

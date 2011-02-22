@@ -29,7 +29,7 @@
 
 DataLogicMorduc::DataLogicMorduc(const char* url, const char* path_data) {
 
-  _index = 0;
+  _index = 1;
   
   odom_file = NULL;
   img_file = NULL;
@@ -116,6 +116,11 @@ void DataLogicMorduc::RetrieveData(robot_data * data) {
     request.perform();
       
     line_read = _http_functor.GetOdometryString();
+
+    if (__DATA_LOGIC_MORDUC__DBG)
+      std::cout << "Response from move command (robot data):" << std::endl
+		<< line_read << std::endl;
+
     
     _http_functor.CreateImage(image_path.c_str());
     
@@ -178,11 +183,13 @@ void DataLogicMorduc::RetrieveData(robot_data * data) {
   line_read = line_read.substr(counter);
 
 
-  std::cout << "X value: " << data->x << std::endl;
-  std::cout << "Y value: " << data->y << std::endl;
-  std::cout << "Theta value: " << data->theta << std::endl;
-  std::cout << "Time value: " << data->time << std::endl;
+  if (__DATA_LOGIC_MORDUC__DBG) {
 
+    std::cout << "X value: " << data->x << std::endl;
+    std::cout << "Y value: " << data->y << std::endl;
+    std::cout << "Theta value: " << data->theta << std::endl;
+    std::cout << "Time value: " << data->time << std::endl;
+  }
   // STEP 3: insert image in collection
    
   // fill grabbed frame metadata
@@ -217,7 +224,7 @@ void DataLogicMorduc::Command(int command) {
   // send the command to the robot
 
   std::string command_URL;
-
+  std::ostringstream os;
 
   switch (command) {
 
@@ -260,12 +267,18 @@ void DataLogicMorduc::Command(int command) {
     request.setOpt(new curlpp::options::Url(command_URL));
     request.setOpt(new curlpp::options::Verbose(false));
     request.setOpt(new curlpp::options::HttpHeader(headers));
-    // request.setOpt(new curlpp::options::WriteData(NULL));
-    
+    // redirect response to os
+    request.setOpt(new curlpp::options::WriteStream(&os));    
+
     
     // send request
     request.perform();
       
+    if (__DATA_LOGIC_MORDUC__DBG)
+      std::cout << "Response from command request:" << std::endl
+		<< os.str() << std::endl;
+
+
   }
   
   catch (curlpp::LogicError & e) {

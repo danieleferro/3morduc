@@ -41,7 +41,7 @@ DataManager::DataManager(Robot * robot, IDataLogic * logic, Camera * camera,
       exit(-1);
     }
 
-  NextStep(FORWARD);
+  FirstStep();
 }
 
 DataManager::~DataManager()
@@ -49,6 +49,36 @@ DataManager::~DataManager()
   free(_robot_status);
   free(_bg_image_data);
 }
+
+void DataManager::FirstStep() {
+
+  /*
+  image_data old_image;
+
+  old_image.x = _bg_image_data -> x;
+  old_image.y = _bg_image_data -> y;
+  old_image.theta = _bg_image_data -> theta;
+  */
+
+  // retrieve first data from robot
+  // _logic->Command(command);
+  _logic->RetrieveData(_robot_status);
+
+  // move robot with _robot_status data
+  // theta in degrees
+  _rob->Place(_robot_status->x,
+	      _robot_status->y,
+	      _robot_status->theta ); 
+    
+  _logic->SelectImage(_robot_status, _bg_image_data,
+		      _calculator);
+
+  /* use image_path to load the image */
+  LoadGLTextures(_texture, _bg_image_data->path);
+}
+
+
+
 
 void DataManager::NextStep(int command) {
 
@@ -93,7 +123,9 @@ void DataManager::NextStep(int command) {
 
   /* use image_path to load the image */
   LoadGLTextures(_texture, _bg_image_data->path);
-  std::cout << std::endl << std::endl;
+  
+  std::cout << "--** Command sended and data collected successfully."
+	    << std::endl << std::endl;
 }
 
     
