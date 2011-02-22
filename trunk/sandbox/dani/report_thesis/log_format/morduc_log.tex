@@ -1,0 +1,64 @@
+\section{Morduc Log}
+\label{log:morduc}
+
+Different working groups have used \morduc{} to implement its
+specific client. A large amount of log data
+information has so been collected from real sessions, in
+order to replicate offline all the state hold by the robot
+during previous teleguiding sessions.
+\\
+We can rely on two text files and several images. Every time
+robot changes its position, because a teleguide command has
+been received, new data are added to the log file set.
+\\
+The camera images, from right and left camera, are saved in 
+a 1280x480 pixels JPEG image. A counter variable,
+starting from number one and incremented every time a new image
+has to be written, is used in order to assign each one a different
+name according to the following notation:
+
+\begin{center}
+  \textit{img\_$\langle$counter\_value$\rangle$.txt}
+\end{center}
+
+Every created image is coupled with two different type of
+information, collected in the shooting instant and provided,
+respectively, by robot odometric data and scanner laser.
+\\
+The former is saved the text file named
+
+\begin{center}
+  \textit{odometric.txt}
+\end{center}
+
+where the line i-th contains the odometric data tied to the i-th
+images. New text is copied from the HTTP response header sent
+by the \morduc{} server (see section \ref{intro:3morduc:communication}),
+so the format will be
+
+\begin{center}
+  \textit{Morduc/$\langle$time$\rangle$$\backslash$$\langle$x$\rangle$$\backslash$$\langle$y$\rangle$$\backslash$$\langle$theta$\rangle$$\backslash$$\langle$collision\_number$\rangle$$\backslash$$\langle$min\_distance$\rangle$}
+\end{center}
+
+obviously, the text file will contain as many lines as many
+saved images.
+Laser data are saved, instead, in file named
+
+\begin{center}
+  \textit{laser.txt}
+\end{center}
+
+also in this case line i-th is coupled with the i-th image, and
+every line is rewritten from text data read in HTTP header
+response:
+
+\begin{center}
+  \textit{Laser/$\langle$value\_1$\rangle$/$\langle$value\_2$\rangle$/../$\langle$value\_181$\rangle$}
+\end{center}
+
+Inserted data are 181 values, since laser scan 180 \textdegree
+with 1 \textdegree step. Even though \framework{} do not takes
+advantages of laser information, this could be used by future
+version in order to improve operator skill in guiding the robot
+(e.g. by indicating distance from nearest object with augmented
+reality, as proposed in \cite{morduc:macalusodetommaso}).

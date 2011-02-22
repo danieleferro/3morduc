@@ -15,8 +15,8 @@ thought Internet network, to implement a real-time teleguide.
 \subsection{The DataLogicLogSimulator Class}
 \label{concr:idatalogic:datalogiclogsimulator}
 
-For the reasons explained in section \ref{simulator}, 
-we used a Morduc simulator in order to generate and record 
+For the reasons explained in section \ref{log:morduc_simulator},
+we used a \morduc{} simulator in order to generate and record 
 test data to use during \textit{off-line} tests.
 \\
 For every simulation session, such data consist of:
@@ -29,7 +29,7 @@ For every simulation session, such data consist of:
 \end{itemize}
 
 The format of the log file is the one described in section 
-\ref{simulator}.
+\ref{log:morduc_simulator}.
 \\
 The concrete \texttt{DataLogicLogSimulator} class will, then, provide 
 robot's odometry data and snapshots simply by reading 
@@ -221,7 +221,7 @@ background.
 As the one exposed before, \textit{DataLogicLogMorduc} class
 fetches new images and data from static textual file and images
 stored in a fixed directory, but in this case data are formatted
-as returned by the 3morduc's server in a real-time session. Indeed,
+as returned by the \morduc{}'s server in a real-time session. Indeed,
 this class was created to develop in off-line mode the class
 \textit{DataLogicMorduc}, which by Internet connection makes possible
 teleguiding the real robot (see following chapter
@@ -232,20 +232,13 @@ For every simulation session, we dispose of:
 \begin{itemize}
   \item a set of captured images, encoded in jpeg format,
     with 640x480 pixels each
-  \item a log file for each image, reporting sampled odometry data
+  \item a log file reporting sampled odometry data
+    for all the session
 \end{itemize}
-
-So, in the proper folder, there will be jpeg format file named
-\textit{screenshot\_$<$uniquenumber$>$.jpg} and the coupled robot's
-data status in \textit{data\_$<$uniquenumber$>$.txt}. As you can notice,
-information are stored differently from one collected by the simulator
-(exposed in chapter \ref{simulator}), so we need another concrete
-class implementing \textit{IDataLogic} interface
-(\ref{rear:interfaces:idatalogic}).
 
 
 \subsection{The DataLogicMorduc Class}
 \label{concr:idatalogic:datalogicmorduc}
 
-This class allows \framework{} to teleguide the real 3morduc
+This class allows \framework{} to teleguide the real \morduc{}
 robot, situated at DIEES laboratory, in Catania (Italy).
