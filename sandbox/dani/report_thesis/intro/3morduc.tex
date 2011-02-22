@@ -1,10 +1,10 @@
-\section{The 3morduc platform}
+\section{The \morduc{} platform}
 \label{intro:3morduc}
 
 \begin{figure} [h]
   \begin{center}
     \includegraphics[width=150pt]{img/3morduc.jpg}
-    \caption{The 3morduc robotic platform}
+    \caption{The \morduc{} robotic platform}
     \label{fig:morduc}
   \end{center}
 \end{figure}
@@ -12,7 +12,7 @@
 The telerobot used to develop teleoperation research is
 called \textit{3MO.R.D.U.C.}, acronym for `3rd version of
 the Mobile Robot DIEES University of Catania'.
-3morduc is a mobile-robot, able to move forward, backward
+\morduc{} is a mobile-robot, able to move forward, backward
 and turn its direction, as directed by the remote operator.
 It has been successfully used in several test and experimental
 work regarding teleoperation and telepresence.
@@ -44,7 +44,7 @@ granted for 30-40 minutes.
 \begin{figure}[h]
   \begin{center}
     \includegraphics[width=300pt]{img/Morduc_scheme.png}
-    \caption{3morduc's schematic figure}
+    \caption{\morduc{}'s schematic figure}
     \label{fig:morduc_scheme}
   \end{center}
 \end{figure}
@@ -53,7 +53,7 @@ Besides, on the same lower level is located an electronic board
 controlling different modules, each one predisposed to manage a
 specific task as movements, sensors and communication.
 \\
-Type and number of sensors available on 3morduc are:
+Type and number of sensors available on \morduc{} are:
 
 \begin{itemize}
 \item \texttt{belt of bumpers} \\
@@ -86,7 +86,7 @@ Type and number of sensors available on 3morduc are:
   \begin{figure}[h]
     \begin{center}
       \includegraphics[width=60pt]{img/laser_sick_lms_200.jpg}
-      \caption{LMS Sick mounted on 3morduc}
+      \caption{LMS Sick mounted on \morduc{}}
       \label{fig:laser_sick_lms_200}
     \end{center}
   \end{figure}
@@ -108,7 +108,7 @@ Type and number of sensors available on 3morduc are:
   \begin{figure}[h]
     \begin{center}
       \includegraphics[width=200pt]{img/camera_videre.png}
-      \caption{STH-MDCS2-VAR-C mounted on 3morduc}
+      \caption{STH-MDCS2-VAR-C mounted on \morduc{}}
       \label{fig:camera_videre}
     \end{center}
   \end{figure}
@@ -121,20 +121,20 @@ Type and number of sensors available on 3morduc are:
 
 \end{itemize}
 
-More images, video and information about 3morduc can
+More images, video and information about \morduc{} can
 be found at \cite{morduc:features}.
 
 
 \subsection{Internet communication}
 \label{intro:3morduc:communication}
 
-The network system implemented on the 3morduc is a typical
+The network system implemented on the \morduc{} is a typical
 client-server architecture: in order to control the robot through
-Internet, 3morduc implements an HTTP server.
+Internet, \morduc{} implements an HTTP server.
 \\
 Through different type of prearranged HTTP requests, a generic
 HTTP client sends command to the server and retrieve information
-about 3morduc's status. In this way, client needs only to open a TCP/IP
+about \morduc{}'s status. In this way, client needs only to open a TCP/IP
 socket on the HTTP standard port (number 80) to control the robot from
 remote.
 \begin{figure}[h]
@@ -157,7 +157,7 @@ language
 derived by Pascal. Several classes are wrapper of the windows A.P.I., making
 really simple to develop efficient code in fast way. The choice of this
 programming language come from the necessity to include it as part of the
-control system designed in Catania for the 3morduc robot.
+control system designed in Catania for the \morduc{} robot.
 \\
 A first client was developed using \textit{MFC} (\textit{Microsoft Foundation
 Classes}) in Visual C++ (with supporting framework \textit{Visual Studio 2005}).
@@ -176,7 +176,7 @@ allows to send and retrieve HTTP requests without any effort.
 \\
 We will survey now, more in details, messages exchange between client and server.
 After creating a socket and opening the communication channel, client is able
-to send request to 3morduc and receive correlated responses.
+to send request to \morduc{} and receive correlated responses.
 \\
 Client request is built with only an HTTP header, without the body. The related
 fields are listed in table \ref{table:header_request}.
@@ -228,7 +228,7 @@ to an obstacle, otherwise the space is free. The map-building algorithm used is 
 classical `occupancy grid', based on the laser row data.
 \\
 Changing the requested URL (which is always directed to the same host,
-i.e. the 3morduc server), client can submit three different type of request.
+i.e. the \morduc{} server), client can submit three different type of request.
 Every requested resorce matches a specific command, so a complete URL used
 by the client will appear as:
 
@@ -237,7 +237,7 @@ by the client will appear as:
 \end{center}
 
 The first requests' group allows client to fetch laser map or camera image and
-immediately after command the robot. 3morduc can be moved
+immediately after command the robot. \morduc{} can be moved
 forward or backward with a fixed pace, while its direction can be turned
 with a fixed angle (towards left or right, from camera point
 of view). All these commands have the following structure:
@@ -386,7 +386,7 @@ In this case all the possible valid URLs are:
     Turn robot to the left;
 \end{itemize}
 
-On server side, 3morduc sends an acknowledge message as
+On server side, \morduc{} sends an acknowledge message as
 request replay. Since this is an HTTP message, it contains an HTTP header and
 an HTTP body. The former has always the structure summarized in table 
 \ref{table:header_response}, with some exception.

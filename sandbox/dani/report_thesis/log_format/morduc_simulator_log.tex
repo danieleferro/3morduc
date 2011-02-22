@@ -1,23 +1,6 @@
-\setcounter{figure}{0}
-\setcounter{table}{0}
-\setcounter{lstlisting}{0}
+\section{Morduc Simulator Log}
+\label{log:morduc_simulator}
 
-\chapter{Setting up a Morduc simulator}
-\label{simulator}
-\minitoc
-
-A basic exocentric vision system for Morduc would need, 
-at least, some images captured from the camera mounted 
-on top of it and, for each image, the actual position of 
-the robot at the time it was captured.
-\\
-While images could be used as a texture on which draw 
-a 3d representation of the robot, information about 
-position are essential in order to draw the robot 
-consistently, i.e. in the position the observer would 
-see it if he was seeing the robot by means of an actual 
-external camera.
-\\
 An exocentric vision systems performs at its best 
 when there's a large static space where the robot can move in. Since 
 the real robot can not be easily teleguided in wide 
@@ -44,16 +27,16 @@ autonomous mobile robots (AMRs).
 \\
 \textit{Rosen} has been used as test bench for robots taking part in 
 the \textit{Eurobot} competition \cite{eurobot}, and hence, 
-for robots with completely different features from the ones of Morduc. 
+for robots with completely different features from the ones of \morduc{}. 
 \\
 As soon as we realized \textit{Rosen} does not meet our needs, 
 we started looking for a more suitable simulator.
 \\
 In 2006, at the \textit{Aalborg University}, Filippo 
 Privitera wrote a simulator specifically intended for 
-the Morduc platform \cite{privitera}. 
+the \morduc{} platform \cite{privitera}. 
 \\
-Such asimulator reproduces the Morduc itself (actually a 
+Such a simulator reproduces the \morduc{} itself (actually a 
 3d model of it) situated in a customizable room: the position 
 of walls can be specified by the user, by giving 
 the simulator a black and white bitmap image with the room 
@@ -70,7 +53,7 @@ The simulator was written using the Microsoft Foundation Class
 tele operating driving a robot, in comparison with the actual 
 robot to quantify the differences between the two facilities. 
 \\
-With a simulator specifically built for the Morduc robot, it 
+With a simulator specifically built for the \morduc{} robot, it 
 was not difficult to edit the source code to obtain what we 
 needed. First of all, we needed to record data about egocentric 
 vision and robot status, because they are the input value 
@@ -81,8 +64,13 @@ actual camera image and robot status) are recorded in log files.
 \\
 Every session in Privitera's simulator has its own identifier 
 (a integer number). When the 'P' key is pressed the simulator 
-write a new line in the text file named 'data\_$\langle$number 
-of session$\rangle$.txt', creating the file if it does not 
+write a new line in the text file named
+
+\begin{center}
+  \textit{data\_$\langle$number of session$\rangle$.txt}
+\end{center}
+
+creating the file if it does not 
 exist. Each line contains four float number values, with the 
 following meaning:
 
@@ -96,9 +84,16 @@ following meaning:
 where the timestamp refers to the beginning of the simulation.
 \\
 Beside the text file there are several PNG images, each for every 
-line written in 'data\_$\langle$number of session$\rangle$.txt'. 
-These files are named 'screenshot\_$\langle$number of 
-session$\rangle$\_$\langle$timestamp$\rangle$.png', where the 
+line written in \textit{data\_$\langle$number of 
+session$\rangle$.txt}.
+These files are named
+
+\begin{center}
+  \textit{screenshot\_$\langle$number of 
+    session$\rangle$\_$\langle$timestamp$\rangle$.png}
+\end{center}
+
+where the 
 number of session indicates for every screenshot 
 - i.e. the egocentric vision - the proper text file, and the 
 timestamp the line with the associated status of the robot.

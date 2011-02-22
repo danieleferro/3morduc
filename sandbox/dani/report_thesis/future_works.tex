@@ -33,7 +33,7 @@ New implementations of the \texttt{IDataLogic} interface could be
 developed. One could, for instance, interact by a socket or another 
 data stream) with the simulator making the whole system working \textit{online}, 
 without the need for saved log files and images. Another one could exploit the 
-same approach to connect to the actual Morduc. It would also make possible 
+same approach to connect to the actual \morduc{}. It would also make possible 
 to actually operate the robot remotely.
 %
 
@@ -41,8 +41,8 @@ to actually operate the robot remotely.
 In both cases, the class implementing \texttt{IDataLogic} must open a communication
 channel, in order to send commands to the robot and retrieve its data.
 %
-If the server contacted is the Morduc itself, the concrete \texttt{IDataLogic} 
-implementation must know the Morduc communication protocol (see section 2.4 of 
+If the server contacted is the \morduc{} itself, the concrete \texttt{IDataLogic} 
+implementation must know the \morduc{} communication protocol (see section 2.4 of 
 \cite{morduc:dasero}). Otherwise, if the client communicates with a custom 
 simulator, the communication protocol could be chosen by the developer.
 %
@@ -69,7 +69,7 @@ or obstacles to avoid, it could be useful to advise user in case
 of an imminent or already happened collision.
 %
 A signalling system could be implemented once again with OpenGL, therefore 
-with augmented reality.The laser value, provided by the Morduc,
+with augmented reality.The laser value, provided by the \morduc{},
 could help to understand when and where draw warnings, as shown in 
 \cite{morduc:macalusodetommaso}.
 %
