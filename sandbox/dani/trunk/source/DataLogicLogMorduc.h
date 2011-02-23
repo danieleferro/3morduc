@@ -59,13 +59,14 @@ class DataLogicLogMorduc : public IDataLogic
   struct jpeg_compress_struct   _comp_cinfo;
   struct jpeg_error_mgr _jerr;
 
+  unsigned char * _raw_image;
+
 
 
  
   void GetOdometricData(robot_data*);
   std::string GetSingleImage();
 
-  unsigned char * _raw_image;
   int ReadHalfJPEGFile();
   int WriteJPEGFile();
 
