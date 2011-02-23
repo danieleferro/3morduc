@@ -229,7 +229,7 @@ classical `occupancy grid', based on the laser row data.
 \\
 Changing the requested URL (which is always directed to the same host,
 i.e. the \morduc{} server), client can submit three different type of request.
-Every requested resorce matches a specific command, so a complete URL used
+Every requested resource matches a specific command, so a complete URL used
 by the client will appear as:
 
 \begin{center}
@@ -238,7 +238,9 @@ by the client will appear as:
 
 The first requests' group allows client to fetch laser map or camera image and
 immediately after command the robot. \morduc{} can be moved
-forward or backward with a fixed pace, while its direction can be turned
+forward or backward with three different ranges of pace, from gear one to
+gear three in increasing order.
+\morduc{} direction can be turned instead
 with a fixed angle (towards left or right, from camera point
 of view). All these commands have the following structure:
 
@@ -298,14 +300,32 @@ where \\ \\
     \texttt{\bf Description} \\ %[0.5ex] 
 
     \hline
-    \parbox[t]{6.5cm}{\raggedright \small fow } &
+    \parbox[t]{6.5cm}{\raggedright \small fow1 } &
     \parbox[t]{6cm}{\raggedright \small
-      Move robot forward.} \\  [1ex]
+      Move robot forward, with gear one.} \\  [1ex]
 
     \hline
-    \parbox[t]{6.5cm}{\raggedright \small bak } &
+    \parbox[t]{6.5cm}{\raggedright \small fow2 } &
     \parbox[t]{6cm}{\raggedright \small
-      Move robot backward.} \\  [1ex]
+      Move robot forward, with gear two.} \\  [1ex]
+    \hline
+    \parbox[t]{6.5cm}{\raggedright \small fow3 } &
+    \parbox[t]{6cm}{\raggedright \small
+      Move robot forward, with gear three.} \\  [1ex]
+
+    \hline
+    \parbox[t]{6.5cm}{\raggedright \small bak1 } &
+    \parbox[t]{6cm}{\raggedright \small
+      Move robot backward, with gear one.} \\  [1ex]
+
+    \hline
+    \parbox[t]{6.5cm}{\raggedright \small bak2 } &
+    \parbox[t]{6cm}{\raggedright \small
+      Move robot backward, with gear two.} \\  [1ex]
+    \hline
+    \parbox[t]{6.5cm}{\raggedright \small bak3 } &
+    \parbox[t]{6cm}{\raggedright \small
+      Move robot backward, with gear three.} \\  [1ex]
 
     \hline
     \parbox[t]{6.5cm}{\raggedright \small lft } &
@@ -313,7 +333,7 @@ where \\ \\
       Turn robot direction to the left.} \\  [1ex]
 
     \hline
-    \parbox[t]{6.5cm}{\raggedright \small rgh } &
+    \parbox[t]{6.5cm}{\raggedright \small rgt } &
     \parbox[t]{6cm}{\raggedright \small
       Turn robot direction to the right.} \\  [1ex]
 
@@ -352,7 +372,7 @@ Be careful that with the commands above user do not receiver last robot's image 
 status data, because the provided information is relative to the moment
 before robot executes the issued command.
 \\
-The second requests' group allows client to fetch laser map or camera image,
+The second and last requests' group allows client to fetch laser map or camera image,
 without submitting any command to the robot. In these case commands have
 the following structure:
 
@@ -366,26 +386,6 @@ where \\ \\
 \textit{$<$body\_format$>$} can assume one of the value described in table
 \ref{table:body_format}. \\
 \\
-Last command's group define an URL structure to issue commands to the robot
-without requesting any image or data.
-
-\begin{center}
-  \texttt{$<$command$>$.$<$how$>$}
-\end{center}
-
-In this case all the possible valid URLs are:
-
-\begin{itemize}
-  \item \textit{step.fow} \\
-    Move robot forward;
-  \item \textit{step.bak} \\
-    Move robot backward;
-  \item \textit{turn.rgh} \\
-    Turn robot to the right;
-  \item \textit{turn.lft} \\
-    Turn robot to the left;
-\end{itemize}
-
 On server side, \morduc{} sends an acknowledge message as
 request replay. Since this is an HTTP message, it contains an HTTP header and
 an HTTP body. The former has always the structure summarized in table 
@@ -419,7 +419,7 @@ no information, so fields `Content-Length' and `Content-Type' will be missing.
       \break name of the server;
       \break \textit{t} time in millisecond;
       \break \textit{x} and \textit{y} abscissa and ordinate for robot position, in meters;
-      \break \textit{theta} rotation angle, in degrees;
+      \break \textit{theta} rotation angle, in radiants;
       \break \textit{collision} number of collisions;
       \break \textit{mindist} distance from nearest obstacle, in meter.} \\  [1ex]
 

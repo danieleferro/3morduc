@@ -2,7 +2,7 @@
 \setcounter{table}{0}
 \setcounter{lstlisting}{0}
 
-\chapter{Data Log Format}
+\chapter{Log files and their format}
 \label{log}
 \minitoc
 
@@ -40,20 +40,19 @@ during the simulation running, so \framework{} can retrieve
 its information from static files.
 \\
 The second category of log information \framework{} can base
-its computation on are derived from real \morduc{} teleguiding
-session. When controlled by any remote client (\framework{}
-itself or a completely different one, even a web browser),
-\morduc{} can save image and odometric data captured after changing
-its status (i.e. moving or turning).
+its computation on are derived from previous ran 
+real \morduc{} teleguiding
+session.
 \\
 Making \framework{} able to work with information contained in
 static file has proved to be highly important in development.
-We can not have \morduc{} always powered on, connected to the
-network and free to move in any direction, simply because
-we want to test a specific feature of our client program. Moreover,
-the condition we want to test our feature with could be not easy
+We do not have \morduc{} always powered on, connected to the
+network and free to move in any direction, whenever
+we want to test a specific feature of our client program. Besides,
+the test condition we want to check our feature on could be not easy
 or immediate to recreate in real word, for whatever physical
-impediment or constriction. It could happen that a specific robot
+impediment or constriction. Moreover, it could happen that a specific
+robot
 path must be repeated more times, always the same, to verify
 different proposed solutions.
 \\

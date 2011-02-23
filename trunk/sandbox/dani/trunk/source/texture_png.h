@@ -28,7 +28,6 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
-//void DrawTexture();
 int GetTextureInfo(int ColourType);
 GLuint loadPNGImage(const char *filename);
 

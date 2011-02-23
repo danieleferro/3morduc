@@ -1,7 +1,5 @@
-- inserire nuove librerie necessarie nel readme (libjpeg, libcurl)
+- inserire nuove librerie necessarie nel readme (libjpeg, curlpp)
 - aggiornare class diagram
-- creare/sistemare due dataLogicMorduc
-- provare nuovi log
 - cancellare contenuto di /etc/apache2/httpd.conf (riavviare demone)
 
 
