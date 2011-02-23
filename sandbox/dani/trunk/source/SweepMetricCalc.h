@@ -26,9 +26,6 @@ class SweepMetricCalc : public IImageSelector
   SweepMetricCalc(float, float, float, float, float, float);
   
  private:
-  static const int X0 = 0;
-  static const int Y0 = 1;
-  static const int M0 = 2;
   
   float _sweep_angle;
   float _angle_offset;
