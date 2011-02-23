@@ -160,26 +160,36 @@ void DataLogicMorduc::RetrieveData(robot_data * data) {
   counter = line_read.find_first_of('/', 0) + 1;
   line_read = line_read.substr(counter);
 
-  // std::cout << line_read << std::endl;
+
+  for (int j=0; j < line_read.length(); j++) {
+
+    if (line_read[j] == ',')
+      line_read[j] = '.';
+  }
+
+  std::cout << line_read << std::endl;
 
   // get time
   counter = line_read.find_first_of('\\', 0) + 1;
   data->time = atof(line_read.substr(0, counter).c_str());
   line_read = line_read.substr(counter);
 
-  // get x
-  counter = line_read.find_first_of('\\', 0) + 1;
-  data->x = atof(line_read.substr(0, counter).c_str()) * MAGNITUDE;
-  line_read = line_read.substr(counter);
 
-  // get y
+  
+  // get x
   counter = line_read.find_first_of('\\', 0) + 1;
   data->y = atof(line_read.substr(0, counter).c_str()) * MAGNITUDE;
   line_read = line_read.substr(counter);
 
+
+  // get y
+  counter = line_read.find_first_of('\\', 0) + 1;
+  data->x = atof(line_read.substr(0, counter).c_str()) * MAGNITUDE * -1;
+  line_read = line_read.substr(counter);
+
   // get theta
   counter = line_read.find_first_of('\\', 0) + 1;
-  data->theta = atof(line_read.substr(0, counter).c_str()) * MAGNITUDE;
+  data->theta = atof(line_read.substr(0, counter).c_str());
   line_read = line_read.substr(counter);
 
 
@@ -229,19 +239,19 @@ void DataLogicMorduc::Command(int command) {
   switch (command) {
 
   case FORWARD:
-    command_URL = _path_server + "step.fow";
+    command_URL = _path_server + "stereo.fow1.jpg";
     break;
 
   case BACKWARD:
-    command_URL = _path_server + "step.bak";
+    command_URL = _path_server + "stereo.bak1.jpg";
     break;
 
   case RIGHT:
-    command_URL = _path_server + "turn.rgh";
+    command_URL = _path_server + "stereo.rgt.jpg";
     break;
 
   case LEFT:
-    command_URL = _path_server + "turn.lft";
+    command_URL = _path_server + "stereo.lft.jpg";
     break;
 
   default:
@@ -274,9 +284,9 @@ void DataLogicMorduc::Command(int command) {
     // send request
     request.perform();
       
-    if (__DATA_LOGIC_MORDUC__DBG)
-      std::cout << "Response from command request:" << std::endl
-		<< os.str() << std::endl;
+    // if (__DATA_LOGIC_MORDUC__DBG)
+    //   std::cout << "Response from command request:" << std::endl
+    // 		<< os.str() << std::endl;
 
 
   }

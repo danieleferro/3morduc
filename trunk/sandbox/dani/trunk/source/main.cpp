@@ -444,7 +444,7 @@ int main ( int argc, char * argv[] ) {
 
   //logic = new DataLogicLogMorduc(1); //atoi(argv[1]));
 
-  logic = new DataLogicMorduc("localhost", "../log_morduc/log_online");
+  logic = new DataLogicMorduc("151.97.5.162", "../log_morduc/log_online");
   
 
   /* camera instatiation */
