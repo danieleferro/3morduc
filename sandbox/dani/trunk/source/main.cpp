@@ -327,18 +327,24 @@ void specialKeyPressed(int key, int x, int y)
 
   case GLUT_KEY_UP :
 
-    tempX = _oldX + STEP * cos(TO_RADIANS(_oldTheta));
-    tempY = _oldY - STEP * sin(TO_RADIANS(_oldTheta));
+//     tempX = _oldX + STEP * cos(TO_RADIANS(_oldTheta));
+//     tempY = _oldY - STEP * sin(TO_RADIANS(_oldTheta));
+//     rob->Place(tempX, tempY, _oldTheta);
 
-    rob->Place(tempX, tempY, _oldTheta);
+    temp = _oldY + STEP;
+    rob->Place(_oldX, temp, _oldTheta);
+
     break;
 
   case GLUT_KEY_DOWN :
 
-    tempX = _oldX - STEP * cos(TO_RADIANS(_oldTheta));
-    tempY = _oldY + STEP * sin(TO_RADIANS(_oldTheta));
+//     tempX = _oldX - STEP * cos(TO_RADIANS(_oldTheta));
+//     tempY = _oldY + STEP * sin(TO_RADIANS(_oldTheta));
+//     rob->Place(tempX, tempY, _oldTheta);
 
-    rob->Place(tempX, tempY, _oldTheta);
+    temp = _oldY - STEP;
+    rob->Place(_oldX, temp, _oldTheta);
+
     break;
 
   case GLUT_KEY_RIGHT :
@@ -438,13 +444,15 @@ int main ( int argc, char * argv[] ) {
      do not instantiate the robot before 
      having initialized OpenGL since calls
      OpenGL functions */
-  rob = new Morduc(4.8);
+  rob = new Morduc(5);
   
   //logic = new DataLogicLogSimulator(atoi(argv[1]));
 
-  //logic = new DataLogicLogMorduc(1); //atoi(argv[1]));
+  //logic = new DataLogicLogSimulator(2);
 
-  logic = new DataLogicMorduc("151.97.5.162", "../log_morduc/log_online");
+  logic = new DataLogicLogMorduc(2); //atoi(argv[1]));
+
+  //logic = new DataLogicMorduc("151.97.5.162", "../log_morduc/log_online");
   
 
   /* camera instatiation */

@@ -204,6 +204,12 @@ void DataLogicLogMorduc::GetOdometricData(robot_data* data) {
   // from char * to string
   line_read = line;
 
+  for (int j = 0; j < line_read.length(); j++) {
+
+    if (line_read[j] == ',')
+      line_read[j] = '.';
+  }
+
   // get tokens from string
   counter = line_read.find_first_of('/', 0) + 1;
   line_read = line_read.substr(counter);
@@ -222,12 +228,12 @@ void DataLogicLogMorduc::GetOdometricData(robot_data* data) {
 
   // get y
   counter = line_read.find_first_of('\\', 0) + 1;
-  data->y = atof(line_read.substr(0, counter).c_str()) * MAGNITUDE;
+  data->y = atof(line_read.substr(0, counter).c_str()) * MAGNITUDE * -1;
   line_read = line_read.substr(counter);
 
-  // get theta
+  // get theta  (server returns angle in radiant)
   counter = line_read.find_first_of('\\', 0) + 1;
-  data->theta = atof(line_read.substr(0, counter).c_str()) * MAGNITUDE;
+  data->theta = TO_DEGREES( atof(line_read.substr(0, counter).c_str()) );
   line_read = line_read.substr(counter);
 
 

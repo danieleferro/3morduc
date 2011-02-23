@@ -178,18 +178,18 @@ void DataLogicMorduc::RetrieveData(robot_data * data) {
   
   // get x
   counter = line_read.find_first_of('\\', 0) + 1;
-  data->y = atof(line_read.substr(0, counter).c_str()) * MAGNITUDE;
+  data->x = atof(line_read.substr(0, counter).c_str()) * MAGNITUDE;
   line_read = line_read.substr(counter);
 
 
   // get y
   counter = line_read.find_first_of('\\', 0) + 1;
-  data->x = atof(line_read.substr(0, counter).c_str()) * MAGNITUDE * -1;
+  data->y = atof(line_read.substr(0, counter).c_str()) * MAGNITUDE * -1;
   line_read = line_read.substr(counter);
 
-  // get theta
+  // get theta (server returns angle in radiant)
   counter = line_read.find_first_of('\\', 0) + 1;
-  data->theta = atof(line_read.substr(0, counter).c_str());
+  data->theta = TO_DEGREES( atof(line_read.substr(0, counter).c_str())) ;
   line_read = line_read.substr(counter);
 
 
