@@ -28,15 +28,7 @@ class AnotherSweepMetricCalc : public IImageSelector
   AnotherSweepMetricCalc(float, float, float, float, float, float);
   
  private:
-  static const int X0 = 0;
-  static const int Y0 = 1;
-  static const int M0 = 2;
 
-  // EXTRA
-  int skip_turn;
-  float theta_before_turning;
-  // END EXTRA
-  
   float _sweep_angle;
   float _angle_offset;
   

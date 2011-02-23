@@ -20,8 +20,6 @@ AnotherSweepMetricCalc::AnotherSweepMetricCalc( float sweep_angle,
     _sweep_angle = sweep_angle;
   }
   
-  skip_turn = 0;
-
   
 
   _angle_offset = angle_offset;
@@ -109,8 +107,6 @@ void AnotherSweepMetricCalc::ChooseImage( robot_data * robot_status, image_data 
   bool turn_flag = false;
   float buffer_robot_theta = robot_status->theta;
 
-  int buffer_skip_turn = 0;
-
   for(j = collect_size-2; j > 0; j--) {
 
     
@@ -122,7 +118,6 @@ void AnotherSweepMetricCalc::ChooseImage( robot_data * robot_status, image_data 
       
       turn_flag = true;
       distances[j] = IMAGE_NOT_VALID;
-      buffer_skip_turn++;
 
     }
     else {
@@ -131,7 +126,6 @@ void AnotherSweepMetricCalc::ChooseImage( robot_data * robot_status, image_data 
 
 	// set robot angle as this image
 	robot_status->theta = (*_images_collection)[j].theta;
-	theta_before_turning = (*_images_collection)[j].theta;
       }
       break;
 
@@ -139,25 +133,6 @@ void AnotherSweepMetricCalc::ChooseImage( robot_data * robot_status, image_data 
     
   }
 
-  /*
-  if (turn_flag == false) {
-
-    // set robot angle as this image
-    //robot_status->theta = theta_before_turning;
-
-    for(j = collect_size-2; j > collect_size-2-skip_turn; j--) {
-
-      std::cout << "EXTRA CODE; skip_turn: \t" << skip_turn
-		<< "theta robot: \t" << theta_before_turning
-		<< std::endl << std::endl;
-      distances[j] = IMAGE_NOT_VALID;
-    }
-
-  }
-    
-  */
-  
-  
 
   for (i = j; i >= 0; i--) {
 
