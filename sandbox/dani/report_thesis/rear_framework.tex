@@ -7,7 +7,7 @@
 \minitoc
 
 In this section we will describe \framework{} - 
-\textit{Rear Exocentric Augmented Reality}, a framework 
+\textit{Rear Exocentric Augmented Reality} -, a framework 
 for the development of virtual exocentric vision systems.
 \\
 It has been written in C++, following an object-oriented 
@@ -31,7 +31,6 @@ external point-of-view, the 3d model of the robot is drawn
 within the viewing frustum, while the more distant frustum base 
 is applied a texture displaying a picture previously 
 captured from the robot's egocentric camera.
-\\
 An example of what a user sees is showed in figure \ref{fig:snap}.
 
 \begin{figure}[!h]
@@ -80,7 +79,9 @@ motion command to the robot.
 After collecting new data, which include new robot status and
 the associated egocentric camera image, \framework{} chooses 
 an image to set as background and draw the robot model within 
-the frustum. So, for what concerns issue no. 2, as already 
+the frustum.
+\\
+For what concerns issue no. 2, as already 
 underlined in \cite{sugimoto}, let us say that there is not 
 a \textit{unique} way to determine which image is to be set 
 as background, since different image selection algorithms 
@@ -90,11 +91,11 @@ deeper look at some image selection algorithms in section
 \\
 Finally, the overall execution loop is resumed by the flowchart 
 showed in figure \ref{fig:overall_diagram}.
-\\
+
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=\textwidth]{img/overall_diagram.jpeg}  %robot pic
-    \caption{Application flowchart}
+    \includegraphics[width=\textwidth]{img/overall_diagram.png}
+    \caption{\framework{} flowchart}
     \label{fig:overall_diagram}
   \end{center}
 \end{figure}

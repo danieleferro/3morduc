@@ -45,7 +45,7 @@ class DataLogicLogMorduc : public IDataLogic
   
   std::vector<image_data> _images_collection;
   int _index;
-  int _simulation_session;
+  int _log_session;
   int _index_max;
 
   FILE * odom_file;
@@ -60,9 +60,6 @@ class DataLogicLogMorduc : public IDataLogic
   struct jpeg_error_mgr _jerr;
 
   unsigned char * _raw_image;
-
-
-
  
   void GetOdometricData(robot_data*);
   std::string GetSingleImage();
