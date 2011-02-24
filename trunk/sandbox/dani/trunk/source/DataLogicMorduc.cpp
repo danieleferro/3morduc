@@ -127,14 +127,14 @@ void DataLogicMorduc::RetrieveData(robot_data * data) {
   }
   
   catch (curlpp::LogicError & e) {
-    std::cout << "Error retriving data from server:"
+    std::cout << "Error retriving data from server: "
 	      << e.what() << std::endl;
     exit(1);
   }
   
   catch (curlpp::RuntimeError & e) {
 
-    std::cout << "Error retriving data from server:"
+    std::cout << "Error retriving data from server: "
 	      << e.what() << std::endl;
     exit(1);
   }
@@ -292,14 +292,14 @@ void DataLogicMorduc::Command(int command) {
   }
   
   catch (curlpp::LogicError & e) {
-    std::cout << "Error sending command data to server:"
+    std::cout << "Error sending command data to server: "
 	      << e.what() << std::endl;
     exit(1);
   }
   
   catch (curlpp::RuntimeError & e) {
 
-    std::cout << "Error sending command data to server:"
+    std::cout << "Error sending command data to server: "
 	      << e.what() << std::endl;
     exit(1);
   }

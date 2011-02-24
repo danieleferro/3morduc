@@ -1,8 +1,13 @@
 #include "SpacialMetricCalc.h"
 
+SpacialMetricCalc::SpacialMetricCalc(float opt_dist) {
+
+  _optimal_distance = opt_dist;
+
+}
+
 void SpacialMetricCalc::ChooseImage( robot_data * robot_status, image_data * bg_image_data,
-				     std::vector<image_data> * _images_collection)
-{
+				     std::vector<image_data> * _images_collection) {
 
   float distances[_images_collection->size()];
   float min;
@@ -53,7 +58,6 @@ float SpacialMetricCalc::Calculate(robot_data * robot_status, image_data * bg_im
 
   float distance;
   float score;
-  float optimal_distance = 20;
 
   distance = 
     sqrt( pow((robot_status -> x ) - (bg_image_data -> x), 2) +
@@ -61,10 +65,10 @@ float SpacialMetricCalc::Calculate(robot_data * robot_status, image_data * bg_im
 	  pow((robot_status -> theta ) - (bg_image_data -> theta), 2));
 
 
-  if ( distance <= optimal_distance )
-    score = distance / optimal_distance;
+  if ( distance <= _optimal_distance )
+    score = distance / _optimal_distance;
  else
-    score = - ( distance - 2 * optimal_distance) / optimal_distance;
+    score = - ( distance - 2 * _optimal_distance) / _optimal_distance;
 
   return (- score);
 

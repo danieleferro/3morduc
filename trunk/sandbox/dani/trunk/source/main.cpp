@@ -24,7 +24,7 @@
 
 #include "key_mapping.h"
 #include "command_mapping.h"
-#include "texture_png.h"
+#include "opengl_library.h"
 #include "Camera.h"
 #include "SpacialMetricCalc.h"
 #include "SweepMetricCalc.h"
@@ -34,7 +34,7 @@
 #include "DataLogicMorduc.h"
 #include "Robot.h"
 #include "Morduc.h"
-
+#include "input_check.h"
 
 /* step for forward direction */
 #define STEP 10.f
@@ -68,96 +68,6 @@ IImageSelector * calculator = NULL;
 bool print_message = true;
 char message[50];
 
-void DrawText(GLint x, GLint y,
-	      char* s, GLfloat r, GLfloat g, GLfloat b,
-	      void* font)
-{
-  int lines;
-  char* p;
-  
-  glMatrixMode(GL_PROJECTION);
-  glPushMatrix();
-  glLoadIdentity();
-  glOrtho(0.0, glutGet(GLUT_WINDOW_WIDTH), 
-	  0.0, glutGet(GLUT_WINDOW_HEIGHT), -1.0, 1.0);
-  glMatrixMode(GL_MODELVIEW);
-  glPushMatrix();
-  glLoadIdentity();
-  glColor3f(r,g,b);
-  glRasterPos2i(x, y);
-  for(p = s, lines = 0; *p; p++) {
-    if (*p == '\n') {
-      lines++;
-      glRasterPos2i(x, y-(lines*18));
-    }
-    glutBitmapCharacter(font, *p);
-  }
-  glPopMatrix();
-  glMatrixMode(GL_PROJECTION);
-  glPopMatrix();
-  glMatrixMode(GL_MODELVIEW);
-}
-
-void DrawTexture()
-{
-
-  glEnable(GL_TEXTURE_2D);
-
-  glMatrixMode(GL_PROJECTION);
-  glPushMatrix();
-  glLoadIdentity();
-  
-  glMatrixMode(GL_MODELVIEW);
-  glPushMatrix();
-  glLoadIdentity();
-
-  // No depth buffer writes for background.
-  glDepthMask(false);
-
-  glBegin( GL_QUADS );
-
-  {
-    glTexCoord2f( 0.f, 1.f );
-    glVertex2f( -1, -1 );
-
-    glTexCoord2f( 0.f, 0.f );
-    glVertex2f( -1, 1.f );
-
-
-    glTexCoord2f( 1.f, 0.f );
-    glVertex2f( 1.f, 1.f );
-
-    glTexCoord2f( 1.f, 1.f );
-    glVertex2f( 1.f, -1 );
-
-  }
-
-  glEnd();
-
-  glDepthMask(true);
-
-  glPopMatrix();
-  glMatrixMode(GL_PROJECTION);
-  glPopMatrix();
-  glMatrixMode(GL_MODELVIEW);
-
-  glDisable(GL_TEXTURE_2D);
-}
-
-void setMaterial ( GLfloat ambientR, GLfloat ambientG, GLfloat ambientB, 
-		   GLfloat diffuseR, GLfloat diffuseG, GLfloat diffuseB, 
-		   GLfloat specularR, GLfloat specularG, GLfloat specularB,
-		   GLfloat shininess) {
-  
-  GLfloat ambient[] = { ambientR, ambientG, ambientB,    };
-  GLfloat diffuse[] = { diffuseR, diffuseG, diffuseB,    };
-  GLfloat specular[] = { specularR, specularG, specularB };
-  
-  glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,ambient);
-  glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,diffuse);
-  glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,specular);
-  glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,shininess);
-}
 
 // --------------------------------------------------------------------
 //                          GLUT CALLBACKS
@@ -327,10 +237,7 @@ void specialKeyPressed(int key, int x, int y)
 
   case GLUT_KEY_UP :
 
-//     tempX = _oldX + STEP * cos(TO_RADIANS(_oldTheta));
-//     tempY = _oldY - STEP * sin(TO_RADIANS(_oldTheta));
-//     rob->Place(tempX, tempY, _oldTheta);
-
+    // move along Y axis, positive direction
     temp = _oldY + STEP;
     rob->Place(_oldX, temp, _oldTheta);
 
@@ -338,10 +245,7 @@ void specialKeyPressed(int key, int x, int y)
 
   case GLUT_KEY_DOWN :
 
-//     tempX = _oldX - STEP * cos(TO_RADIANS(_oldTheta));
-//     tempY = _oldY + STEP * sin(TO_RADIANS(_oldTheta));
-//     rob->Place(tempX, tempY, _oldTheta);
-
+    // move along Y axis, negative direction   
     temp = _oldY - STEP;
     rob->Place(_oldX, temp, _oldTheta);
 
@@ -349,12 +253,14 @@ void specialKeyPressed(int key, int x, int y)
 
   case GLUT_KEY_RIGHT :
 
+    // move along X axis, positive direction   
     temp = _oldX + STEP;
     rob->Place(temp, _oldY, _oldTheta);
     break;    
 
   case GLUT_KEY_LEFT :
 
+    // move along X axis, negative direction   
     temp = _oldX - STEP;
     rob->Place(temp, _oldY, _oldTheta);
     break;
@@ -416,21 +322,12 @@ void init()
 
 int main ( int argc, char * argv[] ) {
 
-
-  if (argc != 3)
-    {      
-      printf("Usage: main <session_number> <optimal_distance>\n");
-      exit(0);
-    }
-
-
   /* initialize GLUT, using any commandline parameters 
      passed to the program */
   glutInit(&argc,argv);
 
   /* setup the size, position, and display mode for 
      new windows */
-  //glutInitWindowSize(624, 442);
   glutInitWindowSize(640, 480);
   glutInitWindowPosition(0, 0);
   //glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH);
@@ -444,6 +341,12 @@ int main ( int argc, char * argv[] ) {
      do not instantiate the robot before 
      having initialized OpenGL since calls
      OpenGL functions */
+
+
+  // istance logic, calculator and robot in function of input values
+  inputCheck(argc, argv);
+
+  /*
   rob = new Morduc(5);
   
   //logic = new DataLogicLogSimulator(atoi(argv[1]));
@@ -455,10 +358,8 @@ int main ( int argc, char * argv[] ) {
   //logic = new DataLogicMorduc("151.97.5.162", "../log_morduc/log_online");
   
 
-  /* camera instatiation */
-  camera = new Camera();
 
-  /* image distance calculator instantiation */
+  /* image distance calculator instantiation
   calculator = new AnotherSweepMetricCalc(45, 30, atof(argv[2]), 5, 0, 5);
 
   
@@ -466,6 +367,11 @@ int main ( int argc, char * argv[] ) {
   
   
   // calculator = new SpacialMetricCalc();
+
+  */
+
+  // camera instatiation
+  camera = new Camera();
 
   /* data manager instatiation */
   manager = new DataManager(rob, logic, camera, calculator);
