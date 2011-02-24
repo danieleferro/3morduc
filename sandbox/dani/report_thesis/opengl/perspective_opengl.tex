@@ -34,9 +34,8 @@ The function named
 the coordinates of the point to look at and its orientation.
 \\
 See \cite{opengl:gluLookAt} for further details.
-
-\begin{lstlisting}[caption={OpenGL perspective example}, label={code:perspective}, frame=trBL]
-
+\\
+\begin{lstlisting}[caption={OpenGL perspective example}, label={code:perspective}]
   /* define the projection transformation */
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -48,5 +47,4 @@ See \cite{opengl:gluLookAt} for further details.
   gluLookAt(0.0, 0.0, 10.0,
             0.0, 0.0, 0.0,
             0.0, 1.0, 0.0);
-
 \end{lstlisting}

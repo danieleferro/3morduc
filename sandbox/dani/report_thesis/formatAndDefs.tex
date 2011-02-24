@@ -12,20 +12,35 @@
 \usepackage[font=small,labelfont=bf]{caption}
 \date{}
 
-
 \usepackage{listings}
-\lstset{
-  %backgroundcolor=\color{gray},
-  frameround=fttt,
-  stringstyle=\rmfamily,
-  language=C++,
-  basicstyle=\small,
-  captionpos=b        
-}
+%% \lstset{
+%%   %backgroundcolor=\color{gray},
+%%   frameround=fttt,
+%%   stringstyle=\rmfamily,
+%%   language=C++,
+%%   basicstyle=\small,
+%%   captionpos=b
+%%}
 
+\lstset{
+    basicstyle=\rmfamily,
+    language=C++,
+    numberstyle=\footnotesize,
+    numbers=left,
+    frame=lines,
+    xleftmargin=20pt,
+    framexleftmargin=0pt,
+    framexrightmargin=0pt,
+    backgroundcolor=\color{white},
+    showstringspaces=false,
+    captionpos=b,
+    basicstyle=\small,
+    numbersep=10pt
+}
 
 %% avoid text space afternewline
 \setlength{\parindent}{0pt}
+
 
 \newcommand{\bigtilde}{$\sim$}
 \def\framework{\textit{R.E.A.R.}}

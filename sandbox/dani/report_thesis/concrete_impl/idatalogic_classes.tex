@@ -36,9 +36,9 @@ robot's odometry data and snapshots simply by reading
 those files.
 \\
 Let us have a look at its declaration:
-
+\\
 \begin{lstlisting}[caption={\texttt{DataLogicLogSimulator} declaration},
-    label={code:datalogiclogsimulator:constructor}, frame=trBL]
+    label={code:datalogiclogsimulator:constructor}]
 class DataLogicLogSimulator : public IDataLogic
 {
  private:
@@ -72,9 +72,9 @@ according to what stated in section \ref{log:morduc_simulator}.
 \\
 Let us now have a look at how \texttt{DataLogicLogSimulator} implements 
 \texttt{IDataLogic} methods:
-
+\\
 \begin{lstlisting}[caption={\texttt{DataLogicLogSimulator::Command() method}},
-    label={code:datalogiclogsimulator:command}, frame=trBL]
+    label={code:datalogiclogsimulator:command}]
 void DataLogicLogSimulator::Command(int command) 
 {
 
@@ -94,9 +94,9 @@ the received command, the only thing that it does is
 incrementing the private attribute \texttt{\_index}, which 
 will be used by \texttt{RetrieveData()} to select which line 
 of the log file is to read next.
-
+\\
 \begin{lstlisting}[caption={\texttt{DataLogicLogSimulator::RetrieveData()} method},
-    label={code:datalogiclogsimulator:retrievedata}, frame=trBL]
+    label={code:datalogiclogsimulator:retrievedata}]
 void DataLogicLogSimulator::RetrieveData(robot_data * data)
 {
   // pointer to text file containing data
@@ -199,9 +199,9 @@ This way, every time a new line of the file is read, and, hence,
 every time a new captured image is available, the \texttt{DataLogicLogSimulator} 
 is made able to keep track of it using its metadata, without actually 
 loading the image - since it would be useless and time-consuming.
-
+\\
 \begin{lstlisting}[caption={\texttt{DataLogicLogSimulator::SelectImage()} method},
-    label={code:datalogiclogsimulator:selectimage}, frame=trBL]
+    label={code:datalogiclogsimulator:selectimage}]
 void DataLogicLogSimulator::
 SelectImage(robot_data * robot_status,
             image_data * bg_image_data,
@@ -251,9 +251,9 @@ As previously stated, every log set is made-up of:
 \end{itemize}
 
 Its interface is declared as follow:
-
+\\
 \begin{lstlisting}[caption={\texttt{DataLogicLogMorduc} declaration},
-    label={code:datalogiclogmorduc:constructor}, frame=trBL]
+    label={code:datalogiclogmorduc:constructor}]
 class DataLogicLogMorduc : public IDataLogic
 {
  private:
@@ -357,9 +357,9 @@ class, is pretty simple: it has to increment \textit{\_index},
 which indicate the next line in \textit{odometric.txt}
 text file to read and the next image to open. It is incremented until
 its value is equal to \textit{\_index\_max}.
-
+\\
 \begin{lstlisting}[caption={\texttt{DataLogicLogMorduc::Command() method}},
-    label={code:datalogiclogmorduc:command}, frame=trBL]
+    label={code:datalogiclogmorduc:command}]
 void DataLogicLogMorduc::Command(int command) {
 
   if (_index <= _index_max)
@@ -369,9 +369,9 @@ void DataLogicLogMorduc::Command(int command) {
 
 The \textit{RetrieveData()} method is displayed in listing
 \ref{code:datalogiclogmorduc:retrievedata}:
-
+\\
 \begin{lstlisting}[caption={\texttt{DataLogicLogSimulator::RetrieveData()} method},
-    label={code:datalogiclogmorduc:retrievedata}, frame=trBL]
+    label={code:datalogiclogmorduc:retrievedata}]
 void DataLogicLogMorduc::RetrieveData(robot_data * data) {
 
   image_data grabbed_frame_data;
@@ -427,9 +427,9 @@ vector.
 presented in the previous section. It refers whole the computation to the
 \textit{ChooseImage()} method implemented by the instance pointed by
 its last argument.
-
+\\
 \begin{lstlisting}[caption={\texttt{DataLogicLogSimulator::SelectImage()} method},
-    label={code:datalogiclogmorduc:selectimage}, frame=trBL]
+    label={code:datalogiclogmorduc:selectimage}]
 void DataLogicLogMorduc::
 SelectImage(robot_data * robot_status,
             image_data * bg_image_data,
@@ -448,7 +448,6 @@ the structure pointed by its second parameter.
 \\
 Section \ref{concr:iimageselector} will cover in details algorithms and
 features implemented by different kind of \textit{ChooseImage()} methods.
-
 
 \subsection{The DataLogicMorduc Class}
 \label{concr:idatalogic:datalogicmorduc}

@@ -34,8 +34,8 @@ a shiny surface.
 At first glance, controlling OpenGL lighting might appear complex. 
 The amount of code required to obtain simple lighting effects, 
 however, is actually quite small. That is:
-
-\begin{lstlisting}[caption={Lighting example}, label={code:lighting}, frame=trBL]
+\\
+\begin{lstlisting}[caption={Lighting example}, label={code:lighting}]
 // Enable OpenGL lighting
 glEnable( GL_LIGHTING );
 
@@ -46,8 +46,8 @@ glEnable( GL_LIGHT0 );
 \texttt{GL\_LIGHT0} is one of the light points available to 
 OpenGL programmers. For every light point, one can set its 
 position and parameters for each light component. For example:
-
-\begin{lstlisting}[caption={Complex lighting example}, label={code:complexlighting}, frame=trBL]
+\\
+\begin{lstlisting}[caption={Complex lighting example}, label={code:complexlighting}]
 GLfloat lightpos[] = { 0.0f, 0.0f, 1.0f, 0.0f };
 GLfloat lightcolor[] = { 1.0f, 1.0f, 1.0f };
 GLfloat ambcolor[] = { 1.0f, 1.0f, 1.0f };
