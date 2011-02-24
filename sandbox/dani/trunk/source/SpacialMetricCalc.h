@@ -18,8 +18,10 @@ class SpacialMetricCalc : public IImageSelector
 {
  private:
   float Calculate(robot_data *, image_data *);
+  float _optimal_distance;
     
  public:
+  SpacialMetricCalc(float);
   void ChooseImage(robot_data *, image_data *, std::vector<image_data> *);
 
 };

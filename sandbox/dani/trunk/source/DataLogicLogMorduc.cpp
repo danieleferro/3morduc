@@ -57,8 +57,8 @@ DataLogicLogMorduc::DataLogicLogMorduc(int session) {
 
   };
 
-  if (__DATA_LOGIC_LOG_MORDUC_DEBUG) 
-    std::cout << ">> CONSTRUCTOR: Line number: " << _index_max << std::endl;
+//   if (__DATA_LOGIC_LOG_MORDUC_DEBUG) 
+//     std::cout << ">> CONSTRUCTOR: Line number: " << _index_max << std::endl;
   
   fclose(odom_file);
 

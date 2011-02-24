@@ -15,7 +15,7 @@ class Morduc : public Robot
 
 
  public:
-  Morduc(float radius = 4.0f);
+  Morduc(float radius = 5.0f);
   void DrawRobot();
 };
 

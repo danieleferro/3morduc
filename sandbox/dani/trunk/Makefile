@@ -5,6 +5,7 @@ SOURCES  = \
 	texture_png.cpp \
 	texture_jpeg.cpp \
 	jpeg_library.cpp \
+	opengl_library.cpp \
 	HTTPFunctor.cpp \
 	DataLogicLogSimulator.cpp \
 	DataLogicLogMorduc.cpp \
@@ -13,6 +14,7 @@ SOURCES  = \
 	SpacialMetricCalc.cpp \
 	SweepMetricCalc.cpp \
 	AnotherSweepMetricCalc.cpp \
+	input_check.cpp \
 	main.cpp
 
 EXENAME   = REAR
@@ -34,9 +36,6 @@ LIBJPEGOBJ = /usr/local/lib/libjpeg.a
 CC = g++
 RM = rm
 
-SESSION   = 1
-OPT_DIST  = 25
-
 main: $(CSOURCES) $(CEXE)
 
 $(CEXE): $(COBJECTS)
@@ -57,5 +56,12 @@ clean:
 	-$(RM) -f $(COBJECTS)
 	-$(RM) -f $(CEXE)
 
-run:	main
-	./$(EXENAME) $(SESSION) $(OPT_DIST)
+# three different run commands
+online:	main
+	./$(EXENAME) -dl morduc 192.168.1.2 -r 5 -is asweep 25
+
+log:	main
+	./$(EXENAME) -dl logmorduc 4 -r 5 -is asweep 25
+
+logsim:	main
+	./$(EXENAME) -dl logsimul 2 -r 4 -is asweep 25

@@ -235,7 +235,7 @@ std::string HTTPFunctor::GetOdometryString() {
   }
   else {
 
-    printf("Error, impossible to parse HTTP header.");
+    printf("Error, impossible to parse HTTP header.\n");
     exit(1);    
   }
 
