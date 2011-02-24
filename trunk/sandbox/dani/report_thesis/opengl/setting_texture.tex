@@ -1,6 +1,5 @@
 \section{Setting up a texture}
 \label{opengl:setting_texture}
-\lstset{language=C++}
 
 According to \cite{opengl:distilled} \textit{texture mapping 
 is a concept that takes a moment to grasp but a lifetime 
@@ -35,8 +34,8 @@ Let us show an example of how to take a preloaded image, binding it
 to a texture and draw it as the background of a window. First of all, 
 we would like to define a helper structure which we will call \texttt{Image}
 to store the actual image and its size.
-
-\begin{lstlisting}[caption={The Image structure}, label={code:image}, frame=trBL]
+\\
+\begin{lstlisting}[caption={The Image structure}, label={code:image}]
 struct Image {
   unsigned long sizeX;
   unsigned long sizeY;
@@ -49,8 +48,8 @@ typedef struct Image Image;
 Now, let us suppose to have defined a \texttt{ImageLoad()} function 
 that loads an image from disk and returns an object of class \texttt{Image}. 
 Let us see how to put in code the procedure described above:
-
-\begin{lstlisting}[caption={Texture example}, label={code:texturemapping}, frame=trBL]
+\\
+\begin{lstlisting}[caption={Texture example}, label={code:texturemapping}]
   Gluint * texture;
   Image * image;
     

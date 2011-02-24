@@ -101,8 +101,9 @@ The \texttt{SpacialMetricCalc} class encapsulates the
 algorithm presented in the previous section.
 The value of the \textit{optimal} distance is hardcoded in the
 \texttt{Calculate} function:
-
-\begin{lstlisting}[caption={\texttt{SweepMetricCalc} class declaration}, label={code:sweepmetriccalc}, frame=trBL]
+\\
+\begin{lstlisting}[caption={\texttt{SweepMetricCalc} class declaration},
+    label={code:sweepmetriccalc}]
 float SpacialMetricCalc::
           Calculate(robot_data * robot_status, 
                     image_data * bg_image_data) {
@@ -375,8 +376,9 @@ class.
 \\
 All is needed in order to use the class, is to instantiate it,
 using its conversion constructor:
-
-\begin{lstlisting}[caption={\texttt{SweepMetricCalc} class declaration}, label={code:sweepmetriccalc}, frame=trBL]
+\\
+\begin{lstlisting}[caption={\texttt{SweepMetricCalc} class declaration},
+    label={code:sweepmetriccalc}]
 SweepMetricCalc::SweepMetricCalc( float sweep_angle,
 				  float angle_offset,
 				  float mu_distance,

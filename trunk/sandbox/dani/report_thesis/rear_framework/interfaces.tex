@@ -14,8 +14,8 @@ architecture.
 with the robot, decoupling the \texttt{DataManager} 
 from the actual technology used to interact with it 
 and to collect data. Its declaration is:
- 
-\begin{lstlisting}[caption={\texttt{IDataLogic} declaration}, label={code:idatalogic}, frame=trBL]
+\\ 
+\begin{lstlisting}[caption={\texttt{IDataLogic} declaration}, label={code:idatalogic}]
 class IDataLogic {
  public:
   virtual void Command(int) = 0;
@@ -46,8 +46,9 @@ programmers should keep in mind the followings:
 A skeleton of \texttt{RetrieveData()}, \texttt{Command()} and 
 \texttt{SelectImage()} is presented in listing 
 \ref{code:idatalogic_skeleton}.
-
-\begin{lstlisting}[caption={\texttt{IDataLogic} methods skeleton}, label={code:idatalogic_skeleton}, frame=trBL]
+\\
+\begin{lstlisting}[caption={\texttt{IDataLogic} methods skeleton},
+    label={code:idatalogic_skeleton}]
 void DataLogic::RetrieveData( robot_data * data )
 {
   // actually retrieve new data
@@ -91,8 +92,9 @@ Last, but not least, the \texttt{IImageSelector} interface
 defines the type of classes that encapsulate an image 
 selection algorithm. It declares just a method, that 
 we have already encountered in the previous section:
-
-\begin{lstlisting}[caption={\texttt{IImageSelector} declaration}, label={code:iimageselector}, frame=trBL]
+\\
+\begin{lstlisting}[caption={\texttt{IImageSelector} declaration}, 
+    label={code:iimageselector}]
 class IImageSelector
 {
  public:
@@ -124,8 +126,8 @@ does not return the image coupled with the minimum distance, but the one
 (if available) with the minimum distance greater than zero.
 \\
 We could, then, write:
-
-\begin{lstlisting}[caption={A possible \texttt{ChooseImage} implementation}, label={code:chooseimage_impl}, frame=trBL]
+\\
+\begin{lstlisting}[caption={A possible \texttt{ChooseImage} implementation}, label={code:chooseimage_impl}]
 class SpacialMetricSelector : public IImageSelector
 {
   public:

@@ -10,8 +10,8 @@ for a more complete vision.
 
 Let us have a look at the declaration of the \texttt{Robot}
 class, reported in listing \ref{code:robot_class}.
-
-\begin{lstlisting}[caption={\texttt{Robot} class declaration}, label={code:robot_class}, frame=trBL]
+\\
+\begin{lstlisting}[caption={\texttt{Robot} class declaration}, label={code:robot_class}]
 class Robot
 {
  private:
@@ -60,8 +60,8 @@ the OpenGL space, the first thing a \texttt{DrawRobot()} should
 do is to invoke OpenGL function \texttt{glTranslate()}.
 A skeleton of a concrete implementation of \texttt{DrawRobot()}
 would look like this:
-
-\begin{lstlisting}[caption={\texttt{DrawRobot()} skeleton}, label={code:drawrobot_skeleton}, frame=trBL]  
+\\
+\begin{lstlisting}[caption={\texttt{DrawRobot()} skeleton}, label={code:drawrobot_skeleton}]  
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix();
 
@@ -98,8 +98,8 @@ A basic implementation of such a helper class is suggested
 in \cite{opengl:camera}. Such an implementation is slightly 
 similar the one featured by \framework{}, whose 
 declaration is reported in listing \ref{code:camera_class}.
-
-\begin{lstlisting}[caption={\texttt{Camera} class declaration}, label={code:camera_class}, frame=trBL]
+\\
+\begin{lstlisting}[caption={\texttt{Camera} class declaration}, label={code:camera_class}]
 class Camera
 {
  private:
@@ -151,8 +151,8 @@ positioning of the camera.
 As already stated, the \texttt{DataManager} class is the \textit{core}
 of the whole framework. Its declaration is reported in 
 listing \ref{code:datamanager_class}.
-
-\begin{lstlisting}[caption={\texttt{DataManager} class declaration}, label={code:datamanager_class}, frame=trBL]
+\\
+\begin{lstlisting}[caption={\texttt{DataManager} class declaration}, label={code:datamanager_class}]
 class DataManager
 {
  private:
@@ -206,8 +206,8 @@ it's also responsible for:
 All of these operations are performed within the 
 scope of \texttt{NextStep()} method, reported in 
 listing \ref{code:next_step}.
-
-\begin{lstlisting}[caption={The \texttt{DataManager::NextStep()} method}, label={code:next_step}, frame=trBL]
+\\
+\begin{lstlisting}[caption={The \texttt{DataManager::NextStep()} method}, label={code:next_step}]
 void DataManager::NextStep(int command) {
 
   image_data old_image;

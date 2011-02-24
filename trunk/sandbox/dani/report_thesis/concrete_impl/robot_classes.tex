@@ -27,8 +27,9 @@ allows to recreate \morduc{} in OpenGL space (figure
 
 The \texttt{Morduc} class publicly inherits from \texttt{Robot} 
 and, hence, implements the \texttt{DrawRobot()} method:
-
-\begin{lstlisting}[caption={\texttt{Morduc} class declaration}, label={code:morducclass}, frame=trBL]
+\\
+\begin{lstlisting}[caption={\texttt{Morduc} class declaration},
+    label={code:morducclass}]
 class Morduc : public Robot
 {
  private:
@@ -46,8 +47,8 @@ Such a method, reported in listing \ref{code:drawrobot}, contains the
 procedure to actually draw the robot 
 (in reality, \morduc{} looks like a stack of three disks linked 
 by thin cylinders, as shown in figure \ref{fig:3morduc_opengl}).
-
-\begin{lstlisting}[caption={\texttt{Morduc::DrawRobot()} function}, label={code:drawrobot}, frame=trBL]
+\\
+\begin{lstlisting}[caption={\texttt{Morduc::DrawRobot()} function}, label={code:drawrobot}]
 void Morduc::DrawRobot()
 {
   GLfloat reflectance_black[] = { 0.2f, 0.2f, 0.2f};
