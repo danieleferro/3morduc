@@ -24,7 +24,7 @@
 DataLogicLogMorduc::DataLogicLogMorduc(int session) {
 
   _index_max = 0;
-  _simulation_session = session;
+  _log_session = session;
   _index = 1;
   _raw_image = NULL;
   // file with all odometry for this log session
@@ -37,7 +37,7 @@ DataLogicLogMorduc::DataLogicLogMorduc(int session) {
   std::ostringstream o;
 
   // path to read odometric info
-  o << "../log_morduc/log_" << _simulation_session << "/odometric.txt";
+  o << "../log_morduc/log_" << _log_session << "/odometric.txt";
 
   // try open text file in read mode (rt)
   odom_file = fopen(o.str().c_str(), "rt");
@@ -113,10 +113,7 @@ void DataLogicLogMorduc::RetrieveData(robot_data * data) {
 
   _images_collection.push_back(grabbed_frame_data);
   
-  
-
   return;
-
 }
 
 void DataLogicLogMorduc::Command(int command) {
@@ -156,7 +153,7 @@ void DataLogicLogMorduc::GetOdometricData(robot_data* data) {
   std::ostringstream o;
 
   // path to read odometric info
-  o << "../log_morduc/log_" << _simulation_session << "/odometric.txt";
+  o << "../log_morduc/log_" << _log_session << "/odometric.txt";
 
   // read file line
   if (_index <= _index_max) {
@@ -348,7 +345,7 @@ std::string DataLogicLogMorduc::GetSingleImage() {
 
 
   // path image to read
-  o << "../log_morduc/log_" << _simulation_session << "/img" << _index << ".jpg";
+  o << "../log_morduc/log_" << _log_session << "/img" << _index << ".jpg";
 
   // open a binary file for reading
   img_file = fopen(o.str().c_str(), "rb" );  

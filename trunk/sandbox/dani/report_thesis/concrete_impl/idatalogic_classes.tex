@@ -1,7 +1,7 @@
 \section{Classes implementing IDataLogic interface}
 \label{concr:idatalogic}
 
-In this chapter will be exposed classes which implements
+In this chapter will be exposed classes which inherit
 from \textit{IDataLogic} interface (exposed in details
 in chapter \ref{rear:interfaces:idatalogic}).
 \\
@@ -37,7 +37,8 @@ those files.
 \\
 Let us have a look at its declaration:
 
-\begin{lstlisting}[caption={\texttt{DataLogic} declaration}, label={code:datalogic}, frame=trBL]
+\begin{lstlisting}[caption={\texttt{DataLogicLogSimulator} declaration},
+    label={code:datalogiclogsimulator:constructor}, frame=trBL]
 class DataLogicLogSimulator : public IDataLogic
 {
  private:
@@ -58,17 +59,22 @@ class DataLogicLogSimulator : public IDataLogic
 Upon instantiation, \texttt{DataLogicLogSimulator} objects needs to be 
 configured with a session identifier, to be passed to 
 the constructor. 
-\\
 In order for the \texttt{DataLogicLogSimulator} objects to find them, 
 log data must be stored within the relative path 
-\texttt{../log}, with respect to the actual execution path.
-Such a directory must contain a single subdirectory for every 
-logged session, named \texttt{log\_$\langle$number of session$\rangle$}. 
+
+\begin{center}
+  \texttt{../log/log\_$<$\_simulation\_session$>$}
+\end{center}
+
+with respect to the actual execution path.
+Such a directory must contain image and text files named and formatted
+according to what stated in section \ref{log:morduc_simulator}. 
 \\
 Let us now have a look at how \texttt{DataLogicLogSimulator} implements 
 \texttt{IDataLogic} methods:
 
-\begin{lstlisting}[caption={\texttt{DataLogic::Command() method}}, label={code:command_method}, frame=trBL]
+\begin{lstlisting}[caption={\texttt{DataLogicLogSimulator::Command() method}},
+    label={code:datalogiclogsimulator:command}, frame=trBL]
 void DataLogicLogSimulator::Command(int command) 
 {
 
@@ -89,7 +95,8 @@ incrementing the private attribute \texttt{\_index}, which
 will be used by \texttt{RetrieveData()} to select which line 
 of the log file is to read next.
 
-\begin{lstlisting}[caption={\texttt{DataLogic::RetrieveData()} method}, label={code:retrievedata_method}, frame=trBL]
+\begin{lstlisting}[caption={\texttt{DataLogicLogSimulator::RetrieveData()} method},
+    label={code:datalogiclogsimulator:retrievedata}, frame=trBL]
 void DataLogicLogSimulator::RetrieveData(robot_data * data)
 {
   // pointer to text file containing data
@@ -178,7 +185,7 @@ void DataLogicLogSimulator::RetrieveData(robot_data * data)
 }
 \end{lstlisting}
 
-What the \texttt{RetrieveData()} do is just read the line from the log 
+What the \texttt{RetrieveData()} does is just read the line from the log 
 file identified by the \texttt{\_index} private attribute of the class.
 Once read, the line is \textit{parsed} and the odometry data contained 
 in it is used to fill the \texttt{robot\_data} passed as argument, in 
@@ -193,7 +200,8 @@ every time a new captured image is available, the \texttt{DataLogicLogSimulator}
 is made able to keep track of it using its metadata, without actually 
 loading the image - since it would be useless and time-consuming.
 
-\begin{lstlisting}[caption={\texttt{DataLogic::SelectImage()} method}, label={code:selectimage_method}, frame=trBL]
+\begin{lstlisting}[caption={\texttt{DataLogicLogSimulator::SelectImage()} method},
+    label={code:datalogiclogsimulator:selectimage}, frame=trBL]
 void DataLogicLogSimulator::
 SelectImage(robot_data * robot_status,
             image_data * bg_image_data,
@@ -219,22 +227,227 @@ background.
 \label{concr:idatalogic:datalogiclogmorduc}
 
 As the one exposed before, \textit{DataLogicLogMorduc} class
-fetches new images and data from static textual file and images
-stored in a fixed directory, but in this case data are formatted
-as returned by the \morduc{}'s server in a real-time session. Indeed,
-this class was created to develop in off-line mode the class
-\textit{DataLogicMorduc}, which by Internet connection makes possible
-teleguiding the real robot (see following chapter
+fetches new images and data from static file
+stored in a fixed directory, but in this case information are previously saved
+not during the execution of a simulation but during
+the execution of online teleguiding sessions.
+\\
+Logs can be created by any client which interacted with \morduc{}
+server, as long as they observe the log format specified in section
+\ref{log:morduc}.
+\\
+This class was created to develop in off-line mode the class
+\textit{DataLogicMorduc}, that by Internet connection makes possible
+teleguiding the real robot (see following section,
 \ref{concr:idatalogic:datalogicmorduc}).
 
-For every simulation session, we dispose of:
+As previously stated, every log set is made-up of:
 
 \begin{itemize}
   \item a set of captured images, encoded in jpeg format,
-    with 640x480 pixels each
+    with 1280x480 or 640x480 pixels each
   \item a log file reporting sampled odometry data
     for all the session
 \end{itemize}
+
+Its interface is declared as follow:
+
+\begin{lstlisting}[caption={\texttt{DataLogicLogMorduc} declaration},
+    label={code:datalogiclogmorduc:constructor}, frame=trBL]
+class DataLogicLogMorduc : public IDataLogic
+{
+ private:
+
+  
+  std::vector<image_data> _images_collection;
+  int _index;
+  int _log_session;
+  int _index_max;
+
+  FILE * odom_file;
+  FILE * img_file;
+
+  robot_data _last_robot_data;
+  std::string _last_image_path;
+
+  // standard libjpeg structures
+  struct jpeg_decompress_struct _decomp_cinfo;
+  struct jpeg_compress_struct   _comp_cinfo;
+  struct jpeg_error_mgr _jerr;
+
+  unsigned char * _raw_image;
+ 
+  void GetOdometricData(robot_data*);
+  std::string GetSingleImage();
+
+  int ReadHalfJPEGFile();
+  int WriteJPEGFile();
+
+  
+ public:
+  DataLogicLogMorduc(int);
+  ~DataLogicLogMorduc();
+  void SelectImage(robot_data *, image_data *,
+		   IImageSelector *);
+
+  void RetrieveData(robot_data *);
+  void Command(int);
+
+};
+\end{lstlisting}
+
+Some private fields, such as
+\texttt{\_log\_session}, \texttt{\_image\_collection}
+and \texttt{\_index}, play
+the same role as the one seen in \textit{DataLogicLosSimulator}
+class. In order, they are used to identify what log set has
+to be read; to collect images retrieved by the log files (each
+one represented by a \texttt{image\_data} struct);
+to store with an integer how much information log has already
+been consumed.
+\\
+Log data must be saved in the following path:
+
+\begin{center}
+  \texttt{../log\_morduc/log\_$<$\_log\_session$>$}
+\end{center}
+
+always with respect to the actual execution path.
+\\
+New field \texttt{\_index\_max} allows to avoid some extra and
+useless computation or disk access. Indeed, the integer stores
+the maximum number
+of images and data client can read form the log set, so
+\textit{DataLogicLogMorduc}  can
+return the last robot data and image previously stored, respectively,
+in \texttt{\_last\_robot\_data} and \texttt{\_last\_image\_path},
+when \texttt{\_index}
+reaches \texttt{\_index\_max}'s value.
+\\
+Some private fields and methods are specialized to work with JPEG
+images and are built on \textit{libjpeg} library functions.
+Since \textit{DataLogiLogMorduc} can deal with 1280x480
+or 640x480 pixel images (the former contains both right and left
+camera images, whereas the latter only the left or right one),
+some supporting functions and variables are needed.
+\\
+When new image data are requested, \textit{DataLogiLogMorduc}
+calls method \textit{GetSingleImage()}, which, based on the
+\textit{\_index}'s value, reads the next image from the log set.
+\\
+If image's dimension is 1280x480, it calls the private method
+\textit{ReadHalfJPEGFile()} in order to load only half 
+picture (i.e. 640x480 pixel) in memory space pointed by variable
+\textit{\_raw\_image}. Afterwards, by calling \textit{WriteJPEGFile()},
+picture is read from memory to overwrite the original one the disk.
+\\
+In this way next time the same log session is selected \textit{DataLogicLogMorduc}
+will find a 640x480 pixel JPEG image, hence no further computation
+or write operation on disk has to be performed.
+\\
+Obviously, when the image indicated by \textit{\_index} value is
+not found or with a dimension different from 1280x480 or
+640x480 pixel an error is reported and the application terminate.
+\\
+We can now proceed to see how \textit{DataLogicLogMorduc} implements
+\textit{IDataLogic} interface methods.
+\\
+The \textit{Command} method, as seen for the \textit{DataLogicLogSimulator}
+class, is pretty simple: it has to increment \textit{\_index},
+which indicate the next line in \textit{odometric.txt}
+text file to read and the next image to open. It is incremented until
+its value is equal to \textit{\_index\_max}.
+
+\begin{lstlisting}[caption={\texttt{DataLogicLogMorduc::Command() method}},
+    label={code:datalogiclogmorduc:command}, frame=trBL]
+void DataLogicLogMorduc::Command(int command) {
+
+  if (_index <= _index_max)
+    _index++;
+}
+\end{lstlisting}
+
+The \textit{RetrieveData()} method is displayed in listing
+\ref{code:datalogiclogmorduc:retrievedata}:
+
+\begin{lstlisting}[caption={\texttt{DataLogicLogSimulator::RetrieveData()} method},
+    label={code:datalogiclogmorduc:retrievedata}, frame=trBL]
+void DataLogicLogMorduc::RetrieveData(robot_data * data) {
+
+  image_data grabbed_frame_data;
+  std::string image_path;
+
+  /* STEP 1: retrieve data from file (server) */
+  GetOdometricData(data);
+
+  /* STEP 2: get single image path */
+  image_path = GetSingleImage();
+   
+  // fill grabbed frame metadata
+  grabbed_frame_data.x = data->x;
+  grabbed_frame_data.y = data->y;
+  grabbed_frame_data.theta = data->theta;
+  grabbed_frame_data.time = data->time;
+  strcpy(grabbed_frame_data.path, image_path.c_str());
+
+  /* STEP 3: store the collected metadata
+     if it's not already stored */
+  for (std::vector<image_data>::iterator it =
+	 _images_collection.begin();
+       it != _images_collection.end();
+       it++)
+    {
+      if ( (*it).time == grabbed_frame_data.time )
+	{
+	  return;
+	}
+    }
+
+  _images_collection.push_back(grabbed_frame_data);
+  
+  return;
+}
+\end{lstlisting}
+
+As the reader noted, \textit{RetrieveData()} parts its duty in
+three steps. First step is accomplished by calling the private method
+\textit{GetOdometricData()}, which will open the odometry file, read
+the line indicated by \textit{\_index} and extract the information
+contained in the latter to fill the \textit{robot\_data} structure
+pointed by its unique argument. The format of each text line written in
+\textit{odometric.txt} can be found in section \ref{log:morduc}.
+\\
+In the second step a call to \textit{GetSingleImage()} is performed,
+which return a struct pointing to the new image.
+At last, the previous \textit{image\_data} struct is insert to the set
+of available images, by adding it to the \textit{\_image\_collection}
+vector.
+\\
+\textit{SelectImage}'s code is, once again, completely equal to the one
+presented in the previous section. It refers whole the computation to the
+\textit{ChooseImage()} method implemented by the instance pointed by
+its last argument.
+
+\begin{lstlisting}[caption={\texttt{DataLogicLogSimulator::SelectImage()} method},
+    label={code:datalogiclogmorduc:selectimage}, frame=trBL]
+void DataLogicLogMorduc::
+SelectImage(robot_data * robot_status,
+            image_data * bg_image_data,
+            IImageSelector * calculator) {
+
+  calculator->ChooseImage(robot_status, bg_image_data,
+                          &_images_collection);
+}
+
+\end{lstlisting}
+
+\textit{ChooseImage()} will select the proper image to render as texture
+by knowing the actual robot position (fist parameter) and the set of available
+image shot by the robot during its path. The chosen image is returned by filled
+the structure pointed by its second parameter.
+\\
+Section \ref{concr:iimageselector} will cover in details algorithms and
+features implemented by different kind of \textit{ChooseImage()} methods.
 
 
 \subsection{The DataLogicMorduc Class}

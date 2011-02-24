@@ -27,19 +27,19 @@ Two of the components needed by \framework{}, the robot
 model and the camera, are mapped on two dedicated classes, 
 \texttt{Robot} and \texttt{Camera}, respectively.
 \\
-The former is an \textit{abstract class}, serves as a storage 
+The former is an \textit{abstract class}, serving as a storage 
 for the current position and orientation of the actual
 robot and declare a pure virtual method in which subclasses 
 must include all of the procedure to draw the OpenGL model 
 of the robot itself.
 \\
-The latter is instead a \textit{helper class}, since there 
+The latter is instead a \textit{helper class}, since 
 exists no actual camera within the OpenGL space. The camera 
 model is just an abstraction used to give a more intuitive
 way to set the portion of space the user is looking at.
 In fact, the \texttt{Camera} class provides methods to 
-set the user's point-of-view within the OpenGL space (see
-chapter \ref{rear:classes:cameraclass}).
+set the user's point-of-view within the OpenGL space (we
+refer to section \ref{rear:classes:cameraclass}).
 \\
 In the middle, between \texttt{Robot} and \texttt{Camera},
 there is the \texttt{DataManager} class. It is intended to be 
@@ -55,7 +55,7 @@ by programmers who want to create their own concrete exocentric
 vision system: \texttt{IDataLogic} and 
 \texttt{IImageSelector}.
 \\
-The former decouples the application 
+\texttt{IDataLogic} decouples the application 
 core, that is the \texttt{DataManager}, from the data source.
 This way, \texttt{DataManager} code can be totally unaware of 
 the technology used to retrieve data from the robot - e.g. 
@@ -77,9 +77,12 @@ relative to a specific snapshot - i.e. the position
 and the orientation of the camera when it was taken, 
 a timestamp and an array of chars that can be used by 
 programmers who would like to add other data - e.g. 
-a code or a sequence number.
+a code or a sequence number. More often this field is
+exploited to store the file system path where the
+image is stored.
 \\
-The latter is similar to the former, it is meant to be 
+\texttt{robot\_data} structure is similar to the former,
+it is meant to be 
 used by \texttt{DataManager} to exchange information
 about the current robot position and orientation with 
 lower-level objects, in a compact way.
@@ -104,7 +107,7 @@ struct robot_data {
 In the following of this section, we will have a look 
 \textit{under the hood} of the classes and interfaces 
 we have just introduced.
-\\
 We will see how \framework{} functionalities are 
 mapped onto them and, then, how to correctly subclass/use
-them in order to build a concrete exocentric vision system.
+them in order to build a concrete exocentric vision system
+(chapter \ref{concr}).

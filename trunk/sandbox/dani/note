@@ -1,8 +1,12 @@
 - inserire nuove librerie necessarie nel readme (libjpeg, curlpp)
-- aggiornare class diagram
+- specificare in DataLogicLogSimulator e DataLogicLogMorduc come viene effettuato il mapping dei valori sullo spazio opengl
+
+
+
+
+
+
+
 - cancellare contenuto di /etc/apache2/httpd.conf (riavviare demone)
-
-
-
 add "/usr/local/lib" to /etc/ld.so.conf 
 ./sbin/ldconfig 

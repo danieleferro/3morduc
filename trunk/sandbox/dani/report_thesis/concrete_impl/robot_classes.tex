@@ -1,7 +1,7 @@
 \section{Classes inherited from Robot class}
 \label{concr:robot_classes}
 
-In this chapter will be exposed classes which inherits
+In this section will be exposed classes which inherits
 from \textit{Robot} class. They have to implement, at least,
 the \textit{DrawRobot()} pure virtual father's method,
 because \framework{} can not know in other way how to
@@ -10,8 +10,12 @@ represent the robot to overlap on the background image chosen.
 \subsection{The Morduc Class}
 \label{concr:robot_classes:concr:morduc}
 
-This class allows to draw the robot when data and images
-are retrieved from the log files or Internet network.
+This class allows to draw a \morduc{} model (see section 
+\ref{intro:3morduc}), in order to implement the exocentric
+vision with this specific robot. Regardless of how data and images
+are retrieved, from log files or Internet network, this class
+allows to recreate \morduc{} in OpenGL space (figure
+\ref{fig:3morduc_opengl}).
 
 \begin{figure}[!h]
   \begin{center}
@@ -39,9 +43,9 @@ class Morduc : public Robot
 \end{lstlisting}
 
 Such a method, reported in listing \ref{code:drawrobot}, contains the 
-procedure to actually draw the OpenGL model representing Murdoc 
-(in reality, Murdoc looks like a stack of three disks linked 
-by thin cylinders - see figure \ref{fig:3morduc_opengl}).
+procedure to actually draw the robot 
+(in reality, \morduc{} looks like a stack of three disks linked 
+by thin cylinders, as shown in figure \ref{fig:3morduc_opengl}).
 
 \begin{lstlisting}[caption={\texttt{Morduc::DrawRobot()} function}, label={code:drawrobot}, frame=trBL]
 void Morduc::DrawRobot()
@@ -132,4 +136,4 @@ a \textit{disk} and a \textit{cylinder}.
 \texttt{radius}, instead, stores the value of the radius 
 for the of the cylinders which make up the robot.
 After some calibration, the default \texttt{radius} value 
-has been set to 4.0.
+has been set to 5.0.

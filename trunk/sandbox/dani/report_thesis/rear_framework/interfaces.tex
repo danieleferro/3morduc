@@ -2,8 +2,10 @@
 \label{rear:interfaces}
 
 This section will describe the interface that
-makes \framework{} a real framewrok. Refer to figure
-\ref{fig:class_diagram} for a complete vision.
+makes \framework{} a real framework. Again, we refer
+to figure
+\ref{fig:class_diagram} for the complete system
+architecture.
 
 \subsection{The IDataLogic interface}
 \label{rear:interfaces:idatalogic}
@@ -11,7 +13,7 @@ makes \framework{} a real framewrok. Refer to figure
 \texttt{IDataLogic} provides a communication interface 
 with the robot, decoupling the \texttt{DataManager} 
 from the actual technology used to interact with it 
-and to collect data from it. Its declaration is:
+and to collect data. Its declaration is:
  
 \begin{lstlisting}[caption={\texttt{IDataLogic} declaration}, label={code:idatalogic}, frame=trBL]
 class IDataLogic {
@@ -41,7 +43,7 @@ programmers should keep in mind the followings:
     \ref{rear:interfaces:iimageselector}).
 \end{itemize}
 
-A skeleton of either \texttt{RetrieveData()} and 
+A skeleton of \texttt{RetrieveData()}, \texttt{Command()} and 
 \texttt{SelectImage()} is presented in listing 
 \ref{code:idatalogic_skeleton}.
 
@@ -72,6 +74,13 @@ void DataLogic::SelectImage( robot_data * robot_status,
   selector -> ChooseImage( robot_status, bg_image_data, 
                              &_images_collection );
 }
+
+void DataLogic::Command( int command )
+{
+  // send command defined with the
+  // int value to the robot
+}
+
 \end{lstlisting}
 
 
@@ -98,11 +107,12 @@ and will fill the passed \texttt{image\_data} structured fields
 with the metadata of the selected image.
 \\
 Say we want to define a class that implements the selection 
-method 2 presented in \cite{sugimoto}. That selection method
+method number two presented in \cite{sugimoto}. That selection method
 chooses the image taken as near as possible to the robot
 current position.
 \\
-The \texttt{Calculate()} function, called within the following code,
+The \texttt{Calculate()} function, defined within the concrete class
+implementing \texttt{IImageSelector} interface,
 estimates the euclidean distance between robot and a generic image.
 If we decided to choose the closest image to the robot, we would
 show the egocentric vision, because the algorithm would always
