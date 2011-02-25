@@ -191,6 +191,18 @@ Once read, the line is \textit{parsed} and the odometry data contained
 in it is used to fill the \texttt{robot\_data} passed as argument, in 
 order to return the \textit{current} robot position.
 \\
+Be careful that last operation conceals another important duty: cast the
+XY coordinates and the orientation angle (along the Y axis) returned
+by the simulator environment in the proper corresponding values in OpenGL's
+reference system. Lines from 45 to 47 in listing
+\ref{code:datalogiclogsimulator:retrievedata} shows, in this case,
+that X and Y value are not to be changed, but, on the contrary, the robot's
+rotation angle has to be firstly negated (by changing its sign) and
+than converted from radiants to degrees. This proves that simulator's coordinate
+system differs from the one adopted in OpenGL, because not only angles
+are handled with different measure scale (radiants and not degrees), but the
+way of rotation is one opposite to the other.
+\\
 Behind the curtain, \texttt{RetrieveData()} also creates a new 
 \texttt{image\_data} structure, fills it with the data just 
 gathered and then adds it to the \texttt{\_image\_collection} 
@@ -409,7 +421,7 @@ void DataLogicLogMorduc::RetrieveData(robot_data * data) {
 }
 \end{lstlisting}
 
-As the reader noted, \textit{RetrieveData()} parts its duty in
+As the reader noted, \textit{RetrieveData()} parts its duties in
 three steps. First step is accomplished by calling the private method
 \textit{GetOdometricData()}, which will open the odometry file, read
 the line indicated by \textit{\_index} and extract the information
@@ -417,8 +429,37 @@ contained in the latter to fill the \textit{robot\_data} structure
 pointed by its unique argument. The format of each text line written in
 \textit{odometric.txt} can be found in section \ref{log:morduc}.
 \\
-In the second step a call to \textit{GetSingleImage()} is performed,
-which return a struct pointing to the new image.
+\textit{GetOdometricData()} is also responsible for mapping XY
+coordinates and rotation angle theta, retrieved by the log
+odometry file written by the \morduc{} server, in the matching values
+to provide to the OpenGL's reference system. The XY coordinates returned
+by \morduc{} are expressed in meters and have to be increased hundred
+times in order to produce a meaningful robot's movement within the
+synthesized OpenGL space. A single unit of measure in the latter stands
+in fact for one centimetre.
+\\
+Furthermore, the coordinate conversion process (performed by  
+\textit{GetOdometricData()} and hence not shown in listing 
+\ref{code:datalogiclogmorduc:retrievedata}) inverts the Y axis sense
+by changing the sign of every Y value read from log; at last, the
+rotation angle theta is converted from radiant to degrees, because
+\morduc{} and OpenGL use different notations.
+\\
+To sum up, the coordinate system used by \morduc{} server presents,
+in reference to the one adopted by OpenGL, 1. a smaller unit of
+measure, 2. the Y axis increasing with opposite sense, 3. rotation
+angle expressed in radiants and not in degrees.
+\\
+Note that matching the source data coordinate system in the OpenGL one
+depends heavily on the  kind of source we are dealing with. In previous
+section, where data were collected from the simulator log files, conversion
+was
+performed in a totally different way because simulator implements
+its own coordinate system.
+\\
+Back to \textit{RetrieveData()} method, in second step a call to
+\textit{GetSingleImage()} is performed,
+returning a struct pointing to the new image.
 At last, the previous \textit{image\_data} struct is insert to the set
 of available images, by adding it to the \textit{\_image\_collection}
 vector.
