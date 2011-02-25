@@ -76,7 +76,6 @@ void DataLogicMorduc::RetrieveData(robot_data * data) {
   std::string image_path = o.str();
   std::string line_read;
 
-  int counter = 0;
   image_data grabbed_frame_data;
   
   // STEP 1: REQUEST DATA FROM SERVER
@@ -155,51 +154,8 @@ void DataLogicMorduc::RetrieveData(robot_data * data) {
   fputs(line_read.c_str(), odom_file);
   fclose(odom_file);
 
+  FillOdometricData(line_read, data);
 
-  // get tokens from string
-  counter = line_read.find_first_of('/', 0) + 1;
-  line_read = line_read.substr(counter);
-
-
-  for (int j=0; j < line_read.length(); j++) {
-
-    if (line_read[j] == ',')
-      line_read[j] = '.';
-  }
-
-  std::cout << line_read << std::endl;
-
-  // get time
-  counter = line_read.find_first_of('\\', 0) + 1;
-  data->time = atof(line_read.substr(0, counter).c_str());
-  line_read = line_read.substr(counter);
-
-
-  
-  // get x
-  counter = line_read.find_first_of('\\', 0) + 1;
-  data->x = atof(line_read.substr(0, counter).c_str()) * MAGNITUDE;
-  line_read = line_read.substr(counter);
-
-
-  // get y
-  counter = line_read.find_first_of('\\', 0) + 1;
-  data->y = atof(line_read.substr(0, counter).c_str()) * MAGNITUDE * -1;
-  line_read = line_read.substr(counter);
-
-  // get theta (server returns angle in radiant)
-  counter = line_read.find_first_of('\\', 0) + 1;
-  data->theta = TO_DEGREES( atof(line_read.substr(0, counter).c_str())) ;
-  line_read = line_read.substr(counter);
-
-
-  if (__DATA_LOGIC_MORDUC__DBG) {
-
-    std::cout << "X value: " << data->x << std::endl;
-    std::cout << "Y value: " << data->y << std::endl;
-    std::cout << "Theta value: " << data->theta << std::endl;
-    std::cout << "Time value: " << data->time << std::endl;
-  }
   // STEP 3: insert image in collection
    
   // fill grabbed frame metadata
@@ -255,7 +211,7 @@ void DataLogicMorduc::Command(int command) {
     break;
 
   default:
-    std::cout << "Unkwown command: " << command
+    std::cout << "Unknown command: " << command
 	      << std::endl << "Program will terminate."
 	      << std::endl;
 
@@ -322,5 +278,56 @@ void DataLogicMorduc::SelectImage(robot_data * robot_status, image_data * bg_ima
   // we simply pass its reference
   calculator->ChooseImage(robot_status, bg_image_data, &_images_collection);
 
+
+}
+
+void DataLogicMorduc::FillOdometricData(std::string line_read, robot_data* data) {
+
+  int counter;
+
+  // get tokens from string
+  counter = line_read.find_first_of('/', 0) + 1;
+  line_read = line_read.substr(counter);
+
+
+  for (int j=0; j < line_read.length(); j++) {
+
+    if (line_read[j] == ',')
+      line_read[j] = '.';
+  }
+
+  std::cout << line_read << std::endl;
+
+  // get time
+  counter = line_read.find_first_of('\\', 0) + 1;
+  data->time = atof(line_read.substr(0, counter).c_str());
+  line_read = line_read.substr(counter);
+
+
+  
+  // get x
+  counter = line_read.find_first_of('\\', 0) + 1;
+  data->x = atof(line_read.substr(0, counter).c_str()) * MAGNITUDE;
+  line_read = line_read.substr(counter);
+
+
+  // get y
+  counter = line_read.find_first_of('\\', 0) + 1;
+  data->y = atof(line_read.substr(0, counter).c_str()) * MAGNITUDE * -1;
+  line_read = line_read.substr(counter);
+
+  // get theta (server returns angle in radiant)
+  counter = line_read.find_first_of('\\', 0) + 1;
+  data->theta = TO_DEGREES( atof(line_read.substr(0, counter).c_str())) ;
+  line_read = line_read.substr(counter);
+
+
+  if (__DATA_LOGIC_MORDUC__DBG) {
+
+    std::cout << "X value: " << data->x << std::endl;
+    std::cout << "Y value: " << data->y << std::endl;
+    std::cout << "Theta value: " << data->theta << std::endl;
+    std::cout << "Time value: " << data->time << std::endl;
+  }
 
 }
