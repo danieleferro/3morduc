@@ -38,7 +38,7 @@ those files.
 Let us have a look at its declaration:
 \\
 \begin{lstlisting}[caption={\texttt{DataLogicLogSimulator} declaration},
-    label={code:datalogiclogsimulator:constructor}]
+    label={code:datalogiclogsimulator:interface}]
 class DataLogicLogSimulator : public IDataLogic
 {
  private:
@@ -265,7 +265,7 @@ As previously stated, every log set is made-up of:
 Its interface is declared as follow:
 \\
 \begin{lstlisting}[caption={\texttt{DataLogicLogMorduc} declaration},
-    label={code:datalogiclogmorduc:constructor}]
+    label={code:datalogiclogmorduc:interface}]
 class DataLogicLogMorduc : public IDataLogic
 {
  private:
@@ -337,7 +337,8 @@ when \texttt{\_index}
 reaches \texttt{\_index\_max}'s value.
 \\
 Some private fields and methods are specialized to work with JPEG
-images and are built on \textit{libjpeg} library functions.
+images and are built on \textit{libjpeg} (\cite{library:libjpeg}
+for official reference) library functions.
 Since \textit{DataLogiLogMorduc} can deal with 1280x480
 or 640x480 pixel images (the former contains both right and left
 camera images, whereas the latter only the left or right one),
@@ -382,7 +383,7 @@ void DataLogicLogMorduc::Command(int command) {
 The \textit{RetrieveData()} method is displayed in listing
 \ref{code:datalogiclogmorduc:retrievedata}:
 \\
-\begin{lstlisting}[caption={\texttt{DataLogicLogSimulator::RetrieveData()} method},
+\begin{lstlisting}[caption={\texttt{DataLogicLogMorduc::RetrieveData()} method},
     label={code:datalogiclogmorduc:retrievedata}]
 void DataLogicLogMorduc::RetrieveData(robot_data * data) {
 
@@ -469,7 +470,7 @@ presented in the previous section. It refers whole the computation to the
 \textit{ChooseImage()} method implemented by the instance pointed by
 its last argument.
 \\
-\begin{lstlisting}[caption={\texttt{DataLogicLogSimulator::SelectImage()} method},
+\begin{lstlisting}[caption={\texttt{DataLogicLogMorduc::SelectImage()} method},
     label={code:datalogiclogmorduc:selectimage}]
 void DataLogicLogMorduc::
 SelectImage(robot_data * robot_status,
@@ -495,3 +496,408 @@ features implemented by different kind of \textit{ChooseImage()} methods.
 
 This class allows \framework{} to teleguide the real \morduc{}
 robot, situated at DIEES laboratory, in Catania (Italy).
+\\
+\textit{DataLogicMorduc} originates several of its features 
+from the \textit{DataLogicLogMorduc}, exposed earlier in
+\ref{concr:idatalogic:datalogiclogmorduc}. Main differences
+relies on the way new data are retrieved, since they are not
+statically saved in log file but dynamically created and sent
+from the server to the client through the Internet network.
+\\
+\textit{DataLogicMorduc} can be thought of as the final
+stage of a development project whose primary aim was that
+to teleguide a real mobile robot by remote control.
+\\
+The
+robot concerned is the mobile-platform \morduc{}, we can
+establish a communication channel with through simple
+HTTP requests and responses. Details about accepted
+commands and returned replies can be found in 
+in section \ref{intro:3morduc:communication}, here we
+remind briefly that \morduc{} can be controlled
+by requesting different resources (i.e. URLs) to the server.
+\\
+A set of specific URLs allows to drive the robot in remote
+environment, changing its position forward or backward and
+steering in the left or right direction. Another set
+of resources are instead provided to simply retrieve robot's
+data without altering its status.
+\\
+\textit{DataLogicMorduc} class bases its functionalities
+on two fundamental libraries, named \textit{libjpeg} and
+\textit{curlpp}. The former, already mentioned previously,
+offers the means for handling JPEG images, which is the codec
+server compresses the images with before sending them to
+client.
+\\
+The latter is a C++ wrapper for the widely used
+\textit{libcurl}. It exposes some classes and data structure
+that allows sending HTTP request and processing the relative
+response within few code lines.
+\\
+Official references about the libraries cited above can be
+found in \cite{library:libjpeg} (\textit{libjpeg}) and
+\cite{library:curlpp} (\textit{curlpp}).
+\\
+Interface exposed by \textit{DataLogicMorduc} is reported in
+listing \ref{code:datalogicmorduc:interface}.
+\\
+\begin{lstlisting}[caption={\texttt{DataLogicLogMorduc} declaration},
+    label={code:datalogicmorduc:interface}]
+class DataLogicMorduc : public IDataLogic
+{
+  
+
+ private:
+
+  std::vector<image_data> _images_collection;
+  int _index;
+  
+  FILE * odom_file;
+  FILE * img_file;
+
+  std::string _path_server;
+  std::string _path_data;
+
+  HTTPFunctor _http_functor;
+  
+ public:
+  DataLogicMorduc(const char*, const char*);
+  ~DataLogicMorduc();
+  void SelectImage(robot_data *, image_data *,
+		   IImageSelector *);
+
+  void RetrieveData(robot_data *);
+
+  void Command(int);
+
+};
+\end{lstlisting}
+
+As requested, it implements \textit{IDataLogic} interface and
+hence presents its three public methods along with class constructor
+and destructor.
+\\
+To create a new class instance, client has to specify
+two string parameters. Their values indicate, in order, the IP
+address or URL where the server is located and the path of an
+existing folder. \textit{\_path\_server} and \textit{\_path\_data}
+private fields help to store them, since their value are needed
+several times during object life.
+\\
+The latter is used to save data provided by the server during the
+teleguiding session. \framework{} needs to store images obtained
+in online mode in order to simulate the \textit{exocentric} point
+of view: an image shot earlier by the egocentric camera must be
+selected by the core algorithm every time a robot change its position.
+The chosen image is then employed as texture by OpenGL, with the aim
+to recreate the real world within virtual space.
+\\
+Images are saved in the specified path, each one according to the
+following notation, thanks to the \textit{img\_file} pointer
+shown in previous listing.
+
+\begin{center}
+  \texttt{$<$user\_path$>$/img$<$index\_value$>$.jpg}
+\end{center}
+
+Obviously, integer \textit{\_index} starts counting from one and is
+incremented every time new image and robot data are received by the
+client. By means of \textit{libjpeg} library, image obtained is
+firstly loaded in memory (i.e. dynamic memory), and then only half
+its content its written to hard disk: \framework{} exploits only
+left or right camera image, but server returns (through HTTP body
+response) both images through a single 1280x480 pixels JPEG image,
+so \textit{DataLogicMorduc} saves directly 640x480 picture in order
+to avoid future further computation.
+\\
+Besides, each image is represented by a \textit{image\_data}
+structure collected in vector \textit{\_images\_collection}. This
+collection allows to quickly access information regarding the
+available images, since every element can be thought of as a pointer
+to the real images (we remind that every struct contains, among
+other information, the absolute path referring to the image).
+\\
+Even thought \framework{} would not need to save other data aside
+from pictures frame, \textit{DataLogicMorduc} creates, always on
+the specified directory, a text file containing odometry data retrieved
+along with each image. Its absolute path will be:
+
+\begin{center}
+  \texttt{$<$user\_path$>$/odometric.txt}
+\end{center}
+
+File pointer \textit{odom\_file} serves for the purpose. Storing
+odometric information proves to be extremely useful because,
+together with camera images, they form new log data client can
+based its future computation on by using the \textit{DataLogiLogMorduc}
+class. The advantages of log data (formatted in a standard way)
+has been widely exposed through
+this document, for details see section \ref{log}.
+\\
+Last, but not least, \textit{\_http\_functor} field is used to
+collect data coming from Internet network, i.e. response sent from
+server. It performs the role of a 'functor`, deeper explained in
+following subsection (\ref{}).
+\\
+As usual, we can now proceed to examine in detail how \textit{IDataLogic}
+virtual method are implement. To begin with, \textit{Command()} code is
+displayed.
+\\
+\begin{lstlisting}[caption={\texttt{DataLogicMorduc::Command() method}},
+    label={code:datalogicmorduc:command}]
+void DataLogicMorduc::Command(int command) {
+
+  // send the command to the robot
+  std::string command_URL;
+  std::ostringstream os;
+
+  switch (command) {
+
+  case FORWARD:
+    command_URL = _path_server + "stereo.fow1.jpg";
+    break;
+
+  case BACKWARD:
+    command_URL = _path_server + "stereo.bak1.jpg";
+    break;
+
+  case RIGHT:
+    command_URL = _path_server + "stereo.rgt.jpg";
+    break;
+
+  case LEFT:
+    command_URL = _path_server + "stereo.lft.jpg";
+    break;
+
+  default:
+    std::cout << "Unknown command: " << command
+	      << std::endl << "Program will terminate."
+	      << std::endl;
+
+    exit(1);
+  }
+ 
+  try {
+
+    curlpp::Cleanup cleaner;
+    curlpp::Easy request;
+
+    // header options' list
+    std::list<std::string> headers;
+    headers.push_back("User-Agent: REAR client"); 
+
+    // Setting request options
+    request.setOpt(new curlpp::options::Url(command_URL));
+    request.setOpt(new curlpp::options::Verbose(false));
+    request.setOpt(new curlpp::options::HttpHeader(headers));
+    // redirect response to os
+    request.setOpt(new curlpp::options::WriteStream(&os));    
+    
+    // send request
+    request.perform();    
+  }
+       
+  // increase index to point the next line of the file
+  _index++;
+
+}
+\end{lstlisting}
+
+Unlike the other class implementing \textit{IDataLogic} interface
+exposed so far, \textit{DataLogicMorduc}'s command method takes
+in account its integer parameter because its final aim is to
+\textit{really} teleguide the robot: next robot's status it is
+not been determinated and written in a log file, but it depends
+on which command teleoperator asks to execute.
+\\
+For one of each available command (go forward, go backward, turn right
+and turn left) a specific resource must be requested to the connected
+\morduc{} server. URL is built by merging server's address (stored
+in \textit{\_path\_server}) with a string indicating the requested
+command (see chapter \ref{intro:3morduc:communication} for a complete
+list of all possible values).
+\\
+After constructing URL, \textit{Command()} prepares an HTTP
+request by means of \textit{curlpp} objects (lines 38 to 50 in listing
+\ref{code:datalogicmorduc:command}). Therefore, the request is sent
+simply by invoking the \textit{perform()} method of the
+\textit{curlpp::Easy} object. This few lines of code evince
+\textit{curlpp}'s potential to largely reduce programmer's effort in
+dealing with HTTP protocol (as well as many other Internet protocol
+\cite{library:curlpp}).
+\\
+At last, \textit{\_index} value is incremented to uniquely identify
+next saved image.
+\\
+\textit{RetrieveData()} subdived its operations in three steps. Its
+code is shown in following listing, but in order to
+focus reader's attention on chief points, some control code (e.g. checking
+if opening a file returns without errors) has been deleted.
+\\
+\begin{lstlisting}[caption={\texttt{DataLogicMorduc::RetrieveData()} method},
+    label={code:datalogicmorduc:retrievedata}]
+void DataLogicMorduc::RetrieveData(robot_data * data) {
+
+  std::ostringstream o;
+  // img path
+  o << _path_data << "img" << _index << ".jpg";
+
+  std::string command_URL = _path_server + "stereo.jpg";
+  std::string image_path = o.str();
+  std::string line_read;
+
+  image_data grabbed_frame_data;
+  
+  // STEP 1: REQUEST DATA FROM SERVER
+
+  try {
+
+    curlpp::Cleanup cleaner;
+    curlpp::Easy request;
+
+    _http_functor.ResetFunctor();
+    
+    // Set the writer callback to enable cURL 
+    // to write result in a memory area
+    curlpp::types::WriteFunctionFunctor
+                   functor_body(&_http_functor, 
+		                &HTTPFunctor::
+                                WriteHTTPBodyCallback);
+      
+    curlpp::types::WriteFunctionFunctor
+                   functor_header(&_http_functor, 
+				  &HTTPFunctor::
+                                  WriteHTTPHeaderCallback);
+    
+    // header options' list
+    std::list<std::string> headers;
+    headers.push_back("User-Agent: REAR client"); 
+      
+    // Setting request options
+    request.setOpt(new curlpp::options::
+                     Url(command_URL));
+    request.setOpt(new curlpp::options::
+                     Verbose(false));
+    request.setOpt(new curlpp::options::
+                     WriteFunction(functor_body));
+    request.setOpt(new curlpp::options::
+                     HeaderFunction(functor_header));
+    request.setOpt(new curlpp::options::
+                     HttpHeader(headers));
+        
+    // send request
+    request.perform();
+      
+    line_read = _http_functor.GetOdometryString();
+    _http_functor.CreateImage(image_path.c_str());
+  }
+  
+  // STEP 2: WRITE ODOMETRIC DATA TO FILE
+  // AND FILL ROBOT DATA
+  
+  // open new file per odometry data
+  std::string odom_file_path = _path_data  + "odometric.txt";
+  odom_file = fopen(odom_file_path.c_str(), "at");  
+
+  fputs(line_read.c_str(), odom_file);
+  fclose(odom_file);
+
+  FillOdometricData(line_read, data);
+
+  // STEP 3: insert image in collection
+   
+  // fill grabbed frame metadata
+  grabbed_frame_data.x = data->x;
+  grabbed_frame_data.y = data->y;
+  grabbed_frame_data.theta = data->theta;
+  grabbed_frame_data.time = data->time;
+
+  strcpy(grabbed_frame_data.path, image_path.c_str());
+
+  // store the collected metadata if it's not already stored
+  for (std::vector<image_data>::iterator it =
+	 _images_collection.begin();
+       it != _images_collection.end();
+       it++)
+    {
+      if ( (*it).time == grabbed_frame_data.time )
+	{
+	  return;
+	}
+    }
+
+  _images_collection.push_back(grabbed_frame_data);
+  
+  return;
+}
+\end{lstlisting}
+
+First of all, the URL of the resource requested is built (line 7):
+in these case we want to receive only image and odometry data
+(see \ref{intro:3morduc:communication} for further details about
+\morduc{}'s served URLs).
+\\
+Next, first step set some options in a \textit{curlpp::Easy} object
+before sending the request with its \textit{perform()} method. Among
+these, the callback function are indicated for managing HTTP response
+header and body. Both callback are implemented by the functor
+\textit{HTTPFunctor} class, exposed later. When the \textit{perform()}
+method is called, a synchronous call is done and the execution proceeds
+only when all response data has been received.
+\\
+Since HTTP header and body will be received in an asynchronous mode
+(data through network are parted in package), the callback will be
+called every time a new piece of information is received.
+\textit{functor\_body} (declared from line 24) manages data belonging
+to HTTP body, whereas \textit{functor\_header} (declared from line 29)
+manages data belonging HTTP header.
+\\
+Functor's task is to proper store received data as long as they arrive.
+When the execution resumes from the \textit{perform()} method (line 52),
+\textit{RetrieveData()} can complete its first step by asking
+\textit{\_http\_functor} to return the odometry string returned by the server
+(originally contained in HTTP header) and to save image contained in
+HTTP body into JPEG file (better, half the image, as previously stated).
+\\
+In second step odometry text line is written in \textit{odometric.txt},
+and then the same string is passed to the private \textit{FillOdometricData()}
+method in order to extract its information and fill the pointed
+\textit{robot\_data} structure. Only one note has to be done: as seen
+in previous classes implementing \textit{IDataLogic} interface, a
+proper mapping between source data system reference and OpenGL coordinate
+system has to be performed.
+\\
+In this case, the operation are the same already exposed in previous section,
+for \textit{DataLogicLogMorduc}. In synthesis, we have to 1. multiple X and Y
+value by 100, 2. change the sign of  Y values, 3. change angle of rotation
+measure from radiants to degrees. For further details we refer to section
+\ref{concr:idatalogic:datalogiclogmorduc}.
+\\
+Step number three consists of the common piece of code met several
+times in this document. A new \textit{image\_data} struct, representing
+the received and locally stored image, is created and inserted in
+\textit{\_image\_collection} set.
+\\
+Last public method, \textit{SelectImage()} refers the chosen of the image
+to put as texture completely to the passed instance of
+\textit{IImageSelector}, which will fill the pointed \textit{image\_data}
+with a picture contained in \textit{\_image\_collection}.
+\\
+\begin{lstlisting}[caption={\texttt{DataLogicMorduc::SelectImage()} method},
+    label={code:datalogicmorduc:selectimage}]
+void DataLogicMorduc::SelectImage(robot_data * robot_status,
+                                  image_data * bg_image_data,
+				  IImageSelector * calculator) {
+
+  calculator->ChooseImage(robot_status, bg_image_data,
+                          &_images_collection);
+}
+
+\end{lstlisting}
+
+\subsubsection{The HTTPFunctor Class}
+\label{concr:idatalogic:datalogicmorduc:httpfunctor}
+
+Some notes about functors in general and HTTPFunctor class
+in specific.

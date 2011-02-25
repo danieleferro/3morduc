@@ -1,5 +1,5 @@
 /*
- * DataLogicLogSimulator.h    
+ * DataLogicMorduc.h    
  *
  * This file is part of REAR.
  * Copyright (C) 2010 Daniele Ferro (daniele.ferro86@gmail.com) 
@@ -48,7 +48,6 @@ class DataLogicMorduc : public IDataLogic
 
  private:
 
-  
   std::vector<image_data> _images_collection;
   int _index;
   
@@ -59,6 +58,8 @@ class DataLogicMorduc : public IDataLogic
   std::string _path_data;
 
   HTTPFunctor _http_functor;
+
+  void FillOdometricData(std::string, robot_data*);
   
  public:
   DataLogicMorduc(const char*, const char*);
@@ -69,10 +70,6 @@ class DataLogicMorduc : public IDataLogic
   void RetrieveData(robot_data *);
 
   void Command(int);
-
-
-
-
 
 };
 
