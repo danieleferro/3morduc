@@ -43,7 +43,6 @@ class HTTPFunctor
 
   // to store jpeg image from HTTP server
   char* _m_pBuffer;
-  size_t _m_Size;
 
   // store header
   std::string _header;

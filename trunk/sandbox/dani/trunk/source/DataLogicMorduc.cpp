@@ -303,13 +303,10 @@ void DataLogicMorduc::FillOdometricData(std::string line_read, robot_data* data)
   data->time = atof(line_read.substr(0, counter).c_str());
   line_read = line_read.substr(counter);
 
-
-  
   // get x
   counter = line_read.find_first_of('\\', 0) + 1;
   data->x = atof(line_read.substr(0, counter).c_str()) * MAGNITUDE;
   line_read = line_read.substr(counter);
-
 
   // get y
   counter = line_read.find_first_of('\\', 0) + 1;
@@ -329,5 +326,7 @@ void DataLogicMorduc::FillOdometricData(std::string line_read, robot_data* data)
     std::cout << "Theta value: " << data->theta << std::endl;
     std::cout << "Time value: " << data->time << std::endl;
   }
+
+  return;
 
 }

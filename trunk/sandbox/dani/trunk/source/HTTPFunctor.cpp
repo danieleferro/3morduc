@@ -85,7 +85,7 @@ size_t HTTPFunctor::WriteHTTPHeaderCallback(char* ptr, size_t size, size_t nmemb
   // return the real size of the buffer...
   return realsize;
 
-};
+}
 
 
 int HTTPFunctor::ReadHalfJPEGBuffer() {
