@@ -6,7 +6,7 @@
 \label{concr}
 \minitoc
 
-This section will show how to use \framework{} to implement a 
+This chapter will show how to use \framework{} to implement a 
 concrete exocentric vision system, specifically designed for 
 \morduc{}.
 \\
@@ -14,35 +14,34 @@ As section \ref{rear} explains, in order to get things
 done, all we need to write is:
 
 \begin{itemize}
-\item a concrete subclass of \texttt{Robot}
 \item an implementation of the \texttt{IDataLogic} interface
 \item an implementation of the \texttt{IImageSelector} interface
+\item a concrete subclass of \texttt{Robot}
 \end{itemize}
 
 The class diagram of the complete system is reported in figure
 \ref{fig:class_diagram_complete}. 
 \\
-As it's easy to notice, it features three implementations 
+Three concrete classes implement the \textit{IDataLogic} interface,
+each one retrieving robot information from different kinds of source.
+They are named \textit{DataLogicLogSimulator}, \textit{DataLogicLogMorduc}
+and \textit{DataLogicMorduc}, exposed in section \ref{concr:idatalogic}.
+\\
+As it's easy to notice, class diagram presents also three implementations 
 of the \texttt{IImageSelector} interface: \texttt{SpacialMetricCalc},
 \texttt{SweepMetricCalc} and \texttt{AnotherSweepMetricCalc}
 (an improvement algorithm from the previous one).
-\\
+The latter encapsulate two brand new selection algorithms,
+widely discussed later from section
+\ref{concr:iimageselector:sweep_metric_algorithm} to section
+\ref{concr:iimageselector:another_sweep_metric_class}.
 \texttt{SpacialMetricCalc} is a variant 
-of the image selection method number two reported in \cite{sugimoto} and 
+of the image selection method number two reported in \cite{sugimoto}, 
 whose possible implementation is showed in sections
 \ref{concr:iimageselector:spacial_metric_algorithm} and
 \ref{concr:iimageselector:spacial_metric_class}.
 
 \ifthenelse{\isodd{\thepage}}{
-\begin{figure}[!h]
-  \begin{center}
-    \includegraphics[width=\textheight, angle=270]{img/class_diagram.png} 
-    \caption{Class diagram of the whole system}
-    \label{fig:class_diagram_complete}
-  \end{center}
-\end{figure}
-}
-{
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=\textheight, angle=90]{img/class_diagram.png} 
@@ -51,12 +50,20 @@ whose possible implementation is showed in sections
   \end{center}
 \end{figure}
 }
+{
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=\textheight, angle=270]{img/class_diagram.png} 
+    \caption{Class diagram of the whole system}
+    \label{fig:class_diagram_complete}
+  \end{center}
+\end{figure}
+}
 
-
-The latter, instead, encapsulates a brand new selection algorithm. 
-It will be widely discussed later from section
-\ref{concr:iimageselector:sweep_metric_algorithm} to section
-\ref{concr:iimageselector:another_sweep_metric_class}.
+As regards classes derived from \textit{Robot}, the only one proposed
+is \textit{Morduc} (section \ref{concr:robot_classes}), because
+the concrete \framework{} exocentric vision
+is built around \morduc{} robot (exposed in section \ref{intro:3morduc}).
 
 \clearpage
 \input{concrete_impl/robot_classes}

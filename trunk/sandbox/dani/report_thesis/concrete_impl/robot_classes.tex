@@ -3,7 +3,7 @@
 
 In this section will be exposed classes which inherits
 from \textit{Robot} class. They have to implement, at least,
-the \textit{DrawRobot()} pure virtual father's method,
+the \textit{DrawRobot()} father's pure virtual method,
 because \framework{} can not know in other way how to
 represent the robot to overlap on the background image chosen.
 
@@ -126,15 +126,15 @@ void Morduc::DrawRobot()
 Notice how such a function implements the skeleton 
 presented in listing \ref{code:drawrobot_skeleton}.
 \\
-As you have surely noticed, \texttt{Morduc} contains also 
-some private attributes, precisely two methods - 
+As you have surely observed, \texttt{Morduc} contains also 
+two private methods - 
 \texttt{PaintCylinder()} and \texttt{PaintDisk()} - and 
 a float field - \texttt{radius}.
 \\
 The two methods are just \textit{helper functions}, that is, 
 functions that contains a procedure to draw, respectively,  
-a \textit{disk} and a \textit{cylinder}.
-\texttt{radius}, instead, stores the value of the radius 
-for the of the cylinders which make up the robot.
-After some calibration, the default \texttt{radius} value 
+a disk and a cylinder.
+\texttt{radius}, instead, stores the radius value 
+for the disks which make up the robot.
+After some calibration, its default value 
 has been set to 5.0.
