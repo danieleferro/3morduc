@@ -1,14 +1,13 @@
 \section{Classes implementing IDataLogic interface}
 \label{concr:idatalogic}
 
-In this chapter will be exposed classes which inherit
+In this section will be exposed classes which inherit
 from \textit{IDataLogic} interface (exposed in details
 in chapter \ref{rear:interfaces:idatalogic}).
 \\
 They differ on the way images
 and robot's status data are collected: a concrete class
-will use log file saved in a prefixed location on disk
-(by using session log data),
+will use log files saved in a prefixed location on disk,
 another one will ask the server to send new images and data
 thought Internet network, to implement a real-time teleguide.
 
@@ -17,21 +16,20 @@ thought Internet network, to implement a real-time teleguide.
 
 For the reasons explained in section \ref{log:morduc_simulator},
 we used a \morduc{} simulator in order to generate and record 
-test data to use during \textit{off-line} tests.
+test data to use during off-line tests.
 \\
 For every simulation session, such data consist of:
 
 \begin{itemize}
-  \item a set of captured images, encoded in png format,
-    with 632x453 pixel for each
+  \item a set of captured images, encoded in PNG format,
+    with 632x453 pixels for each
   \item a log file reporting sampled odometry data
     for all the session
 \end{itemize}
 
-The format of the log file is the one described in section 
+The the log file format is described in section 
 \ref{log:morduc_simulator}.
-\\
-The concrete \texttt{DataLogicLogSimulator} class will, then, provide 
+Concrete \texttt{DataLogicLogSimulator} class will, hence, provide 
 robot's odometry data and snapshots simply by reading 
 those files.
 \\
@@ -57,18 +55,16 @@ class DataLogicLogSimulator : public IDataLogic
 \end{lstlisting}
 
 Upon instantiation, \texttt{DataLogicLogSimulator} objects needs to be 
-configured with a session identifier, to be passed to 
-the constructor. 
-In order for the \texttt{DataLogicLogSimulator} objects to find them, 
-log data must be stored within the relative path 
+configured with a session identifier, to pass to 
+the constructor. Log data must be stored within the relative path 
 
 \begin{center}
   \texttt{../log/log\_$<$\_simulation\_session$>$}
 \end{center}
 
 with respect to the actual execution path.
-Such a directory must contain image and text files named and formatted
-according to what stated in section \ref{log:morduc_simulator}. 
+Such directory must contain image and text files named and formatted
+in according to what stated in section \ref{log:morduc_simulator}. 
 \\
 Let us now have a look at how \texttt{DataLogicLogSimulator} implements 
 \texttt{IDataLogic} methods:
@@ -90,9 +86,9 @@ The \texttt{Command()} method is pretty simple in this
 implementation. Since \texttt{DataLogicLogSimulator} has been designed 
 for offline testing, there's no actual command to send to the robot.
 For this reason \texttt{Command()} will not take into account
-the received command, the only thing that it does is 
+the received command, the only thing done is 
 incrementing the private attribute \texttt{\_index}, which 
-will be used by \texttt{RetrieveData()} to select which line 
+will be used by \texttt{RetrieveData()} to decide which line 
 of the log file is to read next.
 \\
 \begin{lstlisting}[caption={\texttt{DataLogicLogSimulator::RetrieveData()} method},
@@ -185,9 +181,9 @@ void DataLogicLogSimulator::RetrieveData(robot_data * data)
 }
 \end{lstlisting}
 
-What the \texttt{RetrieveData()} does is just read the line from the log 
-file identified by the \texttt{\_index} private attribute of the class.
-Once read, the line is \textit{parsed} and the odometry data contained 
+What the \texttt{RetrieveData()} does is just read the line - within the odometry
+text log file - identified by the \texttt{\_index} private attribute of the class.
+Once read, the line is parsed and the odometry data contained 
 in it is used to fill the \texttt{robot\_data} passed as argument, in 
 order to return the \textit{current} robot position.
 \\
@@ -204,11 +200,13 @@ are handled with different measure scale (radiants and not degrees), but the
 sense of rotation is one opposite to the other.
 \\
 Behind the curtain, \texttt{RetrieveData()} also creates a new 
-\texttt{image\_data} structure, fills it with the data just 
-gathered and then adds it to the \texttt{\_image\_collection} 
-private attribute.
+\texttt{image\_data} structure and fills it with data just 
+gathered and the relative path to the real image file (once again
+thanks to the \texttt{\_index} value). Then the structure is added
+to the \texttt{\_image\_collection} private attribute.
+\\
 This way, every time a new line of the file is read, and, hence, 
-every time a new captured image is available, the \texttt{DataLogicLogSimulator} 
+every time a new captured egocentric image is available, \texttt{DataLogicLogSimulator} 
 is made able to keep track of it using its metadata, without actually 
 loading the image - since it would be useless and time-consuming.
 \\
@@ -238,7 +236,7 @@ background.
 \subsection{DataLogicLogMorduc class}
 \label{concr:idatalogic:datalogiclogmorduc}
 
-As the one exposed before, \textit{DataLogicLogMorduc} class
+As the one exposed before, \texttt{DataLogicLogMorduc} class
 fetches new images and data from static file
 stored in a fixed directory, but in this case information are previously saved
 not during the execution of a simulation but during
@@ -249,20 +247,20 @@ server, as long as they observe the log format specified in section
 \ref{log:morduc}.
 \\
 This class was created to develop in off-line mode the class
-\textit{DataLogicMorduc}, that by Internet connection makes possible
+\texttt{DataLogicMorduc}, that by Internet connection makes possible
 teleguiding the real robot (see following section,
 \ref{concr:idatalogic:datalogicmorduc}).
 
 As previously stated, every log set is made-up of:
 
 \begin{itemize}
-  \item a set of captured images, encoded in jpeg format,
+  \item a set of captured images, encoded in JPEG format,
     with 1280x480 or 640x480 pixels each
   \item a log file reporting sampled odometry data
     for all the session
 \end{itemize}
 
-Its declaration follows:
+\texttt{DataLogicLogMorduc} declaration follows:
 \\
 \begin{lstlisting}[caption={\texttt{DataLogicLogMorduc} declaration},
     label={code:datalogiclogmorduc:declaration}]
@@ -311,14 +309,14 @@ class DataLogicLogMorduc : public IDataLogic
 Some private fields, such as
 \texttt{\_log\_session}, \texttt{\_image\_collection}
 and \texttt{\_index}, play
-the same role as the one seen in \textit{DataLogicLosSimulator}
+the same roles as the ones seen in \texttt{DataLogicLosSimulator}
 class. In order, they are used to identify what log set has
 to be read; to collect images retrieved by the log files (each
 one represented by a \texttt{image\_data} struct);
 to store with an integer how much information log has already
 been consumed.
 \\
-Log data must be saved in the following path:
+Log data must be saved in the following path
 
 \begin{center}
   \texttt{../log\_morduc/log\_$<$\_log\_session$>$}
@@ -330,46 +328,47 @@ New field \texttt{\_index\_max} allows to avoid some extra and
 useless computation or disk access. Indeed, the integer stores
 the maximum number
 of images and data client can read form the log set, so
-\textit{DataLogicLogMorduc}  can
-return the last robot data and image previously stored, respectively,
+\texttt{DataLogicLogMorduc}  can
+return the last robot data and image previously loaded, respectively,
 in \texttt{\_last\_robot\_data} and \texttt{\_last\_image\_path},
 when \texttt{\_index}
 reaches \texttt{\_index\_max}'s value.
 \\
 Some private fields and methods are specialized to work with JPEG
-images and are built on \textit{libjpeg} (\cite{library:libjpeg}
+images and are built on \textit{libjpeg} (we refer to \cite{library:libjpeg}
 for official reference) library functions.
-Since \textit{DataLogiLogMorduc} can deal with 1280x480
+Since \texttt{DataLogiLogMorduc} can deal with 1280x480
 or 640x480 pixel images (the former contains both right and left
 camera images, whereas the latter only the left or right one),
-some supporting functions and variables are needed.
+some supporting methods and variables are needed.
 \\
-When new image data are requested, \textit{DataLogiLogMorduc}
-calls method \textit{GetSingleImage()}, which, based on the
-\textit{\_index}'s value, reads the next image from the log set.
+When new image data are requested, \texttt{DataLogiLogMorduc}
+calls method \texttt{GetSingleImage()}, which, based on the
+\texttt{\_index}'s value, reads the next image from the log set.
 \\
-If image's dimension is 1280x480, it calls the private method
-\textit{ReadHalfJPEGFile()} in order to load only half 
-picture (i.e. 640x480 pixel) in memory space pointed by variable
-\textit{\_raw\_image}. Afterwards, by calling \textit{WriteJPEGFile()},
-picture is read from memory to overwrite the original one the disk.
+If image's dimension is 1280x480, it invokes in turn the private method
+\texttt{ReadHalfJPEGFile()} in order to load only half 
+picture (i.e. 640x480 pixels) in memory space pointed by variable
+\texttt{\_raw\_image}. Afterwards, by calling \texttt{WriteJPEGFile()},
+data are read from memory and saved to static file overwriting the
+original image one the disk.
 \\
-In this way next time the same log session is selected \textit{DataLogicLogMorduc}
+In this way next time the same log session is selected \texttt{DataLogicLogMorduc}
 will find a 640x480 pixel JPEG image, hence no further computation
 or write operation on disk has to be performed.
 \\
-Obviously, when the image indicated by \textit{\_index} value is
-not found or with a dimension different from 1280x480 or
-640x480 pixel an error is reported and the application terminate.
+Obviously, when the image indicated by \texttt{\_index} value is
+not found, or with a dimension different from 1280x480 or
+640x480 pixels, an error is reported and the application terminate.
 \\
-We can now proceed to see how \textit{DataLogicLogMorduc} implements
-\textit{IDataLogic} interface methods.
+We can now proceed to see how \texttt{DataLogicLogMorduc} implements
+\texttt{IDataLogic} interface methods.
 \\
-The \textit{Command} method, as seen for the \textit{DataLogicLogSimulator}
-class, is pretty simple: it has to increment \textit{\_index},
-which indicate the next line in \textit{odometric.txt}
+The \texttt{Command} method, as seen for the \texttt{DataLogicLogSimulator}
+class, is pretty simple: it has to increment \texttt{\_index},
+which indicate the next line in \texttt{odometric.txt}
 text file to read and the next image to open. It is incremented until
-its value is equal to \textit{\_index\_max}.
+its value is equal to \texttt{\_index\_max}.
 \\
 \begin{lstlisting}[caption={\texttt{DataLogicLogMorduc::Command() method}},
     label={code:datalogiclogmorduc:command}]
@@ -380,7 +379,7 @@ void DataLogicLogMorduc::Command(int command) {
 }
 \end{lstlisting}
 
-The \textit{RetrieveData()} method is displayed in listing
+The \texttt{RetrieveData()} method is displayed in listing
 \ref{code:datalogiclogmorduc:retrievedata}:
 \\
 \begin{lstlisting}[caption={\texttt{DataLogicLogMorduc::RetrieveData()} method},
@@ -422,17 +421,17 @@ void DataLogicLogMorduc::RetrieveData(robot_data * data) {
 }
 \end{lstlisting}
 
-As the reader noted, \textit{RetrieveData()} parts its duties in
+As the reader noted, \texttt{RetrieveData()} parts its duties in
 three steps. First step is accomplished by calling the private method
-\textit{GetOdometricData()}, which will open the odometry file, read
-the line indicated by \textit{\_index} and extract the information
-contained in the latter to fill the \textit{robot\_data} structure
+\texttt{GetOdometricData()}, which will open the odometry file, read
+the line indicated by \texttt{\_index} and extract the information
+contained in the latter to fill the \texttt{robot\_data} structure
 pointed by its unique argument. The format of each text line written in
-\textit{odometric.txt} can be found in section \ref{log:morduc}.
+\texttt{odometric.txt} can be found in section \ref{log:morduc}.
 \\
-\textit{GetOdometricData()} is also responsible for mapping XY
-coordinates and rotation angle theta, retrieved by the log
-odometry file written by the \morduc{} server, in the matching values
+\texttt{GetOdometricData()} is also responsible for mapping XY
+coordinates and rotation angle, retrieved by the log
+odometry file written with \morduc{} server data, in the matching values
 to provide to the OpenGL's reference system. The XY coordinates returned
 by \morduc{} are expressed in meters and have to be increased hundred
 times in order to produce a meaningful robot's movement within the
@@ -440,7 +439,7 @@ synthesized OpenGL space. A single unit of measure in the latter stands
 in fact for one centimetre.
 \\
 Furthermore, the coordinate conversion process (performed by  
-\textit{GetOdometricData()} and hence not shown in listing 
+\texttt{GetOdometricData()} and hence not shown in listing 
 \ref{code:datalogiclogmorduc:retrievedata}) inverts the Y axis sense
 by changing the sign of every Y value read from log; at last, the
 rotation angle theta is converted from radiant to degrees, because
@@ -458,16 +457,16 @@ was
 performed in a totally different way because simulator implements
 its own coordinate system.
 \\
-Back to \textit{RetrieveData()} method, in second step a call to
-\textit{GetSingleImage()} is performed,
+Back to \texttt{RetrieveData()} method, in second step a call to
+\texttt{GetSingleImage()} is performed,
 returning a struct pointing to the new image.
-At last, the previous \textit{image\_data} struct is insert to the set
-of available images, by adding it to the \textit{\_image\_collection}
+At last, the previous \texttt{image\_data} struct is insert to the set
+of available images, by adding it to the \texttt{\_image\_collection}
 vector.
 \\
-\textit{SelectImage}'s code is, once again, completely equal to the one
+\texttt{SelectImage}'s code is completely equal to the one
 presented in the previous section. It refers whole the computation to the
-\textit{ChooseImage()} method implemented by the instance pointed by
+\texttt{ChooseImage()} method implemented by the instance pointed by
 its last argument.
 \\
 \begin{lstlisting}[caption={\texttt{DataLogicLogMorduc::SelectImage()} method},
@@ -483,13 +482,13 @@ SelectImage(robot_data * robot_status,
 
 \end{lstlisting}
 
-\textit{ChooseImage()} will select the proper image to render as texture
+\texttt{ChooseImage()} will select the proper image to render as texture
 by knowing the actual robot position (fist parameter) and the set of available
 image shot by the robot during its path. The chosen image is returned by filled
 the structure pointed by its second parameter.
 \\
 Section \ref{concr:iimageselector} will cover in details algorithms and
-features implemented by different kind of \textit{ChooseImage()} methods.
+features implemented by different kind of \texttt{ChooseImage()} methods.
 
 \subsection{DataLogicMorduc class}
 \label{concr:idatalogic:datalogicmorduc}
@@ -497,49 +496,50 @@ features implemented by different kind of \textit{ChooseImage()} methods.
 This class allows \framework{} to teleguide the real \morduc{}
 robot, situated at DIEES laboratory, in Catania (Italy).
 \\
-\textit{DataLogicMorduc} originates several of its features 
-from the \textit{DataLogicLogMorduc}, exposed earlier in
+Several \texttt{DataLogicMorduc}'s features originate 
+from \texttt{DataLogicLogMorduc} class, exposed earlier in
 \ref{concr:idatalogic:datalogiclogmorduc}. Main differences
-relies on the way new data are retrieved, since they are not
+rely on the way new data are retrieved, since they are not
 statically saved in log file but dynamically created and sent
 from the server to the client through the Internet network.
 \\
-\textit{DataLogicMorduc} can be thought of as the final
-stage of a development project whose primary aim was that
+\texttt{DataLogicMorduc} can be thought of as the final
+stage of a development project whose primary aim was
 to teleguide a real mobile robot by remote control.
 \\
 The
-robot concerned is the mobile-platform \morduc{}, we can
-establish a communication channel with through simple
+robot concerned is the mobile-platform \morduc{}, with which
+we can
+establish a communication channel through simple
 HTTP requests and responses. Details about accepted
 commands and returned replies can be found in 
-in section \ref{intro:3morduc:communication}, here we
+section \ref{intro:3morduc:communication}; here we only
 remind briefly that \morduc{} can be controlled
-by requesting different resources (i.e. URLs) to the server.
+by requesting different resources (i.e. URLs).
 \\
 A set of specific URLs allows to drive the robot in remote
 environment, changing its position forward or backward and
-steering in the left or right direction. Another set
+steering in left or right direction. Another set
 of resources are instead provided to simply retrieve robot's
 data without altering its status.
 \\
-\textit{DataLogicMorduc} class bases its functionalities
+\texttt{DataLogicMorduc} class bases its functionalities
 on two fundamental libraries, named \textit{libjpeg} and
 \textit{curlpp}. The former, already mentioned previously,
 offers the means for handling JPEG images, which is the codec
 server compresses the images with before sending them to
 client.
-\\
 The latter is a C++ wrapper for the widely used
-\textit{libcurl}. It exposes some classes and data structure
-that allows sending HTTP request and processing the relative
+\textit{libcurl} (\cite{library:libcurl}). It exposes some
+classes and data structure
+that allow sending HTTP request and processing the relative
 response within few code lines.
 \\
-Official references about the libraries cited above can be
+Official references about libraries cited above can be
 found in \cite{library:libjpeg} (\textit{libjpeg}) and
 \cite{library:curlpp} (\textit{curlpp}).
 \\
-\textit{DataLogicMorduc}'s declaration is reported in
+\texttt{DataLogicMorduc}'s declaration is reported in
 listing \ref{code:datalogicmorduc:declaration}.
 \\
 \begin{lstlisting}[caption={\texttt{DataLogicLogMorduc} declaration},
@@ -574,18 +574,18 @@ class DataLogicMorduc : public IDataLogic
 };
 \end{lstlisting}
 
-As requested, it implements \textit{IDataLogic} interface and
+As requested, it implements \texttt{IDataLogic} interface and
 hence presents its three public methods along with class constructor
 and destructor.
 \\
 To create a new class instance, client has to specify
 two string parameters. Their values indicate, in order, the IP
 address or URL where the server is located and the path of an
-existing folder. \textit{\_path\_server} and \textit{\_path\_data}
+existing folder. \texttt{\_path\_server} and \texttt{\_path\_data}
 private fields help to store them, since their value are needed
 several times during object life.
 \\
-The latter is used to save data provided by the server during the
+\texttt{\_path\_data} is used to save data provided by the server during the
 teleguiding session. \framework{} needs to store images obtained
 in online mode in order to simulate the \textit{exocentric} point
 of view: an image shot earlier by the egocentric camera must be
@@ -594,32 +594,32 @@ The chosen image is then employed as texture by OpenGL, with the aim
 to recreate the real world within virtual space.
 \\
 Images are saved in the specified path, each one according to the
-following notation, thanks to the \textit{img\_file} pointer
+following notation, thanks to the \texttt{img\_file} pointer
 shown in previous listing.
 
 \begin{center}
   \texttt{$<$user\_path$>$/img$<$index\_value$>$.jpg}
 \end{center}
 
-Obviously, integer \textit{\_index} starts counting from one and is
+Obviously, integer \texttt{\_index} starts counting from one and is
 incremented every time new image and robot data are received by the
 client. By means of \textit{libjpeg} library, image obtained is
-firstly loaded in memory (i.e. dynamic memory), and then only half
+firstly loaded in memory (i.e. in dynamic memory), and then only half
 its content its written to hard disk: \framework{} exploits only
 left or right camera image, but server returns (through HTTP body
 response) both images through a single 1280x480 pixels JPEG image,
-so \textit{DataLogicMorduc} saves directly 640x480 picture in order
+so \texttt{DataLogicMorduc} saves directly 640x480 picture in order
 to avoid future further computation.
 \\
-Besides, each image is represented by a \textit{image\_data}
-structure collected in vector \textit{\_images\_collection}. This
+Besides, each image is represented by a \texttt{image\_data}
+structure collected in vector \texttt{\_images\_collection}. This
 collection allows to quickly access information regarding the
 available images, since every element can be thought of as a pointer
-to the real images (we remind that every struct contains, among
+to the real coupled image (we remind that every struct contains, among
 other information, the absolute path referring to the image).
 \\
 Even thought \framework{} would not need to save other data aside
-from pictures frame, \textit{DataLogicMorduc} creates, always on
+from pictures frame, \texttt{DataLogicMorduc} creates, always on
 the specified directory, a text file containing odometry data retrieved
 along with each image. Its absolute path will be:
 
@@ -627,21 +627,21 @@ along with each image. Its absolute path will be:
   \texttt{$<$user\_path$>$/odometric.txt}
 \end{center}
 
-File pointer \textit{odom\_file} serves for the purpose. Storing
+File pointer \texttt{odom\_file} serves for the purpose. Storing
 odometric information proves to be extremely useful because,
 together with camera images, they form new log data client can
-based its future computation on by using the \textit{DataLogiLogMorduc}
+based its future computation on by using \texttt{DataLogiLogMorduc}
 class. The advantages of log data (formatted in a standard way)
 has been widely exposed through
 this document, for details see section \ref{log}.
 \\
-Last, but not least, \textit{\_http\_functor} field is used to
-collect data coming from Internet network, i.e. response sent from
-server. It performs the role of a 'functor`, deeper explained in
-following subsection (\ref{}).
+Last, but not least, \texttt{\_http\_functor} field
+collects data coming from Internet network, that is the response sent from
+server. It performs the role of a `functor', deeper explained in
+following subsection (\ref{concr:idatalogic:datalogicmorduc:httpfunctor}).
 \\
-As usual, we can now proceed to examine in detail how \textit{IDataLogic}
-virtual method are implement. To begin with, \textit{Command()} code is
+As usual, we can now proceed to examine in detail how \texttt{IDataLogic}
+virtual method are implement. To begin with, \texttt{Command()} code is
 displayed.
 \\
 \begin{lstlisting}[caption={\texttt{DataLogicMorduc::Command() method}},
@@ -704,36 +704,36 @@ void DataLogicMorduc::Command(int command) {
 }
 \end{lstlisting}
 
-Unlike the other class implementing \textit{IDataLogic} interface
-exposed so far, \textit{DataLogicMorduc}'s command method takes
+Unlike the other class implementing \texttt{IDataLogic} interface
+exposed so far, \texttt{DataLogicMorduc}'s \texttt{Command()} method takes
 in account its integer parameter because its final aim is to
 \textit{really} teleguide the robot: next robot's status it is
 not been determinated and written in a log file, but it depends
-on which command teleoperator asks to execute.
+on which command the teleoperator asks to execute.
 \\
 For one of each available command (go forward, go backward, turn right
 and turn left) a specific resource must be requested to the connected
 \morduc{} server. URL is built by merging server's address (stored
-in \textit{\_path\_server}) with a string indicating the requested
+in \texttt{\_path\_server}) with a string indicating the requested
 command (see chapter \ref{intro:3morduc:communication} for a complete
 list of all possible values).
 \\
-After constructing URL, \textit{Command()} prepares an HTTP
-request by means of \textit{curlpp} objects (lines 38 to 50 in listing
+After constructing URL, \texttt{Command()} prepares an HTTP
+request by means of \textit{curlpp} objects (lines 35 to 50 in listing
 \ref{code:datalogicmorduc:command}). Therefore, the request is sent
-simply by invoking the \textit{perform()} method of the
-\textit{curlpp::Easy} object. This few lines of code evince
+simply by invoking the \texttt{perform()} method of the
+\texttt{curlpp::Easy} object. This few lines of code evince
 \textit{curlpp}'s potential to largely reduce programmer's effort in
-dealing with HTTP protocol (as well as many other Internet protocol
+dealing with HTTP protocol (as well as many other Internet protocol,
 \cite{library:curlpp}).
 \\
-At last, \textit{\_index} value is incremented to uniquely identify
+At last, \texttt{\_index} value is incremented to uniquely identify
 next saved image.
 \\
-\textit{RetrieveData()} subdived its operations in three steps. Its
+\texttt{RetrieveData()} subdived its operations in three steps. Its
 code is shown in following listing, but in order to
 focus reader's attention on chief points, some control code (e.g. checking
-if opening a file returns without errors) has been deleted.
+if opening a file subroutine returns without errors) has been deleted.
 \\
 \begin{lstlisting}[caption={\texttt{DataLogicMorduc::RetrieveData()} method},
     label={code:datalogicmorduc:retrievedata}]
@@ -838,51 +838,51 @@ in these case we want to receive only image and odometry data
 (see \ref{intro:3morduc:communication} for further details about
 \morduc{}'s served URLs).
 \\
-Next, first step set some options in a \textit{curlpp::Easy} object
-before sending the request with its \textit{perform()} method. Among
-these, the callback function are indicated for managing HTTP response
-header and body. Both callback are implemented by the functor
-\textit{HTTPFunctor} class, exposed later. When the \textit{perform()}
+Next, first step set some options in a \texttt{curlpp::Easy} object
+before sending the request invoking its \texttt{perform()} method. Among
+these, the callback functions are indicated for managing HTTP response
+header and body. Both callbacks are implemented by the functor
+\texttt{HTTPFunctor} class, exposed later. When the \texttt{perform()}
 method is called, a synchronous call is done and the execution proceeds
 only when all response data has been received.
 \\
 Since HTTP header and body will be received in an asynchronous mode
-(data through network are parted in package), the callback will be
+(data through network are parted in package), callbacks will be
 called every time a new piece of information is received.
-\textit{functor\_body} (declared from line 24) manages data belonging
-to HTTP body, whereas \textit{functor\_header} (declared from line 29)
-manages data belonging HTTP header.
+\texttt{functor\_body} (declared from line 24) manages data belonging
+to HTTP body, whereas \texttt{functor\_header} (declared from line 29)
+manages data belonging to HTTP header.
 \\
 Functor's task is to proper store received data as long as they arrive.
-When the execution resumes from the \textit{perform()} method (line 52),
-\textit{RetrieveData()} can complete its first step by asking
-\textit{\_http\_functor} to return the odometry string returned by the server
+When the execution resumes from the \texttt{perform()} method (line 52),
+\texttt{RetrieveData()} can complete its first step by asking
+to \texttt{\_http\_functor} to return the odometry string received from server
 (originally contained in HTTP header) and to save image contained in
 HTTP body into JPEG file (better, half the image, as previously stated).
 \\
-In second step odometry text line is written in \textit{odometric.txt},
-and then the same string is passed to the private \textit{FillOdometricData()}
+In second step odometry text line is written in \texttt{odometric.txt},
+and then the same string is passed to the private \texttt{FillOdometricData()}
 method in order to extract its information and fill the pointed
-\textit{robot\_data} structure. Only one note has to be done: as seen
-in previous classes implementing \textit{IDataLogic} interface, a
+\texttt{robot\_data} structure. Only one note has to be done: as seen
+in previous classes implementing \texttt{IDataLogic} interface, a
 proper mapping between source data system reference and OpenGL coordinate
 system has to be performed.
 \\
 In this case, the operation are the same already exposed in previous section,
-for \textit{DataLogicLogMorduc}. In synthesis, we have to 1. multiple X and Y
+for \texttt{DataLogicLogMorduc}. In synthesis, we have to 1. multiple X and Y
 value by 100, 2. change the sign of  Y values, 3. change angle of rotation
 measure from radiants to degrees. For further details we refer to section
 \ref{concr:idatalogic:datalogiclogmorduc}.
 \\
 Step number three consists of the common piece of code met several
-times in this document. A new \textit{image\_data} struct, representing
+times in this document. A new \texttt{image\_data} struct, representing
 the received and locally stored image, is created and inserted in
-\textit{\_image\_collection} set.
+\texttt{\_image\_collection} set.
 \\
-Last public method, \textit{SelectImage()} refers the chosen of the image
+Last public method, \texttt{SelectImage()} refers the chosen of the image
 to put as texture completely to the passed instance of
-\textit{IImageSelector}, which will fill the pointed \textit{image\_data}
-with a picture contained in \textit{\_image\_collection}.
+\texttt{IImageSelector}, which will fill the pointed \texttt{image\_data}
+with a element contained in \texttt{\_image\_collection}.
 \\
 \begin{lstlisting}[caption={\texttt{DataLogicMorduc::SelectImage()} method},
     label={code:datalogicmorduc:selectimage}]
@@ -900,24 +900,24 @@ SelectImage(robot_data * robot_status,
 \subsubsection{HTTPFunctor class}
 \label{concr:idatalogic:datalogicmorduc:httpfunctor}
 
-Before looking over \textit{HTTPFunctor} class, a brief preamble
+Before looking over \texttt{HTTPFunctor} class, a brief preamble
 about functors in C++ is supplied.
 \\
 Functors can be thought of as functions with a state. In C++ they
 are realized
 as a class with one or more private members to store the state
-and with an overloaded operator `()', in order to execute the
-functor as any other function.
+and with an overloaded operator \textit{()}, in order to execute the
+functor as a simple function.
 \\
-Functors can, furthermore, implement callbacks.
+Besides, functors can implement callbacks.
 When designing application, we often know all of the classes
-with which a specific component will interact and thus we explicitly its
+with which a specific component will interact and thus we explicit its
 interface in terms of those classes' type. When designing general purpose
 or library components, however, it is often necessary or desirable
 to put in hooks for calling unknown objects. What is required is
 a way for one component to call another without having been written
 in terms of, or with knowledge of, the other component's type. Such a
-`type-blind' call mechanism is often referred to as a `callback'.
+`type-blind' call mechanism is often referred to as a \textit{callback}.
 \\
 A callback, then, is a way for a component designer to offer a generic
 connection point which developers can use to establish communication
@@ -932,8 +932,7 @@ The caller is usually an instance of some class, for instance a library
 component, that requires the callback; it can, or must, call some
 third party code to perform its work, and uses the callback mechanism
 to do so. As far as the designer of the caller is concerned, the callback
-is just a way to invoke a process, referred to here as the
-`callback function'.
+is just a way to invoke a process.
 \\
 The caller determines the signature of the callback function, i.e. its
 arguments and return types. This makes sense, because it is the caller
@@ -945,15 +944,15 @@ application designer wishes to be called by the caller component.
 The function to be called must be compatible with the
 signature of the callback function specified by the caller.
 \\
-A concrete callback mechanism example is given with \textit{HTTPFunctor}
+A concrete callback mechanism example is given with \texttt{HTTPFunctor}
 class. The caller, in this case, is performed by an instance of
-\textit{curlpp::Easy} class, which needs a hook point to incrementally
-manage the HTTP response data received by the server. Since we want to
-process in two different ways byte of information composing HTTP body
+\texttt{curlpp::Easy} class, which needs a hook point to incrementally
+manage the HTTP response data received by server. Since we want to
+process in two different ways bytes of information composing HTTP body
 and byte composing HTTP header, two different callbacks are needed.
 \\
-\textit{HTTPFunctor}, in addition to provide callbacks, owns some
-private field in order to proper store received information. Its
+\texttt{HTTPFunctor}, in addition to provide callbacks, owns some
+private field in order to proper store the received information. Its
 declaration is shown in following listing:
 \\
 \begin{lstlisting}[caption={\texttt{HTTPFunctor} declaration},
@@ -990,33 +989,32 @@ class HTTPFunctor
 \end{lstlisting}
 
 Callback function, declared with public access, are named
-`WriteHTTPBodyCallback' and `WriteHTTPHeaderCallback'. The
+\texttt{WriteHTTPBodyCallback} and \texttt{WriteHTTPHeaderCallback}.
+The
 careful reader has already noticed that these name have been
- met in previous section
+encountered in previous section
 (\ref{concr:idatalogic:datalogicmorduc}), where we specified
 caller's hook points.
 \\
 As previously stated, type and number of parameters, as well
 as the return value, is defined by the caller itself, which
-determine also their meaning; requested signature, in this
+determine also their meaning. The requested signature, in this
 case, is equal for both callbacks:
 
 \begin{center}
-
-\textit{size\_t Callback(char* ptr, size\_t size, size\_t nmemb)}
-
+  \texttt{size\_t Callback(char* ptr, size\_t size, size\_t nmemb)}
 \end{center}
 
-Char pointer \textit{ptr} indicates where new data are temporarily
+Char pointer \texttt{ptr} indicates where new data are temporarily
 stored. Bytes belonging to HTTP header or body do not arrive as a
 unique block, but in separated, although ordered, chunks of bytes:
 everytime one or more chunks arrive, the proper callback is invoked.
 \\
 Last two input parameters tell, respectively, the size of each
-block of byte, memorized starting from the char pointer address,
+block of byte, memorized from the char pointer \texttt{ptr} address,
 and their quantity. Since every block has the same dimension,
 total amount of data to process can be computed by multiplying
-\textit{size} with \textit{nmemb}. The last obtained value must
+\texttt{size} with \texttt{nmemb}. The last obtained value must
 always be returned by the callback, regardless of the performed
 computation.
 \\
@@ -1025,8 +1023,8 @@ processing HTTP header data (listing
 \ref{code:datalogiclogsimulator:httpfunctor:writehttpheadercallback})
 deals with new coming bytes representing part of a string text, because
 header is transmitted as simple text. All it has
-to do is building a new string which will collect all the characters
-pointed in memory by \textit{ptr}; at every callback invocation new
+to do is building a new string which will collect  characters
+pointed in memory by \texttt{ptr}; at every callback invocation new
 characters are inserted in append to the ones previously received.
 \\
 \begin{lstlisting}[caption={\texttt{HTTPFunctor::WriteHTTPHeaderCallback} method},
@@ -1072,52 +1070,53 @@ WriteHTTPBodyCallback(char* ptr, size_t size, size_t nmemb) {
 In these case received bytes can not be handled as simple characters,
 but have to be stored in a consecutive part of memory as new chunks
 of information are received. For this purpose, data are copied in location
-pointed by char pointer \textit{\_m\_pBuffer}.
+pointed by char pointer \texttt{\_m\_pBuffer}.
 \\
 Every time new data has to be added to the previously stored, we need
 to find another part of memory large enough to accept the total amount of
-bytes and assign the new starting address to \textit{\_m\_pBuffer}. The
-\textit{Realloc} (based on \textit{malloc} and \textit{realloc} subroutines)
+bytes and assign the new starting address to \texttt{\_m\_pBuffer}. The
+\texttt{Realloc} (based on \texttt{malloc} and \texttt{realloc} subroutines)
 accomplishes to this task.
 \\
 After guaranteeing enough space in memory to accept old and incoming data,
 new bytes
-are added consecutively to previous one by calling the \textit{memcpy}
-subroutine. The \textit{\_m\_Size} field indicates how much data
+are added consecutively to previous one by calling the \texttt{memcpy}
+subroutine. The \texttt{\_m\_Size} field indicates how much data
 has already been store between a callback invocation and another.
 \\
-When the data are all correctly received, execution control returns to the
-caller, i.e. - in our case - to \textit{curlpp::Easy} instance, which
+When data are all correctly received, execution control returns to the
+caller, i.e. - in our case - to \texttt{curlpp::Easy} instance, which
 in turn terminates its execution and returns control to the
-\textit{DataLogicMorduc} instance. By means
-of the last two public methods exposed by \textit{HTTPFunctor},
-\textit{DataLogicMorduc}
+\texttt{DataLogicMorduc} instance. By means
+of the last two public methods exposed by \texttt{HTTPFunctor},
+\texttt{DataLogicMorduc}
 can now obtain collected information contained in HTTP response header and
 body. The two methods are:
 
 \begin{itemize}
 
-  \item \textit{std::string GetOdometryString()} \\
+  \item \texttt{std::string GetOdometryString()} \\
     returns only the string indicating robot's odometry data,
     by isolating it from all the header text saved in private
-    variable \textit{\_header};
+    variable \texttt{\_header};
 
-  \item \textit{void CreateImage(const char*)} \\
-    allows to write on disk half JPEG image received
-    by the server, with the filename indicate with its parameter.
+  \item \texttt{void CreateImage(const char*)} \\
+    allows to write on disk half the JPEG image received
+    by the server (a 640x480 pixels from a 1280x480 pixels image), with
+    filename indicated by its unique parameter. \\
     Its duty is performed by calling private methods
-    \textit{ReadHalfJPEGBuffer()} and \textit{WriteJPEGFile(const char*)},
+    \texttt{ReadHalfJPEGBuffer()} and \texttt{WriteJPEGFile(const char*)},
     in turn based on \textit{libjpeg} library. Similar function has
     already be exposed in section \ref{concr:idatalogic:datalogiclogmorduc},
-    to present \textit{DataLogicLogMorduc} class.
+    to present \texttt{DataLogicLogMorduc} class.
 
 \end{itemize}
 
 In conclusion, it is worth pointing out that if a single instance of
-\textit{HTTPFunctor} is be used to compute two o more HTTP response,
+\texttt{HTTPFunctor} is used to compute two o more HTTP response,
 its state has to be cleared before letting it received new data: on the contrary,
 both HTTP header and body data will be added to ones earlier stored.
 \\
-Public method \textit{ResetFunctor()} serves the scope, by 1. freeing all
+Public method \texttt{ResetFunctor()} serves the scope, by 1. freeing all
 data bytes maintained in memory and pointed by its char pointers; 2. clearing the
-\textit{\_header} string 3. reset \textit{\_m\_Size} counter.
+\texttt{\_header} string 3. reset \texttt{\_m\_Size} counter.

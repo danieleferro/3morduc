@@ -1,9 +1,9 @@
 \section{Classes implementing IImageSelector interface}
 \label{concr:iimageselector}
 
-As already said, there exists many image selection algorithms. 
+As already said, many image selection algorithms exist. 
 Three of them are presented in \cite{sugimoto} and, according 
-to the results presented, two proved to be unsatisfactory for 
+to the results presented, two proved to be unsatisfactory because 
 they do not produced results that could effectively improve 
 the quality of the operator-robot interaction in situations 
 in which the robot moves along complex trajectories.
@@ -12,9 +12,9 @@ A third one is told to be better but, according to us, it has
 been described poorly and, furthermore, no actual implementation 
 of it is given.
 \\
-We, then started an investigation on image selection algorithms.
-The rest of this chapter will present the theoretical results 
-of our investigations: specifically, it will introduce 
+We then started an investigation on image selection algorithms.
+The rest of this section will present the theoretical and practical
+results of our efforts: specifically, it will introduce 
 three algorithms, which have been implemented by means of 
 the definition of three subclasses of the 
 \texttt{IImageSelector} interface (exposed in details
@@ -28,7 +28,7 @@ returns a number.
 \\
 The \texttt{robot\_data} identifies the robot current position, 
 while the \texttt{image\_data} contains the position 
-in which the image we want to calculate the score of, 
+in which the image we want to calculate the score of
 was taken.
 \\
 In all cases, after assigning a score to every collected image, 
@@ -44,7 +44,7 @@ the current robot position.
 \label{concr:iimageselector:spacial_metric_algorithm}
 
 The spacial metric algorithm is a slightly different variant 
-of the selection method 2 presented in \cite{sugimoto}.
+of the selection method number two presented in \cite{sugimoto}.
 \\
 The \texttt{SpacialMetricCalc} class, which encapsulates 
 the algorithm, makes use of the Euclidean metric, that is,
@@ -55,20 +55,25 @@ was taken.
 \\
 Once all spacial distances have been calculated, such values 
 are passed as input to the \textit{triangle} function 
-showed in picture \ref{fig:spacial_metric_func}.
+showed in picture \ref{fig:spacial_metric_func}. This function
+can be customized by changing a positive parameter called
+\textit{optimal value}: it represents the input value
+where triangle function assume its lower value. In 
+figure \ref{fig:spacial_metric_func} the \textit{optimal value}
+is set to five.
 
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=400pt]{img/spacialMetricFunc.png} 
-    \caption{Spacial Metric Function}
+    \caption{Spacial Metric Function, with optimal value equal to 5}
     \label{fig:spacial_metric_func}
   \end{center}
 \end{figure}
 
-Since the \texttt{ChooseImage} method will select the image with 
+Since the \texttt{ChooseImage()} method will select the image with 
 the minimum score, it's easy to figure out that 
 images that has been taken when camera was around 
-5 spacial units distant from the current robot position
+\textit{optimal value} units distant from the current robot position
 are most likely to bet chosen.
 \\
 The motivation lying the algorithm is the following: 
@@ -90,7 +95,7 @@ in which the robot moves along straight trajectories.
 The \textit{Sweep Metric Algorithm}, presented section
 \ref{concr:iimageselector:sweep_metric_algorithm}, and its advanced version,
 \textit{Another Sweep Metric Algorithm} (section
-\ref{concr:iimageselector:another_sweep_metric_algorithm})
+\ref{concr:iimageselector:another_sweep_metric_algorithm}),
 will try to go beyond  this limit.
 
 
@@ -99,40 +104,47 @@ will try to go beyond  this limit.
 
 The \texttt{SpacialMetricCalc} class encapsulates the 
 algorithm presented in the previous section.
-The value of the \textit{optimal} distance is hardcoded in the
-\texttt{Calculate} function:
 \\
-\begin{lstlisting}[caption={\texttt{SweepMetricCalc} class declaration},
-    label={code:sweepmetriccalc}]
+As other class algorithm after exposed, \texttt{SpacialMetricCalc}
+class allows to parameterized the \textit{optimal value} used to
+choose the better image. For this purpose, private member
+\texttt{optimal\_distance} has to be expressed through constructor's
+parameter when a new \texttt{SpacialMetricCalc}'s instance
+is requested.
+\texttt{ChooseImage()} will call \texttt{Calculate()}
+method for every image contained in the passed \textit{image\_data}
+collection, together with robot's current position.
+Returned values (or better, \textit{scores}) are
+progressively stored in float array and the evaluated in order
+to find the image coupled with the lower one, that is the image
+to put as texture in OpenGL virtual environment.
+\\
+Following listing show how \texttt{Calculate} method works.
+\\
+\begin{lstlisting}[caption={\texttt{SpacialMetricCalc::Calculate} method},
+    label={code:spacialmetriccalc:calculate}]
 float SpacialMetricCalc::
-          Calculate(robot_data * robot_status, 
-                    image_data * bg_image_data) {
+Calculate(robot_data * robot_status,
+          image_data * bg_image_data) {
 
   float distance;
   float score;
-  float optimal_distance = 20;
 
   distance = 
-    sqrt( pow((robot_status -> x ) - 
-              (bg_image_data -> x), 2) +
-	  pow((robot_status -> y ) - 
-              (bg_image_data -> y), 2) );
+  sqrt(pow((robot_status->x) - (bg_image_data->x),2) +
+       pow((robot_status->y) - (bg_image_data->y),2) +
+       pow((robot_status->theta) - (bg_image_data->theta),2));
 
-  if ( distance <= optimal_distance )
-    score = distance / optimal_distance;
+
+  if (distance <= _optimal_distance)
+    score = distance / _optimal_distance;
  else
-    score = - ( distance - 2 * optimal_distance) /
-            optimal_distance;
+    score = - (distance - 2*_optimal_distance) /
+            _optimal_distance;
 
   return (- score);
 }
 \end{lstlisting}
-
-It is not a good solution since, every time one wants to change 
-such a values should recompile the code. 
-On the other hand, this is just a prototype of an algorithm we 
-abandoned almost immediately. That is why we did not make any 
-code improvement.
 
 
 \subsection{Sweep metric algorithm}
@@ -186,7 +198,7 @@ the robot current orientation is 180 degrees, it means that robot and
 the camera will be oriented in opposite ways, 
 therefore the camera will not see the robot.
 \\
-To recognize all discarded images, the \texttt{Calculate} method 
+To recognize all discarded images, the \texttt{Calculate()} method 
 assigns them -2 as score.
 \\
 The score of all the remaining image is computed as sum 
@@ -194,15 +206,13 @@ of two factors:
 the first takes into account the image angle orientation: 
 the more the image orientation angle is close to the 
 robot orientation angle, the more the score is high.
-
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=400pt]{img/sweep_angle_diagram.jpeg} 
+    \includegraphics[width=\textwidth]{img/sweep_angle_diagram.png} 
     \caption{Sweep angle diagram}
     \label{fig:sweep_angle_diagram}
   \end{center}
 \end{figure}
-
 To compute such a factor, a Gaussian function, centered
 in zero, is used. The return value will be therefore 
 always a positive number.
@@ -372,22 +382,10 @@ the sweep angle).
 
 Once we are done with the description of the algorithm, 
 let us see how to actually use the \texttt{SweepMetricCalc} 
-class. 
+class.
 \\
-All is needed in order to use the class, is to instantiate it,
-using its conversion constructor:
-\\
-\begin{lstlisting}[caption={\texttt{SweepMetricCalc} class declaration},
-    label={code:sweepmetriccalc}]
-SweepMetricCalc::SweepMetricCalc( float sweep_angle,
-				  float angle_offset,
-				  float mu_distance,
-				  float sigma_distance,
-				  float mu_angle,
-				  float sigma_angle );				  
-\end{lstlisting}
-
-Here is a brief description of the constructor parameters:
+All is needed in order to use the class, is to instantiate it.
+Here is a brief, in order, description of its parameters:
 
 \begin{itemize}
   \item \texttt{sweep\_angle} \\
@@ -412,6 +410,44 @@ Here is a brief description of the constructor parameters:
     and robot
 \end{itemize}
 
+\texttt{ChoseImage()} performs the same operation already
+exposed in previous section for \texttt{SpacialMetricCalc}
+class: it collects the scores calculated from each couple image -
+robot position and then returns the image associated with
+the lower value.
+\\
+Scores are computed by the \texttt{Calculate()}
+method, where core's algorithm lies.
+\\
+\begin{lstlisting}[caption={\texttt{SweepMetricCalc::Calculate} method},
+    label={code:sweepmetriccalc:calculate}]
+float SweepMetricCalc::
+Calculate(robot_data * robot_status,
+          image_data * bg_image_data) {
+  
+  // check if image is the egocentric one 
+  if ((robot_status -> x == bg_image_data -> x) &&
+      (robot_status -> y == bg_image_data -> y) &&
+      (robot_status -> theta == bg_image_data -> theta))
+    return EGO_IMAGE;
+
+  // check if image is included in sweep area
+  if ( !WithinBoundaries(robot_status, bg_image_data) )
+    return IMAGE_NOT_VALID;
+  
+  // check if image orientation differs vary from
+  // the robot one above the given threshold
+  if ( !RightlyOriented(robot_status, bg_image_data) )
+    return IMAGE_NOT_VALID;
+  
+  // now calculates score for the image
+  return - PointAlgorithm(robot_status, bg_image_data);
+}
+\end{lstlisting}
+
+\texttt{Calculate()} bases its computation on private
+methods. Firstly, it checks if the robot images is
+[TO CONTINUE]
 
 \subsection{Another sweep metric algorithm}
 \label{concr:iimageselector:another_sweep_metric_algorithm}
@@ -441,7 +477,6 @@ that the blue circles are the egocentric images collected
 by the robot (with their orientation shown by the black
 arrow), whereas the black square indicate the robot orientated
 by the `a' axis. The read area indicates the sweep angle.
-
 \begin{figure}[htp]
   \begin{center}
     \subfigure[Robot and data collected after moving along a straight direction]{
@@ -470,7 +505,6 @@ by the `a' axis. The read area indicates the sweep angle.
   \caption{The main shortcoming in Sweep Metric Algorithm}
   \label{fig:ASM_explain}
 \end{figure}
-
 In \subref{fig:ASM_straight} the robot is correctly drawn by \framework{}
 and user can control it from an exocentric point of view, thanks to
 the previous collected images. When robot begins to turn, for narrow
@@ -511,14 +545,96 @@ in particular on strict robot turning.
 \subsection{AnotherSweepMetricCalc class}
 \label{concr:iimageselector:another_sweep_metric_class}
 
-\textit{AnotherSweepMetricCalc} is almost equal to its ancestor. The
+\texttt{AnotherSweepMetricCalc} is almost equal to its ancestor. The
 constructor's parameters are the same (with the same meanings)
 and there are no special supporting methods.
 \\
-The only difference relies within the \textit{ChoseImage()} method. As
+The only difference relies within the \texttt{ChoseImage()} method. As
 explained in section \ref{rear:interfaces:iimageselector}, the latter
-takes as input a collection of images, shot during robot's movement.
+takes in input a collection of images, shot during robot's movement,
+but in this case it does not limit its functions to collect scores
+for every image and return the one coupled with minimal score. 
 \\
+Even thought \texttt{Calculate()} method remains exactly the same
+(the reader can take a look at listing
+\ref{code:sweepmetriccalc:calculate}), improvements are
+achieved by adding few lines of code to the \texttt{ChoseImage()}
+method.
+\\
+\begin{lstlisting}[caption={\texttt{AnotherSweepMetricCalc::ChooseImage} method},
+    label={code:anothersweepmetriccalc:chooseimage}]
+void AnotherSweepMetricCalc::
+ChooseImage(robot_data * robot_status,
+            image_data * bg_image_data,
+            std::vector<image_data> * _images_collection)
+{
+
+  int collect_size = _images_collection->size(); 
+  float distances[collect_size];
+  float min;
+
+  // last image is always the egocentric one
+  distances[collect_size-1] = EGO_IMAGE;
+
+  int j = 0;
+  int i = 0;
+  bool turn_flag = false;
+  float buffer_robot_theta = robot_status->theta;
+
+  for(j = collect_size-2; j > 0; j--) {
+
+    if (abs(robot_status->x - (*_images_collection)[j].x)
+        < 0.01 &&
+	abs(robot_status->y - (*_images_collection)[j].y)
+        < 0.01)
+    {
+      
+      // robot is turning, X and Y value do not change
+      turn_flag = true;
+      distances[j] = IMAGE_NOT_VALID;
+
+    }
+    else {
+
+      if (turn_flag == true) {
+
+	// set robot angle as the one associate to this image
+	robot_status->theta = (*_images_collection)[j].theta;
+      }
+      break;
+    }
+  }
+
+  for (i = j; i >= 0; i--) {
+
+    distances[i] = Calculate(robot_status,
+                             &(*_images_collection)[i]);
+  }
+
+  // restore robot's rotation angle
+  robot_status->theta = buffer_robot_theta;
+      
+  // find the minimum distance
+  i = 0;
+  min = distances[0];
+  for (int j = 1; j < _images_collection->size(); j++)
+    {
+      if (distances[j] < min)
+	{
+	  i = j;
+	  min = distances[j];
+	}
+    }
+
+  // return the selected image data
+  bg_image_data->x = (*_images_collection)[i].x;
+  bg_image_data->y = (*_images_collection)[i].y;
+  bg_image_data->theta = (*_images_collection)[i].theta;
+  bg_image_data->time = (*_images_collection)[i].time;
+  strcpy(bg_image_data->path, (*_images_collection)[i].path);
+}
+\end{lstlisting}
+
 Before proceeding, the reader is warned that a good comprehension
 of the general score method exposed earlier in this chapter
 (section \ref{concr:iimageselector}) is required.
@@ -527,7 +643,8 @@ The only assumption ASM class does is that images are disposed in
 the transfered vector following a temporal order, from the older one
 to the most recent. Therefore, before assigning a score
 to every image according to the algorithm seen in \textit{Sweep Metric 
-Algorithm}, a simple pre-elaboration code assigns the higher
+Algorithm}, by invoking the \texttt{Calculate()} method,
+a simple pre-elaboration code assigns the higher
 possible score to the last images shot while the robot is turning,
 in order to exclude them from the feasible ones.
 \\
