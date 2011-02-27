@@ -50,6 +50,7 @@ class HTTPFunctor
   // store decompressed jpeg image
   unsigned char * _raw_image;
 
+  size_t _m_Size;
 
   void* Realloc(void*, size_t);
   int ReadHalfJPEGBuffer();
