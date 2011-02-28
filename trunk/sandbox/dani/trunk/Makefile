@@ -56,3 +56,8 @@ log:	main
 
 logsim:	main
 	./$(EXENAME) -dl logsimul 2 -r 4 -is asweep 25
+
+# create tar with code and logs
+
+tar:	main
+	tar -cpf ~/Desktop/$(EXENAME)_thesis.tar.gz --exclude-vcs -C .. --exclude=trunk/obj/*.o trunk log log_morduc

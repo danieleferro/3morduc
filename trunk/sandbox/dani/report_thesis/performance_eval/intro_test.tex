@@ -1,5 +1,9 @@
-\section{Parameters}
-\label{performance_evaluation:parameters}
+\section{Test introduction}
+\label{performance_evaluation:testintro}
+
+
+\subsection{Parameters}
+\label{performance_evaluation:testintro:parameters}
 
 Testing the `sweep metric algorithm' (see chapter
 \ref{concr:iimageselector:sweep_metric_algorithm}) means to define
@@ -76,3 +80,34 @@ will be similar to the egocentric. The more
 the more the application will tend to draw
 (when possible) all the robot to provide a full exocentric control
 vision, because far image will gain an higher score.
+
+\subsection{Test preparation}
+\label{performance_evaluation:testintro:testpreparation}
+
+The target of such tests was to verify \Item{i} if, using 
+an exocentric vision system provided with such an algorithm, 
+users are able to perceive the trajectory actually 
+performed by the robot, \Item{ii} how much disturbing are 
+sudden point-of-view changes for users, \Item{iii} how 
+comfortable is for them to view a robot from a 
+virtual exocentric point-of-view.
+\\
+People involved in the tests have had no experience in 
+robotics, neither they knew what a virtual exocentric 
+vision system is.
+\\
+The testing session schedule was the following:
+\begin{enumerate}
+  \item testers were given a brief introduction to exocentric vision systems
+  \item each tester is given three different scenarios and has to 
+    complete them, unassisted
+  \item for each scenario, testers have to answer the questions 
+    of a questionnaire\footnote{a copy of the questionnaire is 
+      reported in this document, in appendix \ref{questionnaire}}
+\end{enumerate}
+
+Three different recorded logs have been used, each of which featuring 
+a different trajectory. Each of such session has been tested
+using three different \texttt{mu\_distance} values: 5, 15 and 25.
+Results are shown in next section,
+\ref{performance_evaluation:tests_result}.
