@@ -74,13 +74,11 @@ determinate robot's position. Among these we will briefly cite:
 \subsection{Encoder}
 \label{intro:mobile:encoder}
 
-
 The simplest type of incremental encoder is a single-channel
 \textit{tachometer encoder}, basically an instrumented mechanical
 light chopper that produces a certain number of sine or square wave
 pulses for each shaft revolution. Adding pulses increases the resolution
 (and subsequently the cost) of the unit.
-
 \begin{figure} [h]
   \begin{center}
     \includegraphics[width=\textwidth]{img/incremental_encoder.png}
@@ -94,7 +92,7 @@ pulses for each shaft revolution. Adding pulses increases the resolution
     \label{fig:incremental_encoder}
   \end{center}
 \end{figure}
-
+\\
 These relatively inexpensive devices are well suited as velocity feedback
 sensors in medium to high speed control systems, but run into noise and
 stability problems at extremely slow velocities due to quantization errors.
@@ -132,7 +130,6 @@ Interfacing an incremental encoder to a computer is not a trivial task.
 A simple state-based interface as implied in Figure 1.1 is inaccurate if
 the encoder changes direction at certain positions, and false pulses can
 result from the interpretation of the sequence of state changes.
-
 \begin{figure} [!h]
   \begin{center}
     \includegraphics[width=300pt]{img/absolute_encoder.png}
@@ -145,7 +142,7 @@ result from the interpretation of the sequence of state changes.
     \label{fig:absolute_encoder}
   \end{center}
 \end{figure}
-
+\\
 Absolute encoders are typically used for slower rotational applications
 that require positional information when potential loss of reference
 from power interruption cannot be tolerated.
@@ -257,7 +254,6 @@ D = \frac{\lambda}{4\cdot\pi}\cdot{\theta}
 
 Confidence in the range (phase estimate) is inversely proportion to
 the square of the received signal amplitude.
-
 \begin{figure} [h]
   \begin{center}
     \includegraphics[width=200pt]{img/laser_rotation.png}
@@ -266,13 +262,12 @@ the square of the received signal amplitude.
     \label{fig:laser_rotation}
   \end{center}
 \end{figure}
-
+\\
 Pointing the measuring beam
 to rotating mirror a fast scanning can be accomplished in a vertical
 dimension, but the whole scanner has to be able to move horizontally
 if 3D scanning is needed. A schematic drawing for 2D scanner laser
 is showed in figure \ref{fig:laser_rotation}.
-
 \begin{figure} [!h]
   \begin{center}
     \includegraphics[width=250pt]{img/laser_scan_map.png}
@@ -281,7 +276,7 @@ is showed in figure \ref{fig:laser_rotation}.
     \label{fig:laser_scan_map}
   \end{center}
 \end{figure}
-
+\\
 In figure \ref{fig:laser_scan_map} a typical range image of a 2D
 laser range sensor with
 a rotating mirror is shown. The lengths of the lines through the
@@ -299,7 +294,6 @@ Active sonar creates an ultrasonic pulse, often called `ping',
 then listens for reflections `echo'. Referring to figure
 \ref{fig:sonar}, the ping wave is drawn in red, the echo wave
 in green.
-
 \begin{figure} [h]
   \begin{center}
     \includegraphics[width=300pt]{img/sonar.png}
@@ -307,7 +301,7 @@ in green.
     \label{fig:sonar}
   \end{center}
 \end{figure}
-
+\\
 The received signal is commonly processed by measuring the time of flight,
 already explained in previous section (\ref{intro:mobile:laser}).
 This time is depending on the speed of the sound in air, and thus the
@@ -326,7 +320,6 @@ The main drawback with the sonar sensor is its wide beam of perception, which
 causes the fact that it is impossible from reading returned data to identify
 the object position within the beam. Some of the other sonar drawback are
 specular reflection and the possibility of a crosstalk.
-
 \begin{figure} [!h]
   \begin{center}
     \includegraphics[width=250pt]{img/sonar_crosstalk.png}
@@ -334,7 +327,7 @@ specular reflection and the possibility of a crosstalk.
     \label{fig:sonar_crosstalk}
   \end{center}
 \end{figure}
-
+\\
 Figure \ref{fig:sonar_crosstalk} shows an example of crosstalk.
 Crosstalk is a phenomenon in which one sonar picks up the echo
 from another. One can distinguish between a. direct effectiveness
@@ -352,7 +345,6 @@ an obstacle, the bumper will indicate the robot has impacted with an
 object of unknown size and shape. The robot then can initiate some
 sort of evasive/escape maneuvers to
 hopefully get back on track to its destination.
-
 \begin{figure} [!h]
   \begin{center}
     \includegraphics[width=200px]{img/bumpers.jpg}
@@ -361,7 +353,7 @@ hopefully get back on track to its destination.
     \label{fig:bumpers}
   \end{center}
 \end{figure}
-
+\\
 Another advantage of using bumpers is that the impacts derived from
 collisions are cushioned, avoiding seriously damages to the robot's
 instruments.
@@ -389,7 +381,6 @@ A CMOS chip is a type of active pixel sensor made using the CMOS semiconductor
 process. Extra circuitry next to each photo sensor converts the light
 energy to a voltage; additional circuitry on the chip may be included
 to convert the voltage to digital data.
-
 \begin{figure} [!h]
   \begin{center}
     \includegraphics[width=100pt]{img/cmos_camera.jpg}
@@ -397,7 +388,7 @@ to convert the voltage to digital data.
     \label{fig:cmos_camera}
   \end{center}
 \end{figure}
-
+\\
 Neither technology has a clear advantage in image quality. On one hand,
 CCD sensors are more susceptible to vertical smear from bright light sources
 when the sensor is overloaded.
@@ -448,7 +439,6 @@ in almost all mobile robots, for various reasons:
 Odometry is based on simple equations, depending on mobility configuration
 chosen for the robot, that are easily implemented and that utilise
 data from inexpensive incremental wheel encoders.
-
 \begin{figure} [!h]
   \begin{center}
     \includegraphics[width=200pt]{img/differential_drive.jpg}
@@ -456,7 +446,7 @@ data from inexpensive incremental wheel encoders.
     \label{fig:differential_drive}
   \end{center}
 \end{figure}
-
+\\
 In \textit{differential-drive}, one of the available robot configuration
 shown in figure \ref{fig:differential_drive}, incremental encoders
 are mounted onto the two
@@ -574,7 +564,6 @@ On most smooth indoor surfaces systematic errors contribute much
 more to odometry errors than non-systematic errors.
 However, on rough surfaces with significant irregularities, non-systematic
 errors are dominant.
-
 \begin{figure} [h]
   \begin{center}
     \includegraphics[width=310pt]{img/odometry_error.png}
@@ -583,7 +572,7 @@ errors are dominant.
     \label{fig:odometry_error}
   \end{center}
 \end{figure}
-
+\\
 The problem with non-systematic errors is that they may appear unexpectedly
 (for example, when the robot traverses an unexpected object on the
 ground), and they can cause large position errors. Typically, when a mobile
@@ -687,7 +676,6 @@ finding geometric position and orientation of the sensors. The most common
 model for photometric cameras is the pin-hole camera with perspective projection
 as shown in figure \ref{fig:camera_system}. Photometric cameras using optical lens can
 be modeled as a pin-hole camera.
-
 \begin{figure} [h]
   \begin{center}
     \includegraphics[width=350pt]{img/camera_system.png}
@@ -695,7 +683,7 @@ be modeled as a pin-hole camera.
     \label{fig:camera_system}
   \end{center}
 \end{figure}
-
+\\
 The coordinate system (X, Y, Z) is a three-dimensional camera coordinate
 system, and (x, y) is a sensor (image) coordinate system. A three-dimensional
 feature in an object is projected onto the image plane (x, y). The relationship
