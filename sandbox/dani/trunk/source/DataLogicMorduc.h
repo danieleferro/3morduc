@@ -34,7 +34,7 @@
 
 #include "IDataLogic.h"
 #include "IImageSelector.h"
-#include "../jpeg-8c/jpeglib.h"
+#include <jpeglib.h>
 #include "HTTPFunctor.h"
 #include "command_mapping.h"
 
