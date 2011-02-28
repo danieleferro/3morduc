@@ -61,7 +61,6 @@ can be customized by changing a positive parameter called
 where triangle function assume its lower value. In 
 figure \ref{fig:spacial_metric_func} the \textit{optimal value}
 is set to five.
-
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=400pt]{img/spacialMetricFunc.png} 
@@ -69,7 +68,7 @@ is set to five.
     \label{fig:spacial_metric_func}
   \end{center}
 \end{figure}
-
+\\
 Since the \texttt{ChooseImage()} method will select the image with 
 the minimum score, it's easy to figure out that 
 images that has been taken when camera was around 
@@ -108,7 +107,7 @@ algorithm presented in the previous section.
 As other class algorithm after exposed, \texttt{SpacialMetricCalc}
 class allows to parameterized the \textit{optimal value} used to
 choose the better image. For this purpose, private member
-\texttt{optimal\_distance} has to be expressed through constructor's
+\texttt{\_optimal\_distance} has to be expressed through constructor's
 parameter when a new \texttt{SpacialMetricCalc}'s instance
 is requested.
 \texttt{ChooseImage()} will call \texttt{Calculate()}
@@ -158,7 +157,6 @@ Let us assume to have  mobile robot moving on a plan,
 taking snapshots from its egocentric-mounted camera.
 Such a situation is represented in figure 
 \ref{fig:half_plan_finding}:
-
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=400pt]{img/half_plan_finding.png} 
@@ -166,9 +164,8 @@ Such a situation is represented in figure
     \label{fig:half_plan_finding}
   \end{center}
 \end{figure}
-
 the black square represents the robot, with its orientation 
-indicated by the arrow "a", starting from the square.
+indicated by the arrow `a', starting from the square.
 \\
 The several blue circles represent instead the previous 
 taken images. The orientation of each image - i.e. the 
@@ -202,8 +199,8 @@ To recognize all discarded images, the \texttt{Calculate()} method
 assigns them -2 as score.
 \\
 The score of all the remaining image is computed as sum 
-of two factors:
-the first takes into account the image angle orientation: 
+of two factors.
+The first takes into account the image angle orientation: 
 the more the image orientation angle is close to the 
 robot orientation angle, the more the score is high.
 \begin{figure}[!h]
@@ -213,6 +210,7 @@ robot orientation angle, the more the score is high.
     \label{fig:sweep_angle_diagram}
   \end{center}
 \end{figure}
+\\
 To compute such a factor, a Gaussian function, centered
 in zero, is used. The return value will be therefore 
 always a positive number.
@@ -243,11 +241,11 @@ The score coupled with the egocentric vision will
 always be -1.
 \\
 Finally, all computer scores are multiplied by -1 and 
-the image with the littlest score is returned.
+the image with the littlest score is returned by \texttt{ChooseImage}.
 \\
 If the sweep area does not contain any valid image, all images will
 have 2 as score. In such a situation, since the \texttt{ChooseImage} 
-search the image with the lowest score, the egocentric image 
+searches the image with the lowest score, the egocentric image 
 will be chosen.
 
 \subsubsection{WithinBoundaries algorithm}
@@ -264,7 +262,6 @@ Since the area defined by the `sweep angle' depends on robot
 coordinates and orientation, the \texttt{Within Boundaries}
 performs some geometrical tricks in order to give its answer. 
 Such tricks deserve some space to be fully explained.
-
 \begin{figure}[htp]
   \begin{center}
     \subfigure[Initial robot and image coordinates]{
@@ -292,8 +289,7 @@ Such tricks deserve some space to be fully explained.
   \caption{WithinBoundaries algorithm}
   \label{fig:withingboundaries}
 \end{figure}
-
-
+\\
 Before checking whether a point (i.e. an image) is included 
 within the \textit{sweep area}, the robot and image coordinates
 are translated and then rotated, in order to move the robot in 
@@ -332,7 +328,6 @@ checking if a point is included within triangle
 The better (and more rapid) way to resolve such problem 
 exploits the cross product between vectors
 in three-dimensional Euclidean space.
-
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=300pt]{img/sweepal_crossproductABC.jpeg} 
@@ -340,7 +335,7 @@ in three-dimensional Euclidean space.
     \label{fig:sweepal_crossproductABC}
   \end{center}
 \end{figure}
-
+\\
 Referring to the image \ref{fig:sweepal_crossproductABC}, the cross
 product of [A-B] and [A-p] will result a vector
 pointing out of the screen. On the other hand, the cross product
@@ -435,19 +430,64 @@ Calculate(robot_data * robot_status,
   if ( !WithinBoundaries(robot_status, bg_image_data) )
     return IMAGE_NOT_VALID;
   
-  // check if image orientation differs vary from
+  // check if image orientation differs from
   // the robot one above the given threshold
   if ( !RightlyOriented(robot_status, bg_image_data) )
     return IMAGE_NOT_VALID;
   
   // now calculates score for the image
   return - PointAlgorithm(robot_status, bg_image_data);
+
 }
 \end{lstlisting}
 
-\texttt{Calculate()} bases its computation on private
-methods. Firstly, it checks if the robot images is
-[TO CONTINUE]
+\texttt{Calculate()} bases its computation on several private
+methods, in order to fulfill the flow diagram shown in
+figure \ref{fig:sweep_angle_diagram}. Real code implementation
+of this schema, presented in listing
+\ref{code:sweepmetriccalc:calculate}, first checks if robot
+and evaluated image own the same XY coordinate and orientation
+angle. If so, we are dealing with the egocentric image and
+the returned value is \texttt{EGO\_IMAGE}, a predefined macro
+equal to 1.
+\\
+\texttt{WithinBoundaries()} method returns a \texttt{true}
+value only if considered image belongs to the \textit{sweep
+area} defined from robot's position and orientation. During
+this control only image's coordinate are considered, not its
+orientation.
+\\
+\texttt{WithinBoundaries()}
+accomplishes its duty by calling other private methods, which
+implements the algorithm exposed in subsection
+\ref{concr:iimageselector:spacial_metric_algorithm:withinboundaries}.
+As previously stated, if the evaluating image is not contained
+in the \textit{sweep area} its associated score will be equal
+to value 2 (indeed, \texttt{IMAGE\_NOT\_VALID} is a macro
+set to 2).
+\\
+Last control block assesses image orientation and compares it
+with robot's orientation. \texttt{RightlyOriented()} method
+returns \texttt{true} if their absolute difference, normalized
+within [-180; 180] degrees range, is lesser then the parameter
+set by constructor (specifically, \texttt{angle\_offset}).
+\\
+In case processed image passes all the previous controls,
+\texttt{PointAlgorithm()} will return a positive score computed
+on the basis of robot and image's data and
+of parameters specified by constructor.
+\\
+Since the score is the sum of two elements, each one obtained
+from a Gaussian function, its value will be always a
+positive one and must be therefore 
+negated before completing the procedure.
+\\
+It not tricky to notice that, invoking the \texttt{Calculate()}
+method for each collected image along with a fixed robot
+position and orientation, only images within the \textit{sweep
+area} will compete for being the exocentric image; instead, if no
+one is included, the egocentric vision will be always chosen
+(all remaining pictures will have a score equal to 2).
 
 \subsection{Another sweep metric algorithm}
 \label{concr:iimageselector:another_sweep_metric_algorithm}
@@ -477,7 +517,7 @@ that the blue circles are the egocentric images collected
 by the robot (with their orientation shown by the black
 arrow), whereas the black square indicate the robot orientated
 by the `a' axis. The read area indicates the sweep angle.
-\begin{figure}[htp]
+\begin{figure}[!htp]
   \begin{center}
     \subfigure[Robot and data collected after moving along a straight direction]{
       \label{fig:ASM_straight}\includegraphics[width=175pt, height=175pt]{img/ASM_straight.png}
@@ -500,11 +540,11 @@ by the `a' axis. The read area indicates the sweep angle.
     \subfigure[Symbol definition]{
       \label{fig:sweepal_caption}\includegraphics[width=255pt, height=65pt]{img/sweepal_caption.png}
     } 
-
   \end{center}
-  \caption{The main shortcoming in Sweep Metric Algorithm}
+  \caption{Main shortcoming in Sweep Metric Algorithm}
   \label{fig:ASM_explain}
 \end{figure}
+\\
 In \subref{fig:ASM_straight} the robot is correctly drawn by \framework{}
 and user can control it from an exocentric point of view, thanks to
 the previous collected images. When robot begins to turn, for narrow
@@ -545,7 +585,7 @@ in particular on strict robot turning.
 \subsection{AnotherSweepMetricCalc class}
 \label{concr:iimageselector:another_sweep_metric_class}
 
-\texttt{AnotherSweepMetricCalc} is almost equal to its ancestor. The
+\texttt{AnotherSweepMetricCalc} class is almost equal to its ancestor. The
 constructor's parameters are the same (with the same meanings)
 and there are no special supporting methods.
 \\
@@ -553,7 +593,7 @@ The only difference relies within the \texttt{ChoseImage()} method. As
 explained in section \ref{rear:interfaces:iimageselector}, the latter
 takes in input a collection of images, shot during robot's movement,
 but in this case it does not limit its functions to collect scores
-for every image and return the one coupled with minimal score. 
+for each image and to return the one coupled with minimal one. 
 \\
 Even thought \texttt{Calculate()} method remains exactly the same
 (the reader can take a look at listing
@@ -635,22 +675,59 @@ ChooseImage(robot_data * robot_status,
 }
 \end{lstlisting}
 
-Before proceeding, the reader is warned that a good comprehension
-of the general score method exposed earlier in this chapter
-(section \ref{concr:iimageselector}) is required.
+Before proceeding, we warn that a good comprehension
+of the sweep metric score method, exposed earlier in this chapter
+(section \ref{concr:iimageselector:sweep_metric_algorithm}),
+is required.
 \\
-The only assumption ASM class does is that images are disposed in
-the transfered vector following a temporal order, from the older one
-to the most recent. Therefore, before assigning a score
-to every image according to the algorithm seen in \textit{Sweep Metric 
-Algorithm}, by invoking the \texttt{Calculate()} method,
-a simple pre-elaboration code assigns the higher
-possible score to the last images shot while the robot is turning,
-in order to exclude them from the feasible ones.
+The only assumption \texttt{ASM} class does is that images are disposed within
+the transfered vector in temporal order, from the older one
+to the most recent. \texttt{ChoseImage()} does not commit all scores
+computation to \texttt{Calculate()} method, but invokes it only
+for a specific image set.
 \\
-The robot status is at the moment set
-as it was before the sequence of turns was acted, and then the 
-standard algorithm is resumed to assign a score
-to the remaining images.
+Since image are disposed in order, the last one will accordingly be
+the egocentric image, so the assigned score is 1, as proved by
+line 12 in listing \ref{code:anothersweepmetriccalc:chooseimage}
+(\texttt{EGO\_IMAGE} defines value 1).
 \\
-These simple steps allows to greatly improve the original algorithm. 
+Next, image data are read from the most recent to the older one,
+by iterating vector in reverse order. For each element, it checks
+if the image has been shot in the same X and Y coordinate
+where the robot is actually
+situated\footnote{Better, if robot and image's coordinates along each axis
+are minor than a predefined threshold, in this case 0.01
+(line from 21 to 24 in listing \ref{code:anothersweepmetriccalc:chooseimage}).}:
+if so, a rotation is detected, because only the orientation angle
+varies between considered image and robot.
+\\
+Boolean \texttt{turn\_flag} is set \texttt{true}, and we exclude the
+current image from the feasible ones by assigning the highest possible
+score (represented by macro \texttt{IMAGE\_NOT\_VALID}, equal to 2).
+\\
+Loop keeps its iteration,  in order to find other images belonging
+to the same turning sequence. When an image placed in a position
+different from the one held by the robot is found, and if a turning sequence
+was previously detected (i.e. if the \texttt{turn\_flag} value is
+\texttt{true}), we set, at the moment, robot's angle rotation to
+the one holds by the evaluated image. This way, the \textit{sweep
+area} will have its upper vertex centered where the robot is situated,
+as seen in original algorithm, but its orientation is changed and
+set to the one owns by the
+robot before the rotation began: we are avoiding the shortcoming
+presented in prior section and reassumed in figure \ref{fig:ASM_explain}.
+\\
+Next steps are trivial. First, for all the remaining images not
+evaluated by \texttt{ChooseImage()}, the proper score is requested
+to \texttt{Calculate()} method, which will operate with the fixed
+robot's orientation. This is necessary to make \texttt{Calculate()}
+works with the adapted \textit{sweep area}.
+\\
+After all scores has been computed (some by \texttt{ChooseImage()}
+itself, other by invoking \texttt{Calculate()}'s help), the robot
+status is restored (line number 50, which pairs with line 17 where
+the original orientation was stored) and, as usual, the image associated
+with the minimum score is returned.
+\\
+These simple changes allows to greatly improve the original algorithm,
+since skipping from a point of view to another is widely reduced.
