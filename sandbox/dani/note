@@ -9,3 +9,4 @@
 - cancellare contenuto di /etc/apache2/httpd.conf (riavviare demone)
 add "/usr/local/lib" to /etc/ld.so.conf 
 ./sbin/ldconfig 
+- jpeglib versione 62 (installare dev)

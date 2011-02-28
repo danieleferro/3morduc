@@ -1,0 +1,52 @@
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\setcounter{lstlisting}{0}
+
+\chapter{Source code}
+\label{sourcecode}
+\minitoc
+
+\framework{} was developed and released
+by Daniele Ferro and Loris Fichera, after a foreign study
+period spent at the University of Hertfordshire (United Kingdom).
+\\
+Back in our country, an improvement version of \framework{} has
+been written.
+New code, and this document itself, are based on the primary
+work done in U.K., and present the following features in
+addition:
+
+\begin{itemize}
+
+\item working with log data saved from previous
+      \morduc{} session. \\
+      See section \textit{DataLogicLogMorduc},
+      \ref{concr:idatalogic:datalogiclogmorduc}.
+      
+
+\item connecting to real \morduc{} robot to implement
+      an online teleguiding run.
+      See section \textit{DataLogicMorduc},
+      \ref{concr:idatalogic:datalogicmorduc}.
+
+\item implementing a new version of \textit{Sweep Metric
+      Algorithm}, to overcame deficiency detected in
+      performed test. \\
+      See sections \textit{Another sweep metric algorithm}
+      an \textit{AnotherSweepMetricCalc class},
+      \ref{concr:iimageselector:another_sweep_metric_class}
+      and
+      \ref{concr:iimageselector:another_sweep_metric_algorithm}.
+
+\end{itemize}
+
+Other minor changes to the original code are occurred, such
+as source reorganization in new modules; some class has
+been renamed to better identify its role.
+\\
+All project has been developed and test with \textit{Debian Lenny (5.0)}
+and \textit{Debian Squeeze (6.0)}. In the following sections major
+details about packages and libraries utilized are given.
+
+\clearpage
+\input{source_code/downloadrun}
