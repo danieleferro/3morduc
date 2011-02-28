@@ -32,7 +32,7 @@
 #include <cstring>
 #include "IDataLogic.h"
 #include "IImageSelector.h"
-#include "../jpeg-8c/jpeglib.h"
+#include <jpeglib.h>
 
 #define TO_DEGREES(X) X * 180 / M_PI
 #define MAGNITUDE 100

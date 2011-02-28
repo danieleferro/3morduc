@@ -29,9 +29,9 @@
 #include <cstdio>
 #include <cstring>
 
-#include "../jpeg-8c/jinclude.h"
-#include "../jpeg-8c/jerror.h"
-#include "../jpeg-8c/jpeglib.h"
+#include <jpeglib.h>
+#include <jerror.h>
+#include "jinclude.h"
 #include "jpeg_library.h"
 
 #define MAX_FILE_LENGTH 20000

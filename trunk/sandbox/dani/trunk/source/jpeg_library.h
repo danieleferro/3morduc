@@ -22,9 +22,12 @@
 #ifndef __JPEG_LIBRARY__
 #define __JPEG_LIBRARY__
 
-#include "../jpeg-8c/jinclude.h"
-#include "../jpeg-8c/jerror.h"
-#include "../jpeg-8c/jpeglib.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "jinclude.h"
+#include <jerror.h>
+#include <jpeglib.h>
 
 typedef struct {
 

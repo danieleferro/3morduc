@@ -11,8 +11,7 @@ http://www.ijg.org/
 #include <setjmp.h>
 #include <stdlib.h>
 #include <string.h>
-#include "jpeg-8c/jpeglib.h"
-
+#include <jpeglib.h>
 
 struct my_error_mgr
 {

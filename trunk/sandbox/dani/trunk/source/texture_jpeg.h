@@ -30,7 +30,7 @@
 #include <setjmp.h>
 #include <string.h>
 
-#include "../jpeg-8c/jpeglib.h"
+#include <jpeglib.h>
 
 struct my_error_mgr
 {

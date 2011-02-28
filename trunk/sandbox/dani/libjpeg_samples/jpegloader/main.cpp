@@ -2,7 +2,7 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include <stdio.h>
-#include "jpeg-8c/jpeglib.h"
+#include <jpeglib.h>
 
 GLOBAL(int)
 read_JPEG_file (char * filename, unsigned int * textureID);
