@@ -1,10 +1,6 @@
 \section{Download, compile and run \framework{}}
 \label{sourcecode:downloadrun}
 
-This section will explain how to download, compile and
-run \framework{}. At last, a brief user guide to using the
-framework is provided.
-
 \subsection{Download code}
 \label{sourcecode:downloadrun:download}
 
@@ -55,12 +51,14 @@ Hence, in order to use it, you need to install a C++ compiler and the
 C++ standard library, together with an implementation of the OpenGL
 API and some free libraries.
 \\
-In particular, \framework{} has been developed using GNU \textit{gcc} as
-C++ compiler (versions 4.3.2, 4.4.1 and 4.4.5) and \textit{Mesa} as the
+In particular, \framework{} has been developed using different versions
+of GNU \textit{gcc} as
+C++ compiler (4.3.2, 4.4.1 and 4.4.5) and different versions of 
+\textit{Mesa} as the
 implementation
-of OpenGL (versions 7.0.3, 7.6.0, and 7.7.1).
+of OpenGL (7.0.3, 7.6.0, and 7.7.1).
 \\
-A list of other required libraries are:
+A list of other required libraries follows:
 
 \begin{itemize}
 
@@ -143,15 +141,15 @@ shown with command:
 \texttt{./REAR -h}
 \\
 \\
-while the following general usage is displayed when a right options sequence
-is not submitted:
+while the following general usage is displayed when a wrong options sequence
+or incorrect values are submitted:
 \\
 \\
 \texttt{Usage: REAR -dl data\_logic dl\_opt1 [dl\_opt2]
   [-is image\_select is\_dist] [-r radius]}
 \\
 \\
-Let's examine what value each options can assume.
+Let's examine what value each option can assume.
 \\
 The unique mandatory option is the one defining which type
 of \textit{DataLogic} instance has to be instantiated. The
@@ -230,10 +228,10 @@ After the \texttt{-dl} option, user can state other two optional
 aspects, in any order. One regards what kind of \textit{Image Selector
 Algorithm} must be used, along with one single options which defines
 its \textit{optimal distance}, i.e. the distance between robot and
-exocentric point of view that ensures the better performance in
+the exocentric point of view that ensures the better performance in
 teleguiding the robot.
 \\
-As covered in previous sections, three algorithms have been developed,
+As covered in previous chapters, three algorithms have been developed,
 so the total number of possible values for the \texttt{-is} option
 is three, as table \ref{table:isoptions} summarizes.
 
@@ -275,8 +273,8 @@ a \texttt{SweepMetricCalc} instance
 a \texttt{AnotherSweepMetricCalc} instance
 (section \ref{concr:iimageselector:another_sweep_metric_class})
 is created to exploit the image selection algorithm encapsulated
-in each one. If \texttt{-is} is not specifed, the latter class
-is used as defualt, with optimal distance value set to twentyfive.
+in each one. If \texttt{-is} is not specified, the latter class
+is used as default, with optimal distance value set to twentyfive.
 \\
 Last possible customization can be obtained by stating the
 \morduc{}'s radius value, used to draw in OpenGL space the three
@@ -293,7 +291,7 @@ At last, table \ref{table:validopts} shows some complete example.
 
 \begin{table}[!h]
   \centering  
-  \begin{tabular}{| l | c |}
+  \begin{tabular}{| l | l |}
 
     \hline
     \texttt{command} &
@@ -304,21 +302,21 @@ At last, table \ref{table:validopts} shows some complete example.
     \parbox[t]{6cm}{\raggedright \small
       Connect to real \morduc{} with address 192.168.1.2, draw robot
       with radius equal to 5 (default) and use \textit{Another Sweep
-      Metric Alogorithm} with optimal distance set to 25.} \\  [1ex]
+      Metric Algorithm} with optimal distance set to 25.} \\  [1ex]
 
     \hline
     \small {REAR -dl logmorduc 4 -r 4 -is sweep 10} &
     \parbox[t]{6cm}{\raggedright \small
       Use \morduc{}'s log number four, draw robot
       with radius equal to four and use \textit{Sweep
-      Metric Alogorithm} with optimal distance set to 10.} \\  [1ex]
+      Metric Algorithm} with optimal distance set to 10.} \\  [1ex]
 
     \hline
     \small {REAR -dl logsimul 5} &
     \parbox[t]{6cm}{\raggedright \small
       Use simulator's log number five, draw robot
       with radius equal to five (default) and use \textit{Another Sweep
-      Metric Alogorithm} with optimal distance set to 25 (default values).} \\  [1ex]
+      Metric Algorithm} with optimal distance set to 25 (default values).} \\  [1ex]
 
 
     \hline
@@ -327,7 +325,3 @@ At last, table \ref{table:validopts} shows some complete example.
   \caption{Some valid command inputs.}
   \label{table:validopts}
 \end{table}
-
-
-\subsection{User guide}
-\label{sourcecode:downloadrun:userguide}

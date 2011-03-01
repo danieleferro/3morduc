@@ -1,0 +1,108 @@
+\section{User guide}
+\label{sourcecode:userguide}
+
+Table \ref{table:usercommands} shows user's commands and their descriptions.
+
+\begin{table}[!h]
+  \centering  
+  \begin{tabular}{| l | l |}
+
+    \hline
+    \texttt{command key} &
+    \texttt{description} \\
+
+    \hline
+    \small {ESC} &
+    \parbox[t]{9cm}{\raggedright \small
+      Close window and exit program.} \\  [1ex]
+
+    \hline
+    \small {A} &
+    \parbox[t]{9cm}{\raggedright \small
+      Send command to go forward. If data log are used, specific command is ignored
+      and next robot's status is retrieved.} \\  [1ex]
+
+    \hline
+    \small {S} &
+    \parbox[t]{9cm}{\raggedright \small
+      Send command to go backward. If data log are used, specific command is ignored
+      and next robot's status is retrieved.} \\  [1ex]
+
+    \hline
+    \small {Q} &
+    \parbox[t]{9cm}{\raggedright \small
+      Send command to turn left. If data log are used, specific command is ignored
+      and next robot's status is retrieved.} \\  [1ex]
+
+    \hline
+    \small {W} &
+    \parbox[t]{9cm}{\raggedright \small
+      Send command to turn right. If data log are used, specific command is ignored
+      and next robot's status is retrieved.} \\  [1ex]
+
+    \hline
+
+  \end{tabular}
+  \caption{User keyboard commands.}
+  \label{table:usercommands}
+\end{table}
+
+Other commands are active for debugging purpose, listed
+in table \ref{table:debugcommands}. Calling one or more of
+these commands will not affect the system response to next
+user's command.
+
+\begin{table}[!h]
+  \centering  
+  \begin{tabular}{| l | l |}
+
+    \hline
+    \texttt{command key} &
+    \texttt{description} \\
+
+    \hline
+    \small {O} &
+    \parbox[t]{9cm}{\raggedright \small
+      Move camera object along the X axis (positive sense).} \\  [1ex]
+
+    \hline
+    \small {P} &
+    \parbox[t]{9cm}{\raggedright \small
+      Move camera object along the X axis (negative sense).} \\  [1ex]
+
+    \hline
+    \small {K} &
+    \parbox[t]{9cm}{\raggedright \small
+      Rotate camera along Z axis (clockwise).} \\  [1ex]
+
+    \hline
+    \small {L} &
+    \parbox[t]{9cm}{\raggedright \small
+      Rotate camera along Z axis (counterclockwise).} \\  [1ex]
+
+    \hline
+    \small {$\uparrow$ (up arrow)} &
+    \parbox[t]{9cm}{\raggedright \small
+      Move robot along Y axis (positive sense).} \\  [1ex]
+
+    \hline
+    \small {$\downarrow$ (down arrow)} &
+    \parbox[t]{9cm}{\raggedright \small
+      Move robot along Y axis (negative sense).} \\  [1ex]
+
+    \hline
+    \small {$\rightarrow$ (right arrow)} &
+    \parbox[t]{9cm}{\raggedright \small
+      Move robot along X axis (positive sense).} \\  [1ex]
+
+    \hline
+    \small {$\leftarrow$ (left arrow)} &
+    \parbox[t]{9cm}{\raggedright \small
+      Move robot along X axis (negative sense).} \\  [1ex]
+
+    \hline
+
+  \end{tabular}
+  \caption{Debug keyboard commands.}
+  \label{table:debugcommands}
+\end{table}

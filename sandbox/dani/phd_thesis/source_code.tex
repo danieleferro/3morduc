@@ -7,7 +7,12 @@
 \minitoc
 
 \framework{} was developed and released
-by Daniele Ferro and Loris Fichera, after a foreign study
+by \textbf{Daniele Ferro}\footnote{mail: daniele.ferro86
+at gmail dot com}
+and
+\textbf{Loris Fichera}\footnote{mail: loris.fichera
+at gmail dot com}, after
+a foreign study
 period spent at the University of Hertfordshire (United Kingdom).
 \\
 Back in our country, an improvement version of \framework{} has
@@ -25,13 +30,13 @@ addition:
       
 
 \item connecting to real \morduc{} robot to implement
-      an online teleguiding session.
+      an online teleguiding session. \\
       See section \textit{DataLogicMorduc},
       \ref{concr:idatalogic:datalogicmorduc}.
 
 \item implementing a new version of \textit{Sweep Metric
       Algorithm}, to overcame deficiencies detected in
-      performed test. \\
+      performed tests. \\
       See sections \textit{Another sweep metric algorithm}
       an \textit{AnotherSweepMetricCalc class},
       \ref{concr:iimageselector:another_sweep_metric_class}
@@ -40,20 +45,27 @@ addition:
 
 \end{itemize}
 
-Other minor changes to the original C++ code are occurred, such
-as source reorganization in new modules; some class has
-been renamed to better identify its role.
+Other minor changes to the original C++ code have occurred, such
+as source reorganization in new modules; some classes have
+been renamed to better identify their role.
 \\
 Project has been developed and tested with \textit{Debian Lenny (5.0)}
 and \textit{Debian Squeeze (6.0)}. In the following sections major
-details about packages and freee libraries utilized are given.
+details about packages and free libraries utilized are given.
 \\
-\framework{} is distributed under under \textit{GNU GPL v3} license, 
+\framework{} is distributed under \textit{GNU GPL v3} license, 
 documented in \cite{license:gplv3}. 
-General Public Licenses are designed to give these rights: to run the
+Briefly, General Public Licenses are designed to give these rights: to run the
 program, for any desired purpose; to study how the program works, and
 modify it; to redistribute copies and to improve the program, and
 release the improvements to the public.
+\\
+Next section will explain how to download, compile and
+run \framework{}. In second section instead a brief user guide
+about how to use the framework is provided.
 
 \clearpage
 \input{source_code/downloadrun}
+
+\clearpage
+\input{source_code/user_guide}
