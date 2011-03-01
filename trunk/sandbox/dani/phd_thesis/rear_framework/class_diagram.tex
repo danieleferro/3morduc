@@ -3,8 +3,6 @@
 
 Let us have a look at \framework{} class diagram, 
 showed in figure \ref{fig:class_diagram}.
-
-\ifthenelse{\isodd{\thepage}}{
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=\textheight, angle=90]{img/rear_class_diagram.png}
@@ -12,17 +10,7 @@ showed in figure \ref{fig:class_diagram}.
     \label{fig:class_diagram}
   \end{center}
 \end{figure}
-}
-{
-\begin{figure}[!h]
-  \begin{center}
-    \includegraphics[width=\textheight, angle=270]{img/rear_class_diagram.png}
-    \caption{\framework{} class diagram}
-    \label{fig:class_diagram}
-  \end{center}
-\end{figure}
-}
-
+\\
 Two of the components needed by \framework{}, the robot 
 model and the camera, are mapped on two dedicated classes, 
 \texttt{Robot} and \texttt{Camera}, respectively.
