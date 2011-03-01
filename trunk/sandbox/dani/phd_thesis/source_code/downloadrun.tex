@@ -1,0 +1,333 @@
+\section{Download, compile and run \framework{}}
+\label{sourcecode:downloadrun}
+
+This section will explain how to download, compile and
+run \framework{}. At last, a brief user guide to using the
+framework is provided.
+
+\subsection{Download code}
+\label{sourcecode:downloadrun:download}
+
+The \framework{} project is hosted on \textit{Google Code}:
+\\
+\\
+\url{http://code.google.com/p/3morduc/}
+\\
+\\
+New \framework{} version, covered by this document,
+can be downloaded at the following URL, together with
+log files created with \morduc{}'s simulator and from
+real \morduc{} online session:
+\\
+\\
+\url{http://3morduc.googlecode.com/files/rear.thesis.tar.gz}
+\\
+\\
+This report itself can be found at:
+\\
+\\
+\url{http://3morduc.googlecode.com/files/thesis_daniele_ferro.pdf}
+\\
+\\
+The first release of the source code, together with
+some relative log files, can be obtained by downloading
+the tar archive named \textit{rear.tar.gz}, from the
+following URL:
+\\
+\\
+\url{http://3morduc.googlecode.com/files/rear.tar.gz}
+\\
+\\
+while the related document can be found at:
+\\
+\\
+\url{http://3morduc.googlecode.com/files/report.14.07.pdf}
+
+\subsection{Compile code}
+\label{sourcecode:downloadrun:compile}
+
+The instructions exposed in this section are also valid for the
+first version of \framework{}, since it utilizes a restricted
+set of libraries.
+\\
+\framework{} is written in C++ and makes use of OpenGL commands.
+Hence, in order to use it, you need to install a C++ compiler and the
+C++ standard library, together with an implementation of the OpenGL
+API and some free libraries.
+\\
+In particular, \framework{} has been developed using GNU \textit{gcc} as
+C++ compiler (versions 4.3.2, 4.4.1 and 4.4.5) and \textit{Mesa} as the
+implementation
+of OpenGL (versions 7.0.3, 7.6.0, and 7.7.1).
+\\
+A list of other required libraries are:
+
+\begin{itemize}
+
+  \item \texttt{freeGLUT} \\
+    \textit{Description:} \small {GLUT allows the user to create and manage
+      windows containing OpenGL contexts and also read the mouse, keyboard
+      and joystick inputs.} \\
+    \textit{Site:} \url{http://freeglut.sourceforge.net/} \\
+    \textit{Tested with version:} 2.4.0, 2.6.0
+
+  \item \texttt{libPNG} \\
+    \textit{Description:} \small {Official PNG reference library, supporting
+      almost all PNG features.} \\
+    \textit{Site:} \url{http://www.libpng.org/pub/png/libpng.html} \\
+    \textit{Tested with version:} 1.2.27, 1.2.44
+
+  \item \texttt{libJPEG} \\
+    \textit{Description:} \small {Widely used free library for JPEG image
+      compression.} \\
+    \textit{Site:} \url{http://www.ijg.org/} \\
+    \textit{Tested with version:} 62 \\
+    \textit{Note}: \small{Since version 62 does not contain \texttt{jinclude.h},
+      which defines few but essential macros, the latter has been included in
+      \framework{} source code. This assures compatibility with the stable
+      libJPEG version (62) as well as the most recent ones.}
+
+  \item \texttt{cURLpp} \\
+    \textit{Description:} \small {A C++ wrapper for \texttt{libcURL}, a free and
+      easy-to-use client-side URL transfer library, supporting FTP, FTPS, HTTP, HTTPS
+      and other protocols.} \\
+    \textit{Site:} \url{http://curlpp.org/} \\
+    \textit{Tested with version:} 0.7.3 \\
+    \textit{Note}: \small{After compiling and installing the library, still not present
+      in Debian repository, you need to add \texttt{/usr/local/lib} directory
+      to your library path. For this purpose you can add the directory in
+      \texttt{/etc/ld.so.conf}, and the run
+      \texttt{ldconfing} as superuser to active new path.}
+
+\end{itemize}
+
+After installing all the previous libraries, \framework{}
+source code can be compiled. In order to make this
+task easier, a \texttt{Makefile} for Unix system
+is available, assuming source code is stored in
+\texttt{source} folder, whereas object files in - 
+temporanely - \texttt{obj} folder.
+\\
+Accepted \texttt{make} commands are: 
+
+\begin{itemize}
+
+  \item \texttt{\$ make} \\
+    Compile source code and produce \texttt{REAR} executable
+    file.
+
+  \item \texttt{\$ make clean} \\
+    Delete every object files and the executable one.
+
+  \item \texttt{\$ make online}, \texttt{\$ make log}, \texttt{\$ make logsim} \\
+    Run \framework{} with common parameters, to execute, respectively,
+    an online run with \morduc{}, a run based on previous \morduc{}'s log files,
+    a run based on log created with \morduc{}'s simulator.
+
+\end{itemize}
+
+\texttt{Makefile} can be easily edited to obtain a corresponding
+Windows based version.
+
+
+\subsection{Run \framework{}}
+\label{sourcecode:downloadrun:run}
+
+\framework{} takes several parameters in input, to let
+user specify with which features the main program must be called. 
+\\
+A complete description of possible options to state is
+shown with command:
+\\
+\\
+\texttt{./REAR -h}
+\\
+\\
+while the following general usage is displayed when a right options sequence
+is not submitted:
+\\
+\\
+\texttt{Usage: REAR -dl data\_logic dl\_opt1 [dl\_opt2]
+  [-is image\_select is\_dist] [-r radius]}
+\\
+\\
+Let's examine what value each options can assume.
+\\
+The unique mandatory option is the one defining which type
+of \textit{DataLogic} instance has to be instantiated. The
+\texttt{-dl} token must always be expressed after the
+executable file name, followed by \textit{DataLogic} identifier
+and at least one option.
+\\
+Based on the value assumed by \texttt{data\_logic}, one or
+two options can be specified. All possible combinations
+are showed in table \ref{table:dloptions}.
+
+\begin{table}[!h]
+  \centering  
+  \begin{tabular}{| c | c | c | c |}
+
+    \hline
+    \texttt{data\_logic} &
+    \texttt{dl\_opt1} &
+    \texttt{dl\_opt2} &
+    \texttt{example} \\
+
+    \hline
+    \small {morduc} &
+    \small {$<$IP\_or\_URL$>$} &
+    \small {$<$data\_path$>$} &
+    \small{-dl morduc 192.168.1.2 ../myfolder} \\
+
+    \hline
+    \small {logmorduc} &
+    \small {$<$log\_number$>$} &
+    \small {-} &
+    \small{-dl logmorduc 5} \\
+
+
+    \hline
+    \small {logsimul} &
+    \small {$<$log\_number$>$} &
+    \small {-} &
+    \small {-dl logsimul 2} \\
+
+    \hline
+
+  \end{tabular}
+  \caption{Possible values for \texttt{-dl} options.}
+  \label{table:dloptions}
+\end{table}
+
+By indicating \texttt{morduc} as \texttt{data\_logic}, a instance
+of \texttt{DataLogicMorduc} is created (section
+\ref{concr:idatalogic:datalogicmorduc}). Needed information are
+the server's IP or URL to connect to and directory path where images
+and odometric data will be saved as they are received from \morduc{}.
+If the latter is not specified they are saved in 
+\\
+\\
+\texttt{../log\_morduc/log\_online/}
+\\
+\\
+starting from the executable file path.
+\\
+Instead, if \texttt{logmorduc} or \texttt{logsimul} options are
+specified, data are retrieved from previously stored image and text
+files  (further details can be found in chapter \ref{log}).
+In first case logs were created from previous real \morduc{}'s
+teleguiding session and an instance of \texttt{DataLogicLogMorduc}
+is used (section \ref{concr:idatalogic:datalogiclogmorduc});
+in second one logs were created with \morduc{}'s simulator and
+an object of type \texttt{DataLogicLogSimulator} is instantiated
+(section \ref{concr:idatalogic:datalogiclogsimulator}).
+\\
+Since both type of log files must be saved in a specific directories and
+are identified by an integer number, their unique option allows to indicate
+which set of log files must be used.
+\\
+After the \texttt{-dl} option, user can state other two optional
+aspects, in any order. One regards what kind of \textit{Image Selector
+Algorithm} must be used, along with one single options which defines
+its \textit{optimal distance}, i.e. the distance between robot and
+exocentric point of view that ensures the better performance in
+teleguiding the robot.
+\\
+As covered in previous sections, three algorithms have been developed,
+so the total number of possible values for the \texttt{-is} option
+is three, as table \ref{table:isoptions} summarizes.
+
+\begin{table}[!h]
+  \centering  
+  \begin{tabular}{| c | c | c | c |}
+
+    \hline
+    \texttt{image\_select} &
+    \texttt{is\_dist} &
+    \texttt{example} \\
+
+    \hline
+    \small {spacial} &
+    \small {$<$opt\_distance$>$} &
+    \small{-is spacial 15} \\
+
+    \hline
+    \small {sweep} &
+    \small {$<$opt\_distance$>$} &
+    \small{-is sweep 20} \\
+
+    \hline
+    \small {asweep} &
+    \small {$<$opt\_distance$>$} &
+    \small{-is asweep 10} \\
+
+    \hline
+
+  \end{tabular}
+  \caption{Possible values for \texttt{-is} options.}
+  \label{table:isoptions}
+\end{table}
+
+In order, a \texttt{SpacialMetricCalc} instance
+(section \ref{concr:iimageselector:spacial_metric_class}),
+a \texttt{SweepMetricCalc} instance
+(section \ref{concr:iimageselector:sweep_metric_class}) or
+a \texttt{AnotherSweepMetricCalc} instance
+(section \ref{concr:iimageselector:another_sweep_metric_class})
+is created to exploit the image selection algorithm encapsulated
+in each one. If \texttt{-is} is not specifed, the latter class
+is used as defualt, with optimal distance value set to twentyfive.
+\\
+Last possible customization can be obtained by stating the
+\morduc{}'s radius value, used to draw in OpenGL space the three
+vertical disks composing the robot. After several tests, the
+most performance value when using data from real \morduc{} robot
+(retrieved online or from log files) has been proved to be five; 
+instead, if images and data come from simulator, a better
+values for \morduc{} radius is four.
+\\
+If not specified with the \texttt{-r $<$radius$>$} option, robot
+will be drawn with a radius equal to five.
+\\
+At last, table \ref{table:validopts} shows some complete example.
+
+\begin{table}[!h]
+  \centering  
+  \begin{tabular}{| l | c |}
+
+    \hline
+    \texttt{command} &
+    \texttt{description} \\
+
+    \hline
+    \small {REAR -dl morduc 192.168.1.2 -is asweep 25} &
+    \parbox[t]{6cm}{\raggedright \small
+      Connect to real \morduc{} with address 192.168.1.2, draw robot
+      with radius equal to 5 (default) and use \textit{Another Sweep
+      Metric Alogorithm} with optimal distance set to 25.} \\  [1ex]
+
+    \hline
+    \small {REAR -dl logmorduc 4 -r 4 -is sweep 10} &
+    \parbox[t]{6cm}{\raggedright \small
+      Use \morduc{}'s log number four, draw robot
+      with radius equal to four and use \textit{Sweep
+      Metric Alogorithm} with optimal distance set to 10.} \\  [1ex]
+
+    \hline
+    \small {REAR -dl logsimul 5} &
+    \parbox[t]{6cm}{\raggedright \small
+      Use simulator's log number five, draw robot
+      with radius equal to five (default) and use \textit{Another Sweep
+      Metric Alogorithm} with optimal distance set to 25 (default values).} \\  [1ex]
+
+
+    \hline
+
+  \end{tabular}
+  \caption{Some valid command inputs.}
+  \label{table:validopts}
+\end{table}
+
+
+\subsection{User guide}
+\label{sourcecode:downloadrun:userguide}
