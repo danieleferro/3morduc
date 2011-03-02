@@ -30,9 +30,9 @@
 void printHelp() {
 
     printf("Usage: REAR -dl data_logic dl_opt1 [dl_opt2] [-is image_select is_dist] [-r radius] \n");
-    printf("All values are case sensitive.\n\n");
+    printf("\n");
 
-    printf("Possible values for -dl:\n");
+    printf("** Possible values for -dl:\n");
 
     printf("-dl morduc <address> [<save_path>]\n");
     printf("connect to real morduc and save data (default path is ../log_morduc/log_online/)\n\n");
@@ -43,7 +43,7 @@ void printHelp() {
     printf("-dl logsimul <log_number>\n");
     printf("use log from simulated morduc session\n\n");
 
-    printf("Possible values for -is:\n");
+    printf("** Possible values for -is:\n");
 
     printf("-dl sweep <opt_dist>\n");
     printf("use sweep metric algorithm\n\n");
@@ -54,12 +54,23 @@ void printHelp() {
     printf("-dl spacial <opt_dist>\n");
     printf("use spacial metric algorithm\n\n");
 
-    printf("Possible values for -r:\n");
+    printf("** Possible values for -r:\n");
 
     printf("-r <radius>\n");
-    printf("draw robot with specified radius (default is 5)\n");
- 
+    printf("draw robot with specified radius (default is 5)\n\n");
     
+    printf("** User command:\n\n");
+
+    printf("ESC \t Close window and exit program.\n\n");
+
+    printf("A   \t Send command to go forward. If data log are used, specific command is ignored and next robot's status is retrieved.\n\n");
+
+    printf("S   \t Send command to go backward. If data log are used, specific command is ignored and next robot's status is retrieved.\n\n");
+
+    printf("Q   \t Send command to turn left. If data log are used, specific command is ignored and next robot's status is retrieved.\n\n");
+
+    printf("W   \t Send command to turn right. If data log are used, specific command is ignored and next robot's status is retrieved.\n\n");
+
     printf("\n");
     exit(0);
 
