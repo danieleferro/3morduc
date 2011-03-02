@@ -20,7 +20,7 @@ do is install:
  
  - a C++ compiler
  - the C++ standard library
- - an implementation of the OpenGL(TM) api
+ - an implementation of the OpenGL(TM) API
 
 Rear has been developed using GNU gcc as the c++ compiler, 
 Mesa as the implementation of OpenGL. It has been tested on 
@@ -49,11 +49,16 @@ Here is a working configuration for Debian Lenny:
   - freeglut3 2.4.0
   - Mesa 7.6.0
 
-Be adviced that, when compiling freeglut, you could get a 
+Be advised that, when compiling freeglut, you could get a 
 compilation error regarding lines 1687-1688 of 
 freeglut-joystick.c
 Just open that file with a text editor and comment them, 
 since they are not needed by rear.
+cURLpp, libJPEG and libPNG libraries are also needed.
+Last two can be found, for Debian system, on repository;
+the first one instead has to be downloaded, compiled
+and properly installed (see http://curlpp.org/).
+
 
 Compiling
 ---------

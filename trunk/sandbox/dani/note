@@ -1,12 +1,3 @@
-- inserire nuove librerie necessarie nel readme (libjpeg, curlpp)
-- inserire descrizioni comandi nell'help
-- inserire descrizione capitoli in proposed investigation
-
-
-
-
-
+technical
 - cancellare contenuto di /etc/apache2/httpd.conf (riavviare demone)
-add "/usr/local/lib" to /etc/ld.so.conf 
-./sbin/ldconfig 
-- jpeglib versione 62 (installare dev)
+- add "/usr/local/lib" to /etc/ld.so.conf and run (superuser) ldconfig 
