@@ -56,7 +56,7 @@ of GNU \textit{gcc} as
 C++ compiler (4.3.2, 4.4.1 and 4.4.5) and different versions of 
 \textit{Mesa} as the
 implementation
-of OpenGL (7.0.3, 7.6.0, and 7.7.1).
+of OpenGL (7.0.3, 7.6.0 and 7.7.1).
 \\
 A list of other required libraries follows:
 
@@ -83,7 +83,7 @@ A list of other required libraries follows:
     \textit{Note}: \small{Since version 62 does not contain \texttt{jinclude.h},
       which defines few but essential macros, the latter has been included in
       \framework{} source code. This assures compatibility with the stable
-      libJPEG version (62) as well as the most recent ones.}
+      libJPEG version (62) as well as with the most recent ones.}
 
   \item \texttt{cURLpp} \\
     \textit{Description:} \small {A C++ wrapper for \texttt{libcURL}, a free and
@@ -94,8 +94,8 @@ A list of other required libraries follows:
     \textit{Note}: \small{After compiling and installing the library, still not present
       in Debian repository, you need to add \texttt{/usr/local/lib} directory
       to your library path. For this purpose you can add the directory in
-      \texttt{/etc/ld.so.conf}, and the run
-      \texttt{ldconfing} as superuser to active new path.}
+      \texttt{/etc/ld.so.conf} text file, and than run
+      \texttt{ldconfing} command (as root or superuser) to activate new path.}
 
 \end{itemize}
 
@@ -111,16 +111,16 @@ Accepted \texttt{make} commands are:
 \begin{itemize}
 
   \item \texttt{\$ make} \\
-    Compile source code and produce \texttt{REAR} executable
-    file.
+    compile source code and produce \texttt{REAR} executable
+    file
 
   \item \texttt{\$ make clean} \\
-    Delete every object files and the executable one.
+    delete every object files and the executable one.
 
   \item \texttt{\$ make online}, \texttt{\$ make log}, \texttt{\$ make logsim} \\
-    Run \framework{} with common parameters, to execute, respectively,
+    run \framework{} with common parameters, to execute, respectively,
     an online run with \morduc{}, a run based on previous \morduc{}'s log files,
-    a run based on log created with \morduc{}'s simulator.
+    a run based on log created with \morduc{}'s simulator
 
 \end{itemize}
 
@@ -317,7 +317,6 @@ At last, table \ref{table:validopts} shows some complete example.
       Use simulator's log number five, draw robot
       with radius equal to five (default) and use \textit{Another Sweep
       Metric Algorithm} with optimal distance set to 25 (default values).} \\  [1ex]
-
 
     \hline
 

@@ -24,7 +24,7 @@ in figure \ref{fig:morduc}.
 As every mobile robot, it is equipped with some internal
 and external sensors, through which is possible retrieve
 information about, respectively, the status of the robot
-(e.g. its position) or the data about the environment (e.g.
+(e.g. its position) or the remote environment (e.g.
 distance from obstacles).
 
 \subsection{Sensors and actuators}
@@ -33,9 +33,9 @@ distance from obstacles).
 
 The movement is performed by means of two 40W DC engines, model
 \textit{Maxon F2260}, connected with the motor shaft by a gear
-box (transmission rate 1/19). On the other side the motor shaft
+box (transmission rate 1/19). On the other side, the motor shaft
 is linked with two rubber wheels, while a third castor wheel can
-freely turn to realize the differential-driven model.
+freely turn to realize the \textit{differential-driven} model.
 \\
 The robot is compound by three shelves, each one connected to
 the next. On the lower level two lead batteries are situated,
@@ -80,9 +80,9 @@ Type and number of sensors available on \morduc{} are:
   In order to detect obstacles on the workspace, the \textit{Laser Measurement
   Sensor} (LMS) operates by measuring the flight time of a pulsed laser
   light beam that is reflected by obstacle, to provide a 2D scanning data. \\
-  It is possible to configure different angular resolution (0.25\textdegree,
-  0.5\textdegree or 1\textdegree pace) with different angular scan (100\textdegree
-  or 180\textdegree).
+  It is possible to configure different angular resolution (0.25$\textdegree$,
+  0.5$\textdegree$ or 1$\textdegree$ pace) with different angular scan (100$\textdegree$
+  or 180$\textdegree$).
   \begin{figure}[h]
     \begin{center}
       \includegraphics[width=60pt]{img/laser_sick_lms_200.jpg}
@@ -96,7 +96,7 @@ Type and number of sensors available on \morduc{} are:
   Sick 200} can be found at \cite{3morduc:laser_sick_200}.
 
 \item \texttt{stereo cameras} \\
-  On the robot there are also two stereoscopic cameras, each one with a
+  On robot there are also two stereoscopic cameras, each one with a
   resolution of 1.3 megapixel and fixed focus lens of 4.0 mm. \\
   The CCD sensors of these cameras have a good noise immunity and
   sensibility; moreover, it is possible to adjust all the image parameter, e.g.
@@ -104,7 +104,7 @@ Type and number of sensors available on \morduc{} are:
   The cameras are mounted on a rigid support; it permits to simply adjust
   the camera distance in a range 5-20 cm. \\
   Both the cameras can be connected to PC by IEEE 1394 interface, with a
-  frequency of synchronization of 8 KHz. \\
+  synchronization frequency of 8 KHz. \\
   \begin{figure}[h]
     \begin{center}
       \includegraphics[width=200pt]{img/camera_videre.png}
@@ -114,7 +114,7 @@ Type and number of sensors available on \morduc{} are:
   \end{figure}
   \\
   See chapter \textit{Image sensors} (\ref{intro:mobile:image}) for more details
-  about this type of sensor. The reference manual about the \textit{STH-MDCS2-VAR-C}
+  about this type of sensor. The reference manual about \textit{STH-MDCS2-VAR-C}
   can be found at \cite{3morduc:camera_sth_mdcs2}.
 
 \end{itemize}
@@ -152,7 +152,7 @@ remote.
 \\
 The Server was developed in Borland \textit{Delphi 7}, an object oriented
 language
-derived by Pascal. Several classes are wrapper of the windows A.P.I., making
+derived by Pascal. Several classes are wrapper of the Windows API, making
 really simple to develop efficient code in fast way. The choice of this
 programming language come from the necessity to include it as part of the
 control system designed in Catania for the \morduc{} robot.
@@ -160,7 +160,7 @@ control system designed in Catania for the \morduc{} robot.
 A first client was developed using \textit{MFC} (\textit{Microsoft Foundation
 Classes}) in Visual C++ (with supporting framework \textit{Visual Studio 2005}).
 It uses \textit{OpenGL} libraries to create 3D synthetic images and to handle
-the different kinds of used VR instruments provided by the client platform.
+the different kinds of used virtual reality (VR) instruments provided by the client platform.
 For a specific study view \cite{morduc:neri}.
 \\
 Different clients has been developed after the one described above, aiming to
@@ -170,7 +170,7 @@ clients tightly bound to Windows platform, and others
 built on free libraries and multi-platform code (like C++), which makes clients
 platform independent. The communication protocol chosen allows to
 access the server through a standard interface: every programming language
-allows to send and retrieve HTTP requests without any effort.
+allows to send and receive HTTP requests without any effort.
 \\
 We will survey now, more in details, messages exchange between client and server.
 After creating a socket and opening the communication channel, client is able
@@ -217,16 +217,16 @@ fields are listed in table \ref{table:header_request}.
 \end{table}
 
 Camera images are provided together as a unique 1280x480 pixels image, 
-(by joining two images of 640x480, left and right).
+(by joining two 640x480 images, left and right).
 \\
-A laser map of the environment is a jpeg or bmp 200x200 image. The map-building
+A laser map of the environment is a JPEG or BMP 200x200 pixel image. The map-building
 algorithm is based on the laser scanner sensor and produces a black/white image
-map, where each pixel represents a square area 10cm x 10cm. A black pixel corresponds
+map, where each pixel represents a square area of 10 cm x 10 cm. A black pixel corresponds
 to an obstacle, otherwise the space is free. The map-building algorithm used is a
-classical `occupancy grid', based on the laser row data.
+classical \textit{occupancy grid}, based on the laser row data.
 \\
 Changing the requested URL (which is always directed to the same host,
-i.e. the \morduc{} server), client can submit three different type of request.
+i.e. the \morduc{} server), client can submit two different types of request.
 Every requested resource matches a specific command, so a complete URL used
 by the client will appear as:
 
@@ -235,9 +235,9 @@ by the client will appear as:
 \end{center}
 
 The first requests' group allows client to fetch laser map or camera image and
-immediately after command the robot. \morduc{} can be moved
+immediately after guiding the robot. \morduc{} can be moved
 forward or backward with three different ranges of pace, from gear one to
-gear three in increasing order.
+gear three, in increasing order.
 \morduc{} direction can be turned instead
 with a fixed angle (towards left or right, from camera point
 of view). All these commands have the following structure:
@@ -353,12 +353,12 @@ where \\ \\
     \hline
     \parbox[t]{6.5cm}{\raggedright \small jpg } &
     \parbox[t]{6cm}{\raggedright \small
-      To obtain jpeg image.} \\  [1ex]
+      Obtain JPEG image.} \\  [1ex]
 
     \hline
     \parbox[t]{6.5cm}{\raggedright \small bmp } &
     \parbox[t]{6cm}{\raggedright \small
-      To obtain bmp image.} \\  [1ex]
+      Obtain BMP image.} \\  [1ex]
     \hline
 
   \end{tabular}
@@ -366,8 +366,8 @@ where \\ \\
   \label{table:body_format}
 \end{table}
 
-Be careful that with the commands above user do not receiver last robot's image or
-status data, because the provided information is relative to the moment
+Be careful that with the commands above user does not receive last robot's image or
+status data, because the provided information are relative to the moment
 before robot executes the issued command.
 \\
 The second and last requests' group allows client to fetch laser map or camera image,
@@ -389,11 +389,11 @@ request replay. Since this is an HTTP message, it contains an HTTP header and
 an HTTP body. The former has always the structure summarized in table 
 \ref{table:header_response}, with some exception.
 \\
-The `Data' field is included in HTTP header only if a `datilaserandImg'
+The \texttt{Data} field is included in HTTP header only if a \texttt{datilaserandImg}
 value has been submitted as image type in the URL request. Moreover, if client
 issue only a command without requesting any robot's image or data (the type
-of commands belonging to the third group), the response HTTP body will carry
-no information, so fields `Content-Length' and `Content-Type' will be missing.
+of commands belonging to the second group), the response HTTP body will carry
+no information, so fields \texttt{Content-Length} and \texttt{Content-Type} will be missing.
 
 \begin{table}[!h]
   \centering  

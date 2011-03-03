@@ -22,15 +22,15 @@ done, all we need to write is:
 The class diagram of the complete system is reported in figure
 \ref{fig:class_diagram_complete}. 
 \\
-Three concrete classes implement the \textit{IDataLogic} interface,
+Three concrete classes implement the \texttt{IDataLogic} interface,
 each one retrieving robot information from different kinds of source.
-They are named \textit{DataLogicLogSimulator}, \textit{DataLogicLogMorduc}
-and \textit{DataLogicMorduc}, exposed in section \ref{concr:idatalogic}.
+They are named \texttt{DataLogicLogSimulator}, \texttt{DataLogicLogMorduc}
+and \texttt{DataLogicMorduc}, exposed in section \ref{concr:idatalogic}.
 \\
 As it's easy to notice, class diagram presents also three implementations 
 of the \texttt{IImageSelector} interface: \texttt{SpacialMetricCalc},
 \texttt{SweepMetricCalc} and \texttt{AnotherSweepMetricCalc}
-(an improvement algorithm from the previous one).
+(an improved algorithm from the previous one).
 The latter encapsulate two brand new selection algorithms,
 widely discussed later from section
 \ref{concr:iimageselector:sweep_metric_algorithm} to section

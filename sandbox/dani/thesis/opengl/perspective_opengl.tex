@@ -16,12 +16,12 @@ from the viewer to the near clipping plane and to the far one,
 according to the frustum definition.
 \\
 By using two close values for the far and near clipping planes 
-distance the application will not be able to display 3d
+distance the application will not be able to display 3D
 objects, unless the point of view is relatively close to them. 
-If we want to be able to see 3d objects as they are moving away
+If we want to be able to see 3D objects as they are moving away
 from the point of view, we need to increase the difference between 
 the last two parameters of the \texttt{gluPerspective()} function. In
-our case the chosen values are 0.001 and 100000 (its ratio is 
+our case, the chosen values are 0.001 and 100000 (its ratio is 
 equal to 10exp8).
 \\
 The \texttt{gluPerspective()} function affects the \textbf{projection} 

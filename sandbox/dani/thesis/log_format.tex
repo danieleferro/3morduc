@@ -12,7 +12,7 @@ on top of it and, for each image, the actual position of
 the robot at the time it was captured.
 \\
 While images could be used as a texture on which draw 
-a 3d representation of the robot, information about 
+a 3D representation of the robot, information about 
 position are essential in order to draw the robot 
 consistently, i.e. in the position the observer would 
 see it if he was seeing the robot by means of an actual 
@@ -23,7 +23,7 @@ information. If we want to interact in `on-line' mode with
 the robot, they are sent through the Internet network;
 otherwise, images and robot's odometric data can be
 obtained by previous log session stored into a predefined
-path in our disk.
+path.
 \\
 It is now only briefly reported that
 \framework{} can interact with different type of source
@@ -36,8 +36,8 @@ exposed. The first is obtained by guiding the robot through
 a simulator program, able to recreate the demanded environment
 where a \morduc{} replica can move in. All images (as seen by
 the robot virtual camera) and data are collected and stored
-during the simulation running, so \framework{} can retrieve
-its information from static files.
+during the simulation running, so \framework{} can afterwards
+retrieve needed information from static files.
 \\
 The second category of log information \framework{} can base
 its computation on are derived from previous ran 
@@ -56,7 +56,7 @@ robot
 path must be repeated more times, always the same, to verify
 different proposed solutions.
 \\
-The core algorithm encapsulated in \framework{} can be test
+The core algorithm encapsulated in \framework{} can be tested
 on real online session as well as with offline data, that 
 makes all the development phase easer.
 

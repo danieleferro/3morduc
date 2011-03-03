@@ -22,18 +22,18 @@ it is simple and immediate to establish several test cases.
 \\
 The first simulator adopted was \textit{Rosen} (\cite{rosen}). Written in 
 \textit{Erlang} \cite{erlang}, \textit{Rosen} has been developed at
-the \textit{University of Catania} in order to simulate the behaviour of
-autonomous mobile robots (AMRs).
-\\
-\textit{Rosen} has been used as test bench for robots taking part in 
+the University of Catania in order to simulate the behaviour of
+\textit{autonomous mobile robots} (AMRs). It has been used as
+test bench for robots taking part in 
 the \textit{Eurobot} competition \cite{eurobot}, and hence, 
-for robots with completely different features from the ones of \morduc{}. 
+for robots with completely different features from the ones
+owned by \morduc{}. 
 \\
 As soon as we realized \textit{Rosen} does not meet our needs, 
 we started looking for a more suitable simulator.
 \\
-In 2006, at the \textit{Aalborg University}, Filippo 
-Privitera wrote a simulator specifically intended for 
+In 2006, at the Aalborg University, \textbf{Filippo 
+Privitera} wrote a simulator specifically intended for 
 the \morduc{} platform \cite{privitera}. 
 \\
 Such a simulator reproduces the \morduc{} itself (actually a 
@@ -48,9 +48,9 @@ types are applied on the egocentric camera). Other informations
 like the number of collisions or the robot distance from the 
 nearest obstacle are provided by simulator.
 \\
-The simulator was written using the Microsoft Foundation Class
-(MFC) framework and has been used for testing user ability in
-tele operating driving a robot, in comparison with the actual 
+The simulator was written using the \textit{Microsoft Foundation Class}
+(\textit{MFC}) framework and has been used for testing user ability in
+tele operations driving a robot, in comparison with the actual 
 robot to quantify the differences between the two facilities. 
 \\
 With a simulator specifically built for the \morduc{} robot, it 
@@ -59,11 +59,11 @@ needed. First of all, we needed to record data about egocentric
 vision and robot status, because they are the input value 
 of the exocentric vision simulator. In order to achieve this, 
 we edited the source code to allows the user to store data: by 
-pressing the 'P' key keyboard the actual information (e.g. the 
+pressing the \texttt{P} key keyboard the actual information (e.g. the 
 actual camera image and robot status) are recorded in log files.
 \\
 Every session in Privitera's simulator has its own identifier 
-(a integer number). When the 'P' key is pressed the simulator 
+(a integer number). When the \texttt{P} key is pressed the simulator 
 write a new line in the text file named
 
 \begin{center}
@@ -95,7 +95,7 @@ These files are named
 
 where the 
 number of session indicates for every screenshot 
-- i.e. the egocentric vision - the proper text file, and the 
+- i.e. the egocentric image - the proper text file, and the 
 timestamp the line with the associated status of the robot.
 \\
 The software which implement the exocentric vision control 

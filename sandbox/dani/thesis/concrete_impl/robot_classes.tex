@@ -2,17 +2,18 @@
 \label{concr:robot_classes}
 
 In this section will be exposed classes which inherits
-from \textit{Robot} class. They have to implement, at least,
-the \textit{DrawRobot()} father's pure virtual method,
+from \texttt{Robot} class. They have to implement, at least,
+the \texttt{DrawRobot()} father's pure virtual method,
 because \framework{} can not know in other way how to
 represent the robot to overlap on the background image chosen.
 
 \subsection{Morduc class}
 \label{concr:robot_classes:concr:morduc}
 
-This class allows to draw a \morduc{} model (see section 
-\ref{intro:3morduc}), in order to implement the exocentric
-vision with this specific robot. Regardless of how data and images
+This class allows to draw a \morduc{} model,
+in order to implement the exocentric
+vision with this specific robot (see section 
+\ref{intro:3morduc}). Regardless of how data and images
 are retrieved, from log files or Internet network, this class
 allows to recreate \morduc{} in OpenGL space (figure
 \ref{fig:3morduc_opengl}).
@@ -46,7 +47,7 @@ procedure to actually draw the robot
 (in reality, \morduc{} looks like a stack of three disks linked 
 by thin cylinders, as shown in figure \ref{fig:3morduc_opengl}).
 \\
-\begin{lstlisting}[caption={\texttt{Morduc::DrawRobot()} function}, label={code:drawrobot}]
+\begin{lstlisting}[caption={\texttt{Morduc::DrawRobot()} method}, label={code:drawrobot}]
 void Morduc::DrawRobot()
 {
   GLfloat reflectance_black[] = { 0.2f, 0.2f, 0.2f};
@@ -133,6 +134,6 @@ The two methods are just \textit{helper functions}, that is,
 functions that contains a procedure to draw, respectively,  
 a disk and a cylinder.
 \texttt{radius}, instead, stores the radius value 
-for the disks which make up the robot.
+for the disks making up the robot.
 After some calibration, its default value 
-has been set to 5.0.
+has been set to five.
