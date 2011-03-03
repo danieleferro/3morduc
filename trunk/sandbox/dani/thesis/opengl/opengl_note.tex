@@ -31,14 +31,15 @@ For example, the \texttt{glVertex} can be invoked as:
 \end{itemize}
 
 As you might have observed from the simple example above,
-OpenGL commands use the prefix `gl' and initial capital letters
-for each word making up the command name (`glClearColor()', for
-example). Similarly, OpenGL defined constants begin with `GL\_', use all
+OpenGL commands use the prefix \texttt{gl} and initial capital letters
+for each word making up the command name (\texttt{glClearColor()}, for
+example). Similarly, OpenGL defined constants begin with \texttt{GL\_}, use all
 capital letters, and use underscores to separate words (for example,
-'GL\_COLOR\_BUFFER\_BIT').
+\texttt{GL\_COLOR\_BUFFER\_BIT}).
 \\
 You might also have noticed some seemingly extraneous letters appended to
-some command names (for example, the `3f' in `glColor3f()' and `glVertex3f()').
+some command names (for example, the \texttt{3f} in
+\texttt{glColor3f()} and \texttt{glVertex3f()}).
 
 \subsection{The Depth Buffer}
 \label{opengl:opengl_note:depth_buffer}
@@ -56,7 +57,7 @@ blending.
 \\
 In order to enable the use of the depth buffer, the 
 \texttt{glutInitDisplayMode()} can be used, passing the 
-GLUT\_DEPTH macro as an argument.
+\texttt{GLUT\_DEPTH} macro as an argument.
 
 \subsection{OpenGL viewing model}
 \label{opengl:opengl_note:viewing_model}
@@ -124,18 +125,18 @@ editing the modelview matrix. The most used are
 
 \begin{itemize}
 \item \texttt{glTranslate(TYPE x, TYPE y, TYPE z)}\\
-  Multiplies the current matrix by a matrix that moves 
+  multiplies the current matrix by a matrix that moves 
   (translates) an object by the given x-, y-, and z-values 
   (or moves the local coordinate system by the same amounts)
 
 \item \texttt{glRotate(TYPE angle, TYPE x, TYPE y, TYPE z)} \\
-  Multiplies the current matrix by a matrix that rotates an 
+  multiplies the current matrix by a matrix that rotates an 
   object (or the   local coordinate system) in a counterclockwise 
   direction about the ray from the origin through the point 
   (x, y, z). The angle parameter specifies the angle of rotation in degrees.
 \end{itemize}
 
-Two examples are shown in figures \ref{fig:gltranslate}, \ref{fig:glrotate}:
+Two examples are shown in figures \ref{fig:gltranslate} and \ref{fig:glrotate}:
 the first one shows the effects of invoking \texttt{glTranslatef(0.0, 0.0, -5.0)} 
 on the view, while the second one shows how to rotate a model of 45 degrees 
 invoking \texttt{glRotatef(45.0, 0.0, 0.0, 1.0)}.

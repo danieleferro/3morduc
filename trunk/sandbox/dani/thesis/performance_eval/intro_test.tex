@@ -53,7 +53,7 @@ care about the standard deviations value.
 \texttt{sigma\_distance} and \texttt{sigma\_angle} are set
 with a default positive amount.
 \\
-In terms of Gaussian function, the \texttt{mu\_angle} represent
+In terms of Gaussian function, the \texttt{mu\_angle} represents
 the mean value and, at the same time, the point where
 the Gaussian function is centred. By computing the function with
 \texttt{mu\_angle} in input, it will return the possible
@@ -62,7 +62,7 @@ a score, which has to be as greater as the difference
 between the robot and image orientations are equal. Because the
 function input is the difference between the two angles, it
 follows that the returned value must be maximum when the input is
-zero, decreasing when the input moves away from zero.
+zero, decreasing when the input moves away from it.
 \texttt{mu\_angle} is therefore a fixed parameter, set to zero.
 \\
 At last, the \texttt{mu\_distance} is the unique variable parameter.
@@ -79,7 +79,7 @@ will be similar to the egocentric. The more
 \texttt{mu\_distance} moves away from zero (with a positive value),
 the more the application will tend to draw
 (when possible) all the robot to provide a full exocentric control
-vision, because far image will gain an higher score.
+vision, because far images will gain an higher score.
 
 \subsection{Test preparation}
 \label{performance_evaluation:testintro:testpreparation}

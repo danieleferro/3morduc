@@ -1,17 +1,17 @@
 \section{Mobile robot}
 \label{intro:mobile}
 
-Mobile robots (or telerobot) have the capability to move around
+Mobile robots (or \textit{telerobot}) have the capability to move around
 in their environment and are not fixed to one physical location.
 \\
-As stated in \cite{robot:whereami}, Leonard and Durrant-Whyte
-(in 1991) summarized the general problem of mobile robot navigation
+As stated in \cite{robot:whereami} (1991), Leonard and Durrant-Whyte
+summarized the general problem of mobile robot navigation
 by three questions:
 
 \begin{itemize}
-\item \texttt{Where am I ?}
-\item \texttt{Where am I going ?}
-\item \texttt{How should I get there ?}
+\item \textit{Where am I ?}
+\item \textit{Where am I going ?}
+\item \textit{How should I get there ?}
 \end{itemize}
 
 This section surveys the some basic notions in sensors 
@@ -32,16 +32,16 @@ good method, developers of  automated guided vehicles (AGVs) and mobile
 robots usually combine two or more methods to localize the robot.
 \\
 All these sensor measurements can be fused to estimate the robot's
-position by using a sensor fusion algorithm. Sensor fusion
+position by using a \textit{sensor fusion algorithm}. Sensor fusion
 in this case is the method of integrating data from distinctly
-different sensors to estimate the robot's position.
+different sensors to estimate robot's position.
 \\
-The sensors used to localize the mobile robot can be categorized into
+Sensors used to localize the mobile robot can be categorized into
 two groups: internal and external sensors. The ones belonging to the first
 group measure some internal state of the robot, such as motion, acceleration,
 direction.
 \\
-Sensors belonging to the second group (external sensors) provide information
+Sensors belonging to the second group (i.e. external sensors) provide information
 about objects in the workspace surrounding the robot.
 \\
 Sensors that will be exposed in this section are:
@@ -127,7 +127,8 @@ One disadvantage of this approach is that all relative position information
 is lost in the event of a power interruption.
 \\
 Interfacing an incremental encoder to a computer is not a trivial task.
-A simple state-based interface as implied in Figure 1.1 is inaccurate if
+A simple state-based interface as implied in figure \ref{fig:incremental_encoder}
+is inaccurate if
 the encoder changes direction at certain positions, and false pulses can
 result from the interpretation of the sequence of state changes.
 \begin{figure} [!h]
@@ -150,7 +151,7 @@ from power interruption cannot be tolerated.
 Instead of the serial bit streams of incremental designs, absolute optical
 encoders provide a parallel word output with a unique code pattern for each
 quantized shaft position. The most common coding schemes are \textit{Gray code},
-natural binary, and binary-coded decimal.
+\textit{natural binary}, and \textit{binary-coded decimal}.
 \\
 The Gray code (for inventor Frank Gray of Bell Labs) is characterised by the
 fact that only one bit changes at a time, a decided advantage in eliminating
@@ -188,12 +189,12 @@ The time required for a given pulse to reflect off the object
 and return is measured and used to calculate distance to the
 target based on the speed of light. Accuracies for early sensors
 of this type could approach a few centimeters over the range
-of 1 to 5 meters.
+of one to five meters.
 \\
 The method above is also used in ultrasonic sensors (we refer to
 chapter \ref{intro:mobile:sonar} for more details), where sound pulses
 are transmitted and the reflection time is measured (also known as
-\textit{time of flight} or shortly \textit{TOF}).
+\textit{time of flight} or, shortly, \textit{TOF}).
 \\
 The TOF is directly proportional to the distance between the scanner
 and the object. By indicating with \textit{L} the distance between
@@ -207,11 +208,11 @@ t_{flight} = \frac{2L}{c}  \Longrightarrow  L = \frac{t_{flight}}{2}\cdot c
 The quality of time of flight range sensors manly depends on:
 
 \begin{itemize}
-\item Uncertainties about the exact time of arrival of the reflected signal
-\item Inaccuracies in the time of fight measure
-\item Interaction with the target (surface, specular reflections)
-\item Variation of propagation speed
-\item Speed of mobile robot and target
+\item uncertainties about the exact time of arrival of the reflected signal
+\item inaccuracies in the time of fight measure
+\item interaction with the target (surface, specular reflections)
+\item variation of propagation speed
+\item speed of mobile robot and target
 \end{itemize}
 
 \begin{figure} [h]
@@ -227,7 +228,7 @@ amplitude modulated light beam at a defined frequency and compare
 the phase shift between the transmitted and the reflected light (a scheme
 is presented in figure \ref{fig:laser_shift_phase}).
 \\
-This scanner has much higher resolution. The mathematical formulas to
+This scanner has much higher resolution, and the mathematical formulas to
 obtain distance follow. We indicate with \textit{f} the modulating
 frequency; with \textit{c}, once again, the light speed. We can calculate
 the wavelength \textit{$\lambda$} as:
@@ -236,7 +237,7 @@ the wavelength \textit{$\lambda$} as:
 \lambda = \frac{f}{c}
 \]
 
-The distance covered by the emitted light, \textit{D'}, referring to
+The distance covered by the emitted light, \textit{D`}, referring to
 the distances \textit{D} and \textit{L} showed in figure
 \ref{fig:laser_shift_phase}, is equal to:
 
@@ -278,7 +279,7 @@ is showed in figure \ref{fig:laser_rotation}.
 \end{figure}
 \\
 In figure \ref{fig:laser_scan_map} a typical range image of a 2D
-laser range sensor with
+laser sensor with
 a rotating mirror is shown. The lengths of the lines through the
 measurement points indicate the uncertainties.
 
@@ -289,22 +290,21 @@ measurement points indicate the uncertainties.
 Ultrasonic TOF ranging is today the most common technique employed
 on indoor mobile robotics systems, primarily due to the ready
 availability of low-cost systems and their ease of interface.
-
-Active sonar creates an ultrasonic pulse, often called `ping',
-then listens for reflections `echo'. Referring to figure
+Active sonar creates an ultrasonic pulse, often called \textit{ping},
+then listens for reflections \textit{echo}. Referring to figure
 \ref{fig:sonar}, the ping wave is drawn in red, the echo wave
 in green.
-\begin{figure} [h]
+\begin{figure} [!h]
   \begin{center}
     \includegraphics[width=300pt]{img/sonar.png}
     \caption{Sonars in action}
     \label{fig:sonar}
   \end{center}
 \end{figure}
-\\
+\\\
 The received signal is commonly processed by measuring the time of flight,
-already explained in previous section (\ref{intro:mobile:laser}).
-This time is depending on the speed of the sound in air, and thus the
+as already explained in previous section (\ref{intro:mobile:laser}).
+This time depends on the speed of the sound in air, and thus the
 temperature, humidity, air pressure, and so on may effect measurements.
 \\
 The knowledge of time of flight enables the computation of the distance
@@ -318,8 +318,14 @@ distance too short.
 \\
 The main drawback with the sonar sensor is its wide beam of perception, which
 causes the fact that it is impossible from reading returned data to identify
-the object position within the beam. Some of the other sonar drawback are
-specular reflection and the possibility of a crosstalk.
+the object position within the beam.
+\\
+Some of the other sonar drawbacks are
+specular reflection and the possibility of a \textit{crosstalk}.
+Figure \ref{fig:sonar_crosstalk} shows an example of crosstalk,
+a phenomenon in which one sonar picks up the echo
+from another. We can distinguish between a. direct effectiveness
+of ultrasonic sensors in crosstalk and b. indirect crosstalk.
 \begin{figure} [!h]
   \begin{center}
     \includegraphics[width=250pt]{img/sonar_crosstalk.png}
@@ -327,12 +333,6 @@ specular reflection and the possibility of a crosstalk.
     \label{fig:sonar_crosstalk}
   \end{center}
 \end{figure}
-\\
-Figure \ref{fig:sonar_crosstalk} shows an example of crosstalk.
-Crosstalk is a phenomenon in which one sonar picks up the echo
-from another. One can distinguish between a. direct effectiveness
-of ultrasonic sensors in crosstalk and b. indirect crosstalk.
-
 
 \subsection{Bumper}
 \label{intro:mobile:bumper}
@@ -365,8 +365,8 @@ An image sensor is a device that converts an optical image to an electric
 signal; it is used mostly in digital cameras and other imaging devices.
 \\
 Early sensors were video camera tubes but a modern one is typically a
-charge-coupled device (also known as \textit{CCD}) or a complementary
-metal-oxid-semiconductor (\textit{CMOS}) active pixel sensor.
+\textit{charge-coupled device} (also known as \textit{CCD}) or a complementary
+\textit{metal-oxid-semiconductor} (\textit{CMOS}) active pixel sensor.
 \\
 Today, most digital still cameras use either a CCD image sensor or a
 CMOS sensor. Both types of sensor accomplish the same task of capturing
@@ -521,6 +521,7 @@ where
 \textit{$x_i$}, \textit{$y_i$} = relative position of the
 robot's centerpoint \textit{C} at instant i-th.
 \\
+\\
 Unfortunately, odometry is
 based on the assumption that wheel revolutions can be translated
 into linear displacement relative to the floor.
@@ -550,11 +551,11 @@ Systematic errors include:
 Non-systematic errors include:
 
 \begin{itemize}
-\item travel over uneven floors.
-\item travel over unexpected objects on the floor.
+\item travel over uneven floors
+\item travel over unexpected objects on the floor
 \item Wheel-slippage due to slippery floors, over-acceleration,
   fast turning (skidding), external or internal forces, non-point wheel
-  contact with the floor.
+  contact with the floor
 \end{itemize}
 
 The clear distinction between systematic and non-systematic errors is
@@ -567,7 +568,7 @@ errors are dominant.
 \begin{figure} [h]
   \begin{center}
     \includegraphics[width=310pt]{img/odometry_error.png}
-    \caption{Growing `error ellipses' indicate the growing position
+    \caption{Growing \textit{error ellipses} indicate the growing position
       uncertainty with odometry.}
     \label{fig:odometry_error}
   \end{center}
@@ -583,7 +584,7 @@ are likely to fail when one or more large non-systematic errors occur.
 \\
 It is noteworthy that many researchers develop algorithms that estimate
 the position uncertainty of a robot. With this approach each computed robot
-position is surrounded by a characteristic `error ellipse', which
+position is surrounded by a characteristic \textit{error ellipse}, which
 indicates a region of uncertainty for the robot's actual position (see
 figure \ref{fig:odometry_error}).
 \\
@@ -684,9 +685,11 @@ be modeled as a pin-hole camera.
   \end{center}
 \end{figure}
 \\
-The coordinate system (X, Y, Z) is a three-dimensional camera coordinate
-system, and (x, y) is a sensor (image) coordinate system. A three-dimensional
-feature in an object is projected onto the image plane (x, y). The relationship
+The coordinate system \texttt{(X, Y, Z)} is a three-dimensional camera coordinate
+system, and \texttt{(x, y)} is a sensor (image) coordinate system.
+A three-dimensional
+feature in an object is projected onto the image plane \texttt{(x, y)}.
+The relationship
 for this perspective projection is given by
 
 \[
@@ -703,16 +706,17 @@ Although the range information is collapsed in this projection, the angle or
 orientation of the object point can be obtained if the focal length \textit{f}
 is known and there is no distortion of rays due to lens distortion.
 \\
-The internal parameters of the camera are called `intrinsic camera parameters' and
-they include the effective focal length f, the radial lens distortion factor,
+The internal parameters of the camera are called \textit{intrinsic camera parameters}
+and
+they include the effective focal length \textit{f}, the radial lens distortion factor,
 and the image scanning parameters, which are used for estimating the physical
 size of the image plane.
 \\
-The orientation and position of the camera coordinate system (X, Y, Z) can be
+The orientation and position of the camera coordinate system \texttt{(X, Y, Z)} can be
 described by six parameters, three for orientation and three for position, and
-they are called `extrinsic camera parameters'. They represent the relationship
-between the camera coordinates (X, Y, Z) and the world or object coordinates
-(XW, YW, ZW).
+they are called \textit{extrinsic camera parameters}. They represent the relationship
+between the camera coordinates \texttt{(X, Y, Z)} and the world
+or object coordinates \texttt{(XW, YW, ZW)}.
 \\
 Landmarks and maps are usually represented in the world coordinate system.
 The problem of localization is to determine the position and orientation of a

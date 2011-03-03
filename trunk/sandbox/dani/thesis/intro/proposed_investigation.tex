@@ -2,15 +2,14 @@
 \label{intro:proposed_investigation}
 
 The project developed at the University of Hertfordshire,
-UK, during period of three months, was focused to implement
+UK, during a period of three months, was focused to implement
 a new way of teleguiding \morduc{} from a remote station.
 \\
 The final result was a framework, called \textit{R.E.A.R.},
-able to provide an external point of view (i.e. an `exocentric
-vision') from which the operator
+able to provide an external point of view (i.e. an \textit{exocentric
+vision}) from which the operator
 can watch and control the robot.
-\\
-Thanks to an external point of view, the operator can easier
+Thanks to an external point of view, operator can easier
 perceive the environment the robot moves in. Distances between
 robot and obstacles are immediately recognized, since the latter
 are compared with robot's dimension.
@@ -23,7 +22,7 @@ camera.
 Besides, the code represents a framework because it defines the basic
 steps to implement an exocentric vision, regardless of how the
 robot used, the communication model implemented, and other
-specific detail.
+specific details.
 \\
 Before presenting deeper details, it must be underlined that
 all the basic work has been accomplished together with the
@@ -39,20 +38,20 @@ First effort was directed to find a proper \morduc{} simulator,
 to move first steps in our project: with a simulator is easier
 change the environment and edit some features that would require
 much more time and efforts with the real server. Test cases are
-indeed faster, and produce code more reliable. Further details
+indeed faster, and produce more reliable code. Further details
 can be found in chapter \ref{log:morduc_simulator}.
 \\
 A new version of \framework{} has been then written in order
 to use the real \morduc{} robot, by the communication system exposed
 in chapter \ref{intro:3morduc:communication}. Since \framework{}
 was designed to be a framework, only a limited number of classes
-had to be added. The authors' beginning target was fully achieved:
-adding a concrete implementation of a particular robot, with a
-proper communication channel, does not require built the all
-the program from scratch.
+have been added. The authors' beginning target was fully achieved:
+dealing with a concrete implementation of a particular robot, with a
+proper communication channel, does not require built the whole
+program from scratch.
 \\
 Finally, it is important to underline that even the main algorithm
-can be changed regardless of all the other component. So, the
+can be changed regardless of all the other components. So, the same
 algorithm used with a simulator can be used when the system
 communicate with real robot.
 \\

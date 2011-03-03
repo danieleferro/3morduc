@@ -48,11 +48,11 @@ the OpenGL API.
 When doing that, one must always keep in mind that 
 \framework{} makes use of a three-dimensional OpenGL 
 space, while position information is often represented 
-as a \texttt{(x,y)} pair. \texttt{R.E.A.R.} maps the \texttt{x} 
+as a \texttt{(x,y)} pair. \framework{} maps the \texttt{x} 
 value of such a pair onto the x axis of its OpenGL space, 
-while the \texttt{y} value is mapped onto the z axis.
-That is, the actual XY plan corresponds to the OpenGL 
-XZ plan. Such a correspondence is represented in figure 
+while the \texttt{y} value is mapped onto the \texttt{z} axis.
+That is, the actual \texttt{XY} plan corresponds to the OpenGL 
+\texttt{XZ} plan. Such a correspondence is represented in figure 
 \ref{fig:reference_systems}.
 \\
 Moreover, to draw the robot in the right position within 
@@ -132,8 +132,8 @@ must be able to draw the robot everywhere in the OpenGL space,
 regardless of where the camera is, and vice versa.
 \\
 \texttt{Camera} methods are pretty simple: they just make 
-use of OpenGL basic commands (such as \texttt{glTranslate} 
-and \texttt{glRotate}) to actually move the OpenGL reference 
+use of OpenGL basic commands (such as \texttt{glTranslate()} 
+and \texttt{glRotate()}) to actually move the OpenGL reference 
 system and, hence, move the point-of-view and change the sight 
 direction.
 \\
@@ -184,8 +184,8 @@ within the context of a \framework{} based application.
 As its name suggests, \texttt{DataManager} manages and coordinates 
 all of the components of the exocentric vision system and, hence, 
 keeps a private reference to all of them: 
-the \texttt{Robot} instance (see section \ref{rear:classes:robotclass}), the 
-\texttt{Camera} instance (see section \ref{rear:classes:cameraclass}),
+the \texttt{Robot} instance (section \ref{rear:classes:robotclass}), the 
+\texttt{Camera} instance (section \ref{rear:classes:cameraclass}),
 a \texttt{IDataLogic} object, a \texttt{IImageSelector} 
 object and an OpenGL texture id number.
 \\
@@ -195,12 +195,12 @@ it's also responsible for:
 
 \begin{enumerate}
   \item providing the user an interface 
-    to send commands to the robot;
+    to send commands to the robot
   \item retrieving position 
     data from the actual robot every time the user asks 
-    for it;
+    for it
   \item picking one of the available snapshots and 
-    displaying it in the background.
+    displaying it in the background
 \end{enumerate}
 
 All of these operations are performed within the 
@@ -282,11 +282,11 @@ viewing frustum, by calling the
 In order to give the illusion of watching the scene 
 from the point the selected image was taken, 
 \texttt{NextStep()} also moves the camera and change 
-its orientation accordingly to the image metadata.
+its orientation accordingly to the image's metadata.
 \\
 Private method \texttt{FirstStep()} is very similar to the
 prior, it acts the same sequence of operations but 
 without sending any command to the robot. It is defined as private
-because is called only in \textit{DataManager} constructor,
-to fetch first data and image from the \textit{IDataLogic}
+because is called only in \texttt{DataManager} constructor,
+to fetch first data and image from the \texttt{IDataLogic}
 concrete instance.

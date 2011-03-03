@@ -2,14 +2,15 @@
 \label{concr:idatalogic}
 
 In this section will be exposed classes which inherit
-from \textit{IDataLogic} interface (exposed in details
+from \texttt{IDataLogic} interface (exposed in details
 in chapter \ref{rear:interfaces:idatalogic}).
 \\
 They differ on the way images
 and robot's status data are collected: a concrete class
-will use log files saved in a prefixed location on disk,
+will use log files saved in a prefixed system location,
 another one will ask the server to send new images and data
-thought Internet network, to implement a real-time teleguide.
+thought Internet network, in order to implement a real-time
+teleguide.
 
 \subsection{DataLogicLogSimulator class}
 \label{concr:idatalogic:datalogiclogsimulator}
@@ -188,11 +189,12 @@ in it is used to fill the \texttt{robot\_data} passed as argument, in
 order to return the \textit{current} robot position.
 \\
 Be careful that last operation conceals another important duty: cast the
-XY coordinates and the orientation angle (along the Y axis) returned
+\texttt{XY} coordinates and the orientation angle (along the \texttt{Y} axis) returned
 by the simulator environment in the proper corresponding values in OpenGL's
 reference system. Lines from 45 to 47 in listing
 \ref{code:datalogiclogsimulator:retrievedata} shows, in this case,
-that X and Y value are not to be changed, but, on the contrary, the robot's
+that \texttt{X} and \texttt{Y} value are not to be changed, but,
+on the contrary, the robot's
 rotation angle has to be firstly negated (by changing its sign) and
 than converted from radiants to degrees. This proves that simulator's coordinate
 system differs from the one adopted in OpenGL, because not only angles
@@ -240,7 +242,7 @@ As the one exposed before, \texttt{DataLogicLogMorduc} class
 fetches new images and data from static file
 stored in a fixed directory, but in this case information are previously saved
 not during the execution of a simulation but during
-the execution of online teleguiding sessions.
+the execution of online teleguiding session.
 \\
 Logs can be created by any client which interacted with \morduc{}
 server, as long as they observe the log format specified in section
@@ -358,15 +360,15 @@ will find a 640x480 pixel JPEG image, hence no further computation
 or write operation on disk has to be performed.
 \\
 Obviously, when the image indicated by \texttt{\_index} value is
-not found, or with a dimension different from 1280x480 or
-640x480 pixels, an error is reported and the application terminate.
+not found, or presents a dimension different from 1280x480 or
+640x480 pixels, an error is reported and the application terminates.
 \\
 We can now proceed to see how \texttt{DataLogicLogMorduc} implements
 \texttt{IDataLogic} interface methods.
 \\
 The \texttt{Command} method, as seen for the \texttt{DataLogicLogSimulator}
 class, is pretty simple: it has to increment \texttt{\_index},
-which indicate the next line in \texttt{odometric.txt}
+which indicates the next line in \texttt{odometric.txt}
 text file to read and the next image to open. It is incremented until
 its value is equal to \texttt{\_index\_max}.
 \\
@@ -429,10 +431,10 @@ contained in the latter to fill the \texttt{robot\_data} structure
 pointed by its unique argument. The format of each text line written in
 \texttt{odometric.txt} can be found in section \ref{log:morduc}.
 \\
-\texttt{GetOdometricData()} is also responsible for mapping XY
+\texttt{GetOdometricData()} is also responsible for mapping \texttt{XY}
 coordinates and rotation angle, retrieved by the log
-odometry file written with \morduc{} server data, in the matching values
-to provide to the OpenGL's reference system. The XY coordinates returned
+odometry file written from \morduc{} server data, in the matching values
+to provide to the OpenGL's reference system. The \texttt{XY} coordinates returned
 by \morduc{} are expressed in meters and have to be increased hundred
 times in order to produce a meaningful robot's movement within the
 synthesized OpenGL space. A single unit of measure in the latter stands
@@ -440,14 +442,14 @@ in fact for one centimetre.
 \\
 Furthermore, the coordinate conversion process (performed by  
 \texttt{GetOdometricData()} and hence not shown in listing 
-\ref{code:datalogiclogmorduc:retrievedata}) inverts the Y axis sense
-by changing the sign of every Y value read from log; at last, the
+\ref{code:datalogiclogmorduc:retrievedata}) inverts the \texttt{Y} axis sense
+by changing the sign of every \texttt{Y} value read from log; at last, the
 rotation angle theta is converted from radiant to degrees, because
 \morduc{} and OpenGL use different notations.
 \\
 To sum up, the coordinate system used by \morduc{} server presents,
 in reference to the one adopted by OpenGL, 1. a smaller unit of
-measure, 2. the Y axis increasing with opposite sense, 3. rotation
+measure, 2. the \texttt{Y} axis increasing with opposite sense, 3. rotation
 angle expressed in radiants and not in degrees.
 \\
 Note that matching the source data coordinate system in the OpenGL one
@@ -494,7 +496,8 @@ features implemented by different kind of \texttt{ChooseImage()} methods.
 \label{concr:idatalogic:datalogicmorduc}
 
 This class allows \framework{} to teleguide the real \morduc{}
-robot, situated at DIEES laboratory, in Catania (Italy).
+robot, situated at DIEEI (\textit{Dipartimento di Ingegneria Elettrica
+Elettronica e Informatica}) laboratory, in Catania (Italy).
 \\
 Several \texttt{DataLogicMorduc}'s features originate 
 from \texttt{DataLogicLogMorduc} class, exposed earlier in
@@ -519,7 +522,7 @@ by requesting different resources (i.e. URLs).
 \\
 A set of specific URLs allows to drive the robot in remote
 environment, changing its position forward or backward and
-steering in left or right direction. Another set
+steering it in left or right direction. Another set
 of resources are instead provided to simply retrieve robot's
 data without altering its status.
 \\
@@ -583,15 +586,15 @@ two string parameters. Their values indicate, in order, the IP
 address or URL where the server is located and the path of an
 existing folder. \texttt{\_path\_server} and \texttt{\_path\_data}
 private fields help to store them, since their value are needed
-several times during object life.
+several times during object's life.
 \\
 \texttt{\_path\_data} is used to save data provided by the server during the
 teleguiding session. \framework{} needs to store images obtained
 in online mode in order to simulate the \textit{exocentric} point
 of view: an image shot earlier by the egocentric camera must be
-selected by the core algorithm every time a robot change its position.
+selected by the core algorithm every time robot changes its position.
 The chosen image is then employed as texture by OpenGL, with the aim
-to recreate the real world within virtual space.
+of recreating the real world within virtual space.
 \\
 Images are saved in the specified path, each one according to the
 following notation, thanks to the \texttt{img\_file} pointer
@@ -616,12 +619,12 @@ structure collected in vector \texttt{\_images\_collection}. This
 collection allows to quickly access information regarding the
 available images, since every element can be thought of as a pointer
 to the real coupled image (we remind that every struct contains, among
-other information, the absolute path referring to the image).
+other information, the relative path referring to the image).
 \\
 Even thought \framework{} would not need to save other data aside
-from pictures frame, \texttt{DataLogicMorduc} creates, always on
+from pictures, \texttt{DataLogicMorduc} creates, always on
 the specified directory, a text file containing odometry data retrieved
-along with each image. Its absolute path will be:
+along with each image. Its relative path will be:
 
 \begin{center}
   \texttt{$<$user\_path$>$/odometric.txt}
@@ -633,15 +636,15 @@ together with camera images, they form new log data client can
 based its future computation on by using \texttt{DataLogiLogMorduc}
 class. The advantages of log data (formatted in a standard way)
 has been widely exposed through
-this document, for details see section \ref{log}.
+this document, for details see chapter \ref{log}.
 \\
-Last, but not least, \texttt{\_http\_functor} field
+Last, but not least, \texttt{\_http\_functor} object
 collects data coming from Internet network, that is the response sent from
-server. It performs the role of a `functor', deeper explained in
+server. It performs the role of a \textit{functor}, deeper explained in
 following subsection (\ref{concr:idatalogic:datalogicmorduc:httpfunctor}).
 \\
-As usual, we can now proceed to examine in detail how \texttt{IDataLogic}
-virtual method are implement. To begin with, \texttt{Command()} code is
+As usual, we can now proceed to examine in details how \texttt{IDataLogic}
+virtual method are implemented. To begin with, \texttt{Command()} code is
 displayed.
 \\
 \begin{lstlisting}[caption={\texttt{DataLogicMorduc::Command() method}},
@@ -707,8 +710,8 @@ void DataLogicMorduc::Command(int command) {
 Unlike the other class implementing \texttt{IDataLogic} interface
 exposed so far, \texttt{DataLogicMorduc}'s \texttt{Command()} method takes
 in account its integer parameter because its final aim is to
-\textit{really} teleguide the robot: next robot's status it is
-not been determinated and written in a log file, but it depends
+\textit{really} teleguide the robot: next robot's status has
+not been already determinated and written in a log file, but it depends
 on which command the teleoperator asks to execute.
 \\
 For one of each available command (go forward, go backward, turn right
@@ -722,18 +725,18 @@ After constructing URL, \texttt{Command()} prepares an HTTP
 request by means of \textit{curlpp} objects (lines 35 to 50 in listing
 \ref{code:datalogicmorduc:command}). Therefore, the request is sent
 simply by invoking the \texttt{perform()} method of the
-\texttt{curlpp::Easy} object. This few lines of code evince
+\texttt{curlpp::Easy} object. This few lines of code highlight
 \textit{curlpp}'s potential to largely reduce programmer's effort in
-dealing with HTTP protocol (as well as many other Internet protocol,
+dealing with HTTP protocol (as well as with many other Internet protocol,
 \cite{library:curlpp}).
 \\
 At last, \texttt{\_index} value is incremented to uniquely identify
 next saved image.
 \\
-\texttt{RetrieveData()} subdived its operations in three steps. Its
+\texttt{RetrieveData()} subdivides its operations in three steps. Its
 code is shown in following listing\footnote{In order to
 focus reader's attention on chief points, some control code (e.g. checking
-if opening a file subroutine returns without errors) has been not reported.}.
+if opening a file subroutine returns without errors) is not reported.}.
 \\
 \begin{lstlisting}[caption={\texttt{DataLogicMorduc::RetrieveData()} method},
     label={code:datalogicmorduc:retrievedata}]
@@ -841,10 +844,10 @@ in these case we want to receive only image and odometry data
 Next, first step set some options in a \texttt{curlpp::Easy} object
 before sending the request invoking its \texttt{perform()} method. Among
 these, the callback functions are indicated for managing HTTP response
-header and body. Both callbacks are implemented by the functor
+header and body. Both callbacks are implemented by an instance of
 \texttt{HTTPFunctor} class, exposed later. When the \texttt{perform()}
 method is called, a synchronous call is done and the execution proceeds
-only when all response data has been received.
+only when all response data have been received.
 \\
 Since HTTP header and body will be received in an asynchronous mode
 (data through network are parted in package), callbacks will be
@@ -868,9 +871,10 @@ in previous classes implementing \texttt{IDataLogic} interface, a
 proper mapping between source data system reference and OpenGL coordinate
 system has to be performed.
 \\
-In this case, the operation are the same already exposed in previous section,
-for \texttt{DataLogicLogMorduc}. In synthesis, we have to 1. multiple X and Y
-value by 100, 2. change the sign of  Y values, 3. change angle of rotation
+In this case, the operations are the same already exposed in previous section,
+for \texttt{DataLogicLogMorduc}. In synthesis, we have to 1. multiple \texttt{X}
+and \texttt{Y}
+value by 100, 2. change the sign of \texttt{Y} values, 3. change angle of rotation
 measure from radiants to degrees. For further details we refer to section
 \ref{concr:idatalogic:datalogiclogmorduc}.
 \\
@@ -914,7 +918,7 @@ When designing application, we often know all of the classes
 with which a specific component will interact and thus we explicit its
 interface in terms of those classes' type. When designing general purpose
 or library components, however, it is often necessary or desirable
-to put in hooks for calling unknown objects. What is required is
+to put in \textit{hooks} for calling unknown objects. What is required is
 a way for one component to call another without having been written
 in terms of, or with knowledge of, the other component's type. Such a
 `type-blind' call mechanism is often referred to as a \textit{callback}.
@@ -991,7 +995,7 @@ class HTTPFunctor
 \end{lstlisting}
 
 Callback function, declared with public access, are named
-\texttt{WriteHTTPBodyCallback} and \texttt{WriteHTTPHeaderCallback}.
+\texttt{WriteHTTPBodyCallback()} and \texttt{WriteHTTPHeaderCallback()}.
 The
 careful reader has already noticed that these name have been
 encountered in previous section
@@ -1077,14 +1081,14 @@ pointed by char pointer \texttt{\_m\_pBuffer}.
 Every time new data has to be added to the previously stored, we need
 to find another part of memory large enough to accept the total amount of
 bytes and assign the new starting address to \texttt{\_m\_pBuffer}. The
-\texttt{Realloc} (based on \texttt{malloc} and \texttt{realloc} subroutines)
-accomplishes to this task.
+\texttt{Realloc()} method (based on \texttt{malloc()} and
+\texttt{realloc()} subroutines) accomplishes to this task.
 \\
 After guaranteeing enough space in memory to accept old and incoming data,
 new bytes
 are added consecutively to previous one by calling the \texttt{memcpy}
 subroutine. The \texttt{\_m\_Size} field indicates how much data
-has already been store between a callback invocation and another.
+have already been stored between a callback invocation and another.
 \\
 When data are all correctly received, execution control returns to the
 caller, i.e. - in our case - to \texttt{curlpp::Easy} instance, which
@@ -1116,9 +1120,10 @@ body. The two methods are:
 
 In conclusion, it is worth pointing out that if a single instance of
 \texttt{HTTPFunctor} is used to compute two o more HTTP response,
-its state has to be cleared before letting it received new data: on the contrary,
+its state has to be cleared before letting it receiving new data: on the contrary,
 both HTTP header and body data will be added to ones earlier stored.
 \\
 Public method \texttt{ResetFunctor()} serves the scope, by 1. freeing all
-data bytes maintained in memory and pointed by its char pointers; 2. clearing the
+data bytes maintained in memory and pointed by its char pointers
+(\texttt{\_raw\_image} and \texttt{\_m\_pBuffer}); 2. clearing the
 \texttt{\_header} string 3. reset \texttt{\_m\_Size} counter.

@@ -14,7 +14,7 @@ It has been written in C++, following an object-oriented
 approach, and implements the minimal set of tools and functionalities 
 needed to create representations of a mobile robot in its environment 
 through the use of augmented reality techniques, as described in 
-section \ref{exo}.
+chapter \ref{exo}.
 \\
 For what concerns graphics, \framework{} relies on OpenGL.
 It makes use of three software components: a \textit{camera}, 
@@ -24,11 +24,12 @@ The camera provides the user with a view of the OpenGL space
 from a certain point-of-view and with a certain field-of-view. 
 It identifies a \textit{viewing frustum} - as shown in figure 
 \ref{fig:openglspace} - whose volume corresponds to the 
-portion of OpenGL space displayed on the user's screen.
+portion of OpenGL space displayed on the user's screen (more
+details in chapter \ref{opengl}).
 \\
 To give the user the illusion of seeing the robot from an 
-external point-of-view, the 3d model of the robot is drawn 
-within the viewing frustum, while the more distant frustum base 
+external point-of-view, the 3D model of the robot is drawn 
+within the viewing frustum, while to the more distant frustum base 
 is applied a texture displaying a picture previously 
 captured from the robot's egocentric camera.
 An example of what a user sees is showed in figure \ref{fig:snap}.
@@ -57,7 +58,7 @@ that the simplest way to determine the robot position
 within the frustum is to know the current robot position 
 and orientation and the position and orientation of the egocentric 
 camera when the snapshot was taken and, then, to set the 
-position of the 3d model of the robot and the point-of-view 
+position of the 3D model of the robot and the point-of-view 
 of the camera accordingly.
 Well, that's what \framework{} does.
 \\
@@ -83,7 +84,7 @@ For what concerns issue no. 2, as already
 underlined in \cite{sugimoto}, let us say that there is not 
 a \textit{unique} way to determine which image is to be set 
 as background, since different image selection algorithms 
-would differently affect user perceptions and. We will have a 
+would differently affect user perceptions. We will have a 
 deeper look at some image selection algorithms in section
 \ref{rear:interfaces:iimageselector}.
 \\
