@@ -5,7 +5,7 @@
   
   \emph{An exocentric vision system for \textit{3m.o.r.d.u.c.} 
     needs to tell \textit{R.E.A.R.} how to draw the robot itself,
-    by subclassing \texttt{Robot} class.}
+    by subclassing \textbf{Robot} class.}
   \pause
 
   \vskip15pt
@@ -34,7 +34,7 @@
   
   \emph{An exocentric vision system for \textit{3m.o.r.d.u.c.} 
     needs to tell \textit{R.E.A.R.} how to choose the proper egocentric image,
-    by implementig the \texttt{IImageSelector} interface.}
+    by implementig the \textbf{IImageSelector} interface.}
   \pause
 
   \vskip15pt
@@ -69,15 +69,164 @@
   \pause
 
   \begin{block} {\alert{\texttt{How it works}}}
-    
-    \begin{center}
-      \visible<2->{
-        \includegraphics[width=150pt]{img/sma_1.png}
+ 
+
+    \begin{columns}
+      
+      \column{0.7\textwidth} {   
+        \visible<2->{
+          \begin{center}
+            \only<2>{\includegraphics[width=0.8\textwidth]{img/sma_1.png}}
+            \only<3>{\includegraphics[width=0.8\textwidth]{img/sma_2.png}}
+            \only<4>{\includegraphics[width=0.8\textwidth]{img/sma_3.png}}
+          \end{center}
+        }
       }
-    \end{center}
+      
+      \column{0.2\textwidth} {
+        \visible<2->{
+          
+          \scriptsize{Robot and image shot on XY plane}
+          \vskip5pt
+          \includegraphics[width=8pt]{img/robot_icon.png} \\ 
+          \tiny{robot oriented along sense indicated by line \textit{a}}
+          \vskip5pt
+          \includegraphics[width=10pt]{img/image_icon.png} \\
+          \tiny{image oriented along direction indicated by its arrow}
+          \vskip5pt
+          \tiny{red area indicates the \alert{\textit{sweep area}}}
+
+        }
+      }
+      
+    \end{columns}
+
+    \vskip8pt
     
     \footnotesize{
-      Explanation here.
+      \only<2> {\alert{Step 0}: information about current robot position and image set are
+      available.}
+      \only<3> {\alert{Step 1}: discard all image shot outside the \textit{sweep area}.}
+      \only<4> {\alert{Step 2}: discard all image shot with an orientation that differ more
+        than a threadshold value from robot's orientation.}
+     
     }
+  \end{block}
+}
+
+\frame
+{
+  \frametitle{Sweep Metric Algorithm}
+  
+  \emph{Algorithm to choose the proper \textit{exocentric} image,
+    among those collected.}
+
+  \begin{block} {\alert{\texttt{How it works}}}
+ 
+    At the end, three possible cases:
+    \pause
+    \begin{itemize}
+      
+    \item \alert{\textit{no images in \textit{sweep area}}} \\
+      the egocentric image will be chosen
+      \pause
+      
+    \item \alert{\textit{one image in \textit{sweep area}}} \\
+      the unique image will be selected for exocentric vision
+      \pause
+      
+    \item \alert{\textit{more than one image in \textit{sweep area}}} \\
+      the image closer to an \textit{optimal distance} from the robot
+      and with an orientation similar to robot's direction is chosen
+
+      
+    \end{itemize}
+    
+  \end{block}
+}
+
+
+
+
+\subsection{How to send and retrieve data to/from robot}
+\frame
+{
+  \frametitle{How to send and retrieve data to/from robot}
+  
+  \emph{An exocentric vision system for \textit{3m.o.r.d.u.c.} 
+    needs to tell \textit{R.E.A.R.} how to send and retrieve data to/from robot,
+    by implementig the \textbf{IDataLogic} interface.}
+  \pause
+
+  \begin{block} {\alert{\texttt{Concrete classes}}}
+
+    \begin{itemize}
+      
+    \pause
+    \item \alert{\textit{DataLogicLogSimulator}} \\
+      \footnotesize{
+        new data are retrieved from log file written through
+        a simulator session; acting
+        in \textit{off-line} mode.
+        }
+    \pause
+    \item \alert{\textit{DataLogicLogMorduc}} \\
+      \footnotesize{
+        new data are retrieved from log file written through
+        a previous on-line teleguiding run accomplished with
+        \textit{3m.o.r.d.u.c.}; acting
+        in \textit{off-line} mode.
+      }
+    \pause
+    \item \alert{\textit{DataLogicMorduc}} \\
+      \footnotesize{
+        new data and teleoperator's command are trasmitted from/to real 
+        \textit{3m.o.r.d.u.c.}, through HTTP protocol; acting in
+        \textit{on-line} mode.
+      }
+    \end{itemize}
+
+  \end{block}
+}
+
+
+\subsection{Exocentric vs egocentric point of view}
+\frame
+{
+  \frametitle{Exocentric vs egocentric point of view}
+  
+  \emph{Comparison between teleguiding \textit{3m.o.r.d.u.c.}
+    form an egocentric and an exocentric point of view
+    \footnote{\tiny{session recorded at DIIES laboratory}}.}
+  \pause
+
+  \begin{block} {\alert{\texttt{Teleoperator control}}}
+
+    \begin{columns}
+      
+      \column{0.5\textwidth} {   
+        \visible<2->{
+          \footnotesize{Egocentric POV:}
+          \begin{center}
+            \only<2>{\includegraphics[width=0.9\textwidth]{img/log/img1.jpg}}
+          \end{center}
+        }
+      }
+
+      \column{0.5\textwidth} {   
+        \visible<2->{
+          \footnotesize{Exocentric POV:}
+          \begin{center}
+            \only<2>{\includegraphics[width=0.9\textwidth]{img/log/img1.jpg}}
+          \end{center}
+        }
+      }
+
+    \end{columns}
+
+    \vskip20pt
+    
+    \only<2>{Next command: \alert{go forward}}
+
   \end{block}
 }

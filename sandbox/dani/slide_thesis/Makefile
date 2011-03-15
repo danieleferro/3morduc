@@ -5,6 +5,7 @@ OUTPUT	= slide_thesis.pdf
 all:
 	pdflatex $(REPORT)
 	pdflatex $(REPORT)
+	pdflatex $(REPORT)
 	rm -rf *.blg *.bbl *.toc *.out *.log *.aux *.dvi *.mtc* *.maf *.nlo *.brf *.dvi *.nav *.snm *.vrb
 	- xpdf -geometry 1280x900 -z page $(OUTPUT)
 
