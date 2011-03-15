@@ -3,23 +3,27 @@
 {
   \frametitle{Why exocentric vision ?}
   
-  \textit{it's difficult for an operator not accustomed to the vehicle
+  \emph{It's difficult for an operator not accustomed to the vehicle
     to estimate the vehicle's position and direction and the distances to a target strictly
     based on camera images from the first person viewpoint\footnote{\tiny{as stated by M. Sugimoto and others}}.}
   \pause
   
   \vskip15pt
 
-  \alert{\texttt{Idea}}: an exocentric camera would provide a view of the robot in the operating
-  environment and, thus, a better understanding of where the robot is located into the
-  environment and its actual direction. \\
+  \begin{block} {\alert{\texttt{Idea}}}
+    An exocentric camera would provide a view of the robot in the operating
+    environment and, thus, a better understanding of where the robot is located into the
+    environment and its actual direction.
+  \end{block}
   
   \pause
     
   \vskip5pt
   
-  \alert{\texttt{Trouble}}: exocentric camera could be mounted on a rear-mounted protuberance of the robot,
-  but such a protuberance would terribly limit the robot activity and its moving abilities.
+  \begin{block} {\alert{\texttt{Trouble}}}
+    Exocentric camera could be mounted on a rear-mounted protuberance of the robot,
+    but such a protuberance would terribly limit the robot activity and its moving abilities.
+  \end{block}
   
 }
 
@@ -27,15 +31,15 @@
 {
   \frametitle{Why exocentric vision ?}
 
-  \alert{\texttt{Solution}}: simulate a virtual \textbf{exocentric} point of view, by drawing with augmented reality
-  the robot on previous recorded first-person (i.e. \textbf{egocentric}) images, shot along its path. \\
-  
-  \vskip8pt
-  \pause
-  Fixed a previous image, actual robot is drawn in order to
-  simulate what a \textbf{rear} camera would shoot.
-  
-  \vskip8pt
+  \begin{block} {\alert{\texttt{Solution}}}
+    Simulate a virtual \textbf{exocentric} point of view, by drawing with augmented reality
+    the robot on previous recorded first-person (i.e. \textbf{egocentric}) images, shot along its path. \\
+    \pause
+    Fixed a previous image put as \textbf{texture}, actual robot is drawn in order to
+    simulate what a \textbf{rear} camera would shoot.  
+  \end{block}
+
+  %\vskip8pt
   \pause
   
   \begin{columns}
@@ -51,7 +55,9 @@
     \visible<4-> {
       \begin{center}
         $\Longrightarrow$ \\
-        \alert{virtual exocentric} (augmented reality)
+        \alert{virtual exocentric}
+        \vskip4pt
+        \scriptsize{(with augmented reality)}
       \end{center}
     }
 
@@ -59,11 +65,48 @@
 
     \column{0.4\textwidth}
     \visible<5-> {
-      \includegraphics[width=\textwidth]{img/virtual_exocentric.jpg}
+      \includegraphics[width=\textwidth]{img/virtual_exocentric.png}
     }
     
   \end{columns}
+  
+  \pause
+  
+  \begin{block} {\alert{\texttt{Drawback}}}
+    Environment must not change frequently.
+  \end{block}
 
 
+}
 
+\subsection{Main issues}
+\frame
+{
+  \frametitle{Main issues}
+
+
+  
+  \begin{block} {\alert{\texttt{We need to determinate}}}
+    
+    \pause
+    
+    \begin{itemize}
+      
+    \item \alert{\textit{how to draw the robot}} \\
+      different robot must be drawn accordingly to
+      their physic characteristics
+      \pause
+      
+    \item \alert{\textit{how to choose the best image}} \\
+      among all the egocentric images collected along
+      its path, we need the one able to provide the most
+      comprehensible external robot view
+      \pause
+      
+    \item \alert{\textit{how to place the robot}} \\
+      where to overlap a 3D robot representation      
+      
+    \end{itemize}
+    
+  \end{block}
 }

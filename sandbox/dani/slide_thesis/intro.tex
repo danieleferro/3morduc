@@ -3,7 +3,7 @@
 {
   \frametitle{Teleoperation \& telepresence}
   
-  \emph{we need the equivalent of a body in a remote environment,
+  \emph{We need the equivalent of a body in a remote environment,
     with which we can move around, perform the proper actions through,
     observe with.}
 
@@ -11,23 +11,21 @@
 
   \vskip14pt
 
-  Basic concepts:
-  
-  \vskip2pt
-  
-  \pause
+  \begin{block} {\alert{\texttt{Basic concepts}}}
 
-  \begin{itemize}
-    
+    \pause
+    \begin{itemize}
+      
     \item \alert{\textit{teleoperation}} \\
       doing work at distance
       \pause
-
+      
     \item \alert{\textit{telepresence}} \\
       feeling like you are somewhere else
+      
+    \end{itemize}
 
-  \end{itemize}
-  
+  \end{block}
 }
 
 \subsection{The 3m.o.r.d.u.c. platform}
@@ -38,34 +36,43 @@
   \emph{A \alert{telerobot} is a robot that accepts instructions
     from a distant human operator.}
 
-  \pause
+  \vskip10pt
 
-  \begin{wrapfigure}{L}{2cm}
-    \begin{center}
-      \includegraphics<2->[height=3cm]{img/3morduc.jpg}
-    \end{center}
-  \end{wrapfigure}
+  \begin{columns}
 
-  \vskip15pt
-  
-  The telerobot exploited for teleoperation research is called
-  \alert{3m.o.r.d.u.c.}.
+    \column{0.4\textwidth}
+    \visible<2-> {
+      
+      \includegraphics[width=\textwidth]{img/3morduc.jpg}
+    }
 
-  \pause
+    \column{0.5\textwidth}
+    \visible<2-> {
 
-  \begin{itemize}
-    
-    \item \textit{mobility configuration} \\
-      differential-drive
-      \pause
+      \begin{block} {\alert{\texttt{3m.o.r.d.u.c. features}}}
+        
+        \pause
+        
+        \begin{itemize}
+          
+          \pause
+        \item \alert{\textit{mobility configuration}} \\
+          differential-drive
+          \pause
+          
+        \item \alert{\textit{sensors}} \\
+          encoders, sonar, laser, bumpers, stereo-cameras
+          \pause
+          
+        \item \alert{\textit{communication protocol}} \\
+          HTTP server
+          
+        \end{itemize}
+        
+      \end{block}
+      
+    }
 
-    \item \textit{sensors} \\
-      encoders, sonar, laser, bumpers, stereo-cameras
-      \pause
-
-    \item \textit{communication protocol} \\
-      HTTP server
-
-  \end{itemize}
+  \end{columns}
   
 }
