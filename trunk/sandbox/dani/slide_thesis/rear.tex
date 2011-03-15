@@ -1,0 +1,110 @@
+\subsection{Intro}
+\frame
+{
+  \frametitle{Intro}
+  
+  \emph{\textit{R.E.A.R.} is a framework for the
+    development of \textit{virtual exocentric vision systems},
+    regardless of some specif implementation detail.}
+  \pause
+  
+  \vskip15pt
+
+
+  \begin{block} {\alert{\texttt{How does it work}}}
+    \begin{enumerate}
+
+      \footnotesize
+
+      \pause
+      \item \texttt{take command input from user}
+      \pause
+      \item \texttt{send command to robot}
+      \pause
+      \item \texttt{retrieve robot position \& new egocentric image}
+      \pause
+      \item \texttt{add image to images collection}
+      \pause
+      \item \texttt{choose the proper image to use as background}
+      \pause
+      \item \texttt{move the camera accordingly to the image chosen}
+      \pause
+      \item \texttt{move robot in its current position}
+      
+    \end{enumerate}
+      
+  \end{block}
+      
+}
+
+\subsection{Indipendence from lower details}
+\frame
+{
+  \frametitle{Indipendence from lower details}
+  
+  \emph{\textit{R.E.A.R.}, written in C++,  exploits \alert{polymorphism} and \alert{inheritance} 
+    object-oriented features to work regardless of spefic details.}
+  
+  \vskip10pt
+  \pause
+
+  \begin{block} {\alert{\texttt{Lower details}}}
+    \begin{itemize}
+
+    \item \alert{\textit{how to draw the robot 3D model}} \\
+      \pause
+
+      \vskip5pt
+      \only<3>{\footnotesize{user specifies a subclass of \alert{\texttt{Robot}} class: \\
+
+          \begin{description} [\texttt{DrawRobot()}]
+
+            \item [\texttt{DrawRobot()}]
+              encapsulates how draw the robot, through \textit{OpenGL} calls.
+
+          \end{description}
+        }}
+
+
+      \pause
+
+    \item \alert{\textit{how to choose the proper egocentric image}} \\
+      \pause
+
+      \vskip5pt
+      \only<5>{\footnotesize{user specifies an implementation of \alert{\texttt{IImageSelector}} interface: \\
+
+          \begin{description} [\texttt{ChoseImage()}]
+
+            \item [\texttt{ChoseImage()}]
+              encapsulates which image will be set as texture, given the current
+              robot position and previous shot images set.
+          \end{description}
+        }}
+          
+      \pause
+
+    \item \alert{\textit{how to send and retrieve data to/from robot}} \\
+
+      \pause
+      \vskip5pt
+      \only<7>{\footnotesize{user specifies an implementation of \alert{\texttt{IDataLogic}} interface: \\
+
+          \begin{description} [\texttt{RetrieveData()}]
+            \item [\texttt{SelectImage()}]
+              delegates exocentric image selection to proper object; 
+            \item [\texttt{RetrieveData()}]
+              encapsulates how to read new status (i.e. position and egocentric
+              image) from robot;
+            \item [\texttt{Command()}]
+              encapsulates how to send a movement command (forward, backward,
+              left, right) to robot.
+          \end{description}
+        }}
+
+      \pause
+
+    \end{itemize}
+    
+  \end{block}
+}
