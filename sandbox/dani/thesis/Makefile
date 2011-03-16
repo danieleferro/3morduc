@@ -19,7 +19,7 @@ view:
 # create tar 
 
 tar:	
-	tar -cpf ~/Desktop/thesis.tar.gz --exclude-vcs -C .. \
+	tar -cpf ~/Desktop/thesis.tar --exclude-vcs -C .. \
 	--exclude=thesis/*.{blg,bbl,toc,out,log,aux,mtc*,maf,nlo,brf,dvi} \
 	--exclude=thesis/$(OUTPUT) \
 	thesis doc withinboundaries_images
