@@ -60,6 +60,6 @@ logsim:	main
 # create tar with code and logs
 
 tar:	
-	tar -cpf ~/Desktop/rear.thesis.tar.gz --exclude-vcs -C .. \
+	tar -cpf ~/Desktop/rear.thesis.tar --exclude-vcs -C .. \
 	--exclude=trunk/obj/*.o --exclude=trunk/$(EXENAME) --exclude=log_morduc/log_online/* \
 	trunk log log_morduc
