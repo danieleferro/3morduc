@@ -4,14 +4,13 @@
   \frametitle{Intro}
   
   \emph{\textit{R.E.A.R.} is a framework for the
-    development of \textit{virtual exocentric vision systems},
-    regardless of some specif implementation detail.}
+    development of \textit{virtual exocentric vision systems}.}
   \pause
   
   \vskip15pt
 
 
-  \begin{block} {\alert{\texttt{How does it work}}}
+  \begin{block} {\alert{\texttt{How it works}}}
     \begin{enumerate}
 
       \footnotesize
@@ -23,7 +22,7 @@
       \pause
       \item \texttt{retrieve robot position \& new egocentric image}
       \pause
-      \item \texttt{add image to images collection}
+      \item \texttt{add image to images' collection}
       \pause
       \item \texttt{choose the proper image to use as background}
       \pause
@@ -37,14 +36,16 @@
       
 }
 
-\subsection{Indipendence from lower details}
+\subsection{Independence from lower details}
 \frame
 {
-  \frametitle{Indipendence from lower details}
+  \frametitle{Independence from lower details}
   
-  \emph{\textit{R.E.A.R.}, written in C++,  exploits \alert{polymorphism} and \alert{inheritance} 
-    object-oriented features to work regardless of spefic details.}
-  
+  \emph{
+    \textit{R.E.A.R.} exploits some object-oriented properties, such as \alert{polymorphism}
+    and \alert{inheritance}, in order to work regardless of specific and low level details.
+  }
+
   \vskip10pt
   \pause
 
@@ -60,7 +61,7 @@
           \begin{description} [\texttt{DrawRobot()}]
 
             \item [\texttt{DrawRobot()}]
-              encapsulates how draw the robot, through \textit{OpenGL} calls.
+              encapsulates how to draw the robot, through \textit{OpenGL} calls.
 
           \end{description}
         }}
@@ -77,8 +78,8 @@
           \begin{description} [\texttt{ChoseImage()}]
 
             \item [\texttt{ChoseImage()}]
-              encapsulates which image will be set as texture, given the current
-              robot position and previous shot images set.
+              encapsulates the exocentric image selection algorithm, given the current
+              robot position and previous shot images' set.
           \end{description}
         }}
           

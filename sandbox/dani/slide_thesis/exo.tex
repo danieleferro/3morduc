@@ -4,7 +4,7 @@
   \frametitle{Why exocentric vision ?}
   
   \emph{It's difficult for an operator not accustomed to the vehicle
-    to estimate the vehicle's position and direction and the distances to a target strictly
+    to estimate the vehicle's position and direction and the distances to a target, strictly
     based on camera images from the first person viewpoint\footnote{\tiny{as stated by M. Sugimoto and others}}.}
   \pause
   
@@ -35,7 +35,7 @@
     Simulate a virtual \textbf{exocentric} point of view, by drawing with augmented reality
     the robot on previous recorded first-person (i.e. \textbf{egocentric}) images, shot along its path. \\
     \pause
-    Fixed a previous image put as \textbf{texture}, actual robot is drawn in order to
+    Set a previous image as \textbf{texture}, robot is virtually drawn in order to
     simulate what a \textbf{rear} camera would shoot.  
   \end{block}
 
@@ -57,7 +57,7 @@
         $\Longrightarrow$ \\
         \alert{virtual exocentric}
         \vskip4pt
-        \scriptsize{(with augmented reality)}
+        \scriptsize{with augmented reality}
       \end{center}
     }
 
@@ -93,18 +93,19 @@
     \begin{itemize}
       
     \item \alert{\textit{how to draw the robot}} \\
-      different robot must be drawn accordingly to
-      their physic characteristics
+      different robots must be drawn accordingly to
+      their physical characteristics
       \pause
       
     \item \alert{\textit{how to choose the best image}} \\
-      among all the egocentric images collected along
-      its path, we need the one able to provide the most
-      comprehensible external robot view
+      among all the egocentric images collected, we need
+      the one able to provide the \textbf{most
+      comprehensible} external robot view
       \pause
       
     \item \alert{\textit{how to place the robot}} \\
-      where to overlap a 3D robot representation      
+      where to overlap a 3D robot representation
+      in virtual space
     \end{itemize}
     
   \end{block}

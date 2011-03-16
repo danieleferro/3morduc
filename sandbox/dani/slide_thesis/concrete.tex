@@ -4,7 +4,7 @@
   \frametitle{How to draw the robot}
   
   \emph{An exocentric vision system for \textit{3m.o.r.d.u.c.} 
-    needs to tell \textit{R.E.A.R.} how to draw the robot itself,
+    needs to indicate \textit{R.E.A.R.} how to draw the robot itself,
     by subclassing \textbf{Robot} class.}
   \pause
 
@@ -33,8 +33,8 @@
   \frametitle{How to choose the proper egocentric image}
   
   \emph{An exocentric vision system for \textit{3m.o.r.d.u.c.} 
-    needs to tell \textit{R.E.A.R.} how to choose the proper egocentric image,
-    by implementig the \textbf{IImageSelector} interface.}
+    needs to indicate \textit{R.E.A.R.} how to choose the proper egocentric image,
+    by implementing the \textbf{IImageSelector} interface.}
   \pause
 
   \vskip15pt
@@ -50,8 +50,8 @@
       details in next slide
     \pause
     \item \alert{\textit{AnotherSweepMetricCalc}} \\
-      improvements of previous one, in order to
-      provide user with more confortable teleguiding
+      improvement of previous one, in order to
+      provide user with more comfortable teleguiding
       in case of strict turns
 
     \end{itemize}
@@ -64,8 +64,7 @@
 {
   \frametitle{Sweep Metric Algorithm}
   
-  \emph{Algorithm to choose the proper \textit{exocentric} image,
-    among those collected.}
+  \emph{A possible algorithm to choose the proper \textit{exocentric} image.}
   \pause
 
   \begin{block} {\alert{\texttt{How it works}}}
@@ -104,11 +103,11 @@
     \vskip8pt
     
     \footnotesize{
-      \only<2> {\alert{Step 0}: information about current robot position and image set are
+      \only<2> {\alert{Step 0}: information about current robot position and images' set are
       available.}
-      \only<3> {\alert{Step 1}: discard all image shot outside the \textit{sweep area}.}
-      \only<4> {\alert{Step 2}: discard all image shot with an orientation that differ more
-        than a threadshold value from robot's orientation.}
+      \only<3> {\alert{Step 1}: discard all images shot outside the \textit{sweep area}.}
+      \only<4> {\alert{Step 2}: discard all images shot with an orientation that differs more
+        than a threshold value from robot's orientation.}
      
     }
   \end{block}
@@ -123,7 +122,7 @@
 
   \begin{block} {\alert{\texttt{How it works}}}
  
-    At the end, three possible cases:
+    At the end, only three cases are possible:
     \pause
     \begin{itemize}
       
@@ -154,8 +153,8 @@
   \frametitle{How to send and retrieve data to/from robot}
   
   \emph{An exocentric vision system for \textit{3m.o.r.d.u.c.} 
-    needs to tell \textit{R.E.A.R.} how to send and retrieve data to/from robot,
-    by implementig the \textbf{IDataLogic} interface.}
+    needs to indicate \textit{R.E.A.R.} how to send and retrieve data to/from robot,
+    by implementing the \textbf{IDataLogic} interface.}
   \pause
 
   \begin{block} {\alert{\texttt{Concrete classes}}}
@@ -165,22 +164,21 @@
     \pause
     \item \alert{\textit{DataLogicLogSimulator}} \\
       \footnotesize{
-        new data are retrieved from log file written through
+        new data are retrieved from log files written through
         a simulator session; acting
         in \textit{off-line} mode.
         }
     \pause
     \item \alert{\textit{DataLogicLogMorduc}} \\
       \footnotesize{
-        new data are retrieved from log file written through
-        a previous on-line teleguiding run accomplished with
-        \textit{3m.o.r.d.u.c.}; acting
+        new data are retrieved from log files written through
+        a previous on-line session; acting
         in \textit{off-line} mode.
       }
     \pause
     \item \alert{\textit{DataLogicMorduc}} \\
       \footnotesize{
-        new data and teleoperator's command are trasmitted from/to real 
+        new data and teleoperator's commands are transmitted from/to real 
         \textit{3m.o.r.d.u.c.}, through HTTP protocol; acting in
         \textit{on-line} mode.
       }
@@ -196,17 +194,16 @@
   \frametitle{Exocentric vs egocentric point of view}
   
   \emph{Comparison between teleguiding \textit{3m.o.r.d.u.c.}
-    form an egocentric and an exocentric point of view
-    \footnote{\tiny{session recorded at DIIES laboratory}}.}
+    from an egocentric and an exocentric point of view\footnote{\tiny{session recorded at DIIES laboratory}}.}
   \pause
 
   \begin{block} {\alert{\texttt{Teleoperator control}}}
 
     \vskip5pt
     
-    \visible<2->{\footnotesize{\texttt{Egocentric POV}:}}
+    \visible<2->{\footnotesize{\texttt{\alert{EGO}centric POV}:}}
     
-    \visible<2->{\vskip-11pt{\hskip150pt{\footnotesize{\texttt{Exocentric POV}:}}}}
+    \visible<2->{\vskip-11pt{\hskip150pt{\footnotesize{\texttt{\alert{EXO}centric POV}:}}}}
     
     \vskip5pt
 
