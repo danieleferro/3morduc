@@ -18,7 +18,7 @@ view:
 # create tar 
 
 tar:	
-	tar -cpf ~/Desktop/slide_thesis.tar --exclude-vcs -C .. \
+	tar -cpf ~/Desktop/slide.thesis.tar --exclude-vcs -C .. \
 	--exclude=slide_thesis/*.{blg,bbl,toc,out,log,aux,dvi,mtc*,maf,nlo,brf,dvi,nav,snm,vrb} \
 	--exclude=slide_thesis/$(OUTPUT) \
 	slide_thesis
